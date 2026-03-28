@@ -12,13 +12,13 @@ class FontConfig:
     ACCENT = 605
 
     H_RADIUS = 160
-    V_RADIUS = 200
+    V_RADIUS = 225
 
     # Angle for slanted cuts (in degrees)
     CUT_ANGLE = 70
 
     # Taper ratio for most letters
-    TAPER_RATIO = 0.2
+    TAPER_RATIO = 0.55
     INK_TRAP = 10
 
     # Radius for the flat hooks (g, y, f etc.)

@@ -97,9 +97,9 @@ def draw_o(
             _, y_bottom = hits[0]
             _, y_top = hits[-1]
             # Bottom: square below and left of the curve
-            rect(pen, inner_left, y_bottom - ink, inner_left + ink, y_bottom)
+            rect(pen, inner_left, y_bottom - ink, inner_left + stroke / 2, y_bottom)
             # Top: square above and left of the curve
-            rect(pen, inner_left, y_top, inner_left + ink, y_top + ink)
+            rect(pen, inner_left, y_top, inner_left + stroke /2 , y_top + ink)
 
     elif taper == "right" and ink > 0:
         full_right = inner_right + stroke
@@ -111,6 +111,6 @@ def draw_o(
             _, y_bottom = hits[0]
             _, y_top = hits[-1]
             # Bottom: square below and right of the curve
-            rect(pen, inner_right - ink, y_bottom - ink, inner_right, y_bottom)
+            rect(pen, inner_right - stroke / 2, y_bottom - ink, inner_right, y_bottom)
             # Top: square above and right of the curve
-            rect(pen, inner_right - ink, y_top, inner_right, y_top + ink)
+            rect(pen, inner_right - stroke / 2, y_top, inner_right, y_top + ink)
