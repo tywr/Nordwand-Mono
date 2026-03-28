@@ -102,6 +102,7 @@ def rounded_half_loop_tapered(
     direction="right",
     half="top",
     stroke_left=None, stroke_right=None,
+    cut_right_y=None,
 ):
     """Draw the top or bottom half of a tapered rounded loop.
 
@@ -122,6 +123,7 @@ def rounded_half_loop_tapered(
         half: "top" or "bottom".
         stroke_left: left inner wall inset. Defaults to stroke.
         stroke_right: right inner wall inset. Defaults to stroke.
+        cut_right_y: if set, the right arm terminates at this y instead of mid_y.
     """
     if stroke_left is None:
         stroke_left = stroke
@@ -163,9 +165,11 @@ def rounded_half_loop_tapered(
     ixo = x_offset * ratio_w
     iyo = y_offset * ratio_h
 
+    right_y = cut_right_y if cut_right_y is not None else mid_y
+
     if half == "top":
         # Single contour: outer arch right→left, line to inner, inner arch left→right
-        pen.moveTo((outer_x2, mid_y))
+        pen.moveTo((outer_x2, right_y))
         pen.curveTo(
             (outer_x2, mid_y + yo_right),
             (outer_mid_x + xo_right, y2),
@@ -185,7 +189,7 @@ def rounded_half_loop_tapered(
         pen.curveTo(
             (imid_x + ixo, iy2),
             (ix2, mid_y + iyo),
-            (ix2, mid_y),
+            (ix2, right_y),
         )
         pen.closePath()
 

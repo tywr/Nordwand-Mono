@@ -16,6 +16,9 @@ def draw_r(pen, font_config: FontConfig, stroke: int):
     bar_right = outer_left + stroke
 
     # Top half loop tapered on the left (where the stem is)
+    # Cut the right arm at R_CUT of x-height
+    cut_y = FontConfig.X_HEIGHT * FontConfig.R_CUT
+
     rounded_half_loop_tapered(
         pen,
         x1=outer_left,
@@ -31,6 +34,7 @@ def draw_r(pen, font_config: FontConfig, stroke: int):
         direction="left",
         half="top",
         stroke_left=stroke,
+        cut_right_y=cut_y,
     )
     intersection_filler(
         pen=pen,

@@ -264,6 +264,9 @@ def build_font(output_path="OrbitonMono.ttf"):
         sCapHeight=FontConfig.CAP,
         usDefaultChar=0,
         usBreakChar=32,
+        usWinAscent=FontConfig.ASCENT,
+        usWinDescent=abs(FontConfig.DESCENT),
+        achVendID="NONE",
     )
     fb.setupPost(isFixedPitch=1)
 
