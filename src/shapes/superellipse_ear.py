@@ -44,7 +44,7 @@ def draw_superellipse_ear(
             pen.curveTo((mid_x + hx, y1), (x2, mid_y - hy), (x2, mid_y))
             pen.lineTo((ix2, imid_y))
             pen.curveTo((ix2, imid_y - ihy), (imid_x + ihx, iy1), (imid_x, iy1))
-            pen.curveTo((imid_x, iy1), (ix1, iy1), (ix1, imid_y))
+            pen.curveTo((imid_x - ihx, iy1), (ix1, imid_y - ihy), (ix1, imid_y))
             pen.closePath()
 
         if cut != "top":
@@ -70,7 +70,7 @@ def draw_superellipse_ear(
             pen.curveTo((mid_x - hx, y2), (x1, mid_y + hy), (x1, mid_y))
             pen.lineTo((ix1, imid_y))
             pen.curveTo((ix1, imid_y + ihy), (imid_x - ihx, iy2), (imid_x, iy2))
-            pen.curveTo((imid_x, iy2), (ix2, iy2), (ix2, imid_y))
+            pen.curveTo((imid_x + ihx, iy2), (ix2, imid_y + ihy), (ix2, imid_y))
             pen.closePath()
 
         if cut != "bottom":
