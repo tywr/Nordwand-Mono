@@ -49,16 +49,16 @@ def draw_corner(
         pen.closePath()
 
     elif orientation == "top-right":
-        # Corner at (x2, y1). Start on top, end on left.
-        ix1 = x1
-        iy1 = y1 - stroke
-        ix2 = x2 + stroke
-        iy2 = y2
+        # Corner at (x1, y2). Start on left, end on top.
+        ix1 = x1 + stroke
+        iy1 = y1
+        ix2 = x2
+        iy2 = y2 - stroke
 
         pen.moveTo((x1, y1))
-        pen.curveTo((x1 - hx, y1), (x2, y2 + hy), (x2, y2))
+        pen.curveTo((x1, y1 + hy), (x2 - hx, y2), (x2, y2))
         pen.lineTo((ix2, iy2))
-        pen.curveTo((ix2, iy2 + ihy), (ix1 - ihx, iy1), (ix1, iy1))
+        pen.curveTo((ix2 - ihx, iy2), (ix1, iy1 + ihy), (ix1, iy1))
         pen.closePath()
 
     elif orientation == "bottom-right":

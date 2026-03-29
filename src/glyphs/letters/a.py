@@ -38,4 +38,16 @@ def draw_a(
         fc.o_hy,
         orientation="top-left",
     )
+    draw_corner(
+        pen,
+        stroke,
+        x1,
+        fc.a_loop_ratio * fc.x_height / 2,
+        fc.width / 2,
+        fc.a_loop_ratio * fc.x_height,
+        fc.a_hx,
+        fc.a_hy,
+        orientation="top-right",
+    )
     draw_rect(pen, x1 + stroke / 2, fc.x_height - stroke, fc.width / 2, fc.x_height)
+    draw_rect(pen, fc.width / 2, fc.x_height * fc.a_loop_ratio - stroke, x2 - stroke, fc.x_height * fc.a_loop_ratio)
