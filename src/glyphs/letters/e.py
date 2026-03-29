@@ -11,7 +11,7 @@ def draw_e(
     x1 = fc.width / 2 - fc.o_width / 2 - stroke / 2
     y1 = 0
     x2 = fc.width / 2 + fc.o_width / 2 + stroke / 2
-    y2 = fc.x_height
+    y2 = fc.x_height + fc.overshoot
     ymid = y1 + (y2 - y1) / 2
     xmid = x1 + (x2 - x1) / 2
 
@@ -20,7 +20,7 @@ def draw_e(
         pen,
         stroke,
         x1,
-        fc.x_height / 2,
+        (fc.x_height + fc.overshoot) / 2 + fc.overshoot,
         xmid,
         0,
         fc.o_hx,

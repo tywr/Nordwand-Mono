@@ -9,9 +9,10 @@ class FontConfig:
     bar_height = 475
     x_height = 500
     accent = 605
+    overshoot = 10
 
-    tooth = 100
-    cover = 20
+    tooth = 120
+    cover = 26
     tail_offset = 20
 
     o_width = 320

@@ -10,7 +10,7 @@ def draw_n(
     x1 = fc.width / 2 - fc.o_width / 2 - stroke / 2
     y1 = 0
     x2 = fc.width / 2 + fc.o_width / 2 + stroke / 2
-    y2 = fc.x_height
+    y2 = fc.x_height + fc.overshoot
     draw_superellipse_ear(
         pen,
         stroke,
@@ -26,4 +26,4 @@ def draw_n(
         cut="bottom",
     )
     draw_rect(pen, x1, 0, x1 + stroke, fc.x_height)
-    draw_rect(pen, x2 - stroke, 0, x2, fc.x_height / 2)
+    draw_rect(pen, x2 - stroke, 0, x2, (fc.x_height + fc.overshoot) / 2 + fc.overshoot)
