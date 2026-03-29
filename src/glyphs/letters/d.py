@@ -1,8 +1,8 @@
 from config import FontConfig as fc
-from glyphs.base import superellipse_loop
+from glyphs.base import superellipse_ear
 
 
-def draw_o(
+def draw_d(
     pen,
     stroke: int,
     taper=None,
@@ -15,6 +15,15 @@ def draw_o(
     y1 = 0
     x2 = fc.width / 2 + fc.o_width / 2 + stroke / 2
     y2 = fc.x_height
-    superellipse_loop.draw_superellipse_loop(
-        pen, stroke, x1, y1, x2, y2, fc.o_hx, fc.o_hy
+    superellipse_ear.draw_superellipse_ear(
+        pen,
+        stroke,
+        x1,
+        y1,
+        x2,
+        y2,
+        fc.o_hx,
+        fc.o_hy,
+        fc.tooth,
+        side="right",
     )

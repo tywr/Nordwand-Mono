@@ -10,8 +10,14 @@ class FontConfig:
     x_height = 500
     accent = 605
 
-    # core width of characters
+    tooth = 60
+
+
+    # o character
     o_width = 320
+    o_hx = 175
+    o_hy = 175
+
     m_width = 400
 
     tension = 1
