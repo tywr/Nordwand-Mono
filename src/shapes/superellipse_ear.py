@@ -1,4 +1,5 @@
 from shapes.superellipse import draw_superellipse
+from shapes.rect import draw_rect
 
 
 def _draw_outer_ear_left(
@@ -11,6 +12,7 @@ def _draw_outer_ear_left(
     hx,
     hy,
     tooth,
+    cover,
 ):
     mid_x = (x1 + x2) / 2
     mid_y = (y1 + y2) / 2
@@ -43,6 +45,7 @@ def _draw_outer_ear_right(
     hx,
     hy,
     tooth,
+    cover,
 ):
     mid_x = (x1 + x2) / 2
     mid_y = (y1 + y2) / 2
@@ -75,6 +78,7 @@ def draw_superellipse_ear(
     hx,
     hy,
     tooth,
+    cover,
     side="right",
 ):
     if side == "left":
@@ -88,6 +92,7 @@ def draw_superellipse_ear(
             hx,
             hy,
             tooth,
+            cover,
         )
     if side == "right":
         _draw_outer_ear_right(
@@ -100,6 +105,7 @@ def draw_superellipse_ear(
             hx,
             hy,
             tooth,
+            cover,
         )
 
     w = (x2 - x1) / 2
@@ -117,3 +123,12 @@ def draw_superellipse_ear(
         inner_hy,
         clockwise=side == "left",
     )
+
+    # Draw the covers
+    junction_x = x1 + stroke if side == "left" else x2 - stroke
+    xl = junction_x if side == "left" else junction_x - stroke / 4
+    xr = junction_x if side == "right" else junction_x + stroke / 4
+    y_low = y1 + tooth - stroke / 2
+    y_high = y2 - tooth + stroke / 2
+    draw_rect(pen, xl, y_low - cover, xr, y_low)
+    draw_rect(pen, xl, y_high, xr, y_high + cover)

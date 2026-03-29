@@ -26,6 +26,7 @@ def draw_b(
         fc.o_hx,
         fc.o_hy,
         fc.tooth,
+        fc.cover,
         side="left",
     )
-    draw_rect(pen, x1, 0, stroke, fc.x_height)
+    draw_rect(pen, x1, 0, x1 + stroke, fc.ascent)

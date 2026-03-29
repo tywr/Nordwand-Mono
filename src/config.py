@@ -11,12 +11,16 @@ class FontConfig:
     accent = 605
 
     tooth = 100
-
+    cover = 20
 
     # o character
     o_width = 320
     o_hx = 175
     o_hy = 175
+
+    # a character
+    a_hx = 125
+    a_hy = 125
 
     m_width = 400
 
