@@ -14,7 +14,7 @@ def draw_f(
         stroke,
         xmid - stroke / 2,
         fc.x_height,
-        xmid + fc.o_width / 2,
+        xmid + fc.f_corner_width,
         fc.ascent,
         fc.f_hx,
         fc.f_hy,
@@ -27,10 +27,10 @@ def draw_f(
         xmid + fc.f_len_right + stroke / 2,
         fc.bar_height,
     )
-    if fc.f_len_right > fc.o_width / 2:
+    if fc.f_len_right > fc.f_corner_width:
         draw_rect(
             pen,
-            xmid + fc.o_width / 2,
+            xmid + fc.f_corner_width,
             fc.ascent - stroke,
             xmid + fc.f_len_right + stroke / 2,
             fc.ascent,

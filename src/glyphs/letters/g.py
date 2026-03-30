@@ -31,16 +31,16 @@ def draw_g(
         stroke,
         x2,
         0,
-        fc.width / 2,
+        x2 - fc.tail_width,
         fc.descent + fc.tail_offset,
-        fc.g_hx,
-        fc.g_hy,
+        fc.tail_hx,
+        fc.tail_hy,
         orientation="bottom-left",
     )
     draw_rect(
         pen,
         x1 + stroke / 2,
         fc.descent + fc.tail_offset,
-        fc.width / 2,
+        x2 - fc.tail_width,
         fc.descent + fc.tail_offset + stroke,
     )

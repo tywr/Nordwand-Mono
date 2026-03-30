@@ -1,20 +1,14 @@
 from config import FontConfig as fc
+from shapes.corner import draw_corner
 from shapes.rect import draw_rect
 
 
-def draw_i(
+def draw_j(
     pen,
     stroke: int,
 ):
-    xmid = fc.width / 2 + fc.i_offset
+    xmid = fc.width / 2 + fc.j_offset
     draw_rect(pen, xmid - stroke / 2, 0, xmid + stroke / 2, fc.x_height)
-    draw_rect(
-        pen,
-        xmid - fc.i_len_left - stroke / 2,
-        0,
-        xmid + fc.i_len_right + stroke / 2,
-        stroke,
-    )
     draw_rect(
         pen,
         xmid - fc.i_len_cap - stroke / 2,
@@ -28,4 +22,15 @@ def draw_i(
         fc.accent - fc.i_dot_width / 2 - stroke / 2,
         xmid + stroke / 2,
         fc.accent + stroke / 2 + fc.i_dot_width / 2,
+    )
+    draw_corner(
+        pen,
+        stroke,
+        xmid + stroke / 2,
+        0,
+        fc.width / 2,
+        fc.descent + fc.tail_offset,
+        fc.g_hx,
+        fc.g_hy,
+        orientation="bottom-left",
     )

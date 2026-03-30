@@ -13,14 +13,18 @@ class FontConfig:
 
     tooth = 120
     cover = 26
+
     tail_offset = 20
+    tail_width = 160
+    tail_hx = 100
+    tail_hy = 115
 
     o_width = 320
     o_hx = 200
-    o_hy = 225
+    o_hy = 230
 
     a_loop_ratio = 0.6
-    a_hx = 150
+    a_hx = 135
     a_hy = 150
 
     c_opening = 0.5
@@ -28,17 +32,19 @@ class FontConfig:
     f_offset = -25
     f_len_left = 120
     f_len_right = 180
+    f_corner_width = 150
     f_hx = 150
     f_hy = 150
 
     i_offset = 0
     i_len_left = 150
     i_len_right = 160
+    i_dot_width = 43
     i_len_cap = 140
-    i_dot_width = 43 
 
-    g_hx = 150
-    g_hy = 150
+    j_offset = 0
+    j_len_left = 150
+
 
     m_width = 400
 
