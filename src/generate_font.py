@@ -1,7 +1,9 @@
 """Generate OrbitonMono OTF font with CFF outlines."""
 
+import pathops
 from fontTools.fontBuilder import FontBuilder
 from fontTools.pens.t2CharStringPen import T2CharStringPen
+from fontTools.pens.pointPen import SegmentToPointPen
 
 from config import FontConfig as fc
 from glyphs.letters.a import draw_a
@@ -26,10 +28,26 @@ def draw_notdef(pen):
     pen.closePath()
 
 
-def record_glyph(draw_fn):
+def record_glyph(draw_fn, **kwargs):
+    path = pathops.Path()
+    pen = pathops.PathPen(path)
+    draw_fn(pathops.PathPen(path), **kwargs)
+    path = pathops.simplify(path, clockwise=False)
+
     pen = T2CharStringPen(fc.width, None)
-    draw_fn(pen, stroke=STROKE)
+    path.draw(pen)
     return pen.getCharString()
+
+
+    # path = pathops.Path()
+    # draw_fn(pathops.PathPen(path), **kwargs)
+    #
+    # result = pathops.Path()
+    # pathops.op(path, path, pathops.PathOp.UNION, result)
+    #
+    # pathops.simplify(path, clockwise=False)
+    # path.draw(pen)
+    # return pen.getCharString()
 
 
 def build_font(output_path="OrbitonMono.otf"):
@@ -56,16 +74,16 @@ def build_font(output_path="OrbitonMono.otf"):
     charstrings = {
         ".notdef": notdef_pen.getCharString(),
         "space": space_pen.getCharString(),
-        "a": record_glyph(draw_a),
-        "b": record_glyph(draw_b),
-        "c": record_glyph(draw_c),
-        "d": record_glyph(draw_d),
-        "e": record_glyph(draw_e),
-        "f": record_glyph(draw_f),
-        "g": record_glyph(draw_g),
-        "h": record_glyph(draw_h),
-        "n": record_glyph(draw_n),
-        "o": record_glyph(draw_o),
+        "a": record_glyph(draw_a, stroke=60),
+        "b": record_glyph(draw_b, stroke=60),
+        "c": record_glyph(draw_c, stroke=60),
+        "d": record_glyph(draw_d, stroke=60),
+        "e": record_glyph(draw_e, stroke=60),
+        "f": record_glyph(draw_f, stroke=60),
+        "g": record_glyph(draw_g, stroke=60),
+        "h": record_glyph(draw_h, stroke=60),
+        "n": record_glyph(draw_n, stroke=60),
+        "o": record_glyph(draw_o, stroke=60),
     }
     glyph_names = list(charstrings.keys())
 

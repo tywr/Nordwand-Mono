@@ -16,23 +16,23 @@ class FontConfig:
     tail_offset = 20
 
     o_width = 320
-    o_hx = 175
-    o_hy = 175
+    o_hx = 200
+    o_hy = 225
 
     a_loop_ratio = 0.6
-    a_hx = 125
-    a_hy = 125
+    a_hx = 150
+    a_hy = 150
 
     c_opening = 0.5
 
     f_offset = -25
     f_len_left = 120
     f_len_right = 180
-    f_hx = 140
-    f_hy = 140
+    f_hx = 150
+    f_hy = 150
 
-    g_hx = 110
-    g_hy = 110
+    g_hx = 150
+    g_hy = 150
 
     m_width = 400
 

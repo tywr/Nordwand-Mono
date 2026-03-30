@@ -42,7 +42,7 @@ def draw_a(
         pen,
         stroke,
         x1,
-        fc.a_loop_ratio * (fc.x_height + fc.overshoot) / 2 - fc.overshoot,
+        fc.a_loop_ratio * (fc.x_height + 2 * fc.overshoot) / 2 - fc.overshoot,
         fc.width / 2,
         fc.a_loop_ratio * fc.x_height,
         fc.a_hx,

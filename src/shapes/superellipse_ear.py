@@ -84,8 +84,8 @@ def draw_superellipse_ear(
             pen.closePath()
 
     # Draw the covers
-    xl = junction_x if side == "left" else junction_x - stroke / 4
-    xr = junction_x if side == "right" else junction_x + stroke / 4
+    xl = junction_x if side == "left" else junction_x - stroke / 8
+    xr = junction_x if side == "right" else junction_x + stroke / 8
     y_low = y1 + tooth - stroke / 2
     y_high = y2 - tooth + stroke / 2
     if cut != "bottom":
