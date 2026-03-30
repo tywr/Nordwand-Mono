@@ -15,11 +15,11 @@ class FontConfig:
     cover = 26
     tail_offset = 20
 
-
     o_width = 320
     o_hx = 200
     o_hy = 230
 
+    a_offset = 100
     a_loop_ratio = 0.6
     a_hx = 135
     a_hy = 150
@@ -37,13 +37,13 @@ class FontConfig:
     g_hx = 100
     g_hy = 115
 
-    i_offset = 0
+    i_offset = 10
     i_len_left = 150
     i_len_right = 160
     i_dot_width = 43
     i_len_cap = 140
 
-    j_offset = 0
+    j_offset = 100
     j_len_left = 160
     j_corner_width = 150
     j_hx = 150

@@ -8,10 +8,12 @@ def draw_a(
     pen,
     stroke: int,
 ):
-    x1 = fc.width / 2 - fc.o_width / 2 - stroke / 2
+    x1 = fc.width / 2 - fc.o_width / 2 - stroke / 2 + fc.a_offset
     y1 = -fc.overshoot
-    x2 = fc.width / 2 + fc.o_width / 2 + stroke / 2
+    x2 = fc.width / 2 + fc.o_width / 2 + stroke / 2 + fc.a_offset
     y2 = fc.a_loop_ratio * (fc.x_height + fc.overshoot)
+    xmid = x1 + (x2 - x1) / 2
+
     draw_superellipse_ear(
         pen,
         stroke,
@@ -32,7 +34,7 @@ def draw_a(
         stroke,
         x2,
         fc.x_height / 2,
-        fc.width / 2,
+        xmid,
         fc.x_height,
         fc.o_hx,
         fc.o_hy,
@@ -43,11 +45,11 @@ def draw_a(
         stroke,
         x1,
         fc.a_loop_ratio * (fc.x_height + 2 * fc.overshoot) / 2 - fc.overshoot,
-        fc.width / 2,
+        xmid,
         fc.a_loop_ratio * fc.x_height,
         fc.a_hx,
         fc.a_hy,
         orientation="top-right",
     )
-    draw_rect(pen, x1 + stroke / 2, fc.x_height - stroke, fc.width / 2, fc.x_height)
-    draw_rect(pen, fc.width / 2, fc.x_height * fc.a_loop_ratio - stroke, x2 - stroke, fc.x_height * fc.a_loop_ratio)
+    draw_rect(pen, x1 + stroke / 2, fc.x_height - stroke, xmid, fc.x_height)
+    draw_rect(pen, xmid, fc.x_height * fc.a_loop_ratio - stroke, x2 - stroke, fc.x_height * fc.a_loop_ratio)
