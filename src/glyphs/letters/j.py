@@ -28,9 +28,17 @@ def draw_j(
         stroke,
         xmid + stroke / 2,
         0,
-        fc.width / 2,
+        xmid - fc.j_corner_width,
         fc.descent + fc.tail_offset,
-        fc.g_hx,
-        fc.g_hy,
+        fc.j_hx,
+        fc.j_hy,
         orientation="bottom-left",
     )
+    if fc.j_len_left > fc.j_corner_width:
+        draw_rect(
+            pen,
+            xmid - fc.j_len_left,
+            fc.descent + fc.tail_offset,
+            xmid - fc.j_corner_width,
+            fc.descent + fc.tail_offset + stroke,
+        )
