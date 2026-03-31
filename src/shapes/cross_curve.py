@@ -20,16 +20,17 @@ def draw_cross_curve(
     ihx = hx * (hw - stroke) / hw if hw > 0 else 0
     ihy = hy * (hh - stroke) / hh if hh > 0 else 0
 
-    # Bottom-right crescent: from (x1,y1) to center
-    pen.moveTo((x1, y1))
-    pen.curveTo((x1, y1 + hy), (mid_x - hx, mid_y), (mid_x, mid_y))
-    pen.lineTo((mid_x, mid_y + stroke))
-    pen.curveTo((mid_x - ihx, mid_y + stroke), (x1 + stroke, y1 + ihy), (x1 + stroke, y1))
-    pen.closePath()
+    s2 = stroke / 2
 
-    # Top-left crescent: 180° rotation of the bottom-right crescent
-    pen.moveTo((x2, y2))
-    pen.curveTo((x2, y2 - hy), (mid_x + hx, mid_y), (mid_x, mid_y))
-    pen.lineTo((mid_x, mid_y - stroke))
-    pen.curveTo((mid_x + ihx, mid_y - stroke), (x2 - stroke, y2 - ihy), (x2 - stroke, y2))
+    pen.moveTo((x1, y1))
+    # Left edge, bottom half
+    pen.curveTo((x1, y1 + hy), (mid_x - hx, mid_y + s2), (mid_x, mid_y + s2))
+    # Left edge, top half
+    pen.curveTo((mid_x + ihx, mid_y + s2), (x2 - stroke, y2 - ihy), (x2 - stroke, y2))
+    # Top-right cap
+    pen.lineTo((x2, y2))
+    # Right edge, top half
+    pen.curveTo((x2, y2 - hy), (mid_x + hx, mid_y - s2), (mid_x, mid_y - s2))
+    # Right edge, bottom half
+    pen.curveTo((mid_x - ihx, mid_y - s2), (x1 + stroke, y1 + ihy), (x1 + stroke, y1))
     pen.closePath()
