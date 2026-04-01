@@ -1,4 +1,7 @@
+import ufoLib2
 from shapes.rect import draw_rect
+from shapes.superellipse import draw_superellipse
+from booleanOperations.booleanGlyph import BooleanGlyph
 
 
 def draw_superellipse_ear(
@@ -10,110 +13,54 @@ def draw_superellipse_ear(
     y2,
     hx,
     hy,
-    tooth,
-    cover,
-    gap=5,
     side="right",
-    m_junction=None,
     cut=None,
 ):
-    mid_x = (x1 + x2) / 2 + (stroke / 4 if side == "left" else -stroke / 4)
-    mid_y = (y1 + y2) / 2
+    offset = stroke / 4
+
+    # Outer box
+    ox1 = x1 + (stroke - offset if side == "left" else 0)
+    oy1 = y1
+    ox2 = x2 - (stroke - offset if side == "right" else 0)
+    oy2 = y2
 
     w = (x2 - x1) / 2
     h = (y2 - y1) / 2
+
+    y_mid = y1 + h
+
+    ohx = hx * (w - offset) / w
+    ohy = hy * (h - offset) / h
+
     ihx = hx * (w - stroke) / w
     ihy = hy * (h - stroke) / h
-    ehy = ihy / ihx * stroke / 4
-    ehx = stroke / 4
 
     # Inner box
     ix1 = x1 + stroke
     iy1 = y1 + stroke
     ix2 = x2 - stroke
     iy2 = y2 - stroke
-    imid_x = (ix1 + ix2) / 2
-    imid_y = (iy1 + iy2) / 2
 
-    if side == "left":
-        # Junction on left side
-        p_bot = (x1 + stroke + gap, y1 + tooth - stroke / 2)
-        p_top = (x1 + stroke + gap, y2 - tooth + stroke / 2)
-        junction_x = x1 + stroke
+    draw_superellipse
+    loop_glyph = ufoLib2.objects.Glyph()
+    draw_superellipse(
+        loop_glyph.getPen(), ox1, oy1, ox2, oy2, ohx, ohy, clockwise=False
+    )
+    draw_superellipse(loop_glyph.getPen(), ix1, iy1, ix2, iy2, ihx, ihy, clockwise=True)
 
-        if cut != "bottom":
-            # Bottom half: p_bot → outer bottom → outer right mid → inner right mid → inner bottom → closePath
-            pen.moveTo((p_bot[0] - gap, p_bot[1]))
-            pen.lineTo((p_bot[0], p_bot[1]))
-            pen.curveTo(
-                (p_bot[0] + ehx, p_bot[1] - ehy), (mid_x - ihx, y1), (mid_x, y1)
-            )
-            pen.curveTo(
-                (mid_x + ihx + stroke / 2, y1),
-                (x2, mid_y - ihy - stroke / 2),
-                (x2, mid_y),
-            )
-            pen.lineTo((ix2, imid_y))
-            pen.curveTo((ix2, imid_y - ihy), (imid_x + ihx, iy1), (imid_x, iy1))
-            pen.curveTo((imid_x - ihx, iy1), (ix1, imid_y - ihy), (ix1, imid_y))
-            pen.closePath()
+    if cut == "bottom":
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(cut_glyph.getPen(), 0, 0, x1 + w, y_mid)
+        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
 
-        if cut != "top":
-            # Top half: outer right mid → outer top → p_top → inner left mid → inner top → inner right mid → closePath
-            pen.moveTo((x2, mid_y))
-            if m_junction is not None:
-                mx, my = m_junction
-                pen.lineTo((mx, my))
-                pen.curveTo((mx, y2), (mx - stroke, y2), (mid_x, y2))
-            else:
-                pen.curveTo(
-                    (x2, mid_y + ihy + stroke / 2),
-                    (mid_x + ihx + stroke / 2, y2),
-                    (mid_x, y2),
-                )
-            pen.curveTo((mid_x - ihx, y2), (p_top[0] + ehx, p_top[1] + ehy), p_top)
-            pen.lineTo((p_top[0] - gap, p_top[1]))
-            pen.lineTo((ix1, imid_y))
-            pen.curveTo((ix1, imid_y + ihy), (imid_x - ihx, iy2), (imid_x, iy2))
-            pen.curveTo((imid_x + ihx, iy2), (ix2, imid_y + ihy), (ix2, imid_y))
-            pen.closePath()
+    elif cut == "top":
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(cut_glyph.getPen(), 0, y_mid, x1 + w, y2)
+        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
 
-    elif side == "right":
-        # Junction on right side
-        p_bot = (x2 - stroke - gap, y1 + tooth - stroke / 2)
-        p_top = (x2 - stroke - gap, y2 - tooth + stroke / 2)
-        junction_x = x2 - stroke
-
-        if cut != "top":
-            # Top half: p_top → outer top → outer left mid → inner left mid → inner top → closePath
-            pen.moveTo((p_top[0] + gap, p_top[1]))
-            pen.lineTo((p_top[0], p_top[1]))
-            pen.curveTo((p_top[0] - ehx, p_top[1] + ehy), (mid_x + ihx, y2), (mid_x, y2))
-            pen.curveTo(
-                (mid_x - ihx - stroke / 2, y2),
-                (x1, mid_y + ihy + stroke / 2),
-                (x1, mid_y),
-            )
-            pen.lineTo((ix1, imid_y))
-            pen.curveTo((ix1, imid_y + ihy), (imid_x - ihx, iy2), (imid_x, iy2))
-            pen.curveTo((imid_x + ihx, iy2), (ix2, imid_y + ihy), (ix2, imid_y))
-            pen.lineTo((p_top[0] + gap, p_top[1]))
-            pen.closePath()
-
-        if cut != "bottom":
-            # Bottom half: outer left mid → outer bottom → p_bot → inner right mid → inner bottom → inner left mid → closePath
-            pen.moveTo((x1, mid_y))
-            pen.curveTo(
-                (x1, mid_y - ihy - stroke / 2),
-                (mid_x - ihx - stroke / 2, y1),
-                (mid_x, y1),
-            )
-            pen.curveTo((mid_x + ihx, y1), (p_bot[0] - ehx, p_bot[1] - ehy), p_bot)
-            pen.lineTo((p_bot[0] + gap, p_bot[1]))
-            pen.lineTo((ix2, imid_y))
-            pen.curveTo((ix2, imid_y - ihy), (imid_x + ihx, iy1), (imid_x, iy1))
-            pen.curveTo((imid_x - ihx, iy1), (ix1, imid_y - ihy), (ix1, imid_y))
-            pen.closePath()
+    else:
+        result = BooleanGlyph(loop_glyph)
+        result.draw(pen)
 
     # # Draw the covers
     # xl = junction_x if side == "left" else junction_x - stroke / 8

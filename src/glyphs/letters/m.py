@@ -15,9 +15,8 @@ class LowercaseMGlyph(Glyph):
     ):
         offset = 0
         width = 400
-        hx = 135
-        hy = fc.x_height / 2 + fc.overshoot
-        mid_len = 0.65
+        hx = 120
+        hy = fc.hy
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
         y1 = -fc.overshoot
@@ -36,26 +35,27 @@ class LowercaseMGlyph(Glyph):
             hx,
             hy,
             fc.tooth,
-            fc.cover,
+            0,
             side="left",
             cut="bottom",
-            m_junction=(
-                xmid + stroke / 2,
-                fc.x_height - fc.tooth + stroke / 2 + fc.cover + fc.overshoot,
-            ),
+            # m_junction=(
+            #     xmid + stroke / 2 - overlap,
+            #     fc.x_height - fc.tooth + stroke / 2,
+            # ),
+            # m_junction=fc.gap,
         )
         # Right ear
         draw_superellipse_ear(
             pen,
             stroke,
-            xmid - stroke / 2,
+            xmid - stroke / 2, 
             y1,
             x2,
             y2,
             hx,
             hy,
             fc.tooth,
-            fc.cover,
+            0,
             side="left",
             cut="bottom",
         )
@@ -66,10 +66,10 @@ class LowercaseMGlyph(Glyph):
             pen, x2 - stroke, 0, x2, (fc.x_height + 2 * fc.overshoot) / 2 - fc.overshoot
         )
         # Middle extension
-        draw_rect(
-            pen,
-            xmid - stroke / 2,
-            (1 - mid_len) * fc.x_height - stroke / 2,
-            xmid + stroke / 2,
-            fc.x_height / 2,
-        )
+        # draw_rect(
+        #     pen,
+        #     xmid - stroke / 2,
+        #     (1 - mid_len) * fc.x_height - stroke / 2,
+        #     xmid + stroke / 2,
+        #     fc.x_height / 2,
+        # )
