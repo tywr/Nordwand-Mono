@@ -31,8 +31,6 @@ class LowercaseNGlyph(Glyph):
             y2,
             hx,
             hy,
-            fc.tooth,
-            fc.cover,
             side="left",
             cut="bottom",
         )

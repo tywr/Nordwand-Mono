@@ -41,7 +41,6 @@ def draw_superellipse_ear(
     ix2 = x2 - stroke
     iy2 = y2 - stroke
 
-    draw_superellipse
     loop_glyph = ufoLib2.objects.Glyph()
     draw_superellipse(
         loop_glyph.getPen(), ox1, oy1, ox2, oy2, ohx, ohy, clockwise=False
@@ -50,13 +49,15 @@ def draw_superellipse_ear(
 
     if cut == "bottom":
         cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), 0, 0, x1 + w, y_mid)
+        draw_rect(cut_glyph.getPen(), x1, y1, x2, y_mid)
         result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
+        result.draw(pen)
 
     elif cut == "top":
         cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), 0, y_mid, x1 + w, y2)
+        draw_rect(cut_glyph.getPen(), x1, y_mid, x2, y2)
         result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
+        result.draw(pen)
 
     else:
         result = BooleanGlyph(loop_glyph)
