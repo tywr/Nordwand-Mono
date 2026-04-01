@@ -17,7 +17,8 @@ class LowercaseEGlyph(Glyph):
         offset = 15
         width = fc.body_width + 2 * fc.h_overshoot
         hx = fc.hx
-        hy = fc.hy
+        hy = fc.hy + 30
+        len_tail = 310
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
         y1 = -fc.overshoot
@@ -41,7 +42,7 @@ class LowercaseEGlyph(Glyph):
             orientation="bottom-right",
         )
         # Extension
-        draw_rect(pen, xmid, 0, x2 - stroke / 2, stroke)
+        draw_rect(pen, xmid, 0, x1 + len_tail + stroke / 2, stroke)
         # Mid-bar
         draw_rect(pen, x1 + stroke / 2, ymid, x2 - stroke / 2, ymid + stroke / 2)
         draw_rect(pen, x1 + stroke / 2, ymid - stroke / 2, x2, ymid)

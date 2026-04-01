@@ -22,7 +22,6 @@ class LowercaseSGlyph(Glyph):
         y1 = -fc.overshoot
         x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
         y2 = fc.x_height + fc.overshoot
-        xmid = x1 + (x2 - x1) / 2
         ymid = y1 + (y2 - y1) / 2
 
         # Bottom arch
@@ -39,5 +38,5 @@ class LowercaseSGlyph(Glyph):
             y1 + 3 * (y2 - y1) / 4,
             hx / 2,
             hy,
-            invert=True
+            invert=True,
         )
