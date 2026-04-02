@@ -1,0 +1,97 @@
+from config import FontConfig as fc
+from glyph import Glyph
+from shapes.superellipse_arch import draw_superellipse_arch
+from shapes.corner import draw_corner
+from shapes.rect import draw_rect
+
+
+class UppercaseAGlyph(Glyph):
+    name = "a"
+    unicode = "0x61"
+
+    def draw(
+        self,
+        pen,
+        stroke: int,
+    ):
+        offset = 0
+        width = fc.body_width + fc.h_overshoot
+        loop_ratio = fc.a_ratio
+        hx = fc.a_hx
+        hy = fc.a_hy
+        cap_hx = 200
+        cap_hy = 200
+        len_cap = 235
+
+        x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
+        y1 = -fc.overshoot
+        x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
+        y2 = loop_ratio * (fc.x_height + fc.overshoot)
+        xmid = x1 + (x2 - x1) / 2
+
+        draw_superellipse_arch(
+            pen,
+            stroke,
+            x1,
+            y1,
+            x2,
+            y2,
+            hx,
+            hy,
+            tooth=fc.tooth + fc.overshoot,
+            side="right",
+            cut="top",
+        )
+        # Curve to the cap
+        draw_corner(
+            pen,
+            stroke,
+            x2,
+            fc.x_height / 2,
+            xmid,
+            fc.x_height,
+            cap_hx,
+            cap_hy,
+            orientation="top-left",
+        )
+        # Cap
+        draw_rect(
+            pen,
+            xmid - len_cap / 2 - stroke / 2,
+            fc.x_height - stroke,
+            xmid,
+            fc.x_height,
+        )
+        draw_corner(
+            pen,
+            stroke,
+            x1,
+            loop_ratio * (fc.x_height + 2 * fc.overshoot) / 2 - fc.overshoot,
+            xmid,
+            loop_ratio * fc.x_height,
+            hx,
+            hy,
+            orientation="top-right",
+        )
+        draw_rect(
+            pen,
+            xmid,
+            fc.x_height * loop_ratio - stroke,
+            x2 - stroke,
+            fc.x_height * loop_ratio,
+        )
+        # Stem
+        draw_rect(
+            pen,
+            x2 - stroke + fc.gap,
+            0,
+            x2,
+            loop_ratio * (fc.x_height + 2 * fc.overshoot) - fc.overshoot,
+        )
+        draw_rect(
+            pen,
+            x2 - stroke,
+            fc.tooth,
+            x2,
+            loop_ratio * (fc.x_height + 2 * fc.overshoot) - fc.overshoot,
+        )

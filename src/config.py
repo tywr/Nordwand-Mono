@@ -1,6 +1,7 @@
 class FontConfig:
     family_name = "Kassiopea"
 
+    default_stroke = 90
     units_per_em = 1000
     window_ascent = 1020
     window_descent = -300

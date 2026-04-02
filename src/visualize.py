@@ -12,8 +12,6 @@ sys.path.insert(0, "src")
 from config import FontConfig as fc
 from glyph import Glyph
 
-STROKE = 80
-
 
 def recording_to_mpl_path(recording):
     """Convert RecordingPen operations to a matplotlib Path."""
@@ -49,8 +47,15 @@ def plot_control_points(ax, recording):
             ax.plot(*cp2, "x", color="#e74c3c", markersize=6, zorder=5)
             ax.plot(*pt, "o", color="#2ecc71", markersize=5, zorder=5)
             # Lines from on-curve to off-curve handles
-            ax.plot([cp1[0], cp2[0]], [cp1[1], cp2[1]],
-                    "-", color="#e74c3c", linewidth=0.5, alpha=0.5, zorder=4)
+            ax.plot(
+                [cp1[0], cp2[0]],
+                [cp1[1], cp2[1]],
+                "-",
+                color="#e74c3c",
+                linewidth=0.5,
+                alpha=0.5,
+                zorder=4,
+            )
 
 
 COLORS = ["#222222", "#e74c3c", "#3498db", "#2ecc71", "#e67e22", "#9b59b6", "#1abc9c"]
@@ -113,9 +118,11 @@ def compute_optical_center(recording):
     return cx_sum / total_area, cy_sum / total_area
 
 
-def visualize(family, glyph, show_controls=False, show_optical_center=False, strokes=None):
+def visualize(
+    family, glyph, show_controls=False, show_optical_center=False, strokes=None
+):
     if strokes is None:
-        strokes = [STROKE]
+        strokes = [fc.default_stroke]
 
     mod = importlib.import_module(f"glyphs.{family}.{glyph}")
     glyph_cls = None
@@ -143,11 +150,23 @@ def visualize(family, glyph, show_controls=False, show_optical_center=False, str
         draw_fn(rec, stroke=strokes[0])
         center = compute_optical_center(rec)
         if center:
-            ax.plot(*center, "+", color="#e74c3c", markersize=20,
-                    markeredgewidth=3, zorder=10)
-            ax.annotate(f"({center[0]:.0f}, {center[1]:.0f})",
-                        xy=center, xytext=(12, -12), textcoords="offset points",
-                        fontsize=9, color="#e74c3c", fontweight="bold")
+            ax.plot(
+                *center,
+                "+",
+                color="#e74c3c",
+                markersize=20,
+                markeredgewidth=3,
+                zorder=10,
+            )
+            ax.annotate(
+                f"({center[0]:.0f}, {center[1]:.0f})",
+                xy=center,
+                xytext=(12, -12),
+                textcoords="offset points",
+                fontsize=9,
+                color="#e74c3c",
+                fontweight="bold",
+            )
 
     # draw guides
     for y, label, color in [
@@ -175,12 +194,24 @@ def visualize(family, glyph, show_controls=False, show_optical_center=False, str
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(description="Visualize a single glyph")
     parser.add_argument("family", help="Glyph family (e.g. base, letters)")
     parser.add_argument("glyph", help="Glyph name (e.g. d, superellipse_arch)")
     parser.add_argument("-c", action="store_true", help="Show bezier control points")
     parser.add_argument("-o", action="store_true", help="Show optical center")
-    parser.add_argument("-s", type=str, default="60", help="Stroke width(s), comma-separated (e.g. 100,60,80)")
+    parser.add_argument(
+        "-s",
+        type=str,
+        default="60",
+        help="Stroke width(s), comma-separated (e.g. 100,60,80)",
+    )
     args = parser.parse_args()
     strokes = [int(s) for s in args.s.split(",")]
-    visualize(args.family, args.glyph, show_controls=args.c, show_optical_center=args.o, strokes=strokes)
+    visualize(
+        args.family,
+        args.glyph,
+        show_controls=args.c,
+        show_optical_center=args.o,
+        strokes=strokes,
+    )

@@ -12,8 +12,6 @@ from glyph import Glyph
 
 import glyphs.letters
 
-STROKE = 80
-
 
 def discover_glyphs():
     """Recursively import all modules under glyphs/ and return Glyph subclasses."""
@@ -65,7 +63,7 @@ def build_font(output_path=f"{fc.family_name}.otf"):
         "space": space_pen.getCharString(),
     }
     for g in all_glyphs:
-        charstrings[g.name] = record_glyph(g, stroke=STROKE)
+        charstrings[g.name] = record_glyph(g, stroke=fc.default_stroke)
 
     glyph_names = list(charstrings.keys())
 

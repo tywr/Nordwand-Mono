@@ -14,12 +14,12 @@ from fontTools.pens.recordingPen import RecordingPen
 
 sys.path.insert(0, "src")
 from config import FontConfig as fc
-from generate_font import discover_glyphs, STROKE
+from generate_font import discover_glyphs
 
 from visualize import recording_to_mpl_path
 
 
-def visualize_text(text, stroke=STROKE):
+def visualize_text(text, stroke=fc.default_stroke):
     all_glyphs = discover_glyphs()
     glyph_map = {}
     for g in all_glyphs:
@@ -90,6 +90,6 @@ def visualize_text(text, stroke=STROKE):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Visualize text with Kassiopea font")
     parser.add_argument("text", help="Text string to render")
-    parser.add_argument("-s", type=int, default=STROKE, help="Stroke width")
+    parser.add_argument("-s", type=int, default=fc.default_stroke, help="Stroke width")
     args = parser.parse_args()
     visualize_text(args.text, stroke=args.s)

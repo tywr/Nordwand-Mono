@@ -12,7 +12,7 @@ class LowercaseIGlyph(Glyph):
         pen,
         stroke: int,
     ):
-        offset = 30
+        offset = 40
         len_left = 200
         len_right = 200
         dot_width = 30

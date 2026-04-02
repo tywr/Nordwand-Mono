@@ -4,9 +4,9 @@ from shapes.superellipse_arch import draw_superellipse_arch
 from shapes.rect import draw_rect
 
 
-class LowercaseUGlyph(Glyph):
-    name = "u"
-    unicode = "0x75"
+class UppercaseHGlyph(Glyph):
+    name = "h"
+    unicode = "0x68"
 
     def draw(
         self,
@@ -14,16 +14,15 @@ class LowercaseUGlyph(Glyph):
         stroke: int,
     ):
         offset = 0
-        width = fc.body_width
+        width = fc.body_width + 18
         hx = fc.a_hx
         hy = fc.a_hy
         loop_ratio = fc.a_ratio
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
-        y1 = -fc.overshoot
+        y1 = fc.x_height - (fc.x_height + fc.overshoot) * loop_ratio
         x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = loop_ratio * (fc.x_height + fc.overshoot)
-        # Shoulder
+        y2 = fc.x_height + fc.overshoot
         draw_superellipse_arch(
             pen,
             stroke,
@@ -34,18 +33,19 @@ class LowercaseUGlyph(Glyph):
             hx,
             hy,
             tooth=fc.tooth + fc.overshoot,
-            side="right",
-            cut="top",
+            side="left",
+            cut="bottom",
         )
-        # Right ascent
-        draw_rect(pen, x2 - stroke, fc.tooth, x2, fc.x_height)
-        draw_rect(pen, x2 - stroke + fc.gap, 0, x2, fc.x_height)
-        # Left ascent
+        # Left stem
+        draw_rect(pen, x1, 0, x1 + stroke, fc.x_height - fc.tooth)
+        draw_rect(pen, x1, 0, x1 + stroke - fc.gap, fc.ascent)
+        # Right stem
         draw_rect(
             pen,
-            x1,
-            ((fc.x_height + fc.overshoot) * loop_ratio + fc.overshoot) / 2
-            - fc.overshoot,
-            x1 + stroke,
-            fc.x_height,
+            x2 - stroke,
+            0,
+            x2,
+            fc.x_height
+            - ((fc.x_height + fc.overshoot) * loop_ratio + fc.overshoot) / 2
+            + fc.overshoot,
         )
