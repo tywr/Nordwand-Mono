@@ -16,17 +16,17 @@ class UppercaseCGlyph(Glyph):
         stroke: int,
     ):
         offset = 0
-        width = fc.body_width + 2 * fc.h_overshoot
+        width = 350 + 2 * fc.h_overshoot
         hx = fc.hx
-        hy = fc.hy
-        opening = 280
+        hy = fc.hy * fc.ascent / fc.x_height
+        opening = 280 * fc.ascent / fc.x_height
 
         x1 = fc.width / 2 - width / 2 - stroke / 2 + offset
         y1 = -fc.overshoot
         x2 = fc.width / 2 + width / 2 + stroke / 2 + offset
-        y2 = fc.x_height + fc.overshoot
+        y2 = fc.ascent + fc.overshoot
         xmid = x1 + (x2 - x1) / 2
-        ymid = fc.x_height / 2
+        ymid = fc.ascent / 2
 
         loop_glyph = ufoLib2.objects.Glyph()
         draw_superellipse_loop(loop_glyph.getPen(), stroke, x1, y1, x2, y2, hx, hy)

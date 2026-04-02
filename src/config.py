@@ -24,8 +24,8 @@ class FontConfig:
     a_hy = hy * 0.65
 
     # Alternative radiuses for side angles (B, R etc.)
-    side_hx = 400
-    side_hy = 180
+    side_hx = 200
+    side_hy = 140
 
     # Depth of tooth
     tooth = 68
