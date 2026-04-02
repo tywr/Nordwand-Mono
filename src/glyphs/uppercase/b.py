@@ -14,7 +14,7 @@ class UppercaseBGlyph(Glyph):
         stroke: int,
     ):
         offset = 0
-        width = 350
+        width = 350 + fc.h_overshoot
         ratio = 0.6
         hx = fc.side_hx
         hy = fc.side_hy
