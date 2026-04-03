@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from utils.bounds import Bounds
+from utils.bounds import BodyBounds
 
 
 @dataclass
@@ -29,7 +29,7 @@ class DrawConfig(FontConfig):
     v_overshoot: int = 10
     h_overshoot: int = 5
 
-    def body_boundaries(
+    def body_bounds(
         self,
         offset: int,
         overshoot_left=False,
@@ -65,4 +65,4 @@ class DrawConfig(FontConfig):
 
         hx = self.hx * (x2 - x1 - self.stroke) / self.width
         hy = self.hy * (y2 - y1 - self.stroke) / self.x_height
-        return Bounds(x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy)
+        return BodyBounds(x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy)

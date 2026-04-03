@@ -12,7 +12,7 @@ class LowercaseOGlyph(Glyph):
         pen,
         dc,
     ):
-        b = dc.body_boundaries(
+        b = dc.body_bounds(
             offset=self.offset,
             overshoot_bottom=True,
             overshoot_top=True,

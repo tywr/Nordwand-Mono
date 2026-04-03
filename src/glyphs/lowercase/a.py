@@ -14,7 +14,7 @@ class LowercaseAGlyph(Glyph):
     def draw(self, pen, dc):
         loop_ratio = 0.6
 
-        b = dc.body_boundaries(
+        b = dc.body_bounds(
             offset=self.offset,
             overshoot_bottom=True,
             overshoot_left=True,
