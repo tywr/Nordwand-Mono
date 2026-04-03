@@ -64,5 +64,5 @@ class DrawConfig(FontConfig):
             y2 += self.v_overshoot
 
         hx = self.hx * (x2 - x1 - self.stroke) / self.width
-        hy = self.hy * (y2 - y1 - self.stroke) / self.x_height
+        hy = self.hy * (y2 - y1) / self.x_height
         return BodyBounds(x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy)
