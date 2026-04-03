@@ -1,4 +1,3 @@
-from config import FontConfig as fc
 from glyph import Glyph
 from shapes.corner import draw_corner
 from shapes.rect import draw_rect
@@ -7,57 +6,48 @@ from shapes.rect import draw_rect
 class LowercaseJGlyph(Glyph):
     name = "lowercase_j"
     unicode = "0x6A"
+    offset = 160
+    len_left = 320
+    len_cap = 280
+    corner_width = 160
+    hx = 160
+    hy = 160
+    dot_width = 30
+    tail_offset = 20  # Y-axis offset of the tail above the descender line
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 160
-        len_left = 320
-        len_cap = 280
-        corner_width = 160
-        hx = 160
-        hy = 160
-        dot_width = 30
+    def draw(self, pen, dc):
+        b = dc.body_bounds(offset=self.offset)
 
-        xmid = fc.width / 2 + offset
         # Stem
-        draw_rect(pen, xmid - stroke / 2, 0, xmid + stroke / 2, fc.x_height)
+        draw_rect(pen, b.xmid - dc.stroke / 2, 0, b.xmid + dc.stroke / 2, dc.x_height)
         # Left cap
-        draw_rect(
-            pen,
-            xmid - len_cap - stroke / 2,
-            fc.x_height - stroke,
-            xmid,
-            fc.x_height,
-        )
-        # Bottom left corner part
+        draw_rect(pen, b.xmid - self.len_cap - dc.stroke / 2, dc.x_height - dc.stroke, b.xmid, dc.x_height)
+        # Corner curving down-left into the descender
         draw_corner(
             pen,
-            stroke,
-            xmid + stroke / 2,
+            dc.stroke,
+            b.xmid + dc.stroke / 2,
             0,
-            xmid - corner_width,
-            fc.descent + fc.tail_offset,
-            hx,
-            hy,
+            b.xmid - self.corner_width,
+            dc.descent + self.tail_offset,
+            self.hx,
+            self.hy,
             orientation="bottom-left",
         )
         # Extension after the corner to the left
-        if len_left > corner_width:
+        if self.len_left > self.corner_width:
             draw_rect(
                 pen,
-                xmid - len_left - stroke / 2,
-                fc.descent + fc.tail_offset,
-                xmid - corner_width,
-                fc.descent + fc.tail_offset + stroke,
+                b.xmid - self.len_left - dc.stroke / 2,
+                dc.descent + self.tail_offset,
+                b.xmid - self.corner_width,
+                dc.descent + self.tail_offset + dc.stroke,
             )
         # Accent dot
         draw_rect(
             pen,
-            xmid - dot_width - stroke / 2,
-            fc.accent - dot_width / 2 - stroke / 2,
-            xmid + stroke / 2,
-            fc.accent + stroke / 2 + dot_width / 2,
+            b.xmid - self.dot_width - dc.stroke / 2,
+            dc.accent - self.dot_width / 2 - dc.stroke / 2,
+            b.xmid + dc.stroke / 2,
+            dc.accent + dc.stroke / 2 + self.dot_width / 2,
         )

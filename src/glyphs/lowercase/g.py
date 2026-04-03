@@ -8,9 +8,6 @@ class LowercaseGGlyph(Glyph):
     name = "lowercase_g"
     unicode = "0x67"
     offset = 15
-    corner_width = 220
-    corner_hx = 100
-    corner_hy = 200
     tail_offset = 20  # Y-axis offset of the tail above the descender line
 
     def draw(self, pen, dc):

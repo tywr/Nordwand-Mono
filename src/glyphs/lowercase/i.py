@@ -1,4 +1,3 @@
-from config import FontConfig as fc
 from glyph import Glyph
 from shapes.rect import draw_rect
 
@@ -6,38 +5,38 @@ from shapes.rect import draw_rect
 class LowercaseIGlyph(Glyph):
     name = "lowercase_i"
     unicode = "0x69"
+    offset = 40
+    rl_ratio = 0.45
+    dot_width = 30
 
-    def draw(
-        self,
-        pen,
-        stroke: int,
-    ):
-        offset = 40
-        len_left = 200
-        len_right = 200
-        dot_width = 30
-        len_cap = 180
+    def draw(self, pen, dc):
+        b = dc.body_bounds(offset=self.offset)
+        right_len = b.width * self.rl_ratio - dc.stroke / 2
+        left_len = b.width * (1 - self.rl_ratio) - dc.stroke / 2
 
-        xmid = fc.width / 2 + offset
         # Stem
-        draw_rect(pen, xmid - stroke / 2, 0, xmid + stroke / 2, fc.x_height)
+        draw_rect(pen, b.xmid - dc.stroke / 2, 0, b.xmid + dc.stroke / 2, dc.x_height)
         # Footer
         draw_rect(
-            pen, xmid - len_left - stroke / 2, 0, xmid + len_right + stroke / 2, stroke
+            pen,
+            b.xmid - left_len - dc.stroke / 2,
+            0,
+            b.xmid + right_len + dc.stroke / 2,
+            dc.stroke,
         )
         # Left cap
         draw_rect(
             pen,
-            xmid - len_cap - stroke / 2,
-            fc.x_height - stroke,
-            xmid,
-            fc.x_height,
+            b.xmid - left_len - dc.stroke / 2,
+            dc.x_height - dc.stroke,
+            b.xmid,
+            dc.x_height,
         )
         # Accent dot
         draw_rect(
             pen,
-            xmid - dot_width - stroke / 2,
-            fc.accent - dot_width / 2 - stroke / 2,
-            xmid + stroke / 2,
-            fc.accent + stroke / 2 + dot_width / 2,
+            b.xmid - self.dot_width - dc.stroke / 2,
+            dc.accent - self.dot_width / 2 - dc.stroke / 2,
+            b.xmid + dc.stroke / 2,
+            dc.accent + dc.stroke / 2 + self.dot_width / 2,
         )

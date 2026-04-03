@@ -10,17 +10,16 @@ class LowercaseAGlyph(Glyph):
     unicode = "0x61"
     offset = 0
     loop_ratio = 0.6
+    rx = 0.8
 
     def draw(self, pen, dc):
-        loop_ratio = 0.6
-
         b = dc.body_bounds(
             offset=self.offset,
             overshoot_bottom=True,
             overshoot_left=True,
         )
         # Add dampening on hx to keep ratio with the dent
-        hx, hy = dc.hx * 0.8, dc.hy * self.loop_ratio
+        hx, hy = dc.hx * self.rx, dc.hy * self.loop_ratio
 
         # Lower half half of the bowl
         draw_superellipse_arch(
