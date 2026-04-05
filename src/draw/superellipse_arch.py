@@ -1,8 +1,8 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 
-from shapes.rect import draw_rect
 from shapes.superellipse import Superellipse
+from draw.rect import draw_rect
 
 
 def draw_superellipse_arch(
@@ -79,7 +79,7 @@ def draw_superellipse_arch(
 
         # Cut the part after x2-offset
         cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), x2 - offset, y1, x2 + 10, y2)
+        draw_rect(cut_glyph.getPen(), x2 - offset_x, y1, x2 + 10, y2)
         result_2 = result_1.difference(BooleanGlyph(cut_glyph))
 
         result_2.draw(pen)
@@ -89,6 +89,8 @@ def draw_superellipse_arch(
         result.draw(pen)
 
     return {
+        "offset_x": offset_x,
+        "offset_y": offset_y,
         "outer": outer_se,
         "inner": inner_se,
     }

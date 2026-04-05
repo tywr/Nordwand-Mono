@@ -1,7 +1,7 @@
 from math import tan
 from glyphs import Glyph
-from shapes.rect import draw_rect
-from shapes.parallelogramm import draw_parallelogramm
+from draw.rect import draw_rect
+from draw.parallelogramm import draw_parallelogramm
 
 
 class LowercaseKGlyph(Glyph):

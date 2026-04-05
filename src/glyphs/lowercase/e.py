@@ -1,7 +1,7 @@
 from glyphs import Glyph
-from shapes.superellipse_loop import draw_superellipse_loop
-from shapes.corner import draw_corner
-from shapes.rect import draw_rect
+from draw.superellipse_loop import draw_superellipse_loop
+from draw.corner import draw_corner
+from draw.rect import draw_rect
 
 
 class LowercaseEGlyph(Glyph):
@@ -21,7 +21,16 @@ class LowercaseEGlyph(Glyph):
 
         # Half-top of a superellipse
         draw_superellipse_loop(
-            pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, b.y2, dc.hx, dc.hy, cut="bottom"
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x1,
+            b.y1,
+            b.x2,
+            b.y2,
+            dc.hx,
+            dc.hy,
+            cut="bottom",
         )
         # Corner from mid-left to bottom
         draw_corner(

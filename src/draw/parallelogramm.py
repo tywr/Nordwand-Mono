@@ -1,5 +1,5 @@
 from math import sqrt, atan2, sin, cos
-from shapes.polygon import draw_polygon
+from draw.polygon import draw_polygon
 
 
 def _solve_parallelogram_stroke(

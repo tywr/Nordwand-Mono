@@ -1,8 +1,8 @@
 from config import FontConfig as fc
 from glyphs import Glyph
 from draw.superellipse_arch import draw_superellipse_arch
-from shapes.corner import draw_corner
-from shapes.rect import draw_rect
+from draw.corner import draw_corner
+from draw.rect import draw_rect
 
 
 class LowercaseAGlyph(Glyph):

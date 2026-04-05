@@ -1,6 +1,6 @@
 from glyphs import Glyph
-from shapes.corner import draw_corner
-from shapes.rect import draw_rect
+from draw.corner import draw_corner
+from draw.rect import draw_rect
 
 
 class LowercaseJGlyph(Glyph):
@@ -10,7 +10,7 @@ class LowercaseJGlyph(Glyph):
     dot_width = 30
     tail_offset = 20
     width_ratio = 0.7
-    ud_ratio = 0.9
+    updown_ratio = 0.9
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
@@ -19,7 +19,7 @@ class LowercaseJGlyph(Glyph):
         # Left cap
         draw_rect(
             pen,
-            b.x1 + (1 - self.ud_ratio) * b.width,
+            b.x1 + (1 - self.updown_ratio) * b.width,
             dc.x_height - dc.stroke_y,
             b.x2,
             dc.x_height,

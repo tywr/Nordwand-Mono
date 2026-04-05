@@ -1,12 +1,12 @@
 from glyphs import Glyph
-from shapes.rect import draw_rect
+from draw.rect import draw_rect
 
 
 class LowercaseIGlyph(Glyph):
     name = "lowercase_i"
     unicode = "0x69"
-    offset = 40
-    rl_ratio = 0.45
+    offset = 30
+    rl_ratio = 0.5
     dot_width = 30
 
     def draw(self, pen, dc):

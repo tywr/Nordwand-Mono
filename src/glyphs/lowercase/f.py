@@ -1,6 +1,6 @@
 from glyphs import Glyph
-from shapes.corner import draw_corner
-from shapes.rect import draw_rect
+from draw.corner import draw_corner
+from draw.rect import draw_rect
 
 
 class LowercaseFGlyph(Glyph):
