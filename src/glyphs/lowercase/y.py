@@ -1,6 +1,6 @@
 from math import tan
 from glyphs import Glyph
-from shapes.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm
 
 
 class LowercaseYGlyph(Glyph):

@@ -1,6 +1,6 @@
 from glyphs import Glyph
-from shapes.corner import draw_corner
-from shapes.rect import draw_rect
+from draw.corner import draw_corner
+from draw.rect import draw_rect
 
 
 class LowercaseTGlyph(Glyph):
@@ -39,11 +39,15 @@ class LowercaseTGlyph(Glyph):
             b.ymid,
             b.xmid + b.width / 2,
             0,
-            dc.hx,
-            dc.hy,
+            b.width / 2 + dc.stroke_x / 2,
+            b.height / 2,
             orientation="bottom-right",
         )
         # Footer extension from corner to right edge
         draw_rect(
-            pen, b.xmid + b.width / 2, 0, b.xmid + right_len + dc.stroke_x / 2, dc.stroke_y
+            pen,
+            b.xmid + b.width / 2,
+            0,
+            b.xmid + right_len + dc.stroke_x / 2,
+            dc.stroke_y,
         )

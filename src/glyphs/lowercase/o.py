@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from shapes.superellipse_loop import draw_superellipse_loop
+from draw.superellipse_loop import draw_superellipse_loop
 
 
 class LowercaseOGlyph(Glyph):
@@ -19,4 +19,6 @@ class LowercaseOGlyph(Glyph):
             overshoot_left=True,
             overshoot_right=True,
         )
-        draw_superellipse_loop(pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, b.y2, dc.hx, dc.hy)
+        draw_superellipse_loop(
+            pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, b.y2, dc.hx, dc.hy
+        )

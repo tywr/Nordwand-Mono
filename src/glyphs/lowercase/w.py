@@ -1,7 +1,5 @@
-from math import atan, cos, sin
 from glyphs import Glyph
-from shapes.polygon import draw_polygon
-from shapes.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm
 
 
 class LowercaseWGlyph(Glyph):

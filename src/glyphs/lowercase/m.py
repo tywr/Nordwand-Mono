@@ -1,6 +1,6 @@
 from glyphs import Glyph
-from shapes.superellipse_arch import draw_superellipse_arch
-from shapes.rect import draw_rect
+from draw.superellipse_arch import draw_superellipse_arch
+from draw.rect import draw_rect
 
 
 class LowercaseMGlyph(Glyph):
@@ -8,8 +8,8 @@ class LowercaseMGlyph(Glyph):
     unicode = "0x6D"
     offset = 0
     width_ratio = 1.4
-    rx = 0.7
-    mid_y = 200  # Bottom of the middle stem extension
+    mid_y = 200
+    taper = 0.25**2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -19,47 +19,55 @@ class LowercaseMGlyph(Glyph):
             width_ratio=self.width_ratio,
         )
 
-        # Left arch (x1 to xmid) and store offset
+        # Left arch (x1 to xmid) and store offset_x
+
+        mid_offset = ((1 + self.taper) * dc.stroke_x - dc.gap) / 2
         arch_params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
             b.y1,
-            b.xmid + dc.stroke_x / 2,
+            b.xmid + mid_offset,
             b.y2,
-            dc.hx * self.rx,
+            dc.hx,
             dc.hy,
-            dent=dc.dent + dc.v_overshoot,
+            taper=self.taper,
             side="left",
             cut="m_junction",
         )
-        offset = arch_params["offset"]
+
         # Right arch (xmid to x2)
         draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
-            b.xmid - dc.stroke_x / 2 - offset + dc.gap,
+            b.xmid - mid_offset,
             b.y1,
             b.x2,
             b.y2,
-            dc.hx * self.rx,
+            dc.hx,
             dc.hy,
-            dent=dc.dent + dc.v_overshoot,
+            taper=self.taper,
             side="left",
             cut="bottom",
         )
         # Left foot
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x - dc.gap, dc.x_height)
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.x_height - dc.dent)
+
+        # Compute the intersection and fill the gap
+        (_, y1), (_, y2) = arch_params["outer"].intersection_x(x=b.x1 + dc.stroke_x)
+        y1, y2 = min(y1, y2), max(y1, y2)
+        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, y2)
+
         # Right foot — reaches up to the arch midpoint
         draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, b.ymid)
+
         # Middle stem extension
         draw_rect(
             pen,
-            b.xmid - dc.stroke_x / 2,
+            b.xmid - (1 - self.taper) * dc.stroke_x / 2 - dc.gap / 2,
             self.mid_y,
-            b.xmid + dc.stroke_x / 2 - offset + dc.gap,
-            dc.x_height - dc.dent,
+            b.xmid + (1 - self.taper) * dc.stroke_x / 2 + dc.gap / 2,
+            y2,
         )

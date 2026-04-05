@@ -1,7 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
-from shapes.superellipse_arch import draw_superellipse_arch
-from shapes.superellipse_loop import draw_superellipse_loop
-from shapes.rect import draw_rect
+from draw.superellipse_arch import draw_superellipse_arch
+from draw.rect import draw_rect
 from utils.intersection import intersection_superellipses
 
 
@@ -18,6 +17,8 @@ class UppercaseBGlyph(UppercaseGlyph):
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
+        hx, hy = dc.hx, dc.hy * 0.5 * dc.ascent / dc.x_height
+
         lower_x1 = b.x1
         lower_x2 = b.x2
         lower_width = lower_x2 - lower_x1
@@ -38,9 +39,9 @@ class UppercaseBGlyph(UppercaseGlyph):
             b.ymid - dc.stroke_y / 2,
             upper_x2,
             b.y2,
-            dc.hx * self.width_ratio,
-            dc.hy,
-            offset=0.75 * dc.stroke_y,
+            hx,
+            hy,
+            taper=0.75,
             side="bottom",
             cut="left",
         )
@@ -53,9 +54,9 @@ class UppercaseBGlyph(UppercaseGlyph):
             0,
             lower_x2,
             b.ymid + dc.stroke_y / 2,
-            dc.hx * self.width_ratio,
-            dc.hy,
-            offset=0.75 * dc.stroke_y,
+            hx,
+            hy,
+            taper=0.75,
             side="top",
             cut="left",
         )

@@ -10,7 +10,6 @@ class LowercaseAGlyph(Glyph):
     unicode = "0x61"
     offset = 0
     loop_ratio = 0.6
-    rx = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -18,7 +17,7 @@ class LowercaseAGlyph(Glyph):
             overshoot_bottom=True,
             overshoot_left=True,
         )
-        hx, hy = dc.hx * self.rx, dc.hy * self.loop_ratio
+        hx, hy = dc.hx, dc.hy * self.loop_ratio
 
         # Lower half half of the bowl
         arch_params = draw_superellipse_arch(

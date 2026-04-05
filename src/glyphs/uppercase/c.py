@@ -1,8 +1,8 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
-from shapes.superellipse_loop import draw_superellipse_loop
-from shapes.rect import draw_rect
+from draw.superellipse_loop import draw_superellipse_loop
+from draw.rect import draw_rect
 
 
 class UppercaseCGlyph(UppercaseGlyph):
@@ -22,6 +22,7 @@ class UppercaseCGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
         )
         opening = self.opening * dc.ascent / dc.x_height
+        hx, hy = dc.hx * self.width_ratio, dc.hy * dc.ascent / dc.x_height
 
         loop_glyph = ufoLib2.objects.Glyph()
         draw_superellipse_loop(
@@ -32,8 +33,8 @@ class UppercaseCGlyph(UppercaseGlyph):
             b.y1,
             b.x2,
             b.y2,
-            dc.hx * self.width_ratio,
-            dc.hy,
+            hx,
+            hy,
         )
 
         cut_glyph = ufoLib2.objects.Glyph()

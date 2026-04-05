@@ -1,6 +1,6 @@
 from glyphs import Glyph
-from shapes.superellipse_loop import draw_superellipse_loop
-from shapes.cross_curve import draw_cross_curve
+from draw.superellipse_loop import draw_superellipse_loop
+from draw.cross_curve import draw_cross_curve
 
 
 class LowercaseSGlyph(Glyph):
@@ -8,8 +8,6 @@ class LowercaseSGlyph(Glyph):
     unicode = "0x73"
     offset = 0
     loop_ratio = 0.6  # Controls the height of each half-loop
-    rx = 0.8  # Horizontal curve dampening (dc.hx * rx)
-    rm = 0.75
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -19,7 +17,7 @@ class LowercaseSGlyph(Glyph):
             overshoot_left=True,
             overshoot_right=True,
         )
-        hx, hy = dc.hx * self.rx, dc.hy * self.loop_ratio
+        hx, hy = dc.hx, dc.hy * self.loop_ratio
 
         # Height of each half-loop from its respective baseline
         loop_len = b.y2 * self.loop_ratio
@@ -27,7 +25,9 @@ class LowercaseSGlyph(Glyph):
         ym2 = b.y2 - loop_len + dc.stroke_y / 2  # Bottom of the top half-loop
 
         # Bottom half-loop (cut at top)
-        draw_superellipse_loop(pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, ym1, hx, hy, cut="top")
+        draw_superellipse_loop(
+            pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, ym1, hx, hy, cut="top"
+        )
         # Top half-loop (cut at bottom)
         draw_superellipse_loop(
             pen, dc.stroke_x, dc.stroke_y, b.x1, ym2, b.x2, b.y2, hx, hy, cut="bottom"
@@ -41,7 +41,7 @@ class LowercaseSGlyph(Glyph):
             (b.y1 + ym1) / 2,
             b.x2,
             (b.y2 + ym2) / 2,
-            self.rm * hx,
-            self.rm * hy,
+            dc.hx,
+            (1 - self.loop_ratio) * dc.hy,
             invert=True,
         )

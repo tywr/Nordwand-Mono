@@ -1,5 +1,5 @@
 from glyphs.uppercase import UppercaseGlyph
-from shapes.superellipse_loop import draw_superellipse_loop
+from draw.superellipse_loop import draw_superellipse_loop
 
 
 class UppercaseOGlyph(UppercaseGlyph):
@@ -17,6 +17,7 @@ class UppercaseOGlyph(UppercaseGlyph):
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
+        hx, hy = dc.hx * self.width_ratio, dc.hy * dc.ascent / dc.x_height
         draw_superellipse_loop(
             pen,
             dc.stroke_x,
@@ -25,6 +26,6 @@ class UppercaseOGlyph(UppercaseGlyph):
             b.y1,
             b.x2,
             b.y2,
-            dc.hx * self.width_ratio,
-            dc.hy,
+            hx,
+            hy,
         )

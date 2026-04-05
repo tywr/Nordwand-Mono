@@ -1,6 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
-from shapes.corner import draw_corner
-from shapes.rect import draw_rect
+from draw.corner import draw_corner
+from draw.rect import draw_rect
 
 
 class UppercaseDGlyph(UppercaseGlyph):
@@ -17,6 +17,7 @@ class UppercaseDGlyph(UppercaseGlyph):
         )
         arch_x1 = b.x1
         cut_x = (arch_x1 + b.x2) / 2
+        hx, hy = dc.hx * self.width_ratio, dc.hy * 0.5 * dc.ascent / dc.x_height
 
         # Left stem
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
@@ -34,8 +35,8 @@ class UppercaseDGlyph(UppercaseGlyph):
             0.5 * dc.ascent,
             cut_x,
             b.y2,
-            dc.hx * self.width_ratio,
-            dc.hy,
+            hx,
+            hy,
             orientation="top-left",
         )
         draw_corner(
@@ -46,7 +47,7 @@ class UppercaseDGlyph(UppercaseGlyph):
             0.5 * dc.ascent,
             cut_x,
             b.y1,
-            dc.hx * self.width_ratio,
-            dc.hy,
+            hx,
+            hy,
             orientation="bottom-left",
         )

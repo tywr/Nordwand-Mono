@@ -1,8 +1,8 @@
 from glyphs import Glyph
 
-# from shapes.superellipse_arch import draw_superellipse_arch
+# from draw.superellipse_arch import draw_superellipse_arch
 from draw.superellipse_arch import draw_superellipse_arch
-from shapes.rect import draw_rect
+from draw.rect import draw_rect
 
 
 class LowercasePGlyph(Glyph):

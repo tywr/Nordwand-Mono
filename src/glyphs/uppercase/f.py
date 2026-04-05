@@ -1,5 +1,5 @@
 from glyphs.uppercase import UppercaseGlyph
-from shapes.rect import draw_rect
+from draw.rect import draw_rect
 
 
 class UppercaseFGlyph(UppercaseGlyph):

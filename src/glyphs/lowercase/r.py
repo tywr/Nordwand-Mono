@@ -1,6 +1,6 @@
 from glyphs import Glyph
-from shapes.superellipse_arch import draw_superellipse_arch
-from shapes.rect import draw_rect
+from draw.superellipse_arch import draw_superellipse_arch
+from draw.rect import draw_rect
 
 
 class LowercaseRGlyph(Glyph):
@@ -8,14 +8,13 @@ class LowercaseRGlyph(Glyph):
     unicode = "0x72"
     offset = 20
     loop_ratio = 0.6
-    rx = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, overshoot_top=True)
-        hx, hy = dc.hx * self.rx, dc.hy * self.loop_ratio
+        hx, hy = dc.hx, dc.hy * self.loop_ratio
 
         # Top arch, cut at the bottom (only upper half drawn)
-        draw_superellipse_arch(
+        arch_params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -25,10 +24,15 @@ class LowercaseRGlyph(Glyph):
             b.y2,
             hx,
             hy,
-            dent=dc.dent + dc.v_overshoot,
+            taper=dc.taper,
             side="left",
             cut="bottom",
         )
+
+        # Compute the intersection of the outer bowl with the stem
+        (_, y1), (_, y2) = arch_params["outer"].intersection_x(x=b.x1 + dc.stroke_x)
+        y1, y2 = min(y1, y2), max(y1, y2)
+
         # Left stem
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.x_height - dc.dent)
+        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, y2)
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x - dc.gap, dc.x_height)

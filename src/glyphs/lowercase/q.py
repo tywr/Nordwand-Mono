@@ -1,6 +1,6 @@
 from glyphs import Glyph
-from shapes.superellipse_arch import draw_superellipse_arch
-from shapes.rect import draw_rect
+from draw.superellipse_arch import draw_superellipse_arch
+from draw.rect import draw_rect
 
 
 class LowercaseQGlyph(Glyph):
@@ -17,7 +17,7 @@ class LowercaseQGlyph(Glyph):
         )
 
         # Bowl (open on the right, same as d)
-        draw_superellipse_arch(
+        arch_params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -27,9 +27,13 @@ class LowercaseQGlyph(Glyph):
             b.y2,
             dc.hx,
             dc.hy,
-            dent=dc.dent + dc.v_overshoot,
+            taper=dc.taper,
             side="right",
         )
+        # Compute the intersection of the outer bowl with the stem
+        (_, y1), (_, y2) = arch_params["outer"].intersection_x(x=b.x2 - dc.stroke_x)
+        y1, y2 = min(y1, y2), max(y1, y2)
+
         # Right descender stem
         draw_rect(pen, b.x2 - dc.stroke_x + dc.gap, dc.descent, b.x2, dc.x_height)
-        draw_rect(pen, b.x2 - dc.stroke_x, dc.dent, b.x2, dc.x_height - dc.dent)
+        draw_rect(pen, b.x2 - dc.stroke_x, y1, b.x2, y2)

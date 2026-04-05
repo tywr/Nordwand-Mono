@@ -1,7 +1,7 @@
 from math import cos
 from glyphs.uppercase import UppercaseGlyph
-from shapes.parallelogramm import draw_parallelogramm
-from shapes.rect import draw_rect
+from draw.parallelogramm import draw_parallelogramm
+from draw.rect import draw_rect
 
 
 class UppercaseAGlyph(UppercaseGlyph):

@@ -26,9 +26,9 @@ class DrawConfig(FontConfig):
     stroke_x: int = 90
     stroke_y: int = 70
     width: int = 340
-    hx: int = 180
-    hy: int = 180
-    taper: float = 0.5
+    hx: int = 200
+    hy: int = 200
+    taper: float = 0.25
     gap: int = 5
     v_overshoot: int = 10
     h_overshoot: int = 5
