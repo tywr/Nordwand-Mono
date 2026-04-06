@@ -6,7 +6,7 @@ class LowercaseVGlyph(Glyph):
     name = "lowercase_v"
     unicode = "0x76"
     offset = 0
-    width_ratio = 1.2
+    width_ratio = 1.15
     overlap = 0.3
 
     def draw(self, pen, dc):

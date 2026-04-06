@@ -7,10 +7,10 @@ from draw.parallelogramm import draw_parallelogramm
 class LowercaseKGlyph(Glyph):
     name = "lowercase_k"
     unicode = "0x6B"
-    offset = 10
+    offset = 28
     bowl_width = 320
     neck_len = 100
-    width_ratio = 1
+    width_ratio = 1.0
     branch_ratio = 0.75
 
     def draw(self, pen, dc):

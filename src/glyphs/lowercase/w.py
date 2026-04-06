@@ -38,8 +38,8 @@ class LowercaseWGlyph(Glyph):
         )
         draw_parallelogramm(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
+            self.inner_stroke_ratio * dc.stroke_x,
+            self.inner_stroke_ratio * dc.stroke_y,
             b.xmid + self.inner_angle_ratio * b.width - ov + delta,
             0,
             b.xmid - ov,
@@ -48,8 +48,8 @@ class LowercaseWGlyph(Glyph):
         )
         draw_parallelogramm(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
+            self.inner_stroke_ratio * dc.stroke_x,
+            self.inner_stroke_ratio * dc.stroke_y,
             b.xmid - self.inner_angle_ratio * b.width + ov - delta,
             0,
             b.xmid + ov,

@@ -12,7 +12,7 @@ def _solve_parallelogram_stroke(
     theta = atan2(h, w)
 
     for _ in range(max_iter):
-        s = sqrt((stroke_x * cos(theta)) ** 2 + (stroke_y * sin(theta)) ** 2)
+        s = sqrt((stroke_x * sin(theta)) ** 2 + (stroke_y * cos(theta)) ** 2)
 
         denom = h**2 - s**2
         if abs(denom) < 1e-12:
@@ -31,7 +31,7 @@ def _solve_parallelogram_stroke(
 
         theta = new_theta
 
-    s = sqrt((stroke_x * cos(theta)) ** 2 + (stroke_y * sin(theta)) ** 2)
+    s = sqrt((stroke_x * sin(theta)) ** 2 + (stroke_y * cos(theta)) ** 2)
     denom = h**2 - s**2
     delta = (s * (h * sqrt(w**2 + h**2 - s**2) - s * w)) / denom
 
