@@ -1,6 +1,7 @@
 from glyphs.numbers import NumberGlyph
 from draw.superellipse_loop import draw_superellipse_loop
 from draw.polygon import draw_polygon
+from draw.parallelogramm import draw_parallelogramm_vertical
 
 
 class ZeroGlyph(NumberGlyph):
@@ -31,12 +32,21 @@ class ZeroGlyph(NumberGlyph):
             b.hx,
             b.hy,
         )
-        draw_polygon(
+        # draw_polygon(
+        #     pen,
+        #     points=[
+        #         (b.x2 - dc.stroke_x, b.y2 - dc.stroke_y - self.slash * b.height),
+        #         (b.x2 - dc.stroke_x, b.y2 - dc.stroke_y),
+        #         (b.x1 + dc.stroke_x, b.y1 + dc.stroke_y + self.slash * b.height),
+        #         (b.x1 + dc.stroke_x, b.y1 + dc.stroke_y),
+        #     ],
+        # )
+        draw_parallelogramm_vertical(
             pen,
-            points=[
-                (b.x2 - dc.stroke_x, b.y2 - dc.stroke_y - self.slash * b.height),
-                (b.x2 - dc.stroke_x, b.y2 - dc.stroke_y),
-                (b.x1 + dc.stroke_x, b.y1 + dc.stroke_y + self.slash * b.height),
-                (b.x1 + dc.stroke_x, b.y1 + dc.stroke_y),
-            ],
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x1 + dc.stroke_x,
+            b.y1 + dc.stroke_y,
+            b.x2 - dc.stroke_x,
+            b.y2 - dc.stroke_y,
         )

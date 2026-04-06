@@ -71,3 +71,71 @@ def draw_parallelogramm(
         return theta, delta
     else:
         raise ValueError("Value should be either `top` or `bottom`")
+
+
+def _solve_parallelogram_stroke_vertical(
+    stroke_x, stroke_y, x1, y1, x2, y2, tol=1e-6, max_iter=100
+):
+    w = max(x2, x1) - min(x2, x1)
+    h = max(y2, y1) - min(y2, y1)
+
+    # Initial guess: angle of the bare diagonal
+    theta = atan2(w, h)
+
+    for _ in range(max_iter):
+        s = sqrt((stroke_y * sin(theta)) ** 2 + (stroke_x * cos(theta)) ** 2)
+
+        denom = w**2 - s**2
+        if abs(denom) < 1e-12:
+            break
+        inner = w**2 + h**2 - s**2
+        if inner < 0:
+            break
+
+        delta = (s * (w * sqrt(inner) - s * h)) / denom
+        new_theta = atan2(w, h - delta)
+
+        if abs(new_theta - theta) < tol:
+            theta = new_theta
+            break
+
+        theta = new_theta
+
+    s = sqrt((stroke_y * sin(theta)) ** 2 + (stroke_x * cos(theta)) ** 2)
+    denom = w**2 - s**2
+    delta = (s * (w * sqrt(w**2 + h**2 - s**2) - s * h)) / denom
+
+    return s, delta, theta
+
+
+def draw_parallelogramm_vertical(
+    pen, stroke_x, stroke_y, x1, y1, x2, y2, direction="top-right", no_draw=False
+):
+    """Parallelogram with vertical parallel sides and slanted top/bottom."""
+    s, delta, theta = _solve_parallelogram_stroke_vertical(
+        stroke_x, stroke_y, x1, y1, x2, y2
+    )
+    if no_draw:
+        return theta, delta
+    if direction == "top-right":
+        draw_polygon(
+            pen, points=[(x1, y1), (x2, y2 - delta), (x2, y2), (x1, y1 + delta)]
+        )
+        return theta, delta
+    elif direction == "bottom-right":
+        draw_polygon(
+            pen, points=[(x1, y1 + delta), (x1, y1), (x2, y2 - delta), (x2, y2)]
+        )
+        return theta, delta
+    elif direction == "top-left":
+        draw_polygon(
+            pen, points=[(x1, y1), (x2, y2 + delta), (x2, y2), (x1, y1 - delta)]
+        )
+        return theta, delta
+    elif direction == "bottom-left":
+        draw_polygon(
+            pen, points=[(x1, y1 - delta), (x1, y1), (x2, y2), (x2, y2 + delta)]
+        )
+        return theta, delta
+    else:
+        raise ValueError("Value should be either `top` or `bottom`")
