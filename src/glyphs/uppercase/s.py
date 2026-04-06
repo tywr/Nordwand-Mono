@@ -4,7 +4,7 @@ from draw.cross_curve import draw_cross_curve
 
 
 class UppercaseSGlyph(UppercaseGlyph):
-    name = "lowercase_s"
+    name = "uppercase_s"
     unicode = "0x53"
     offset = 0
     loop_ratio = 0.5  # Controls the height of each half-loop

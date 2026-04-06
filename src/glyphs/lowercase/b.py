@@ -7,7 +7,7 @@ from draw.rect import draw_rect
 class LowercaseBGlyph(Glyph):
     name = "lowercase_b"
     unicode = "0x62"
-    offset = 26
+    offset = 0
 
     def draw(
         self,

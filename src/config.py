@@ -7,14 +7,14 @@ class FontConfig:
     family_name: str = "Kassiopea"
 
     units_per_em: int = 1000
-    window_ascent: int = 800
+    window_ascent: int = 1000
     window_descent: int = -300
     window_width: int = 600
 
-    ascent: int = 750
+    ascent: int = 775
     descent: int = -200
     cap: int = 700
-    x_height: int = 520
+    x_height: int = 535
     accent: int = 710
 
     default_stroke = 90
@@ -24,8 +24,8 @@ class FontConfig:
 class DrawConfig(FontConfig):
     # Default parameters
     stroke_x: int = 90
-    stroke_y: int = 70
-    width: int = 340
+    stroke_y: int = 80
+    width: int = 330
     hx: int = 200
     hy: int = 200
     taper: float = 0.293

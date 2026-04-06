@@ -25,7 +25,7 @@ class LowercaseUGlyph(Glyph):
             arch_top,
             b.hx,
             b.hy,
-            taper=dc.taper_unh,
+            taper=dc.taper,
             side="right",
             cut="top",
         )

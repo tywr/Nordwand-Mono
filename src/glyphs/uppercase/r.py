@@ -17,8 +17,8 @@ class UppercaseRGlyph(UppercaseGlyph):
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
-        hx, hy = b.hx, b.hy * self.loop_ratio * dc.cap / dc.x_height
-        ymid = b.ymid - (self.loop_ratio * b.height / 4)
+        hx, hy = b.hx, b.hy * self.loop_ratio
+        ymid = b.y1 + (1 - self.loop_ratio) * b.height
 
         # Left stem
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.cap)

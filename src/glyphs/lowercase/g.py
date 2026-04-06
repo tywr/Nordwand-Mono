@@ -7,7 +7,7 @@ from draw.corner import draw_corner
 class LowercaseGGlyph(Glyph):
     name = "lowercase_g"
     unicode = "0x67"
-    offset = 15
+    offset = 0
     tail_offset = 20  # Y-axis offset of the tail above the descender line
 
     def draw(self, pen, dc):

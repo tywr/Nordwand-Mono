@@ -7,7 +7,7 @@ from draw.rect import draw_rect
 class LowercaseEGlyph(Glyph):
     name = "lowercase_e"
     unicode = "0x65"
-    offset = 15
+    offset = 0
     len_tail = 340
 
     def draw(self, pen, dc):

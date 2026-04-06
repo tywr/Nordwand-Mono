@@ -7,7 +7,6 @@ class LowercaseHGlyph(Glyph):
     name = "lowercase_h"
     unicode = "0x68"
     offset = 0
-    width_extra = 18  # Extra width beyond dc.width for the arch
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

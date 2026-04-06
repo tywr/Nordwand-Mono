@@ -6,7 +6,7 @@ from draw.rect import draw_rect
 class LowercaseDGlyph(Glyph):
     name = "lowercase_d"
     unicode = "0x64"
-    offset = -26
+    offset = 0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

@@ -6,11 +6,12 @@ from draw.rect import draw_rect
 class LowercaseFGlyph(Glyph):
     name = "lowercase_f"
     unicode = "0x66"
-    offset = -22
+    offset = -26
     rl_ratio = 0.6
+    width_ratio = 1.2
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(offset=self.offset, height="x_height")
+        b = dc.body_bounds(offset=self.offset, height="x_height", width_ratio=self.width_ratio)
         right_len = b.width * self.rl_ratio - dc.stroke_x / 2
         left_len = b.width * (1 - self.rl_ratio) - dc.stroke_x / 2
 
