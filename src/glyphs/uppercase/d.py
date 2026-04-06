@@ -11,18 +11,18 @@ class UppercaseDGlyph(UppercaseGlyph):
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
-            height="ascent",
+            height="cap",
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
         arch_x1 = b.x1
         cut_x = (arch_x1 + b.x2) / 2
-        hx, hy = dc.hx * self.width_ratio, dc.hy * 0.5 * dc.ascent / dc.x_height
+        hx, hy = dc.hx * self.width_ratio, dc.hy * 0.5 * dc.cap / dc.x_height
 
         # Left stem
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
+        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.cap)
         # Right flat portion
-        draw_rect(pen, b.x2 - dc.stroke_x, 0.5 * dc.ascent, b.x2, 0.5 * dc.ascent)
+        draw_rect(pen, b.x2 - dc.stroke_x, 0.5 * dc.cap, b.x2, 0.5 * dc.cap)
         # Connecting bars
         draw_rect(pen, b.x1, b.y2 - dc.stroke_y, cut_x, b.y2)
         draw_rect(pen, b.x1, 0, cut_x, dc.stroke_y)
@@ -32,7 +32,7 @@ class UppercaseDGlyph(UppercaseGlyph):
             dc.stroke_x,
             dc.stroke_y,
             b.x2,
-            0.5 * dc.ascent,
+            0.5 * dc.cap,
             cut_x,
             b.y2,
             hx,
@@ -44,7 +44,7 @@ class UppercaseDGlyph(UppercaseGlyph):
             dc.stroke_x,
             dc.stroke_y,
             b.x2,
-            0.5 * dc.ascent,
+            0.5 * dc.cap,
             cut_x,
             b.y1,
             hx,

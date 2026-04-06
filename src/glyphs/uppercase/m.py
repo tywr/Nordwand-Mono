@@ -8,14 +8,14 @@ class UppercaseLGlyph(UppercaseGlyph):
     unicode = "0x4D"
     offset = 0
     width_ratio = 1.2
-    overlap = 0.05
-    depth = 0.6
+    overlap = 0.4
+    depth = 0.75
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="ascent", width_ratio=self.width_ratio
+            offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
-        ov = self.overlap * b.width
+        ov = self.overlap * dc.stroke_x
         ymid = (1 - self.depth) * b.height
 
         # Vertical stems

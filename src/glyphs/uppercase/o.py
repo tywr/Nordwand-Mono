@@ -10,14 +10,14 @@ class UppercaseOGlyph(UppercaseGlyph):
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
-            height="ascent",
+            height="cap",
             overshoot_bottom=True,
             overshoot_top=True,
             overshoot_left=True,
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
-        hx, hy = dc.hx * self.width_ratio, dc.hy * dc.ascent / dc.x_height
+        hx, hy = dc.hx * self.width_ratio, dc.hy * dc.cap / dc.x_height
         draw_superellipse_loop(
             pen,
             dc.stroke_x,

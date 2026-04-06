@@ -12,7 +12,7 @@ class UppercaseJGlyph(UppercaseGlyph):
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="ascent", width_ratio=self.width_ratio
+            offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
         hx, hy = dc.hx * self.width_ratio, self.loop_ratio * dc.hy
 

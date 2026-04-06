@@ -13,12 +13,12 @@ class LowercaseKGlyph(UppercaseGlyph):
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, width_ratio=self.width_ratio, height="ascent"
+            offset=self.offset, width_ratio=self.width_ratio, height="cap"
         )
         x_branch = b.x1 + (1 - self.branch_ratio) * b.width
 
         # Left ascender stem
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
+        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.cap)
 
         # Upper branch
         draw_parallelogramm(

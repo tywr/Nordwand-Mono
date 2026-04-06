@@ -9,7 +9,7 @@ class UppercaseTGlyph(UppercaseGlyph):
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="ascent", width_ratio=self.width_ratio
+            offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
 
         # Vertical stem (centered)

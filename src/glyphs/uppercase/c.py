@@ -9,20 +9,20 @@ class UppercaseCGlyph(UppercaseGlyph):
     name = "uppercase_c"
     unicode = "0x43"
     offset = 0
-    opening = 280  # Opening height at x_height, scaled to ascent in draw
+    opening = 280  # Opening height at x_height, scaled to cap in draw
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
-            height="ascent",
+            height="cap",
             overshoot_bottom=True,
             overshoot_top=True,
             overshoot_left=True,
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
-        opening = self.opening * dc.ascent / dc.x_height
-        hx, hy = dc.hx * self.width_ratio, dc.hy * dc.ascent / dc.x_height
+        opening = self.opening * dc.cap / dc.x_height
+        hx, hy = dc.hx * self.width_ratio, dc.hy * dc.cap / dc.x_height
 
         loop_glyph = ufoLib2.objects.Glyph()
         draw_superellipse_loop(

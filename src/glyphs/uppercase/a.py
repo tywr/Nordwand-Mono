@@ -14,7 +14,7 @@ class UppercaseAGlyph(UppercaseGlyph):
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="ascent", width_ratio=self.width_ratio
+            offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
         half_width = b.width / 2 - dc.stroke_x / 2
         ov = self.overlap * b.width

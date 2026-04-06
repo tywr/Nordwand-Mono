@@ -6,16 +6,16 @@ class LowercaseWGlyph(Glyph):
     name = "lowercase_w"
     unicode = "0x77"
     offset = 0
-    overlap = 0.06
-    width_ratio = 1.4
-    inner_stroke_ratio = 0.9
+    overlap = 0.3
+    width_ratio = 1.25
+    inner_stroke_ratio = 0.8
     inner_height_ratio = 0.7
-    inner_angle_ratio = 0.25
+    inner_angle_ratio = 0.18
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
+        ov = self.overlap * dc.stroke_x
 
-        ov = self.overlap * b.width
         inner_height = self.inner_height_ratio * b.height
         theta, delta = draw_parallelogramm(
             pen,

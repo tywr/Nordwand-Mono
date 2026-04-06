@@ -7,14 +7,14 @@ class FontConfig:
     family_name: str = "Kassiopea"
 
     units_per_em: int = 1000
-    window_ascent: int = 1020
+    window_ascent: int = 800
     window_descent: int = -300
     window_width: int = 600
 
-    ascent: int = 730
+    ascent: int = 750
     descent: int = -200
-    cap: int = 730
-    x_height: int = 550
+    cap: int = 700
+    x_height: int = 520
     accent: int = 710
 
     default_stroke = 90
@@ -54,8 +54,8 @@ class DrawConfig(FontConfig):
         `width` of a of height `ascent`.
         """
         width = self.width * width_ratio
-        if height not in ["x_height", "ascent"]:
-            raise ValueError(f"Value {height} should be `x_height` or `ascent`")
+        if height not in ["x_height", "ascent", "cap"]:
+            raise ValueError(f"Value {height} should be `x_height`, `ascent` or `cap`")
         x1 = self.window_width / 2 - width / 2 - self.stroke_x / 2 + offset
         y1 = 0
         x2 = self.window_width / 2 + width / 2 + self.stroke_x / 2 + offset

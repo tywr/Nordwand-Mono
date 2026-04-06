@@ -13,11 +13,11 @@ class UppercaseBGlyph(UppercaseGlyph):
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
-            height="ascent",
+            height="cap",
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
-        hx, hy = dc.hx, dc.hy * 0.5 * dc.ascent / dc.x_height
+        hx, hy = dc.hx, dc.hy * 0.5 * dc.cap / dc.x_height
 
         lower_x1 = b.x1
         lower_x2 = b.x2
@@ -28,7 +28,7 @@ class UppercaseBGlyph(UppercaseGlyph):
         upper_x2 = lower_x2 - delta / 2
 
         # Left stem
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
+        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.cap)
 
         # Upper loop (narrower, displaced left)
         arch1 = draw_superellipse_arch(
