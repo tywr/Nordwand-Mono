@@ -22,7 +22,6 @@ class UppercaseCGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
         )
         opening = self.opening * dc.cap / dc.x_height
-        hx, hy = dc.hx * self.width_ratio, dc.hy * dc.cap / dc.x_height
 
         loop_glyph = ufoLib2.objects.Glyph()
         draw_superellipse_loop(
@@ -33,8 +32,8 @@ class UppercaseCGlyph(UppercaseGlyph):
             b.y1,
             b.x2,
             b.y2,
-            hx,
-            hy,
+            b.hx,
+            b.hy,
         )
 
         cut_glyph = ufoLib2.objects.Glyph()

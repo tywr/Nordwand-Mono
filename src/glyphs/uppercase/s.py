@@ -1,13 +1,13 @@
-from glyphs import Glyph
+from glyphs.uppercase import UppercaseGlyph
 from draw.superellipse_loop import draw_superellipse_loop
 from draw.cross_curve import draw_cross_curve
 
 
-class LowercaseSGlyph(Glyph):
+class UppercaseSGlyph(UppercaseGlyph):
     name = "lowercase_s"
-    unicode = "0x73"
+    unicode = "0x53"
     offset = 0
-    loop_ratio = 0.6  # Controls the height of each half-loop
+    loop_ratio = 0.5  # Controls the height of each half-loop
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -16,6 +16,7 @@ class LowercaseSGlyph(Glyph):
             overshoot_top=True,
             overshoot_left=True,
             overshoot_right=True,
+            height="cap",
         )
         hx, hy = b.hx, b.hy * self.loop_ratio
 
@@ -42,6 +43,6 @@ class LowercaseSGlyph(Glyph):
             b.x2,
             (b.y2 + ym2) / 2,
             b.hx,
-            (1 - self.loop_ratio) * b.hy,
+            b.hy / 2,
             invert=True,
         )
