@@ -1,14 +1,14 @@
 from glyphs.numbers import NumberGlyph
 from draw.superellipse_arch import draw_superellipse_arch
-from draw.cross_curve import draw_cross_curve
 
 
 class EightGlyph(NumberGlyph):
     name = "eight"
     unicode = "0x38"
     offset = 0
-    height_ratio = 0.52
+    height_ratio = 0.54
     loop_width_ratio = 0.92
+    width_ratio = 1.1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

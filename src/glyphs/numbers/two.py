@@ -10,6 +10,7 @@ class TwoGlyph(NumberGlyph):
     name = "two"
     unicode = "0x32"
     offset = 0
+    width_ratio = 1.0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

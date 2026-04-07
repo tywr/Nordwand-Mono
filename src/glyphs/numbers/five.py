@@ -10,7 +10,7 @@ class FiveGlyph(NumberGlyph):
     name = "five"
     unicode = "0x35"
     offset = 0
-    mid_ratio_y = 0.52
+    mid_ratio_y = 0.5
     mid_ratio_x = 0.35
 
     def draw(self, pen, dc):
@@ -25,7 +25,7 @@ class FiveGlyph(NumberGlyph):
         xmid = b.x1 + self.mid_ratio_x * b.width
 
         # Top bar
-        draw_rect(pen, b.x1, b.y2 - dc.stroke_y, b.x2, b.y2)
+        draw_rect(pen, b.x1, b.y2 - dc.stroke_y, b.x2 - dc.stroke_x / 2, b.y2)
 
         # Bottom loop
         loop_width = (b.x2 - xmid) * 2

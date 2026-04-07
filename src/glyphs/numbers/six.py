@@ -10,6 +10,7 @@ class SixGlyph(NumberGlyph):
     unicode = "0x36"
     offset = 0
     vertical_ratio = 0.6
+    width_ratio = 1.06
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

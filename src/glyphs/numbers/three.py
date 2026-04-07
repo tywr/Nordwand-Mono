@@ -10,10 +10,11 @@ from draw.superellipse_loop import draw_superellipse_loop
 class ThreeGlyph(NumberGlyph):
     name = "three"
     unicode = "0x33"
-    offset = 0
-    mid_ratio_y = 0.52
+    offset = -18
+    mid_ratio_y = 0.5
     mid_ratio_x = 0.35
     junction_ratio = 0.25
+    width_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -28,7 +29,7 @@ class ThreeGlyph(NumberGlyph):
         xmid = b.x1 + self.mid_ratio_x * b.width
 
         # Top bar
-        draw_rect(pen, b.x1, b.y2 - dc.stroke_y, b.x2, b.y2)
+        draw_rect(pen, b.x1, b.y2 - dc.stroke_y, b.x2 - dc.h_overshoot, b.y2)
 
 
         loop_width = (b.x2 - xmid) * 2
@@ -79,6 +80,6 @@ class ThreeGlyph(NumberGlyph):
             dc.stroke_y,
             xj,
             yj,
-            b.x2,
+            b.x2 - dc.h_overshoot,
             b.y2,
         )
