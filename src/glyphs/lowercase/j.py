@@ -7,7 +7,7 @@ class LowercaseJGlyph(Glyph):
     name = "lowercase_j"
     unicode = "0x6A"
     offset = -50
-    dot_width = 25
+    dot_width = 36
     tail_offset = 0
     width_ratio = 0.75
     updown_ratio = 0.9

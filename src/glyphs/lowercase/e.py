@@ -8,7 +8,6 @@ class LowercaseEGlyph(Glyph):
     name = "lowercase_e"
     unicode = "0x65"
     offset = 0
-    len_tail = 340
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -32,6 +31,7 @@ class LowercaseEGlyph(Glyph):
             b.hy,
             cut="bottom",
         )
+
         # Corner from mid-left to bottom
         draw_corner(
             pen,
@@ -46,7 +46,8 @@ class LowercaseEGlyph(Glyph):
             orientation="bottom-right",
         )
         # Extension
-        draw_rect(pen, b.xmid, 0, b.x1 + self.len_tail + dc.stroke_x / 2, dc.stroke_y)
+        draw_rect(pen, b.xmid, 0, b.x2 - dc.stroke_x / 2, dc.stroke_y)
+
         # Mid-bar
         draw_rect(
             pen,
