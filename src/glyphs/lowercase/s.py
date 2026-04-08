@@ -42,6 +42,6 @@ class LowercaseSGlyph(Glyph):
             b.x2,
             (b.y2 + ym2) / 2,
             b.hx,
-            (1 - self.loop_ratio) * b.hy,
+            self.loop_ratio * b.hy,
             invert=True,
         )

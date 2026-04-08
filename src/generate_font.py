@@ -26,6 +26,7 @@ def discover_glyphs():
             pkg.__path__, pkg.__name__ + ".", onerror=on_error
         ):
             importlib.import_module(modname)
+
     def all_subclasses(cls):
         result = []
         for sub in cls.__subclasses__():
@@ -56,7 +57,13 @@ def record_glyph(glyph, **kwargs):
     return pen.getCharString()
 
 
-def build_font(output_path=f"{fc.family_name}.otf"):
+def build_font(output_path=None, bold=False):
+    style_name = "Bold" if bold else "Regular"
+    if output_path is None:
+        output_path = f"{fc.family_name}-{style_name}.otf"
+
+    dc = DrawConfig.bold() if bold else DrawConfig()
+
     all_glyphs = discover_glyphs()
 
     cmap = {0x20: "space"}
@@ -74,7 +81,7 @@ def build_font(output_path=f"{fc.family_name}.otf"):
         "space": space_pen.getCharString(),
     }
     for g in all_glyphs:
-        charstrings[g.name] = record_glyph(g, dc=DrawConfig())
+        charstrings[g.name] = record_glyph(g, dc=dc)
 
     glyph_names = list(charstrings.keys())
 
@@ -82,8 +89,8 @@ def build_font(output_path=f"{fc.family_name}.otf"):
     fb.setupGlyphOrder(glyph_names)
     fb.setupCharacterMap(cmap)
     fb.setupCFF(
-        psName=f"{fc.family_name}-Regular",
-        fontInfo={"FullName": f"{fc.family_name} Regular"},
+        psName=f"{fc.family_name}-{style_name}",
+        fontInfo={"FullName": f"{fc.family_name} {style_name}"},
         charStringsDict=charstrings,
         privateDict={},
     )
@@ -92,13 +99,18 @@ def build_font(output_path=f"{fc.family_name}.otf"):
     fb.setupNameTable(
         {
             "familyName": fc.family_name,
-            "styleName": "Regular",
-            "uniqueFontIdentifier": f"{fc.family_name}-Regular",
-            "fullName": f"{fc.family_name} Regular",
+            "styleName": style_name,
+            "uniqueFontIdentifier": f"{fc.family_name}-{style_name}",
+            "fullName": f"{fc.family_name} {style_name}",
             "version": "Version 1.000",
-            "psName": f"{fc.family_name}-Regular",
+            "psName": f"{fc.family_name}-{style_name}",
         }
     )
+
+    # fsSelection / macStyle flags for bold
+    fs_selection = 0x0020 if bold else 0x0040  # BOLD or REGULAR
+    mac_style = 0x0001 if bold else 0x0000
+
     fb.setupOS2(
         sTypoAscender=fc.ascent,
         sTypoDescender=fc.descent,
@@ -108,9 +120,10 @@ def build_font(output_path=f"{fc.family_name}.otf"):
         sxHeight=fc.x_height,
         sCapHeight=fc.cap,
         fsType=0,
+        fsSelection=fs_selection,
     )
     fb.setupPost(isFixedPitch=1)
-    fb.setupHead(unitsPerEm=fc.units_per_em)
+    fb.setupHead(unitsPerEm=fc.units_per_em, macStyle=mac_style)
 
     # Dummy DSIG so macOS validators don't complain
     from fontTools.ttLib import newTable
@@ -127,4 +140,5 @@ def build_font(output_path=f"{fc.family_name}.otf"):
 
 
 if __name__ == "__main__":
-    build_font()
+    build_font(bold=False)
+    build_font(bold=True)

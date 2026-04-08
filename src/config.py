@@ -9,7 +9,7 @@ class FontConfig:
     units_per_em: int = 1000
     window_ascent: int = 1025
     window_descent: int = -300
-    window_width: int = 600
+    window_width: int = 580
 
     ascent: int = 775
     descent: int = -200
@@ -39,6 +39,19 @@ class DrawConfig(FontConfig):
     # Fine-tuned taper for a & m
     taper_a: float = 0.104
     taper_m: float = 0.162
+
+    @classmethod
+    def bold(cls):
+        """Return a DrawConfig with heavier stroke weights for a bold variant."""
+        ratio = 1.4
+        return cls(
+            stroke_x=int(cls.stroke_x * ratio),
+            stroke_y=int(cls.stroke_y * ratio),
+            stroke_alt=int(cls.stroke_alt * ratio),
+            taper=cls.taper,
+            taper_a=cls.taper_a,
+            taper_m=cls.taper_m,
+        )
 
     def body_bounds(
         self,

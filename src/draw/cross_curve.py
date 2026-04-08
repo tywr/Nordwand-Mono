@@ -23,7 +23,6 @@ def draw_cross_curve(
         x1, y1, x2, y2 = x1, y2, x2, y1
     mid_x = (x1 + x2) / 2
     mid_y = (y1 + y2) / 2
-    hh = (y2 - y1) / 2
 
     sign = -1 if invert else 1
     inv = 1 if invert else 0
@@ -32,15 +31,19 @@ def draw_cross_curve(
     # matching the parallelogramm stroke formula
     w = x2 - x1
     h = abs(y2 - y1)
+
     diag = sqrt(w**2 + h**2)
     s = sqrt((stroke_x * h / diag) ** 2 + (stroke_y * w / diag) ** 2)
+
     s2x = s / 2 * h / diag
     s2y = s / 2 * w / diag
 
     # Outer edges get increased handle, inner edges get decreased handle
-    ahh = abs(hh)
-    ohy = hy * (ahh + s2y) / ahh
-    ihy = hy * (ahh - s2y) / ahh
+    ohy = hy
+    ihy = hy - 2 * s2y
+
+    hx = hx - s2x
+
     if invert:
         ihy, ohy = ohy, ihy
 
@@ -48,11 +51,11 @@ def draw_cross_curve(
     pen.moveTo((x1 + inv * stroke_x, y1))
     pen.curveTo(
         (x1 + inv * stroke_x, y1 + sign * ohy),
-        (x1 + inv * stroke_x, y1 + sign * ohy),
+        (mid_x - sign * s2x + sign * hx, mid_y + s2y),
         (mid_x - sign * s2x, mid_y + s2y),
     )
     pen.curveTo(
-        (x2 - (1 - inv) * stroke_x, y2 - sign * ihy),
+        (mid_x - sign * s2x - sign * hx, mid_y + s2y),
         (x2 - (1 - inv) * stroke_x, y2 - sign * ihy),
         (x2 - (1 - inv) * stroke_x, y2),
     )
@@ -60,11 +63,11 @@ def draw_cross_curve(
     pen.lineTo((x2 - inv * stroke_x, y2))
     pen.curveTo(
         (x2 - inv * stroke_x, y2 - sign * ohy),
-        (x2 - inv * stroke_x, y2 - sign * ohy),
+        (mid_x + sign * s2x - sign * hx, mid_y - s2y),
         (mid_x + sign * s2x, mid_y - s2y),
     )
     pen.curveTo(
-        (x1 + (1 - inv) * stroke_x, y1 + sign * ihy),
+        (mid_x + sign * s2x + sign * hx, mid_y - s2y),
         (x1 + (1 - inv) * stroke_x, y1 + sign * ihy),
         (x1 + (1 - inv) * stroke_x, y1),
     )
