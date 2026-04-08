@@ -11,7 +11,7 @@ class SixGlyph(NumberGlyph):
     offset = 0
     vertical_ratio = 0.6
     width_ratio = 1.12
-    top_ratio = 0.8
+    top_ratio = 0.75
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

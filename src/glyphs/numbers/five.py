@@ -12,7 +12,7 @@ class FiveGlyph(NumberGlyph):
     unicode = "0x33"
     offset = 0
     width_ratio = 1.1
-
+    loop_ratio = 0.6
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -27,19 +27,18 @@ class FiveGlyph(NumberGlyph):
         )
 
         base_glyph = ufoLib2.objects.Glyph()
-        ry = (b.y2 - b.ymid + dc.stroke_y / 2) / b.height
 
         # Bottom loop
         draw_superellipse_loop(
-            base_glyph.getPen(),
+            pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
             b.y1,
             b.x2,
-            b.ymid + dc.stroke_y / 2,
+            b.y1 + b.height * self.loop_ratio,
             b.hx,
-            b.hy * ry,
+            b.hy * self.loop_ratio,
         )
 
         # Remove the left-middle part

@@ -11,6 +11,7 @@ class NineGlyph(NumberGlyph):
     offset = 0
     vertical_ratio = 0.6
     width_ratio = 1.06
+    bottom_ratio = 0.25
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,10 +25,23 @@ class NineGlyph(NumberGlyph):
         )
 
         ymid = b.y2 - self.vertical_ratio * b.height
-        hy = b.hy * 4 * (ymid - b.y1) / b.height
-        hx = 2 * b.hx
+        ybot = b.y1 + self.bottom_ratio * b.height
 
         # Upper loop
+        draw_superellipse_arch(
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x1,
+            ymid,
+            b.x2,
+            b.y2,
+            b.hx,
+            b.hy * self.vertical_ratio,
+            taper=dc.taper,
+            side="right",
+            cut="top",
+        )
         draw_superellipse_loop(
             pen,
             dc.stroke_x,
@@ -40,28 +54,29 @@ class NineGlyph(NumberGlyph):
             b.hy * self.vertical_ratio,
             cut="bottom",
         )
-        draw_superellipse_arch(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            b.x1,
-            ymid,
-            b.x2,
-            b.y2,
-            b.hx,
-            b.hy * self.vertical_ratio,
-            side="right",
-            cut="top",
-        )
+        draw_rect(pen, b.x2 - dc.stroke_x, b.ymid, b.x2, b.y2 - (b.y2 - ymid) / 2)
+
         draw_corner(
             pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x2,
-            b.y2 - (b.y2 - ymid) / 2,
-            b.x1 + dc.stroke_x / 2,
+            b.ymid,
+            b.xmid,
             b.y1,
-            hx,
-            hy,
+            b.hx,
+            b.hy,
             orientation="bottom-left",
+        )
+        draw_corner(
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x1,
+            ybot,
+            b.xmid,
+            b.y1,
+            b.hx,
+            b.hy * 2 * (ybot - b.y1) / b.height,
+            orientation="bottom-right",
         )
