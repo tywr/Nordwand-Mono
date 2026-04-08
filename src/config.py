@@ -16,7 +16,7 @@ class FontConfig:
     cap: int = 725
     x_height: int = 535
 
-    accent: int = 680
+    accent: int = 690
     accent_cap: int = 860
 
     default_stroke = 90
@@ -45,7 +45,7 @@ class DrawConfig(FontConfig):
     @classmethod
     def bold(cls):
         """Return a DrawConfig with heavier stroke weights for a bold variant."""
-        ratio = 1.4
+        ratio = 1.3
         return cls(
             stroke_x=int(cls.stroke_x * ratio),
             stroke_y=int(cls.stroke_y * ratio),

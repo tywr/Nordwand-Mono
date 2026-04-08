@@ -4,7 +4,7 @@ from draw.cross_curve import draw_cross_curve
 
 class Tilde(Accent):
     name = "tilde"
-    unicode = "0x7E"
+    unicode = None
     width = 110
     height = 40
 
