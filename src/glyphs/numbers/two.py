@@ -2,7 +2,7 @@ from glyphs.numbers import NumberGlyph
 from draw.rect import draw_rect
 from draw.superellipse_arch import draw_superellipse_arch
 from draw.parallelogramm import draw_parallelogramm_vertical
-from draw.cross_curve import draw_cross_curve
+from draw.cross_curve import draw_cross_curve_2
 from draw.superellipse_loop import draw_superellipse_loop
 
 
@@ -38,7 +38,7 @@ class TwoGlyph(NumberGlyph):
         )
 
         # Cross curve
-        draw_cross_curve(
+        draw_cross_curve_2(
             pen,
             dc.stroke_x,
             dc.stroke_y,
