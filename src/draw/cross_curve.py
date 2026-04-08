@@ -36,7 +36,7 @@ def draw_cross_curve(
     s = sqrt((stroke_x * h / diag) ** 2 + (stroke_y * w / diag) ** 2)
 
     s2x = s / 2 * h / diag
-    s2y = s / 2 * w / diag
+    s2y = stroke_y / 2
 
     # Outer edges get increased handle, inner edges get decreased handle
     ohy = hy

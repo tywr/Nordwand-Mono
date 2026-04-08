@@ -7,7 +7,7 @@ class UppercaseSGlyph(UppercaseGlyph):
     name = "uppercase_s"
     unicode = "0x53"
     offset = 0
-    loop_ratio = 0.5  # Controls the height of each half-loop
+    loop_ratio = 0.6
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -43,6 +43,6 @@ class UppercaseSGlyph(UppercaseGlyph):
             b.x2,
             (b.y2 + ym2) / 2,
             b.hx,
-            b.hy / 2,
+            b.hy * (1 - self.loop_ratio),
             invert=True,
         )
