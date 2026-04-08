@@ -136,6 +136,24 @@ def intersection_superellipses(d1, d2, tol=0.5):
     return _dedupe_points(raw_points, tol=tol * 2)
 
 
+def intersection_superellipse_y(d1, y, tol=0.5):
+    """Find intersection points between a superellipse and the horizontal line y=Y.
+
+    Args:
+        d1: Superellipse instance.
+        y: the y-coordinate of the horizontal line.
+
+    Returns:
+        List of (x, y) tuples where the superellipse crosses y=Y.
+    """
+    beziers = _superellipse_beziers(d1.x1, d1.y1, d1.x2, d1.y2, d1.hx, d1.hy)
+    points = []
+    for seg in beziers:
+        for _t, x in bezier_intersect(seg[0], seg[1], seg[2], seg[3], y, axis=1):
+            points.append((x, y))
+    return _dedupe_points(points, tol=tol)
+
+
 def intersection_superellipse_x(d1, x, tol=0.5):
     """Find intersection points between a superellipse and the vertical line x=X.
 

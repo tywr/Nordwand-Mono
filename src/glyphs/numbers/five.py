@@ -9,28 +9,29 @@ from draw.rect import draw_rect
 
 class FiveGlyph(NumberGlyph):
     name = "five"
-    unicode = "0x33"
+    unicode = "0x35"
     offset = 0
     width_ratio = 1.1
     loop_ratio = 0.6
+    junction_ratio = 0.42
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
             height="cap",
             overshoot_bottom=True,
-            overshoot_top=True,
             overshoot_left=True,
             overshoot_right=True,
             width_ratio=self.width_ratio,
             number=True,
         )
+        yj = b.y1 + b.height * self.junction_ratio
 
         base_glyph = ufoLib2.objects.Glyph()
 
         # Bottom loop
-        draw_superellipse_loop(
-            pen,
+        params = draw_superellipse_loop(
+            base_glyph.getPen(),
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
@@ -39,6 +40,21 @@ class FiveGlyph(NumberGlyph):
             b.y1 + b.height * self.loop_ratio,
             b.hx,
             b.hy * self.loop_ratio,
+            cut="top"
+        )
+        params = draw_superellipse_arch(
+            base_glyph.getPen(),
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x1,
+            b.y1,
+            b.x2,
+            b.y1 + b.height * self.loop_ratio,
+            b.hx,
+            b.hy * self.loop_ratio,
+            taper=dc.taper,
+            side="left",
+            cut="bottom",
         )
 
         # Remove the left-middle part
@@ -46,10 +62,16 @@ class FiveGlyph(NumberGlyph):
         draw_rect(
             cut_glyph.getPen(),
             b.x1,
-            b.y1 + (b.ymid + dc.stroke_y / 2 - b.y1) / 2,
+            b.y1 + b.height * self.loop_ratio / 2,
             b.xmid,
-            300,
+            yj,
         )
 
         result = BooleanGlyph(base_glyph).difference(BooleanGlyph(cut_glyph))
         result.draw(pen)
+
+        (x1, _), (x2, _) = params["inner"].intersection_y(y=yj)
+        xj = min(x1, x2)
+
+        draw_rect(pen, xj - dc.stroke_x, yj, xj, b.y2)
+        draw_rect(pen, xj - dc.stroke_x, b.y2 - dc.stroke_y, b.x2 - dc.h_overshoot, b.y2)

@@ -9,7 +9,7 @@ class SixGlyph(NumberGlyph):
     name = "six"
     unicode = "0x36"
     offset = 0
-    vertical_ratio = 0.6
+    loop_ratio = 0.6
     width_ratio = 1.12
     top_ratio = 0.75
 
@@ -25,7 +25,7 @@ class SixGlyph(NumberGlyph):
             number=True,
         )
 
-        ymid = b.y1 + self.vertical_ratio * b.height
+        ymid = b.y1 + self.loop_ratio * b.height
         ytop = b.y1 + self.top_ratio * b.height
 
         # Bottom loop
@@ -38,9 +38,10 @@ class SixGlyph(NumberGlyph):
             b.x2,
             ymid,
             b.hx,
-            b.hy * self.vertical_ratio,
+            b.hy * self.loop_ratio,
             taper=dc.taper,
             side="left",
+            cut="bottom"
         )
         draw_superellipse_loop(
             pen,
@@ -51,7 +52,7 @@ class SixGlyph(NumberGlyph):
             b.x2,
             ymid,
             b.hx,
-            b.hy * self.vertical_ratio,
+            b.hy * self.loop_ratio,
             cut="top",
         )
         draw_rect(
