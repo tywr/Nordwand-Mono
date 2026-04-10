@@ -11,7 +11,6 @@ class PercentMarkGlyph(Glyph):
     offset_ratio_x = 0.45
     offset_ratio_y = 0.45
     zero_ratio = 0.4
-    stroke_ratio = 0.6
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -25,8 +24,8 @@ class PercentMarkGlyph(Glyph):
         draw_parallelogramm(pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, b.y2)
         draw_superellipse_loop(
             pen,
-            dc.stroke_x * self.stroke_ratio,
-            dc.stroke_y * self.stroke_ratio,
+            dc.stroke_alt,
+            dc.stroke_alt,
             b.x1 + ox / 2 - w / 2,
             b.y2 - oy / 2 - h / 2,
             b.x1 + ox / 2 + w / 2,
@@ -36,8 +35,8 @@ class PercentMarkGlyph(Glyph):
         )
         draw_superellipse_loop(
             pen,
-            dc.stroke_x * self.stroke_ratio,
-            dc.stroke_y * self.stroke_ratio,
+            dc.stroke_alt,
+            dc.stroke_alt,
             b.x2 - ox / 2 - w / 2,
             b.y1 + oy / 2 - h / 2,
             b.x2 - ox / 2 + w / 2,
