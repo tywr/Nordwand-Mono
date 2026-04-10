@@ -8,7 +8,7 @@ class LowercaseRGlyph(Glyph):
     unicode = "0x72"
     offset = 20
     loop_ratio = 0.8
-    width_ratio = 1
+    width_ratio = 1.02
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, overshoot_top=True, width_ratio=self.width_ratio)

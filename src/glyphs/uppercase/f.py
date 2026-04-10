@@ -5,11 +5,14 @@ from draw.rect import draw_rect
 class UppercaseFGlyph(UppercaseGlyph):
     name = "uppercase_f"
     unicode = "0x46"
-    offset = 0
+    offset = 16
     mid_bar_ratio = 0.95
+    width_ratio = 1.08
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(offset=self.offset, height="cap", width_ratio=self.width_ratio)
+        b = dc.body_bounds(
+            offset=self.offset, height="cap", width_ratio=self.width_ratio
+        )
 
         # Vertical stem
         draw_rect(pen, b.x1, b.y1, b.x1 + dc.stroke_x, b.y2)

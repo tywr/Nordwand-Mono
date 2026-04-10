@@ -7,6 +7,7 @@ class UppercaseUGlyph(UppercaseGlyph):
     name = "uppercase_u"
     unicode = "0x55"
     offset = 0
+    width_ratio = 1.10
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

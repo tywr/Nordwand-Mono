@@ -7,9 +7,10 @@ from draw.parallelogramm import draw_parallelogramm
 class LowercaseKGlyph(UppercaseGlyph):
     name = "uppercase_k"
     unicode = "0x4B"
-    offset = 10
+    offset = 28
     neck_len = 100
     branch_ratio = 0.75
+    width_ratio = 1.22
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

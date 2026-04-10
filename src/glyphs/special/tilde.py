@@ -17,8 +17,8 @@ class TildeGlyph(Glyph):
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
         cr = self.corner_ratio
-        y1 = b.y1 + b.height * (1 - self.height_ratio) / 2
-        y2 = b.y2 - b.height * (1 - self.height_ratio) / 2
+        y1 = dc.math - self.height_ratio * b.height / 2
+        y2 = dc.math + self.height_ratio * b.height / 2
 
         draw_corner(
             pen,

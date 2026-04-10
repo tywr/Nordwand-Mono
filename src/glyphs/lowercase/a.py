@@ -10,12 +10,14 @@ class LowercaseAGlyph(Glyph):
     unicode = "0x61"
     offset = 0
     loop_ratio = 0.6
+    width_ratio = 0.99
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
             overshoot_bottom=True,
             overshoot_left=True,
+            width_ratio=self.width_ratio,
         )
         hx, hy = b.hx, b.hy * self.loop_ratio
 

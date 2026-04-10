@@ -8,6 +8,7 @@ class LowercaseEGlyph(Glyph):
     name = "lowercase_e"
     unicode = "0x65"
     offset = 0
+    width_ratio = 0.98
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -16,6 +17,7 @@ class LowercaseEGlyph(Glyph):
             overshoot_top=True,
             overshoot_left=True,
             overshoot_right=True,
+            width_ratio=self.width_ratio,
         )
 
         # Half-top of a superellipse
