@@ -162,6 +162,83 @@ def render_specimen(font_path, output="specimen.pdf"):
 
         y -= 10 * mm
 
+    # --- Page 3: Source code example ---
+    c.showPage()
+    c.setFillColorRGB(*BG)
+    c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
+
+    y = page_h - 30 * mm
+
+    # Title
+    c.setFillColorRGB(*FG)
+    c.setFont("Kassiopea", 28)
+    c.drawString(MARGIN_X, y, "Source Code")
+    y -= 28 + 10 * mm
+
+    # Label
+    c.setFillColorRGB(*LABEL_COLOR)
+    c.setFont("Kassiopea", LABEL_SIZE)
+    c.drawString(MARGIN_X, y, "Python @12pt")
+    y -= LABEL_SIZE + 16
+
+    code_lines = [
+        'from math import sqrt, pi',
+        '',
+        '',
+        'def superellipse(a, b, n, steps=128):',
+        '    """Generate points on a superellipse."""',
+        '    points = []',
+        '    for i in range(steps):',
+        '        t = 2 * pi * i / steps',
+        '        ct = abs(cos(t)) ** (2 / n)',
+        '        st = abs(sin(t)) ** (2 / n)',
+        '        x = a * sign(cos(t)) * ct',
+        '        y = b * sign(sin(t)) * st',
+        '        points.append((x, y))',
+        '    return points',
+        '',
+        '',
+        'def sign(x):',
+        '    if x > 0:',
+        '        return 1',
+        '    elif x < 0:',
+        '        return -1',
+        '    return 0',
+        '',
+        '',
+        'class Glyph:',
+        '    """Base class for all font glyphs."""',
+        '',
+        '    def __init__(self, name, unicode):',
+        '        self.name = name',
+        '        self.unicode = unicode',
+        '        self.width = 600',
+        '',
+        '    def draw(self, pen, config):',
+        '        raise NotImplementedError',
+        '',
+        '    def __repr__(self):',
+        "        return f'Glyph({self.name!r})'",
+        '',
+        '',
+        'if __name__ == "__main__":',
+        '    pts = superellipse(100, 80, 4)',
+        '    print(f"Generated {len(pts)} points")',
+        '    for x, y in pts[:5]:',
+        '        print(f"  ({x:.2f}, {y:.2f})")',
+    ]
+
+    code_size = 12
+    code_leading = code_size * 1.6
+
+    c.setFillColorRGB(*FG)
+    c.setFont("Kassiopea", code_size)
+    for line in code_lines:
+        if y < 20 * mm:
+            break
+        c.drawString(MARGIN_X, y, line)
+        y -= code_leading
+
     c.save()
     print(f"Saved {output}")
 
