@@ -1,5 +1,6 @@
 """Generate font."""
 
+import os
 import importlib
 import inspect
 import math
@@ -252,7 +253,9 @@ def build_font(output_path=None, bold=False, italic=False):
         style_name = "Regular"
 
     if output_path is None:
-        output_path = f"fonts/{fc.family_name}-{style_name}.otf"
+        os.makedirs("fonts/otf/", exist_ok=True)
+        os.makedirs("fonts/ttf/", exist_ok=True)
+        output_path = f"fonts/otf/{fc.family_name}-{style_name}.otf"
 
     dc = DrawConfig.bold() if bold else DrawConfig()
 
@@ -387,7 +390,7 @@ def build_font(output_path=None, bold=False, italic=False):
     print(f"Font saved to {output_path}")
 
     # Build TTF version
-    ttf_path = output_path.replace(".otf", ".ttf")
+    ttf_path = output_path.replace(".otf", ".ttf").replace("/otf", "/ttf")
     build_ttf(ttf_path, style_name, active_glyphs, cmap, dc, ligature_glyphs, alternate_glyphs, italic)
 
 

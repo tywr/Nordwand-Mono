@@ -44,7 +44,7 @@ def render_banner(font_path, output="banner.png"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate Kassiopea banner")
-    parser.add_argument("font", nargs="?", default="fonts/Kassiopea-Regular.ttf", help="Path to font file")
+    parser.add_argument("font", nargs="?", default="fonts/ttf/Kassiopea-Regular.ttf", help="Path to font file")
     parser.add_argument("-o", "--output", default="assets/banner.png", help="Output filename")
     args = parser.parse_args()
     render_banner(args.font, args.output)

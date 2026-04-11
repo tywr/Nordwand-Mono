@@ -7,8 +7,8 @@ from draw.rect import draw_rect
 
 class LowercaseA2Glyph(Glyph):
     name = "lowercase_a_2"
-    font_feature = {"ss01": 1}
     unicode = "0x61"
+    font_feature = {"ss01": 1}
     default_italic = True
     offset = 0
     loop_ratio = 0.6

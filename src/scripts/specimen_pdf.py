@@ -248,7 +248,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "font",
         nargs="?",
-        default="fonts/Kassiopea-Regular.ttf",
+        default="fonts/ttf/Kassiopea-Regular.ttf",
         help="Path to font file",
     )
     parser.add_argument(
