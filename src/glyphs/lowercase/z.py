@@ -14,13 +14,30 @@ class LowercaseZGlyph(Glyph):
         # Top and bottom bars
         draw_rect(pen, b.x1, dc.x_height - dc.stroke_y, b.x2, dc.x_height)
         draw_rect(pen, b.x1, 0, b.x2, dc.stroke_y)
+
         # Diagonal stroke
-        draw_parallelogramm(
+        theta, delta = draw_parallelogramm(
             pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
-            b.y1 + dc.stroke_y,
+            b.y1 + dc.stroke_y + dc.gap,
+            b.x2,
+            b.y2 - dc.stroke_y - dc.gap,
+        )
+
+        # Fill the gaps
+        draw_rect(
+            pen,
+            b.x2 - delta,
+            b.y2 - dc.stroke_y - dc.gap,
             b.x2,
             b.y2 - dc.stroke_y,
+        )
+        draw_rect(
+            pen,
+            b.x1,
+            b.y1 + dc.stroke_y,
+            b.x1 + delta,
+            b.y1 + dc.stroke_y + dc.gap,
         )
