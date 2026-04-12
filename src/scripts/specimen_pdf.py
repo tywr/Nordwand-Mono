@@ -5,7 +5,7 @@ Usage: python scripts/specimen.py [path/to/font.ttf]
 """
 
 import argparse
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
@@ -34,7 +34,7 @@ LABEL_COLOR = (0.4, 0.4, 0.4)
 MARGIN_X = 20 * mm
 TITLE_SIZE = 48
 LABEL_SIZE = 14
-CHAR_SIZE = 36
+CHAR_SIZE = 28
 
 
 def render_specimen(font_path, output="specimen.pdf"):
@@ -42,8 +42,8 @@ def render_specimen(font_path, output="specimen.pdf"):
     os.makedirs(os.path.dirname(output), exist_ok=True)
     pdfmetrics.registerFont(TTFont("Kassiopea", font_path))
 
-    page_w, page_h = A4
-    c = canvas.Canvas(output, pagesize=A4)
+    page_w, page_h = landscape(A4)
+    c = canvas.Canvas(output, pagesize=landscape(A4))
 
     # Black background
     c.setFillColorRGB(*BG)
@@ -89,9 +89,11 @@ def render_specimen(font_path, output="specimen.pdf"):
         else:
             on_fresh_page = False
 
-    # --- Page 2: Sample text ---
+    # --- Page 2: Sample text (portrait) ---
     if not on_fresh_page:
         c.showPage()
+    page_w, page_h = A4
+    c.setPageSize(A4)
     c.setFillColorRGB(*BG)
     c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
 
@@ -162,82 +164,201 @@ def render_specimen(font_path, output="specimen.pdf"):
 
         y -= 10 * mm
 
-    # --- Page 3: Source code example ---
+    # --- Page 3: Mission status report ---
     c.showPage()
     c.setFillColorRGB(*BG)
     c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
 
-    y = page_h - 30 * mm
+    report_size = 12
+    report_leading = report_size * 1.6
+    box_padding_x = 12
+    box_padding_y = 10
 
-    # Title
-    c.setFillColorRGB(*FG)
-    c.setFont("Kassiopea", 28)
-    c.drawString(MARGIN_X, y, "Source Code")
-    y -= 28 + 10 * mm
-
-    # Label
-    c.setFillColorRGB(*LABEL_COLOR)
-    c.setFont("Kassiopea", LABEL_SIZE)
-    c.drawString(MARGIN_X, y, "Python @12pt")
-    y -= LABEL_SIZE + 16
-
-    code_lines = [
-        'from math import sqrt, pi',
-        '',
-        '',
-        'def superellipse(a, b, n, steps=128):',
-        '    """Generate points on a superellipse."""',
-        '    points = []',
-        '    for i in range(steps):',
-        '        t = 2 * pi * i / steps',
-        '        ct = abs(cos(t)) ** (2 / n)',
-        '        st = abs(sin(t)) ** (2 / n)',
-        '        x = a * sign(cos(t)) * ct',
-        '        y = b * sign(sin(t)) * st',
-        '        points.append((x, y))',
-        '    return points',
-        '',
-        '',
-        'def sign(x):',
-        '    if x > 0:',
-        '        return 1',
-        '    elif x < 0:',
-        '        return -1',
-        '    return 0',
-        '',
-        '',
-        'class Glyph:',
-        '    """Base class for all font glyphs."""',
-        '',
-        '    def __init__(self, name, unicode):',
-        '        self.name = name',
-        '        self.unicode = unicode',
-        '        self.width = 600',
-        '',
-        '    def draw(self, pen, config):',
-        '        raise NotImplementedError',
-        '',
-        '    def __repr__(self):',
-        "        return f'Glyph({self.name!r})'",
-        '',
-        '',
-        'if __name__ == "__main__":',
-        '    pts = superellipse(100, 80, 4)',
-        '    print(f"Generated {len(pts)} points")',
-        '    for x, y in pts[:5]:',
-        '        print(f"  ({x:.2f}, {y:.2f})")',
+    header_lines = [
+        (14, "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION"),
+        (14, "GODDARD SPACE FLIGHT CENTER"),
+        (14, "MISSION STATUS REPORT -- DSR-7"),
     ]
 
-    code_size = 12
-    code_leading = code_size * 1.6
+    body_lines = [
+        "MISSION DESIGNATION : ORION DEEP SKY RELAY -- SEGMENT 7 (DSR-7)",
+        "REPORT DATE         : 2026-APR-11   UTC 09:42:15",
+        "PREPARED BY         : FLIGHT DYNAMICS OFFICER -- C. VASQUEZ",
+        "CLASSIFICATION      : UNCLASSIFIED // FOR PUBLIC RELEASE",
+        "",
+        "1. EXECUTIVE SUMMARY",
+        "-----------------------------------------------------------------------",
+        "The DSR-7 relay satellite completed its third orbital correction",
+        "maneuver at 07:18 UTC. All subsystems nominal. Telemetry confirms",
+        "stable attitude within 0.003 deg of target orientation. Downlink",
+        "rate sustained at 1.2 Gbps through Goldstone and Canberra stations.",
+        "",
+        "2. ORBITAL PARAMETERS",
+        "-----------------------------------------------------------------------",
+        "  SEMI-MAJOR AXIS   : 42,164.00 km",
+        "  ECCENTRICITY      : 0.000142",
+        "  INCLINATION       : 0.0471 deg",
+        "  RAAN              : 247.812 deg",
+        "  ARG OF PERIGEE    : 312.004 deg",
+        "  TRUE ANOMALY      : 89.441 deg",
+        "  PERIOD            : 23h 56m 04.09s",
+        "",
+        "3. SUBSYSTEM STATUS",
+        "-----------------------------------------------------------------------",
+        "  POWER     : 4.82 kW generated / 3.17 kW consumed   [NOMINAL]",
+        "  THERMAL   : +22.4 C bus avg / radiator delta -1.2 C [NOMINAL]",
+        "  PROPULSN  : 48.7 kg hydrazine remaining (62%)       [NOMINAL]",
+        "  COMMS     : X-band primary / S-band backup active   [NOMINAL]",
+        "  AOCS      : reaction wheels 1-4 balanced at 1200 RPM[NOMINAL]",
+        "  PAYLOAD   : Ka-band relay transponder locked         [NOMINAL]",
+        "",
+        "                              -- END OF REPORT --",
+    ]
 
+    # Measure box width
+    box_x1 = MARGIN_X
+    box_x2 = page_w - MARGIN_X
+
+    # Draw header box
+    y = page_h - 30 * mm
+
+    header_height = box_padding_y * 2
+    for size, _ in header_lines:
+        header_height += size * 1.6
+    header_height += (len(header_lines) - 1) * 2  # extra spacing
+
+    # Draw double-line box around header
+    c.setStrokeColorRGB(*FG)
+    c.setLineWidth(1.5)
+    c.rect(box_x1, y - header_height, box_x2 - box_x1, header_height, fill=0, stroke=1)
+    c.setLineWidth(0.5)
+    inset = 3
+    c.rect(
+        box_x1 + inset, y - header_height + inset,
+        box_x2 - box_x1 - 2 * inset, header_height - 2 * inset,
+        fill=0, stroke=1,
+    )
+
+    # Draw header text centered
+    ty = y - box_padding_y
+    for size, text in header_lines:
+        leading = size * 1.6
+        ty -= size  # move down by font size (baseline)
+        c.setFillColorRGB(*FG)
+        c.setFont("Kassiopea", size)
+        text_w = c.stringWidth(text, "Kassiopea", size)
+        c.drawString((page_w - text_w) / 2, ty, text)
+        ty -= leading - size + 2
+
+    y -= header_height + 12 * mm
+
+    # Draw body lines
+    c.setFont("Kassiopea", report_size)
     c.setFillColorRGB(*FG)
-    c.setFont("Kassiopea", code_size)
-    for line in code_lines:
-        if y < 20 * mm:
-            break
-        c.drawString(MARGIN_X, y, line)
-        y -= code_leading
+    for text in body_lines:
+        c.drawString(MARGIN_X + box_padding_x, y, text)
+        y -= report_leading
+
+    # --- Code snippet pages ---
+    code_snippets = [
+        ("Python", [
+            "import numpy as np",
+            "from dataclasses import dataclass",
+            "",
+            "",
+            "@dataclass",
+            "class Particle:",
+            '    """A particle in 3D space with mass and velocity."""',
+            "    position: np.ndarray",
+            "    velocity: np.ndarray",
+            "    mass: float = 1.0",
+            "",
+            "    @property",
+            "    def kinetic_energy(self) -> float:",
+            "        return 0.5 * self.mass * np.dot(self.velocity, self.velocity)",
+            "",
+            "    def step(self, force: np.ndarray, dt: float) -> None:",
+            "        acceleration = force / self.mass",
+            "        self.velocity += acceleration * dt",
+            "        self.position += self.velocity * dt",
+        ]),
+        ("C++", [
+            "#include <iostream>",
+            "#include <vector>",
+            "#include <cmath>",
+            "#include <algorithm>",
+            "#include <numeric>",
+            "",
+            "template <typename T>",
+            "struct Vec3 {",
+            "    T x, y, z;",
+            "",
+            "    Vec3 operator+(const Vec3& o) const {",
+            "        return {x + o.x, y + o.y, z + o.z};",
+            "    }",
+            "    Vec3 operator-(const Vec3& o) const {",
+            "        return {x - o.x, y - o.y, z - o.z};",
+            "    }",
+            "    Vec3 operator*(T s) const { return {x*s, y*s, z*s}; }",
+            "    T dot(const Vec3& o) const {",
+            "        return x*o.x + y*o.y + z*o.z;",
+            "    }",
+            "    T norm() const { return std::sqrt(dot(*this)); }",
+            "};",
+        ]),
+        ("Haskell", [
+            "module NBody where",
+            "",
+            "import Data.List (tails)",
+            "",
+            "data Vec3 = Vec3 !Double !Double !Double",
+            "  deriving (Show)",
+            "",
+            "vadd :: Vec3 -> Vec3 -> Vec3",
+            "vadd (Vec3 x1 y1 z1) (Vec3 x2 y2 z2) =",
+            "  Vec3 (x1 + x2) (y1 + y2) (z1 + z2)",
+            "",
+            "vsub :: Vec3 -> Vec3 -> Vec3",
+            "vsub (Vec3 x1 y1 z1) (Vec3 x2 y2 z2) =",
+            "  Vec3 (x1 - x2) (y1 - y2) (z1 - z2)",
+            "",
+            "vscale :: Double -> Vec3 -> Vec3",
+            "vscale s (Vec3 x y z) = Vec3 (s*x) (s*y) (s*z)",
+            "",
+            "vnorm :: Vec3 -> Double",
+            "vnorm (Vec3 x y z) = sqrt (x*x + y*y + z*z)",
+            "",
+            "data Body = Body",
+            "  { bodyPos  :: !Vec3",
+            "  , bodyVel  :: !Vec3",
+            "  , bodyMass :: !Double",
+            "  } deriving (Show)",
+        ]),
+    ]
+
+    for lang, lines in code_snippets:
+        c.showPage()
+        c.setFillColorRGB(*BG)
+        c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
+
+        y = page_h - 30 * mm
+
+        # Language label
+        c.setFillColorRGB(*LABEL_COLOR)
+        c.setFont("Kassiopea", LABEL_SIZE)
+        c.drawString(MARGIN_X, y, lang)
+        y -= LABEL_SIZE + 12
+
+        # Code
+        code_size = 10
+        code_leading = code_size * 1.5
+        c.setFillColorRGB(*FG)
+        c.setFont("Kassiopea", code_size)
+        for line in lines:
+            if y < 20 * mm:
+                break
+            c.drawString(MARGIN_X, y, line)
+            y -= code_leading
 
     c.save()
     print(f"Saved {output}")

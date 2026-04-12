@@ -38,14 +38,17 @@ class DrawConfig(FontConfig):
     stroke_y: int = 82
     stroke_alt: int = 72
     width: int = 340
+
     hx: int = 160
     hy: int = 200
-    gap: int = 5
+
+    gap: int = 16
+
     number_hx: int = 160
     number_hy: int = 240
 
     # Taper values
-    taper: float = 0.4
+    taper: float = 0.3
     taper_a: float = 0.3
     taper_m: float = 0.28
     taper_r: float = 0.3
