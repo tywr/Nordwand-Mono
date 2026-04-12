@@ -59,22 +59,22 @@ class NineGlyph(NumberGlyph):
         )
         draw_rect(pen, b.x2 - dc.stroke_x, b.ymid, b.x2, b.y2 - (b.y2 - ymid) / 2)
 
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_superellipse_loop(
-            loop_glyph.getPen(),
+        draw_corner(
+            pen,
             dc.stroke_x,
             dc.stroke_y,
-            b.x1,
-            b.y1,
             b.x2,
-            b.y2,
+            b.ymid,
+            b.xmid,
+            b.y1,
             b.hx,
             b.hy,
-            cut="top"
+            orientation="bottom-left"
         )
-
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), b.x1, ycut, b.xmid, b.y2)
-
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
+        draw_rect(
+            pen,
+            b.x1 + 0.6 * dc.stroke_x,
+            b.y1,
+            b.xmid,
+            b.y1 + dc.stroke_y,
+        )

@@ -66,22 +66,22 @@ class SixGlyph(NumberGlyph):
             b.x1 + dc.stroke_x,
             b.ymid,
         )
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_superellipse_loop(
-            loop_glyph.getPen(),
+        draw_corner(
+            pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
-            b.y1,
-            b.x2,
+            b.ymid,
+            b.xmid,
             b.y2,
             b.hx,
             b.hy,
-            cut="bottom"
+            orientation="top-right"
         )
-
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), b.xmid, b.y1, b.x2, ycut)
-
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
+        draw_rect(
+            pen,
+            b.xmid,
+            b.y2 - dc.stroke_y,
+            b.x2 - 0.6 * dc.stroke_x,
+            b.y2,
+        )
