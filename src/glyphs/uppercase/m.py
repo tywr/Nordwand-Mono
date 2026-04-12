@@ -1,3 +1,4 @@
+from math import tan, pi
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
@@ -8,8 +9,8 @@ class UppercaseMGlyph(UppercaseGlyph):
     unicode = "0x4D"
     offset = 0
     width_ratio = 1.2
-    overlap = 0.5
-    overlap_middle = 0.4
+    overlap = 0.4
+    overlap_middle = 0.5
     depth = 0.6
     stroke_thinning = 0.8
 
@@ -28,15 +29,32 @@ class UppercaseMGlyph(UppercaseGlyph):
 
         # Branches
         draw_parallelogramm(
-            pen, st * dc.stroke_x, st * dc.stroke_y, b.xmid - ovm, ymid, b.x2 - ov, b.y2
-        )
-        draw_parallelogramm(
             pen,
             st * dc.stroke_x,
             st * dc.stroke_y,
-            b.xmid + ovm,
+            b.xmid - ovm / 2,
+            ymid,
+            b.x2 - ov,
+            b.y2,
+        )
+        theta, delta = draw_parallelogramm(
+            pen,
+            st * dc.stroke_x,
+            st * dc.stroke_y,
+            b.xmid + ovm / 2,
             ymid,
             b.x1 + ov,
             b.y2,
             direction="top-left",
+        )
+
+        # Fill the gap
+        p = ovm * tan(theta) / 2
+        h = p * dc.gap / ovm
+        draw_rect(
+            pen,
+            b.xmid - ovm,
+            ymid,
+            b.xmid + ovm,
+            ymid + p + h,
         )
