@@ -1,4 +1,4 @@
-from utils.intersection import intersection_superellipses, intersection_superellipse_x, intersection_superellipse_y
+from utils.intersection import intersection_superellipses, intersection_superellipse_x, intersection_superellipse_y, intersection_superellipse_line
 
 
 class Superellipse:
@@ -78,6 +78,9 @@ class Superellipse:
 
     def intersection_y(self, y, tol=1e-3):
         return intersection_superellipse_y(self, y, tol=tol)
+
+    def intersection(self, p1, p2, tol=1e-3):
+        return intersection_superellipse_line(self, p1, p2, tol=tol)
 
     def draw(self, pen, cut=None, clockwise=False):
         mid_x = (self.x1 + self.x2) / 2
