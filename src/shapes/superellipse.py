@@ -82,6 +82,50 @@ class Superellipse:
     def intersection(self, p1, p2, tol=1e-3):
         return intersection_superellipse_line(self, p1, p2, tol=tol)
 
+    def area(self):
+        """Compute the area inside the superellipse (exact, via Bézier integration).
+
+        Uses the shoelace formula A = |sum of integrals of x(t)*y'(t) dt|
+        where each cubic Bézier segment is integrated analytically.
+        """
+        mid_x = (self.x1 + self.x2) / 2
+        mid_y = (self.y1 + self.y2) / 2
+        beziers = [
+            ((self.x2, mid_y), (self.x2, mid_y + self.hy),
+             (mid_x + self.hx, self.y2), (mid_x, self.y2)),
+            ((mid_x, self.y2), (mid_x - self.hx, self.y2),
+             (self.x1, mid_y + self.hy), (self.x1, mid_y)),
+            ((self.x1, mid_y), (self.x1, mid_y - self.hy),
+             (mid_x - self.hx, self.y1), (mid_x, self.y1)),
+            ((mid_x, self.y1), (mid_x + self.hx, self.y1),
+             (self.x2, mid_y - self.hy), (self.x2, mid_y)),
+        ]
+        total = 0.0
+        for p0, p1, p2, p3 in beziers:
+            x0, y0 = p0
+            x1, y1 = p1
+            x2, y2 = p2
+            x3, y3 = p3
+            # Power basis coefficients for x(t) = ax*t^3 + bx*t^2 + cx*t + dx
+            ax = -x0 + 3 * x1 - 3 * x2 + x3
+            bx = 3 * x0 - 6 * x1 + 3 * x2
+            cx = -3 * x0 + 3 * x1
+            dx = x0
+            # Power basis coefficients for y(t): y'(t) = 3*ay*t^2 + 2*by*t + cy
+            ay = -y0 + 3 * y1 - 3 * y2 + y3
+            by = 3 * y0 - 6 * y1 + 3 * y2
+            cy = -3 * y0 + 3 * y1
+            # Integrate x(t)*y'(t) from 0 to 1, collecting powers of t
+            total += (
+                dx * cy
+                + (cx * cy + dx * 2 * by) / 2
+                + (bx * cy + cx * 2 * by + dx * 3 * ay) / 3
+                + (ax * cy + bx * 2 * by + cx * 3 * ay) / 4
+                + (ax * 2 * by + bx * 3 * ay) / 5
+                + ax * 3 * ay / 6
+            )
+        return abs(total)
+
     def draw(self, pen, cut=None, clockwise=False):
         mid_x = (self.x1 + self.x2) / 2
         mid_y = (self.y1 + self.y2) / 2
