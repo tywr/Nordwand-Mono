@@ -41,7 +41,7 @@ class LowercaseEGlyph(Glyph):
             sx,
             dc.stroke_y,
             b.x1,
-            b.ymid + 2 * dc.v_overshoot,
+            b.ymid,
             b.xmid,
             0,
             dc.hx,

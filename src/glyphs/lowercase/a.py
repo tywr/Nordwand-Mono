@@ -72,7 +72,7 @@ class LowercaseAGlyph(Glyph):
             b.y1 + b.height / 2,
             b.xmid,
             b.y2,
-            dc.hy,
+            dc.hx,
             dc.hy,
             orientation="top-left",
         )
