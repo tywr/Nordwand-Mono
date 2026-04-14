@@ -6,8 +6,10 @@ class UppercaseEGlyph(UppercaseGlyph):
     name = "uppercase_e"
     unicode = "0x45"
     offset = 0
+    upper_bar_ratio = 0.95
     mid_bar_ratio = 0.9
     mid_ratio = 0.52
+    width_ratio = 1.02
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -20,7 +22,7 @@ class UppercaseEGlyph(UppercaseGlyph):
         draw_rect(pen, b.x1, b.y1, b.x1 + sx, b.y2)
 
         # Top bar
-        draw_rect(pen, b.x1, b.y2 - sy, b.x2, b.y2)
+        draw_rect(pen, b.x1, b.y2 - sy, b.x1 + self.upper_bar_ratio * b.width, b.y2)
 
         # Middle bar
         draw_rect(

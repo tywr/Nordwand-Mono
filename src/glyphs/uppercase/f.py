@@ -8,6 +8,7 @@ class UppercaseFGlyph(UppercaseGlyph):
     offset = 16
     mid_bar_ratio = 0.9
     mid_ratio = 0.52
+    width_ratio = 1.0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
