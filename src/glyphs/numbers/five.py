@@ -16,6 +16,7 @@ class FiveGlyph(NumberGlyph):
     loop_ratio = 0.64
     junction_ratio = 0.42
     tilt = 0.25
+    width_ratio = 1.04
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

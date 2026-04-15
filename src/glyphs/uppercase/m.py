@@ -9,7 +9,7 @@ class UppercaseMGlyph(UppercaseGlyph):
     unicode = "0x4D"
     offset = 0
     width_ratio = 1.2
-    overlap = 0.4
+    overlap = 0.65
     overlap_middle = 0.5
     depth = 0.6
     stroke_thinning = 0.8

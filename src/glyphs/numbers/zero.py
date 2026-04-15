@@ -9,8 +9,8 @@ class ZeroGlyph(NumberGlyph):
     unicode = "0x30"
     offset = 0
     slash = 0.2
-    stroke_x_ratio = NumberGlyph.stroke_x_ratio * 1.02
-    stroke_y_ratio = NumberGlyph.stroke_y_ratio * 0.98
+    stroke_x_ratio = NumberGlyph.stroke_x_ratio * 1.03
+    stroke_y_ratio = NumberGlyph.stroke_y_ratio * 0.97
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
