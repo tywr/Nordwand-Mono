@@ -11,6 +11,8 @@ class UppercaseSGlyph(UppercaseGlyph):
     upper_loop_width = 0.96
     stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.05
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 0.95
+    hx_ratio = 0.95
+    hy_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,8 +26,11 @@ class UppercaseSGlyph(UppercaseGlyph):
             uppercase=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        lhx, lhy = b.hx, b.hy * self.lower_loop_ratio
-        uhx, uhy = b.hx * self.upper_loop_width, b.hy * (1 - self.lower_loop_ratio)
+        lhx, lhy = b.hx * self.hx_ratio, b.hy * self.lower_loop_ratio * self.hy_ratio
+        uhx, uhy = (
+            b.hx * self.hx_ratio * self.upper_loop_width,
+            b.hy * (1 - self.lower_loop_ratio) * self.hy_ratio,
+        )
         ymid = b.y1 + self.lower_loop_ratio * b.height
 
         # Height of each half-loop from its respective baseline

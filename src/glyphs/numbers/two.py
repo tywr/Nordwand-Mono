@@ -22,12 +22,13 @@ class TwoGlyph(NumberGlyph):
             width_ratio=self.width_ratio,
             number=True,
         )
+        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
 
         # Top arch
         draw_superellipse_loop(
             pen,
-            dc.stroke_x,
-            dc.stroke_x,
+            sx,
+            sx,
             b.x1,
             b.ymid,
             b.x2,
@@ -40,10 +41,10 @@ class TwoGlyph(NumberGlyph):
         # Cross curve
         draw_cross_curve_2(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
+            sx,
+            sy,
             b.x1,
-            b.y1 + dc.stroke_y,
+            b.y1 + sy,
             b.x2,
             b.y2 - b.height / 4,
             b.hx,
@@ -51,4 +52,4 @@ class TwoGlyph(NumberGlyph):
         )
 
         # Bottom bar
-        draw_rect(pen, b.x1, 0, b.x2, dc.stroke_y)
+        draw_rect(pen, b.x1, 0, b.x2, sy)

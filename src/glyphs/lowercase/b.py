@@ -48,7 +48,6 @@ class LowercaseBGlyph(Glyph):
             x=b.x1 + dc.stroke_x + dc.gap
         )
         y1, y2 = min(y1, y2), max(y1, y2)
-        # draw_rect(pen, b.x1, y1, b.x1 + dc.stroke_x, y2)
 
         draw_polygon(
             pen,

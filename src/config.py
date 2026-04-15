@@ -14,7 +14,7 @@ class FontConfig:
     ascent: int = 775
     descent: int = -200
     cap: int = 725
-    x_height: int = 535
+    x_height: int = 520
 
     accent: int = 710
     accent_cap: int = 890
@@ -34,10 +34,10 @@ class FontConfig:
 @dataclass
 class DrawConfig(FontConfig):
     # Default parameters
-    stroke_x: int = 90
-    stroke_y: int = 82
-    stroke_alt: int = 70
-    width: int = 340
+    stroke_x: int = 88
+    stroke_y: int = 80
+    stroke_alt: int = 68
+    width: int = 348
 
     hx: int = 172
     hy: int = 200

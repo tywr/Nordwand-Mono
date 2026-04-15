@@ -1,11 +1,9 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
-
 from glyphs.numbers import NumberGlyph
 from draw.superellipse_loop import draw_superellipse_loop
 from draw.superellipse_arch import draw_superellipse_arch
 from draw.rect import draw_rect
-from draw.corner import draw_corner
+from draw.smooth_corner import draw_smooth_corner
+from draw.polygon import draw_polygon
 
 
 class NineGlyph(NumberGlyph):
@@ -14,6 +12,7 @@ class NineGlyph(NumberGlyph):
     offset = 0
     vertical_ratio = 0.6
     bottom_cut = 0.2
+    taper = 0.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -27,10 +26,9 @@ class NineGlyph(NumberGlyph):
         )
 
         ymid = b.y2 - self.vertical_ratio * b.height
-        ycut = b.y1 + self.bottom_cut * b.height
 
         # Upper loop
-        draw_superellipse_arch(
+        params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -40,10 +38,24 @@ class NineGlyph(NumberGlyph):
             b.y2,
             b.hx,
             b.hy * self.vertical_ratio,
-            taper=dc.taper,
+            taper=self.taper,
             side="right",
             cut="top",
         )
+
+        # Compute the intersection and fill the gap
+        (_, y1), (_, y2) = params["outer"].intersection_x(x=b.x2 - dc.stroke_x - dc.gap)
+        yj = min(y1, y2)
+
+        draw_polygon(
+            pen,
+            points=[
+                (b.x2 - dc.stroke_x - dc.gap, yj),
+                (b.x2 - dc.stroke_x, yj),
+                (b.x2 - dc.stroke_x / 2, (b.y2 + ymid) / 2),
+            ],
+        )
+
         draw_superellipse_loop(
             pen,
             dc.stroke_x,
@@ -58,7 +70,7 @@ class NineGlyph(NumberGlyph):
         )
         draw_rect(pen, b.x2 - dc.stroke_x, b.ymid, b.x2, b.y2 - (b.y2 - ymid) / 2)
 
-        draw_corner(
+        draw_smooth_corner(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -68,7 +80,7 @@ class NineGlyph(NumberGlyph):
             b.y1,
             b.hx,
             b.hy,
-            orientation="bottom-left"
+            orientation="bottom-left",
         )
         draw_rect(
             pen,

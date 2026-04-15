@@ -1,5 +1,6 @@
 from glyphs.numbers import NumberGlyph
 from draw.superellipse_arch import draw_superellipse_arch
+from draw.rect import draw_rect
 
 
 class EightGlyph(NumberGlyph):
@@ -22,12 +23,13 @@ class EightGlyph(NumberGlyph):
             width_ratio=self.width_ratio,
             number=True,
         )
+        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         ymid = b.y1 + b.height * self.height_ratio
         wtop = self.loop_width_ratio * b.width
         dtop = (b.width - wtop) / 2
 
         # Top loop
-        draw_superellipse_arch(
+        top_params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -42,16 +44,30 @@ class EightGlyph(NumberGlyph):
         )
 
         # Bottom loop
-        draw_superellipse_arch(
+        bottom_params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
             b.y1,
             b.x2,
-            ymid + dc.stroke_y / 2,
+            ymid + sy / 2,
             b.hx,
             b.hy * self.height_ratio,
             taper=self.taper,
-            side="top"
+            side="top",
+        )
+
+        # Compute the intersection of the two outer superellipses
+        # where there would be a dc.gap sized gap
+        (xj1, _), (xj2, _) = top_params["outer"].intersection_superellipse(
+            bottom_params["outer"].translate(dy=dc.gap)
+        )
+        print(xj1, xj2)
+        draw_rect(
+            pen,
+            xj1,
+            ymid - dc.gap,
+            xj2,
+            ymid + dc.gap,
         )

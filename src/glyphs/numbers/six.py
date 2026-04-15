@@ -1,11 +1,9 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
-
 from glyphs.numbers import NumberGlyph
 from draw.superellipse_loop import draw_superellipse_loop
 from draw.superellipse_arch import draw_superellipse_arch
 from draw.rect import draw_rect
-from draw.corner import draw_corner
+from draw.smooth_corner import draw_smooth_corner
+from draw.polygon import draw_polygon
 
 
 class SixGlyph(NumberGlyph):
@@ -15,6 +13,7 @@ class SixGlyph(NumberGlyph):
     loop_ratio = 0.6
     top_ratio = 0.4
     top_cut = 0.8
+    taper = 0.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -32,7 +31,7 @@ class SixGlyph(NumberGlyph):
         ycut = b.y1 + self.top_cut * b.height
 
         # Bottom loop
-        draw_superellipse_arch(
+        params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -42,10 +41,24 @@ class SixGlyph(NumberGlyph):
             ymid,
             b.hx,
             b.hy * self.loop_ratio,
-            taper=dc.taper,
+            taper=self.taper,
             side="left",
             cut="bottom",
         )
+
+        # Compute the intersection and fill the gap
+        (_, y1), (_, y2) = params["outer"].intersection_x(x=b.x1 + dc.stroke_x + dc.gap)
+        yj = max(y1, y2)
+
+        draw_polygon(
+            pen,
+            points=[
+                (b.x1 + dc.stroke_x + dc.gap, yj),
+                (b.x1 + dc.stroke_x, yj),
+                (b.x1 + dc.stroke_x / 2, (b.y1 + ymid) / 2),
+            ],
+        )
+
         draw_superellipse_loop(
             pen,
             dc.stroke_x,
@@ -65,7 +78,7 @@ class SixGlyph(NumberGlyph):
             b.x1 + dc.stroke_x,
             b.ymid,
         )
-        draw_corner(
+        draw_smooth_corner(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -75,7 +88,7 @@ class SixGlyph(NumberGlyph):
             b.y2,
             b.hx,
             b.hy,
-            orientation="top-right"
+            orientation="top-right",
         )
         draw_rect(
             pen,
