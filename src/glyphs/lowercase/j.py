@@ -6,7 +6,7 @@ from draw.rect import draw_rect
 class LowercaseJGlyph(Glyph):
     name = "lowercase_j"
     unicode = "0x6A"
-    offset = -50
+    offset = -20
     dot_width = 36
     tail_offset = 0
     width_ratio = 0.75

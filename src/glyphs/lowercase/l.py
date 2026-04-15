@@ -7,7 +7,7 @@ class LowercaseLGlyph(Glyph):
     unicode = "0x6C"
     offset = 18
     width_ratio = 1.08
-    cap = 0.5
+    cap = 0.45
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
