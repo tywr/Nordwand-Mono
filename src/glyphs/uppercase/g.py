@@ -10,7 +10,7 @@ class UppercaseGGlyph(UppercaseGlyph):
     unicode = "0x47"
     offset = 0
     opening = 140
-    stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.04
+    stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.05
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 0.95
 
     def draw(self, pen, dc):
@@ -37,8 +37,8 @@ class UppercaseGGlyph(UppercaseGlyph):
             b.y1,
             b.x2,
             b.y2,
-            hx,
-            hy,
+            b.hx,
+            b.hy,
         )
 
         cut_glyph = ufoLib2.objects.Glyph()
