@@ -7,7 +7,7 @@ from draw.polygon import draw_polygon
 class LowercaseA2Glyph(Glyph):
     name = "lowercase_a_2"
     unicode = "0x61"
-    font_feature = {"ss01": 1}
+    font_feature = {"ss07": 1}
     default_italic = True
     offset = 0
     loop_ratio = 0.6

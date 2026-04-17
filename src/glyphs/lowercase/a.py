@@ -19,12 +19,13 @@ class LowercaseAGlyph(Glyph):
     stroke_x_ratio = 1.04
     stroke_y_ratio = 0.96
     taper = 0.15
+    cap_ratio = 0.6
+    cap_width = 0.96
+    cap_radius = 1.618
     cap_hx_ratio = 1
     cap_hy_ratio = 0.8
-    cap_ratio = 0.6
-    cap_height = 0.75
-    cap_width = 0.96
-    thinning = 0.95
+    cut_offset = 0.13
+    thinning = 0.4
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -37,13 +38,10 @@ class LowercaseAGlyph(Glyph):
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
         dx = sx - dc.stroke_x
         hx, hy = b.hx, b.hy * self.loop_ratio
-        yc, ys = (
-            b.y1 + self.cap_ratio * b.height,
-            b.y1 + (2 * self.cap_ratio - 1) * b.height,
-        )
+        yc = b.y1 + self.cap_ratio * b.height
         chx, chy = self.cap_hx_ratio * b.hx, self.cap_hy_ratio * b.hy
-        ycut = self.cap_height * b.height
-        cw, csx = self.cap_width * b.width, self.thinning * sx
+        xc = b.x1 + self.cut_offset * b.width
+        xe = b.x1 - (self.cap_radius - 1) * b.width / 2
 
         # Lower half half of the bowl
         arch_params = draw_superellipse_arch(
@@ -97,18 +95,18 @@ class LowercaseAGlyph(Glyph):
         loop_glyph = ufoLib2.objects.Glyph()
         draw_corner(
             loop_glyph.getPen(),
-            csx,
+            sx * self.thinning,
             sy,
-            b.x2 - cw,
+            xe,
             yc,
             b.xmid,
             b.y2,
             chx,
             chy,
-            orientation="top-right"
+            orientation="top-right",
         )
         cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), b.x1, b.ymid, b.xmid, ycut)
+        draw_rect(cut_glyph.getPen(), xe - 1, b.ymid, xc, b.y2)
         result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
         result.draw(pen)
 
