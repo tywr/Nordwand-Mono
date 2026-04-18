@@ -1,6 +1,7 @@
 from glyphs import Glyph
 from draw.superellipse_loop import draw_superellipse_loop
 from draw.corner import draw_corner
+from draw.s_curve import draw_s_curve
 
 
 class LowercaseSGlyph(Glyph):
@@ -35,29 +36,43 @@ class LowercaseSGlyph(Glyph):
         # Top half-loop (cut at bottom)
         draw_superellipse_loop(pen, sx, sy, b.x1, ym2, b.x2, b.y2, hx, hy, cut="bottom")
 
-        # Middle left
-        draw_corner(
+        draw_s_curve(
             pen,
             sx,
             sy,
             b.x1,
-            ym2 + (b.y2 - ym2) / 2,
-            b.xmid,
-            ym2,
+            (b.y1 + ym1) / 2,
+            b.x2,
+            (b.y2 + ym2) / 2,
             hx,
             hy,
+            height=50,
+            angle=20,
         )
 
-        # Middle right
-        draw_corner(
-            pen,
-            sx,
-            sy,
-            b.x2,
-            b.y1 + (ym1 - b.y1) / 2,
-            b.xmid,
-            ym1,
-            hx,
-            hy,
-            orientation="top-left",
-        )
+        # Middle left
+        # draw_corner(
+        #     pen,
+        #     sx,
+        #     sy,
+        #     b.x1,
+        #     ym2 + (b.y2 - ym2) / 2,
+        #     b.xmid,
+        #     ym2,
+        #     hx,
+        #     hy,
+        # )
+        #
+        # # Middle right
+        # draw_corner(
+        #     pen,
+        #     sx,
+        #     sy,
+        #     b.x2,
+        #     b.y1 + (ym1 - b.y1) / 2,
+        #     b.xmid,
+        #     ym1,
+        #     hx,
+        #     hy,
+        #     orientation="top-left",
+        # )
