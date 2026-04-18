@@ -16,7 +16,6 @@ def draw_s_curve(
     dx: float,
     dy: float,
     middle_y_ratio=0.52,
-    thinning=1.6,
 ) -> None:
     rtop = 2 * (1 - middle_y_ratio)
     rbot = 2 * middle_y_ratio
