@@ -16,7 +16,7 @@ class LowercaseSGlyph(Glyph):
     hy_ratio = 0.8
     top_height_ratio = 0.28
     bottom_height_ratio = 0.29
-    tail_dip = 0.007
+    tail_dip = 0.05
     tail_offset = 0.08
     hy_curve_ratio = 1.2
 
@@ -35,7 +35,7 @@ class LowercaseSGlyph(Glyph):
         xt_top = b.x2 - self.tail_offset * b.width
         yt_top = dc.x_height - self.tail_dip * b.height - sy
         xt_bot = b.x1 + self.tail_offset * b.width
-        yt_bot = sy
+        yt_bot = sy + self.tail_dip * b.height
 
         ltop = self.top_height_ratio * b.height
         lbot = self.bottom_height_ratio * b.height

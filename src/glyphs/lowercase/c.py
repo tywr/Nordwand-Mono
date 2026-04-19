@@ -3,15 +3,16 @@ from draw.superellipse_loop import draw_superellipse_loop
 from draw.rect import draw_rect
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
+from draw.parallelogramm import draw_smooth_parallelogramm_vertical
 
 
 class LowercaseCGlyph(Glyph):
     name = "lowercase_c"
     unicode = "0x63"
-    offset = 0
-    opening = 0.72 - 0.28
-    stroke_x_ratio = 1.16
-    stroke_y_ratio = 0.96
+    offset = 8
+    stroke_x_ratio = 1.0
+    tail_dip = 0.03
+    tail_offset = 0.08
 
     def draw(self, pen, dc):
 
@@ -22,12 +23,13 @@ class LowercaseCGlyph(Glyph):
             overshoot_left=True,
             overshoot_right=True,
         )
-        sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
-        op = self.opening * b.height
+        sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y
+        yt_top= dc.x_height - sy - self.tail_dip * b.height
+        yt_bot = sy + self.tail_dip * b.height
+        xt = b.x2 - self.tail_offset * b.width
 
-        loop_glyph = ufoLib2.objects.Glyph()
         draw_superellipse_loop(
-            loop_glyph.getPen(),
+            pen,
             sx,
             sy,
             b.x1,
@@ -36,16 +38,13 @@ class LowercaseCGlyph(Glyph):
             b.y2,
             dc.hx,
             dc.hy,
+            cut="right"
         )
 
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(
-            cut_glyph.getPen(),
-            b.xmid,
-            b.ymid - op / 2,
-            b.xmid + b.width,
-            b.ymid + op / 2,
+        draw_smooth_parallelogramm_vertical(
+            pen, sy, b.xmid, b.y2, xt, yt_top, direction="bottom-right"
+        )
+        draw_smooth_parallelogramm_vertical(
+            pen, sy, b.xmid, b.y1, xt, yt_bot, direction="top-right"
         )
 
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)

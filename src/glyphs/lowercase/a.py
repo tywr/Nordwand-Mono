@@ -23,7 +23,7 @@ class LowercaseAGlyph(Glyph):
     cap_right_hy_ratio = 0.8
     overshoot_reducing = 0.5
     cap_offset = 0.08
-    cap_dip = 0.007
+    cap_dip = 0.05
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
