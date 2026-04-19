@@ -7,7 +7,7 @@ from draw.polygon import draw_polygon
 class LowercaseRGlyph(Glyph):
     name = "lowercase_r"
     unicode = "0x72"
-    offset = 20
+    offset = 0
     loop_ratio = 0.8
     width_ratio = 1.02
     top_stroke_y = 1

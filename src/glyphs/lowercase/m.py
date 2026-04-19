@@ -7,7 +7,7 @@ class LowercaseMGlyph(Glyph):
     name = "lowercase_m"
     unicode = "0x6D"
     offset = 0
-    width_ratio = 1.22
+    width_ratio = 1.18
     mid_len = 0.7
     top_stroke_y = 0.96
     hx_ratio = 0.75

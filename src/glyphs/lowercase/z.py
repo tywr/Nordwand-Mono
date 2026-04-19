@@ -8,9 +8,10 @@ class LowercaseZGlyph(Glyph):
     unicode = "0x7A"
     offset = 0
     diag_stroke_ratio = 0.96
+    width_ratio = 1
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(offset=self.offset)
+        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
 
         # Top and bottom bars
         draw_rect(pen, b.x1, dc.x_height - dc.stroke_y, b.x2, dc.x_height)
