@@ -1,14 +1,15 @@
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs import Glyph
 from draw.superellipse_arch import draw_superellipse_arch
 from draw.corner import draw_corner
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_smooth_parallelogramm_vertical
 from draw.polygon import draw_polygon
-from utils.pens import NullPen
 
 
-class LowercaseAGlyph(Glyph):
-    name = "lowercase_a"
+class LowercaseA4Glyph(Glyph):
+    name = "lowercase_a_4"
+    font_feature = {"ss05": 1}
     unicode = "0x61"
     offset = -8
     loop_ratio = 0.6
@@ -16,14 +17,12 @@ class LowercaseAGlyph(Glyph):
     stroke_x_ratio = 1.04
     stroke_y_ratio = 0.96
     taper = 0.15
-    cap_ratio = 0.6
+    cap_hx_ratio = 1.05
+    cap_hy_ratio = 0.75
+    cap_ratio = 0.65
+    cap_height = 0.72
     cap_width = 0.96
-    cap_radius = 1.618
-    cap_right_hx_ratio = 1
-    cap_right_hy_ratio = 0.8
-    overshoot_reducing = 0.5
-    cap_height = 0.12
-    cap_offset = 0.08
+    thinning = 0.87
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -36,10 +35,13 @@ class LowercaseAGlyph(Glyph):
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
         dx = sx - dc.stroke_x
         hx, hy = b.hx, b.hy * self.loop_ratio
-        yc = b.y1 + self.cap_ratio * b.height
-        crhx, crhy = self.cap_right_hx_ratio * b.hx, self.cap_right_hy_ratio * b.hy
-        yt = b.y2 - self.cap_height * b.height - sy / 2
-        xt = b.x1 + self.cap_offset * b.width
+        yc, ys = (
+            b.y1 + self.cap_ratio * b.height,
+            b.y1 + (2 * self.cap_ratio - 1) * b.height,
+        )
+        chx, chy = self.cap_hx_ratio * b.hx, self.cap_hy_ratio * b.hy
+        ycut = b.y1 + self.cap_height * b.height
+        cw, csx = self.cap_width * b.width, self.thinning * sx
 
         # Lower half half of the bowl
         arch_params = draw_superellipse_arch(
@@ -86,24 +88,27 @@ class LowercaseAGlyph(Glyph):
             b.x2,
             yc,
         )
-
-        # Cap
         draw_corner(
-            pen,
-            sx,
+            pen, sx, sy, b.x2, yc, b.xmid, b.y2, chx, chy, orientation="top-left"
+        )
+
+        loop_glyph = ufoLib2.objects.Glyph()
+        draw_corner(
+            loop_glyph.getPen(),
+            csx,
             sy,
-            b.x2,
+            b.x2 - cw,
             yc,
             b.xmid,
-            # b.y2 - self.overshoot_reducing * dc.v_overshoot,
             b.y2,
-            crhx,
-            crhy,
-            orientation="top-left",
+            chx,
+            chy,
+            orientation="top-right",
         )
-        theta, delta = draw_smooth_parallelogramm_vertical(
-            pen, sy, b.xmid, b.y2, xt, yt, direction="bottom-left"
-        )
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(cut_glyph.getPen(), b.x1, b.ymid, b.xmid, ycut)
+        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
+        result.draw(pen)
 
         # Fill the gap
         (_, y1), (_, y2) = arch_params["outer"].intersection_x(

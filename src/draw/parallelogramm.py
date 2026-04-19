@@ -109,12 +109,29 @@ def _solve_parallelogram_stroke_vertical(
 
 
 def draw_parallelogramm_vertical(
-    pen, stroke_x, stroke_y, x1, y1, x2, y2, direction="top-right", no_draw=False
+    pen,
+    stroke_x,
+    stroke_y,
+    x1,
+    y1,
+    x2,
+    y2,
+    direction="top-right",
+    no_draw=False,
+    delta=None,
 ):
     """Parallelogram with vertical parallel sides and slanted top/bottom."""
-    s, delta, theta = _solve_parallelogram_stroke_vertical(
-        stroke_x, stroke_y, x1, y1, x2, y2
-    )
+    if delta is None:
+        s, delta, theta = _solve_parallelogram_stroke_vertical(
+            stroke_x, stroke_y, x1, y1, x2, y2
+        )
+    else:
+        # Forced delta — derive theta from the slanted-edge geometry:
+        # the slanted edge has horizontal run w and vertical run h - delta,
+        # so theta (angle from vertical) = atan2(w, h - delta).
+        w = max(x2, x1) - min(x2, x1)
+        h = max(y2, y1) - min(y2, y1)
+        theta = atan2(w, h - delta)
     if no_draw:
         return theta, delta
     if direction == "top-right":
@@ -124,7 +141,13 @@ def draw_parallelogramm_vertical(
         return theta, delta
     elif direction == "bottom-right":
         draw_polygon(
-            pen, points=[(x1, y1 + delta), (x1, y1), (x2, y2 - delta), (x2, y2)]
+            pen,
+            points=[
+                (x1, y1),
+                (x1, y1 - delta),
+                (x2, y2),
+                (x2, y2 + delta),
+            ],
         )
         return theta, delta
     elif direction == "top-left":
@@ -142,6 +165,58 @@ def draw_parallelogramm_vertical(
         draw_polygon(
             pen, points=[(x1, y1 - delta), (x1, y1), (x2, y2), (x2, y2 + delta)]
         )
+        return theta, delta
+    else:
+        raise ValueError("Value should be either `top` or `bottom`")
+
+
+def draw_smooth_parallelogramm_vertical(
+    pen,
+    delta,
+    x1,
+    y1,
+    x2,
+    y2,
+    radius=20,
+    direction="top-right",
+):
+    """Parallelogram with"""
+    w = max(x2, x1) - min(x2, x1)
+    h = max(y2, y1) - min(y2, y1)
+    theta = atan2(w, h - delta)
+
+    if direction == "top-right":
+        pen.moveTo((x1, y1))
+        pen.curveTo((x1, y1), (x1 + radius, y1), (x2, y2 - delta))
+        pen.lineTo((x2, y2))
+        pen.curveTo((x2, y2), (x1 + radius, y1 + delta), (x1, y1 + delta))
+        pen.closePath()
+        return theta, delta
+
+    elif direction == "bottom-right":
+        pen.moveTo((x1, y1))
+        pen.lineTo((x1, y1 - delta))
+        pen.curveTo((x1 + radius, y1 - delta), (x2, y2), (x2, y2))
+        pen.lineTo((x2, y2 + delta))
+        pen.curveTo((x2, y2 + delta), (x1 + radius, y1), (x1, y1))
+        pen.closePath()
+        return theta, delta
+
+    elif direction == "top-left":
+        pen.moveTo((x1, y1))
+        pen.lineTo((x1, y1 + delta))
+        pen.curveTo((x1, y1 + delta), (x1 - radius, y1 + delta), (x2, y2))
+        pen.lineTo((x2, y2 - delta))
+        pen.curveTo((x2, y2 - delta), (x1 - radius, y1), (x1, y1))
+        pen.closePath()
+        return theta, delta
+
+    elif direction == "bottom-left":
+        pen.moveTo((x1, y1))
+        pen.curveTo((x1, y1), (x1 - radius, y1), (x2, y2 + delta))
+        pen.lineTo((x2, y2))
+        pen.curveTo((x2, y2), (x1 - radius, y1 - delta), (x1, y1 - delta))
+        pen.closePath()
         return theta, delta
     else:
         raise ValueError("Value should be either `top` or `bottom`")

@@ -8,6 +8,7 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 
 class LowercaseE4Glyph(Glyph):
     name = "lowercase_e_4"
+    font_feature = {"ss05": 1}
     unicode = "0x65"
     offset = 5
     width_ratio = 1

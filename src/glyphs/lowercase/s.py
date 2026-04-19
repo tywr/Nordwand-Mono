@@ -1,10 +1,7 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
-
 from glyphs import Glyph
 from draw.s_curve import draw_s_curve
 from draw.corner import draw_corner
-from draw.rect import draw_rect
+from draw.parallelogramm import draw_smooth_parallelogramm_vertical
 
 
 class LowercaseSGlyph(Glyph):
@@ -20,10 +17,12 @@ class LowercaseSGlyph(Glyph):
     hy_ratio = 0.8
     top_height_ratio = 0.28
     bottom_height_ratio = 0.29
-    top_cut = 0.72
-    bot_cut = 0.28
-    top_thinning = 0.92
-    bot_thinning = 0.92
+    tail_height = 0.12
+    tail_offset = 0.08
+    # top_cut = 0.72
+    # bot_cut = 0.28
+    # top_thinning = 0.92
+    # bot_thinning = 0.92
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -36,46 +35,32 @@ class LowercaseSGlyph(Glyph):
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         xl = b.x1 + self.left_tail_offset * b.width
         xr = b.x2 - self.right_tail_offset * b.width
+        xt_top = b.x2 - self.tail_offset * b.width
+        yt_top = b.y2 - self.tail_height * b.height - sy / 2
+        xt_bot = b.x1 + self.tail_offset * b.width
+        yt_bot = b.y1 + self.tail_height * b.height + sy / 2
 
         ltop = self.top_height_ratio * b.height
         lbot = self.bottom_height_ratio * b.height
         yr, yl = b.y1 + lbot, b.y2 - ltop
-        ycut1, ycut2 = b.y1 + self.bot_cut * b.height, b.y1 + self.top_cut * b.height
 
         draw_corner(pen, sx, sy, xl, yl, b.xmid, b.y2, hx, hy, orientation="top-right")
         draw_corner(
             pen, sx, sy, xr, yr, b.xmid, b.y1, hx, hy, orientation="bottom-left"
         )
 
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_corner(
-            loop_glyph.getPen(),
-            sx * self.top_thinning,
-            sy,
-            b.x2,
-            yl,
-            b.xmid,
-            b.y2,
-            hx,
-            hy,
-            orientation="top-left",
+        draw_smooth_parallelogramm_vertical(
+            pen, sy, b.xmid, b.y2, xt_top, yt_top, direction="bottom-right"
         )
-        draw_corner(
-            loop_glyph.getPen(),
-            sx * self.bot_thinning,
+        draw_smooth_parallelogramm_vertical(
+            pen,
             sy,
-            b.x1,
-            yr,
             b.xmid,
             b.y1,
-            hx,
-            hy,
-            orientation="bottom-right",
+            xt_bot,
+            yt_bot,
+            direction="top-left",
         )
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), b.x1, ycut1, b.x2, ycut2)
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
 
         draw_s_curve(
             pen,

@@ -8,7 +8,7 @@ class LowercaseIGlyph(Glyph):
     offset = 22
     width_ratio = 1.12
     cap = 0.5
-    dot_width = 36
+    dot_height = 0.25
     rl_ratio = 0.5
 
     def draw_base(self, pen, dc):
@@ -41,11 +41,13 @@ class LowercaseIGlyph(Glyph):
     def draw(self, pen, dc):
         self.draw_base(pen, dc)
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
+
         # Accent dot
+        dh = self.dot_height * b.height
         draw_rect(
             pen,
-            b.xmid + dc.stroke_x / 2 - self.dot_width - dc.stroke_x,
-            dc.accent - self.dot_width / 2 - dc.stroke_x / 2,
+            b.xmid - dc.stroke_x / 2,
+            dc.accent - dh / 2,
             b.xmid + dc.stroke_x / 2,
-            dc.accent + dc.stroke_x / 2 + self.dot_width / 2,
+            dc.accent + dh / 2,
         )

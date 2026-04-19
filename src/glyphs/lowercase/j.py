@@ -8,10 +8,10 @@ class LowercaseJGlyph(Glyph):
     name = "lowercase_j"
     unicode = "0x6A"
     offset = -16
-    dot_width = 36
     tail_offset = 0
     width_ratio = 0.75
     updown_ratio = 1
+    dot_height = 0.25
 
     def draw_base(self, pen, dc):
         """Draw the letter without the dot (for use with accents)."""
@@ -52,10 +52,11 @@ class LowercaseJGlyph(Glyph):
         self.draw_base(pen, dc)
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
         # Accent dot
+        dh = self.dot_height * b.height
         draw_rect(
             pen,
-            b.x2 - dc.stroke_x - self.dot_width,
-            dc.accent - self.dot_width / 2 - dc.stroke_x / 2,
+            b.x2 - dc.stroke_x,
+            dc.accent - dh / 2,
             b.x2,
-            dc.accent + dc.stroke_x / 2 + self.dot_width / 2,
+            dc.accent + dh / 2,
         )
