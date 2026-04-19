@@ -34,8 +34,8 @@ def draw_square_corner(
 
         pen.moveTo((x1, y1))
         pen.lineTo((ix1, iy1))
-        pen.lineTo((ix1, yc1))
-        pen.curveTo((ix1, y2 + stroke_x), (ix2 + stroke_x, iy2), (ix2, iy2))
+        pen.lineTo((ix1, iy2))
+        pen.lineTo((ix2, iy2))
         pen.lineTo((x2, y2))
         pen.lineTo((xc2, yc2))
         pen.curveTo((xc2 + stroke_x, yc2), (xc1, yc1 - stroke_y), (xc1, yc1))
