@@ -1,17 +1,17 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
 from draw.superellipse_loop import draw_superellipse_loop
-from draw.rect import draw_rect
+from draw.parallelogramm import draw_parallelogramm_vertical
 
 
 class UppercaseCGlyph(UppercaseGlyph):
     name = "uppercase_c"
     unicode = "0x43"
     offset = 0
-    opening = 280  # Opening height at x_height, scaled to cap in draw
     stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.12
-    stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 0.95
+    stroke_y_ratio = UppercaseGlyph.stroke_y_ratio
+    tail_offset = 0.08
+    hx_ratio = 0.8
+    hy_ratio = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -20,34 +20,22 @@ class UppercaseCGlyph(UppercaseGlyph):
             overshoot_bottom=True,
             overshoot_top=True,
             overshoot_left=True,
-            overshoot_right=True,
+            # overshoot_right=True,
             width_ratio=self.width_ratio,
             uppercase=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        opening = self.opening * dc.cap / dc.x_height
+        hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
+        yt_top = dc.cap - sy - dc.v_overshoot
+        yt_bot = sy + dc.v_overshoot
+        xt = b.x2 - self.tail_offset * b.width
 
-        loop_glyph = ufoLib2.objects.Glyph()
         draw_superellipse_loop(
-            loop_glyph.getPen(),
-            sx,
-            sy,
-            b.x1,
-            b.y1,
-            b.x2,
-            b.y2,
-            b.hx,
-            b.hy,
+            pen, sx, sy, b.x1, b.y1, b.x2, b.y2, hx, hy, cut="right"
         )
-
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(
-            cut_glyph.getPen(),
-            b.xmid,
-            b.ymid - opening / 2 + sy / 2,
-            b.xmid + dc.window_width,
-            b.ymid + opening / 2 - sy / 2,
+        draw_parallelogramm_vertical(
+            pen, sx, sy, b.xmid, b.y2, xt, yt_top, direction="bottom-right", delta=sy
         )
-
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
+        draw_parallelogramm_vertical(
+            pen, sx, sy, b.xmid, b.y1, xt, yt_bot, direction="top-right", delta=sy
+        )

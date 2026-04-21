@@ -1,8 +1,8 @@
 from glyphs import Glyph
-from draw.s_curve import draw_s_curve
 from draw.corner import draw_corner
 from draw.parallelogramm import draw_smooth_parallelogramm_vertical
 from draw.superellipse_loop import draw_superellipse_loop
+from draw.corner import draw_corner
 
 
 class LowercaseSGlyph(Glyph):
@@ -11,8 +11,8 @@ class LowercaseSGlyph(Glyph):
     offset = 0
     width_ratio = 1
     stroke_x_ratio = 1.00
-    left_tail_offset = 0.06
-    right_tail_offset = 0.12
+    right_tail_offset = 0.105
+    left_tail_offset = 0.0525
     hx_ratio = 1
     hy_ratio = 1.35
     mid_height = 0.52
@@ -26,6 +26,7 @@ class LowercaseSGlyph(Glyph):
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
+
         ymid = b.y1 + self.mid_height * b.height
 
         xt_top = b.x2 - self.right_tail_offset * b.width

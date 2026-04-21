@@ -1,3 +1,4 @@
+from math import tan, pi
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm_vertical
@@ -38,4 +39,4 @@ class UppercaseNGlyph(UppercaseGlyph):
 
         # Gaps
         draw_rect(pen, b.x1 + sx, b.y2 - delta, b.x1 + sx + dc.gap, b.y2)
-        draw_rect(pen, b.x2 - sx - dc.gap, b.y1, b.x2 - sx, b.y1 + delta)
+        draw_rect(pen, b.x2 - sx - dc.gap, 0, b.x2 - sx, delta)

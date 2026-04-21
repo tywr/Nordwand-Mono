@@ -11,7 +11,7 @@ class LowercaseHGlyph(Glyph):
     width_ratio = 1.00
     top_stroke_y = 0.96
     hx_ratio = 1.25
-    taper = 0.4
+    taper = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -31,7 +31,7 @@ class LowercaseHGlyph(Glyph):
             b.y2,
             1.1 * b.hx,
             b.hy,
-            taper=self.taper,
+            taper=self.taper * dc.taper,
             side="left",
             cut="bottom",
         )
@@ -50,7 +50,7 @@ class LowercaseHGlyph(Glyph):
             points=[
                 (b.x1 + dc.stroke_x + dc.gap, y2),
                 (b.x1 + dc.stroke_x, y2),
-                (b.x1 + dc.stroke_x - dc.stroke_x * dc.taper / 2, b.ymid),
+                (b.x1 + dc.stroke_x - dc.stroke_x * dc.taper * self.taper / 2, b.ymid),
             ],
         )
 

@@ -13,7 +13,7 @@ class FontConfig:
 
     ascent: int = 750
     descent: int = -200
-    cap: int = 725
+    cap: int = 710
     x_height: int = 520
 
     accent: int = 710
@@ -49,8 +49,8 @@ class DrawConfig(FontConfig):
     hx: int = 172
     hy: int = 164
 
-    cap_hx: int = 164
-    cap_hy: int = 180
+    cap_hx: int = 178
+    cap_hy: int = 184
 
     gap: int = 10
 
@@ -58,8 +58,6 @@ class DrawConfig(FontConfig):
     number_hy: int = 180
 
     taper: float = 0.5
-    taper_a: float = 0.15
-    taper_r: float = 0.15
 
     @classmethod
     def weight(cls, w=400):
@@ -125,8 +123,8 @@ class DrawConfig(FontConfig):
         y2 = getattr(self, height)
 
         v_ov = self.v_overshoot
-        if uppercase:
-            v_ov *= self.cap / self.x_height
+        # if uppercase:
+        #     v_ov *= self.cap / self.x_height
 
         if overshoot_left:
             x1 -= self.h_overshoot / 2

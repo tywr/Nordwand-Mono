@@ -6,9 +6,9 @@ from draw.rect import draw_rect
 class LowercaseTGlyph(Glyph):
     name = "lowercase_t"
     unicode = "0x74"
-    offset = -48
-    width_ratio = 1.14
-    rl_ratio = 0.56
+    offset = -45
+    width_ratio = 1.1
+    rl_ratio = 0.55
     up_ratio = 0.28
 
     def draw(self, pen, dc):

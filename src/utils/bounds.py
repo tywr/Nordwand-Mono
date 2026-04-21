@@ -30,6 +30,10 @@ class BodyBounds:
     def __repr__(self):
         return f"BodyBounds(x1={self.x1}, y1={self.y1}, x2={self.x2}, y2={self.y2})"
 
+    def reduce_v_overshoot(self, points=1):
+        self.y1 += points
+        self.y2 -= points
+
     @property
     def width(self) -> float:
         return self.x2 - self.x1

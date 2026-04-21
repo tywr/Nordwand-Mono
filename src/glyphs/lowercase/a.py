@@ -14,7 +14,6 @@ class LowercaseAGlyph(Glyph):
     width_ratio = 1
     stroke_x_ratio = 1.04
     stroke_y_ratio = 0.96
-    taper = 0.3
     cap_ratio = 0.6
     cap_width = 0.96
     cap_radius = 1.618
@@ -23,6 +22,7 @@ class LowercaseAGlyph(Glyph):
     overshoot_reducing = 0.5
     cap_offset = 0.08
     ending_thickness = 0.8
+    taper = 0.6
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -51,7 +51,7 @@ class LowercaseAGlyph(Glyph):
             b.y1 + b.height * self.loop_ratio,
             hx,
             hy,
-            taper=self.taper,
+            taper=self.taper * dc.taper,
             side="right",
             cut="top",
         )
@@ -76,7 +76,6 @@ class LowercaseAGlyph(Glyph):
             b.x2 - dc.stroke_x,
             b.y1 + b.height * self.loop_ratio,
         )
-
 
         # Cap
         draw_corner(
@@ -135,6 +134,6 @@ class LowercaseAGlyph(Glyph):
             points=[
                 (b.x2 - dc.stroke_x - dc.gap, y1),
                 (b.x2 - dc.stroke_x, y1),
-                (b.x2 - dc.stroke_x + dc.stroke_x * dc.taper / 2, b.ymid),
+                (b.x2 - dc.stroke_x + dc.stroke_x * dc.taper * self.taper / 2, b.ymid),
             ],
         )

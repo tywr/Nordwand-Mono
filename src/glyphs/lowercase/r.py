@@ -1,5 +1,6 @@
 from glyphs import Glyph
 from draw.r_arch import draw_r_arch
+from draw.superellipse_arch import draw_superellipse_arch
 from draw.rect import draw_rect
 from draw.polygon import draw_polygon
 from draw.parallelogramm import draw_smooth_parallelogramm_vertical
@@ -8,12 +9,12 @@ from draw.parallelogramm import draw_smooth_parallelogramm_vertical
 class LowercaseRGlyph(Glyph):
     name = "lowercase_r"
     unicode = "0x72"
-    offset = 14
-    loop_ratio = 1.2
-    width_ratio = 0.86
-    top_stroke_y = 1
+    offset = 10
+    loop_ratio = 0.8
+    width_ratio = 1
     hx_ratio = 1
-    taper = 0.2
+    hy_ratio = 1
+    taper = 0.4
     ending_thickness = 0.8
 
     def draw(self, pen, dc):
@@ -23,22 +24,22 @@ class LowercaseRGlyph(Glyph):
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
-        hx, hy = dc.hx * self.hx_ratio, dc.hy * self.loop_ratio
-        yt = dc.x_height - dc.stroke_y - dc.v_overshoot
-        xl = self.loop_ratio * b.width + dc.stroke_x
+        hx, hy = dc.hx * self.hx_ratio, dc.hy * self.hy_ratio
+        ys = b.y2 - self.loop_ratio * b.height
 
-        # Top arch, cut at the bottom (only upper half drawn)
-        arch_params = draw_r_arch(
+        arch_params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
-            b.y1,
-            xl,
+            ys,
+            b.x2,
             b.y2,
             hx,
             hy,
-            taper=self.taper,
+            taper=self.taper * dc.taper,
+            side="left",
+            cut="bottom",
         )
 
         # Compute the intersection of the outer bowl with the stem
@@ -65,13 +66,10 @@ class LowercaseRGlyph(Glyph):
             points=[
                 (b.x1 + dc.stroke_x + dc.gap, y2),
                 (b.x1 + dc.stroke_x, y2),
-                (b.x1 + dc.stroke_x - dc.stroke_x * dc.taper / 2, b.ymid),
+                (b.x1 + dc.stroke_x - dc.stroke_x * dc.taper * self.taper / 2, b.ymid),
             ],
         )
 
-        draw_smooth_parallelogramm_vertical(
-            pen, dc.stroke_y, (b.x1 + xl) / 2, b.y2, b.x2, yt, direction="bottom-right"
-        )
-
-        # Wing
-        draw_rect(pen, b.x1, dc.x_height - dc.stroke_y, b.x1, dc.x_height)
+        # draw_smooth_parallelogramm_vertical(
+        #     pen, dc.stroke_y, (b.x1 + xl) / 2, b.y2, b.x2, yt, direction="bottom-right"
+        # )

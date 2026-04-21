@@ -6,7 +6,7 @@ from draw.rect import draw_rect
 class LowercaseFGlyph(Glyph):
     name = "lowercase_f"
     unicode = "0x66"
-    offset = -10
+    offset = -15
     rl_ratio = 0.52
     width_ratio = 1.1
 

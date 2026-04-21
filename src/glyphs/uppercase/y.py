@@ -12,7 +12,7 @@ class UppercaseYGlyph(UppercaseGlyph):
     offset = 0
     width_ratio = 1.3
     junction_ratio = 0.4
-    overlap = 0.35
+    overlap = 0.1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
