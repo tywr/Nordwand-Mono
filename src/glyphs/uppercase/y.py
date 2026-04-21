@@ -10,7 +10,7 @@ class UppercaseYGlyph(UppercaseGlyph):
     name = "uppercase_y"
     unicode = "0x59"
     offset = 0
-    width_ratio = 1.3
+    width_ratio = 1.2
     junction_ratio = 0.4
     overlap = 0.1
 

@@ -49,8 +49,8 @@ class DrawConfig(FontConfig):
     hx: int = 172
     hy: int = 164
 
-    cap_hx: int = 178
-    cap_hy: int = 184
+    cap_hx: int = 186
+    cap_hy: int = 178
 
     gap: int = 10
 
@@ -123,15 +123,16 @@ class DrawConfig(FontConfig):
         y2 = getattr(self, height)
 
         v_ov = self.v_overshoot
-        # if uppercase:
-        #     v_ov *= self.cap / self.x_height
+        h_ov = self.h_overshoot
+        if uppercase:
+            v_ov *= 0.6 * self.cap / self.x_height
 
         if overshoot_left:
-            x1 -= self.h_overshoot / 2
-            x2 += self.h_overshoot / 2
+            x1 -= h_ov / 2
+            x2 += h_ov / 2
         if overshoot_right:
-            x1 -= self.h_overshoot / 2
-            x2 += self.h_overshoot / 2
+            x1 -= h_ov / 2
+            x2 += h_ov / 2
 
         if overshoot_bottom:
             y1 -= v_ov
@@ -152,4 +153,6 @@ class DrawConfig(FontConfig):
         hx = hx * (x2 - x1 - self.stroke_x) / self.width
         hy = hy * (y2 - y1 - self.stroke_y) / self.x_height
 
-        return BodyBounds(x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy)
+        return BodyBounds(
+            x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy, v_ov=v_ov, h_ov=h_ov
+        )

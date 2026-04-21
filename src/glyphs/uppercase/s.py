@@ -1,5 +1,4 @@
 from glyphs.uppercase import UppercaseGlyph
-
 from draw.parallelogramm import draw_smooth_parallelogramm_vertical
 from draw.superellipse_loop import draw_superellipse_loop
 
@@ -8,14 +7,15 @@ class UppercaseSGlyph(UppercaseGlyph):
     name = "uppercase_s"
     unicode = "0x53"
     offset = 0
-    stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.05
-    stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 0.95
-    left_tail_offset = 0.02
-    right_tail_offset = 0.015
+    width_ratio = 1
+    stroke_x_ratio = 1.00
+    right_tail_offset = 0.105
+    left_tail_offset = 0.0525
     hx_ratio = 1
-    hy_ratio = 1.3
-    middle_hy_ratio = 1.15
+    hy_ratio = 1.35
     mid_height = 0.53
+    reduce_overshoot = 0
+    width_ratio = 1.08
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -25,14 +25,16 @@ class UppercaseSGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
             height="cap",
         )
+        b.reduce_v_overshoot(self.reduce_overshoot * dc.v_overshoot)
         sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
+
         ymid = b.y1 + self.mid_height * b.height
 
         xt_top = b.x2 - self.right_tail_offset * b.width
-        yt_top = dc.cap - sy - dc.v_overshoot
+        yt_top = dc.cap - sy
         xt_bot = b.x1 + self.left_tail_offset * b.width
-        yt_bot = sy + dc.v_overshoot
+        yt_bot = sy
 
         draw_smooth_parallelogramm_vertical(
             pen, sy, b.xmid, b.y2, xt_top, yt_top, direction="bottom-right"

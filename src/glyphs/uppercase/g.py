@@ -1,9 +1,8 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
-from draw.superellipse_loop import draw_superellipse_loop
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_vertical
+from draw.superellipse_arch import draw_superellipse_arch
 
 
 class UppercaseGGlyph(UppercaseGlyph):
@@ -13,28 +12,33 @@ class UppercaseGGlyph(UppercaseGlyph):
     opening = 140
     stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.05
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 0.95
-    tail_offset = 0.1
+    opening1 = 0.53
+    opening2 = 0.7
+    hy_ratio = 1
+    hx_ratio = 1
+    width_ratio = 1.12
+    thinning = 0.95
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
-            height="cap",
             overshoot_bottom=True,
             overshoot_top=True,
             overshoot_left=True,
             overshoot_right=True,
             width_ratio=self.width_ratio,
             uppercase=True,
+            height="cap"
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        opening = self.opening * dc.cap / dc.x_height
-        hx, hy = dc.hx * self.width_ratio, dc.hy * dc.cap / dc.x_height
-        yt_top = dc.cap - sy - dc.v_overshoot
-        xt = b.x2 - self.tail_offset * b.width
+        sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
+        hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
+        yc1 = b.y1 + b.height * self.opening1
+        yc2 = b.y1 + b.height * self.opening2
+        ymid = b.y1 + self.opening1 * b.height
 
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_superellipse_loop(
-            loop_glyph.getPen(),
+        glyph = ufoLib2.objects.Glyph()
+        draw_superellipse_arch(
+            glyph.getPen(),
             sx,
             sy,
             b.x1,
@@ -43,41 +47,24 @@ class UppercaseGGlyph(UppercaseGlyph):
             b.y2,
             hx,
             hy,
-            cut="top"
+            side="right",
+            taper=self.thinning,
         )
-        draw_superellipse_loop(
-            loop_glyph.getPen(),
-            sx,
-            sy,
-            b.x1,
-            b.y1,
-            b.x2,
-            b.y2,
-            hx,
-            hy,
-            cut="right"
-        )
-
-        draw_parallelogramm_vertical(
-            pen, sx, sy, b.xmid, b.y2, xt, yt_top, direction="bottom-right", delta=sy
-        )
-
         cut_glyph = ufoLib2.objects.Glyph()
         draw_rect(
             cut_glyph.getPen(),
             b.xmid,
-            b.ymid,
-            b.xmid + dc.window_width,
-            b.ymid + opening - sy / 2,
+            yc1,
+            b.x2 + 10,
+            yc2,
         )
-
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
+        res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
+        res.draw(pen)
 
         draw_rect(
             pen,
             b.xmid,
-            b.ymid - sy,
+            ymid - sy,
             b.x2 - sx / 2,
-            b.ymid,
+            ymid,
         )

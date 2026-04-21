@@ -10,7 +10,7 @@ class UppercaseRGlyph(UppercaseGlyph):
     offset = 8
     loop_ratio = 0.55
     loop_width = 0.95
-    branch_start = 0.65
+    branch_start = 0.52
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

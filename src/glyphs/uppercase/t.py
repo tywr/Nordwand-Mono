@@ -6,7 +6,7 @@ class UppercaseTGlyph(UppercaseGlyph):
     name = "uppercase_t"
     unicode = "0x54"
     offset = 0
-    width_ratio = 1.2
+    width_ratio = 1.1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -16,5 +16,6 @@ class UppercaseTGlyph(UppercaseGlyph):
 
         # Vertical stem (centered)
         draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, b.y2)
+
         # Top bar
         draw_rect(pen, b.x1, b.y2 - sy, b.x2, b.y2)

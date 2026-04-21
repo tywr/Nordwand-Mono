@@ -8,13 +8,19 @@ class UppercaseZGlyph(UppercaseGlyph):
     unicode = "0x5A"
     offset = 0
     wdith_ratio = 1.08
+    right_offset = 0.01
+    left_offset = 0.025
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(offset=self.offset, height="cap", width_ratio=self.width_ratio)
+        b = dc.body_bounds(
+            offset=self.offset, height="cap", width_ratio=self.width_ratio
+        )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        xl = b.x1 + self.left_offset * b.width
+        xr = b.x2 - self.right_offset * b.width
 
         # Top and bottom bars
-        draw_rect(pen, b.x1, b.y2 - sy, b.x2, b.y2)
+        draw_rect(pen, xl, b.y2 - sy, xr, b.y2)
         draw_rect(pen, b.x1, 0, b.x2, sy)
 
         # Diagonal stroke
@@ -24,15 +30,15 @@ class UppercaseZGlyph(UppercaseGlyph):
             sy,
             b.x1,
             b.y1 + sy + dc.gap,
-            b.x2,
+            xr,
             b.y2 - sy - dc.gap,
         )
 
         draw_rect(
             pen,
-            b.x2 - delta,
+            xr - delta,
             b.y2 - sy - dc.gap,
-            b.x2,
+            xr,
             b.y2 - sy,
         )
         draw_rect(

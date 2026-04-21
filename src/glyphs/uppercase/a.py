@@ -9,10 +9,10 @@ class UppercaseAGlyph(UppercaseGlyph):
     name = "uppercase_a"
     unicode = "0x41"
     offset = 0
-    bar_height = 320
+    bar_height = 0.35
     overlap = 0.25
     stroke_x_ratio = 1.02
-    width_ratio = 1.3
+    width_ratio = 1.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -21,7 +21,8 @@ class UppercaseAGlyph(UppercaseGlyph):
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
 
         half_width = b.width / 2 - sx / 2
-        ov = self.overlap * dc.stroke_x
+        ov = self.overlap * sx
+        hb = self.bar_height * b.height
 
         # Left branch
         draw_parallelogramm(
@@ -40,10 +41,10 @@ class UppercaseAGlyph(UppercaseGlyph):
         # Crossbar
         draw_rect(
             pen,
-            b.xmid - half_width + (self.bar_height - sy) * cos(theta),
-            self.bar_height - sy,
-            b.xmid + half_width - (self.bar_height - sy) * cos(theta),
-            self.bar_height,
+            b.xmid - half_width + (hb - sy) * cos(theta),
+            hb - sy,
+            b.xmid + half_width - (hb - sy) * cos(theta),
+            hb,
         )
 
         # Fill the gap

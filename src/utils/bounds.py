@@ -26,6 +26,8 @@ class BodyBounds:
     y2: float
     hx: float
     hy: float
+    v_ov: float
+    h_ov: float
 
     def __repr__(self):
         return f"BodyBounds(x1={self.x1}, y1={self.y1}, x2={self.x2}, y2={self.y2})"

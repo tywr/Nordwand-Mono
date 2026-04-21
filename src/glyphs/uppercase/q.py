@@ -1,14 +1,15 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.superellipse_loop import draw_superellipse_loop
-from draw.parallelogramm import draw_parallelogramm
+from draw.square_corner import draw_square_corner
 
 
 class UppercaseQGlyph(UppercaseGlyph):
     name = "uppercase_q"
     unicode = "0x51"
     offset = 0
-    tail_offset = 0.1
-    tail_start_offset = 0.05
+    tail_width = 0.45
+    tail_height = 0.2
+    width_ratio = 1.12
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -23,8 +24,8 @@ class UppercaseQGlyph(UppercaseGlyph):
         )
 
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        oy = self.tail_offset * b.height
-        ox = self.tail_start_offset * b.width
+        xe = b.xmid + self.tail_width * b.width
+        ye = - self.tail_height * b.height
 
         draw_superellipse_loop(
             pen,
@@ -38,6 +39,12 @@ class UppercaseQGlyph(UppercaseGlyph):
             b.hy,
         )
 
-        draw_parallelogramm(
-            pen, sx, sy, b.x2, -oy, b.xmid - sx / 2 - ox, b.ymid - oy, direction="top-left"
+        draw_square_corner(
+            pen,
+            sx,
+            sy,
+            b.xmid - sx / 2,
+            b.y1 + sy / 2,
+            xe,
+            ye,
         )

@@ -11,6 +11,7 @@ class UppercaseNGlyph(UppercaseGlyph):
     offset = 0
     middle_stroke_ratio = 0.9
     overlap = 0.3
+    width_ratio = 1.06
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

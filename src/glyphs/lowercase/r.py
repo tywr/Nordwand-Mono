@@ -11,11 +11,11 @@ class LowercaseRGlyph(Glyph):
     unicode = "0x72"
     offset = 10
     loop_ratio = 0.8
-    width_ratio = 1
     hx_ratio = 1
     hy_ratio = 1
     taper = 0.4
     ending_thickness = 0.8
+    width_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
