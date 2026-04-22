@@ -9,7 +9,7 @@ class EightGlyph(NumberGlyph):
     offset = 0
     height_ratio = 0.53
     loop_width_ratio = 0.92
-    taper = 0.75
+    taper = 1.5
     extra_overshoot = 0.000
     width_ratio = 1.06
 
@@ -31,6 +31,7 @@ class EightGlyph(NumberGlyph):
         ov = self.extra_overshoot * b.height
 
         # Top loop
+        taper = max(self.taper * dc.taper, 0.65)
         top_params = draw_superellipse_arch(
             pen,
             sx,
@@ -41,7 +42,7 @@ class EightGlyph(NumberGlyph):
             b.y2 + ov,
             b.hx,
             b.hy * (1 - self.height_ratio),
-            taper=self.taper,
+            taper=taper,
             side="bottom",
         )
 
@@ -56,7 +57,7 @@ class EightGlyph(NumberGlyph):
             ymid + sy / 2,
             b.hx,
             b.hy * self.height_ratio,
-            taper=self.taper,
+            taper=taper,
             side="top",
         )
 

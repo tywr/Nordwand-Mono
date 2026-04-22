@@ -13,7 +13,7 @@ class SixGlyph(NumberGlyph):
     offset = 0
     loop_ratio = 0.6
     top_ratio = 0.4
-    taper = 0.4
+    taper = 0.8
     cap_x = 0.9
     joint_x = 1.4
 
@@ -44,7 +44,7 @@ class SixGlyph(NumberGlyph):
             ymid,
             b.hx,
             b.hy * self.loop_ratio,
-            taper=self.taper,
+            taper=self.taper * dc.taper,
             side="left",
             cut="bottom",
         )

@@ -12,7 +12,7 @@ class ThreeGlyph(NumberGlyph):
     offset = 0
     loop_width_ratio = 0.92
     mid_ratio = 0.53
-    taper = 0.75
+    taper = 1.5
     len_mid = 0.7
 
     def draw(self, pen, dc):
@@ -34,6 +34,7 @@ class ThreeGlyph(NumberGlyph):
         ry = (b.y2 - b.ymid + sy / 2) / b.height
 
         # Top loop
+        taper = max(self.taper * dc.taper, 0.65)
         top_params = draw_superellipse_arch(
             base_glyph.getPen(),
             sx,
@@ -44,7 +45,7 @@ class ThreeGlyph(NumberGlyph):
             b.y2,
             b.hx,
             b.hy * ry * 2 * (1 - self.mid_ratio),
-            taper=self.taper,
+            taper=taper,
             side="bottom",
         )
 
@@ -59,7 +60,7 @@ class ThreeGlyph(NumberGlyph):
             ymid + sy / 2,
             b.hx,
             b.hy * ry * 2 * self.mid_ratio,
-            taper=self.taper,
+            taper=taper,
             side="top",
         )
 

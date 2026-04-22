@@ -13,7 +13,7 @@ class NineGlyph(NumberGlyph):
     offset = 0
     vertical_ratio = 0.6
     bottom_cut = 0.2
-    taper = 0.4
+    taper = 0.8
     foot_x = 0.05
     joint_x = 1.4
 
@@ -44,7 +44,7 @@ class NineGlyph(NumberGlyph):
             b.y2,
             b.hx,
             b.hy * self.vertical_ratio,
-            taper=self.taper,
+            taper=self.taper * dc.taper,
             side="right",
             cut="top",
         )

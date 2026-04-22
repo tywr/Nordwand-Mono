@@ -1,17 +1,16 @@
 from glyphs import LigatureGlyph
-from draw.rect import draw_rect
 from draw.dented_rect import draw_dented_rect
 
 
-class DoubleLowLineGlyph(LigatureGlyph):
-    """Ligature glyph for __ (two consecutive underscores).
+class DoubleHyphenGlyph(LigatureGlyph):
+    """Ligature glyph for -- (two consecutive underscores).
 
     Draws a single continuous bar spanning the full width of two cells
     (2 * window_width), creating a seamless connection between underscores.
     """
 
-    name = "double_low_line"
-    components = ["low_line", "low_line"]
+    name = "double_hyphen"
+    components = ["hyphen_minus", "hyphen_minus"]
     number_characters = 2
     width_ratio = 1
 
@@ -19,15 +18,16 @@ class DoubleLowLineGlyph(LigatureGlyph):
         b = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
+        sy = dc.stroke_y
         # Draw a bar that spans two full glyph widths edge-to-edge
         draw_dented_rect(
-            pen, b.x1, -dc.stroke_y, dc.window_width, 0, side="right"
+            pen, b.x1, dc.math - sy / 2, dc.window_width, dc.math + sy / 2, side="right"
         )
         draw_dented_rect(
             pen,
             dc.window_width,
-            -dc.stroke_y,
+            dc.math - sy / 2,
             b.x2 + dc.window_width,
-            0,
+            dc.math + sy / 2,
             side="left",
         )

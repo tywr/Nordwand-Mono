@@ -1,5 +1,5 @@
 from glyphs import LigatureGlyph
-from draw.rect import draw_rect
+from draw.dented_rect import draw_dented_rect
 
 
 class DoubleEqualsSignGlyph(LigatureGlyph):
@@ -20,16 +20,32 @@ class DoubleEqualsSignGlyph(LigatureGlyph):
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
         g = self.gap * b.height
-        draw_rect(
+        draw_dented_rect(
             pen,
             b.x1,
             dc.math + g / 2 - dc.stroke_y / 2,
-            b.x2 + dc.window_width,
+            dc.window_width,
+            dc.math + g / 2 + dc.stroke_y / 2,
+            side="right",
+        )
+        draw_dented_rect(
+            pen,
+            dc.window_width,
+            dc.math + g / 2 - dc.stroke_y / 2,
+            dc.window_width + b.x2,
             dc.math + g / 2 + dc.stroke_y / 2,
         )
-        draw_rect(
+        draw_dented_rect(
             pen,
             b.x1,
+            dc.math - g / 2 - dc.stroke_y / 2,
+            dc.window_width,
+            dc.math - g / 2 + dc.stroke_y / 2,
+            side="right",
+        )
+        draw_dented_rect(
+            pen,
+            dc.window_width,
             dc.math - g / 2 - dc.stroke_y / 2,
             b.x2 + dc.window_width,
             dc.math - g / 2 + dc.stroke_y / 2,

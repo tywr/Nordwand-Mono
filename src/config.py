@@ -62,9 +62,14 @@ class DrawConfig(FontConfig):
         from math import log, exp
 
         br = 1.58
-        bhy = 1.3
         ratio = exp((w - 400) * log(br) / 300)
+
+        bhy = 1.3
         hy_ratio = exp((w - 400) * log(bhy) / 300)
+
+        # Function mapping 100 → 0.5 and 700 → 0.2
+        taper = min(0.5, 0.5 - 0.0007 * (w - 400))
+
         extra_height = int((ratio - 1) * cls.stroke_y / 2)
         return cls(
             stroke_x=int(cls.stroke_x * ratio),
@@ -74,7 +79,7 @@ class DrawConfig(FontConfig):
             cap=cls.cap + extra_height,
             ascent=cls.ascent + extra_height,
             descent=cls.descent - extra_height,
-            taper=cls.taper,
+            taper=taper,
             hy=hy_ratio * cls.hy,
             cap_hy=hy_ratio * cls.cap_hy,
         )
