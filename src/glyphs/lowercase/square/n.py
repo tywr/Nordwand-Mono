@@ -1,17 +1,14 @@
-from glyphs import Glyph
 from draw.superellipse_arch import draw_superellipse_arch
 from draw.rect import draw_rect
 from draw.polygon import draw_polygon
+from glyphs.lowercase.square import SquareLowercaseGlyph
 
 
-class LowercaseHGlyph(Glyph):
-    name = "lowercase_h"
-    unicode = "0x68"
+class LowercaseNGlyph(SquareLowercaseGlyph):
+    name = "lowercase_n"
+    unicode = "0x6E"
     offset = 0
-    width_ratio = 1.00
-    top_stroke_y = 0.96
-    hx_ratio = 1.15
-    taper = 0.8
+    ending_thickness = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,25 +21,35 @@ class LowercaseHGlyph(Glyph):
         arch_params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
-            self.top_stroke_y * dc.stroke_y,
+            dc.stroke_y,
             b.x1,
             b.y2 - b.height,
             b.x2,
             b.y2,
-            1.1 * b.hx,
+            self.hx_ratio * b.hx,
             b.hy,
             taper=self.taper * dc.taper,
             side="left",
             cut="bottom",
         )
-        # Left stem — full ascent height with gap at the top
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
 
         # Compute the intersection and fill the gap
         (_, y1), (_, y2) = arch_params["outer"].intersection_x(
             x=b.x1 + dc.stroke_x + dc.gap
         )
-        _, y2 = min(y1, y2), max(y1, y2)
+        y1, y2 = min(y1, y2), max(y1, y2)
+
+        # Left stem
+        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, y2)
+        draw_polygon(
+            pen,
+            points=[
+                (b.x1 + self.ending_thickness * dc.stroke_x, dc.x_height),
+                (b.x1, dc.x_height),
+                (b.x1, y2),
+                (b.x1 + dc.stroke_x, y2),
+            ],
+        )
 
         # Fill the gap
         draw_polygon(
@@ -55,4 +62,4 @@ class LowercaseHGlyph(Glyph):
         )
 
         # Right stem — reaches up to the arch midpoint
-        draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, b.y1 + b.height / 2)
+        draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, b.y2 - b.height / 2)

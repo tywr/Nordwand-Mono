@@ -1,17 +1,13 @@
-from glyphs import Glyph
 from draw.superellipse_arch import draw_superellipse_arch
 from draw.rect import draw_rect
 from draw.polygon import draw_polygon
+from glyphs.lowercase.square import SquareLowercaseGlyph
 
 
-class LowercaseUGlyph(Glyph):
+class LowercaseUGlyph(SquareLowercaseGlyph):
     name = "lowercase_u"
     unicode = "0x75"
     offset = 0
-    width_ratio = 1.00
-    bottom_stroke_y = 0.96
-    hx_ratio = 1.15
-    taper = 0.8
     ending_thickness = 0.8
 
     def draw(self, pen, dc):
@@ -26,7 +22,7 @@ class LowercaseUGlyph(Glyph):
         arch_params = draw_superellipse_arch(
             pen,
             dc.stroke_x,
-            self.bottom_stroke_y * dc.stroke_y,
+            dc.stroke_y,
             b.x1,
             b.y1,
             b.x2,

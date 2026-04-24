@@ -12,8 +12,8 @@ from glyphs.lowercase.a import LowercaseAGlyph
 from glyphs.lowercase.e import LowercaseEGlyph
 from glyphs.lowercase.i import LowercaseIGlyph
 from glyphs.lowercase.o import LowercaseOGlyph
-from glyphs.lowercase.u import LowercaseUGlyph
-from glyphs.lowercase.n import LowercaseNGlyph
+from glyphs.lowercase.square.u import LowercaseUGlyph
+from glyphs.lowercase.square.n import LowercaseNGlyph
 from glyphs.lowercase.c import LowercaseCGlyph
 from glyphs.lowercase.y import LowercaseYGlyph
 from glyphs.lowercase.s import LowercaseSGlyph

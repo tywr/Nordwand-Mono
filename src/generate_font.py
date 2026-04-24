@@ -39,16 +39,19 @@ import glyphs
 
 
 def discover_glyphs():
-    """Recursively import all modules under glyphs/ and return Glyph subclasses."""
+    """Recursively import all modules under glyphs/ and return Glyph subclasses.
 
-    def on_error(name):
-        raise ImportError(f"Failed to import {name}")
+    Walks subpackages to arbitrary depth. Import errors propagate so a
+    broken module aborts discovery rather than being silently skipped.
+    """
 
-    for pkg in [glyphs]:
-        for importer, modname, ispkg in pkgutil.walk_packages(
-            pkg.__path__, pkg.__name__ + ".", onerror=on_error
-        ):
-            importlib.import_module(modname)
+    def walk(pkg):
+        for info in pkgutil.iter_modules(pkg.__path__, pkg.__name__ + "."):
+            module = importlib.import_module(info.name)
+            if info.ispkg:
+                walk(module)
+
+    walk(glyphs)
 
     def all_subclasses(cls):
         result = []
