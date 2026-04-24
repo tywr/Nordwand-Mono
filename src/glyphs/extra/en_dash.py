@@ -6,11 +6,15 @@ class EnDashGlyph(Glyph):
     name = "en_dash"
     unicode = "0x2013"
     offset = 0
+    width = 440
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(
-            offset=self.offset, height="x_height"
+        b = dc.body_bounds(offset=0)
+        w = self.width
+        draw_rect(
+            pen,
+            b.xmid - w / 2,
+            dc.x_height / 2 + dc.stroke_y / 2,
+            b.xmid + w / 2,
+            dc.x_height / 2 - dc.stroke_y / 2,
         )
-        w = dc.window_width / 2
-        x1, x2 = b.xmid - w / 2, b.xmid + w / 2
-        draw_rect(pen, x1, dc.x_height / 2 + dc.stroke_y / 2, x2, dc.x_height / 2 - dc.stroke_y / 2)
