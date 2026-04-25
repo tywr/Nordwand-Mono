@@ -9,14 +9,13 @@ class UppercaseSGlyph(UppercaseGlyph):
     name = "uppercase_s"
     unicode = "0x53"
     offset = 0
-    width_ratio = 1
     stroke_x_ratio = 1.10
     stroke_y_ratio = 1.01
     right_tail_offset = 0.105
     left_tail_offset = 0.0525
-    hx_ratio = 1
+    hx_ratio = 0.9
     hy_ratio = 1
-    mid_height = 0.52
+    mid_height = 0.53
     opening1 = 0.28
     opening2 = 0.72
     thinning = 0.89
@@ -36,7 +35,6 @@ class UppercaseSGlyph(UppercaseGlyph):
             uppercase=True,
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y * self.stroke_y_ratio
-        sa = dc.stroke_alt
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         yc1 = b.y1 + b.height * self.opening1
         yc2 = b.y1 + b.height * self.opening2
@@ -75,10 +73,10 @@ class UppercaseSGlyph(UppercaseGlyph):
         # Mid Curve
         pen.moveTo((x1, ym1))
         pen.curveTo(
-            (x1, b.ymid - sa / 2), (b.x2 - sx, b.ymid - sa / 2), (b.x2 - sx, ym2)
+            (x1, b.ymid - sy / 2), (b.x2 - sx, b.ymid - sy / 2), (b.x2 - sx, ym2)
         )
         pen.lineTo((b.x2, ym2))
-        pen.curveTo((b.x2, b.ymid + sa / 2), (x1 + sx, b.ymid + sa / 2), (x1 + sx, ym1))
+        pen.curveTo((b.x2, b.ymid + sy / 2), (x1 + sx, b.ymid + sy / 2), (x1 + sx, ym1))
 
         # Endings
         glyph = ufoLib2.objects.Glyph()

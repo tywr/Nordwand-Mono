@@ -32,7 +32,6 @@ class LowercaseSGlyph(Glyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y * self.stroke_y_ratio
-        sa = dc.stroke_alt
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         yc1 = b.y1 + b.height * self.opening1
         yc2 = b.y1 + b.height * self.opening2
@@ -42,7 +41,6 @@ class LowercaseSGlyph(Glyph):
         hxt = (1 - self.left_offset - self.right_offset) * b.hx
         ym1 = (b.y2 + ymid - sy / 2) / 2
         ym2 = (b.y1 + ymid + sy / 2) / 2
-        hyt, hyb = hy * (1 - self.mid_height), hy * (self.mid_height)
 
         draw_corner(
             pen,
@@ -97,10 +95,10 @@ class LowercaseSGlyph(Glyph):
         # Mid Curve
         pen.moveTo((x1, ym1))
         pen.curveTo(
-            (x1, b.ymid - sa / 2), (b.x2 - sx, b.ymid - sa / 2), (b.x2 - sx, ym2)
+            (x1, b.ymid - sy / 2), (b.x2 - sx, b.ymid - sy / 2), (b.x2 - sx, ym2)
         )
         pen.lineTo((b.x2, ym2))
-        pen.curveTo((b.x2, b.ymid + sa / 2), (x1 + sx, b.ymid + sa / 2), (x1 + sx, ym1))
+        pen.curveTo((b.x2, b.ymid + sy / 2), (x1 + sx, b.ymid + sy / 2), (x1 + sx, ym1))
 
         glyph = ufoLib2.objects.Glyph()
         draw_corner(
