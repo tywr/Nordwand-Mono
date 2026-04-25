@@ -1,6 +1,7 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
 from draw.loop import draw_loop
+from draw.polygon import draw_polygon
 
 
 class QuestionMarkGlyph(Glyph):
@@ -10,6 +11,9 @@ class QuestionMarkGlyph(Glyph):
     width_ratio = 1
     loop_ratio = 0.6
     gap = 0.35
+    height_overflow = 0.05
+    taper_length = 0.25
+    taper = 0.75
 
     def draw(self, pen, dc):
         from glyphs.special.full_stop import FullStopGlyph
@@ -23,15 +27,17 @@ class QuestionMarkGlyph(Glyph):
             overshoot_right=True,
         )
         g = self.gap * b.height
+        dh = self.height_overflow * b.height
         h = self.loop_ratio * b.height
+        sx, sy = dc.stroke_x, dc.stroke_y
         draw_loop(
             pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
-            b.y2 - h,
+            b.y2 - h + dh,
             b.x2,
-            b.y2,
+            b.y2 + dh,
             b.hx,
             b.hy * self.loop_ratio,
             cut="bottom",
@@ -41,9 +47,9 @@ class QuestionMarkGlyph(Glyph):
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
-            b.y2 - h,
+            b.y2 - h + dh,
             b.x2,
-            b.y2,
+            b.y2 + dh,
             b.hx,
             b.hy * self.loop_ratio,
             cut="left",
@@ -51,9 +57,18 @@ class QuestionMarkGlyph(Glyph):
         draw_rect(
             pen,
             b.xmid - dc.stroke_x / 2,
-            b.y1 + g,
+            b.y1 + g + h * self.taper_length,
             b.xmid + dc.stroke_x / 2,
-            b.y2 - h + dc.stroke_y,
+            b.y2 - h + dh + sy,
+        )
+        draw_polygon(
+            pen,
+            points=[
+                (b.xmid + sx / 2, b.y1 + g + h * self.taper_length),
+                (b.xmid - sx / 2, b.y1 + g + h * self.taper_length),
+                (b.xmid - self.taper * sx / 2, b.y1 + g),
+                (b.xmid + self.taper * sx / 2, b.y1 + g),
+            ],
         )
 
         fsp = FullStopGlyph()
