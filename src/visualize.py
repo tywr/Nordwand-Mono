@@ -378,7 +378,7 @@ if __name__ == "__main__":
     elif style == "bold":
         configs = [DrawConfig.weight(w=700)]
     elif style == "italic":
-        configs = [DrawConfig.italic()]
+        configs = [DrawConfig.for_italic()]
         italic = True
     else:
         configs = [

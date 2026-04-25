@@ -439,9 +439,10 @@ def build_font(output_path=None, weight=400, italic=False):
     if weight != 400:
         dc = DrawConfig.weight(w=weight)
     elif italic:
-        dc = DrawConfig.italic()
+        dc = DrawConfig.for_italic()
     else:
         dc = DrawConfig()
+    dc.italic = italic
 
     all_glyphs = discover_glyphs()
 

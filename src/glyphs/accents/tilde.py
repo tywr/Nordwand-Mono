@@ -12,18 +12,17 @@ class Tilde(Accent):
         from fontTools.pens.transformPen import TransformPen
         from fontTools.misc.transform import Transform
 
-        oy = dc.accent - dc.math
         r = self.rescale
 
-        # Record the tilde glyph
         rec = RecordingPen()
         TildeGlyph().draw(rec, dc)
 
-        # Scale around the cell center, then offset vertically by oy
+        # The base TildeGlyph is drawn centered at (dc.window_width/2, dc.math).
+        # Scale around that point, then translate so it lands at (x, y).
         cx = dc.window_width / 2
         cy = dc.math
         t = Transform()
-        t = t.translate(cx, cy + oy)
+        t = t.translate(x, y)
         t = t.scale(r)
         t = t.translate(-cx, -cy)
 

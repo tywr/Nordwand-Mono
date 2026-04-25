@@ -60,6 +60,8 @@ class DrawConfig(FontConfig):
 
     taper: float = 0.5
 
+    italic: bool = False
+
     @classmethod
     def weight(cls, w=400):
         """Return a DrawConfig with heavier stroke weights for a bold variant."""
@@ -94,13 +96,14 @@ class DrawConfig(FontConfig):
         )
 
     @classmethod
-    def italic(cls):
+    def for_italic(cls):
         return cls(
             stroke_x=int(cls.stroke_x),
             stroke_y=int(cls.stroke_y),
             stroke_alt=int(cls.stroke_alt),
             taper=cls.taper,
             gap=0,
+            italic=True,
         )
 
     def body_bounds(
