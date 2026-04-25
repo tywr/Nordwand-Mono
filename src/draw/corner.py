@@ -2,9 +2,12 @@ def draw_corner(
     pen,
     stroke_x,
     stroke_y,
-    x1, y1,
-    x2, y2,
-    hx, hy,
+    x1,
+    y1,
+    x2,
+    y2,
+    hx,
+    hy,
     orientation="bottom-right",
 ):
     """Draw a solid quarter-curve corner using superellipse handles.
@@ -74,3 +77,5 @@ def draw_corner(
         pen.lineTo((ix2, iy2))
         pen.curveTo((ix2 - ihx, iy2), (ix1, iy1 - ihy), (ix1, iy1))
         pen.closePath()
+
+    return hx, hy, ihx, ihy

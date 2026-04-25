@@ -57,7 +57,7 @@ class UppercaseSGlyph(UppercaseGlyph):
             hy * (1 - self.mid_height),
             orientation="top-right",
         )
-        draw_corner(
+        _, _, ihx, ihy = draw_corner(
             pen,
             sx,
             sy,
@@ -72,11 +72,9 @@ class UppercaseSGlyph(UppercaseGlyph):
 
         # Mid Curve
         pen.moveTo((x1, ym1))
-        pen.curveTo(
-            (x1, b.ymid - sy / 2), (b.x2 - sx, b.ymid - sy / 2), (b.x2 - sx, ym2)
-        )
+        pen.curveTo((x1, ym1 - hy), (b.x2 - sx, ym2 + 2 * ihy), (b.x2 - sx, ym2))
         pen.lineTo((b.x2, ym2))
-        pen.curveTo((b.x2, b.ymid + sy / 2), (x1 + sx, b.ymid + sy / 2), (x1 + sx, ym1))
+        pen.curveTo((b.x2, ym2 + hy), (x1 + sx, ym1 - 2 * ihy), (x1 + sx, ym1))
 
         # Endings
         glyph = ufoLib2.objects.Glyph()

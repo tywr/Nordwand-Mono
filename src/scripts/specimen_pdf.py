@@ -5,7 +5,7 @@ Usage: python scripts/specimen.py [path/to/font.ttf]
 """
 
 import argparse
-from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
@@ -42,10 +42,22 @@ def render_specimen(font_path, output="specimen.pdf"):
     os.makedirs(os.path.dirname(output), exist_ok=True)
     pdfmetrics.registerFont(TTFont("Kassiopea", font_path))
 
-    page_w, page_h = landscape(A4)
-    c = canvas.Canvas(output, pagesize=landscape(A4))
+    page_w, page_h = A4
+    c = canvas.Canvas(output, pagesize=A4)
 
-    # Black background
+    # --- Cover page: black background, white "Kassiopea" centered ---
+    c.setFillColorRGB(0, 0, 0)
+    c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
+
+    cover_size = 72
+    c.setFillColorRGB(1, 1, 1)
+    c.setFont("Kassiopea", cover_size)
+    cover_text = "Kassiopea"
+    text_w = c.stringWidth(cover_text, "Kassiopea", cover_size)
+    c.drawString((page_w - text_w) / 2, (page_h - cover_size) / 2, cover_text)
+    c.showPage()
+
+    # White background for the rest of the specimen
     c.setFillColorRGB(*BG)
     c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
 
@@ -89,11 +101,9 @@ def render_specimen(font_path, output="specimen.pdf"):
         else:
             on_fresh_page = False
 
-    # --- Page 2: Sample text (portrait) ---
+    # --- Sample text page ---
     if not on_fresh_page:
         c.showPage()
-    page_w, page_h = A4
-    c.setPageSize(A4)
     c.setFillColorRGB(*BG)
     c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
 

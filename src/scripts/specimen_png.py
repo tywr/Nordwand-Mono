@@ -77,7 +77,7 @@ def render_specimen(font_path, output="specimen.png"):
     # Crop to equal padding around actual content
     import numpy as np
     arr = np.array(img)
-    rows_with_content = np.any(arr > 10, axis=(1, 2))
+    rows_with_content = np.any(arr < 245, axis=(1, 2))
     first_row = int(np.argmax(rows_with_content))
     last_row = int(len(rows_with_content) - 1 - np.argmax(rows_with_content[::-1]))
     crop_top = first_row - py
