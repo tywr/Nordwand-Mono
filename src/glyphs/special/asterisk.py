@@ -13,8 +13,22 @@ class AsteriskGlyph(Glyph):
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
         ymid = dc.math
-        draw_rect(pen, b.x1, ymid - dc.stroke_alt / 2, b.x2, ymid + dc.stroke_alt / 2, rotate=30)
-        draw_rect(pen, b.x1, ymid - dc.stroke_alt / 2, b.x2, ymid + dc.stroke_alt / 2, rotate=-30)
+        draw_rect(
+            pen,
+            b.x1,
+            ymid - dc.stroke_alt / 2,
+            b.x2,
+            ymid + dc.stroke_alt / 2,
+            rotate=30,
+        )
+        draw_rect(
+            pen,
+            b.x1,
+            ymid - dc.stroke_alt / 2,
+            b.x2,
+            ymid + dc.stroke_alt / 2,
+            rotate=-30,
+        )
         draw_rect(
             pen,
             b.xmid - dc.stroke_alt / 2,

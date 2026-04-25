@@ -13,5 +13,5 @@ class PlusSignGlyph(Glyph):
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
 
-        draw_rect(pen, b.x1, dc.math - dc.stroke_y / 2, b.x2, dc.math + dc.stroke_y / 2)
+        draw_rect(pen, b.x1, dc.math - dc.stroke_x / 2, b.x2, dc.math + dc.stroke_x / 2)
         draw_rect(pen, b.xmid - dc.stroke_x / 2, dc.math - b.width / 2, b.xmid + dc.stroke_x / 2, dc.math + b.width / 2)

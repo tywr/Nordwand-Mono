@@ -7,7 +7,7 @@ class DollarSignGlyph(Glyph):
     unicode = "0x24"
     offset = 0
     width_ratio = 1
-    overflow_ratio = 0.15
+    overflow_ratio = 0.2
 
     def draw(self, pen, dc):
         from glyphs.uppercase.s import UppercaseSGlyph
@@ -22,7 +22,14 @@ class DollarSignGlyph(Glyph):
         draw_rect(
             pen,
             b.xmid - dc.stroke_x / 2,
-            b.y1 - dh,
+            b.y2 - dc.stroke_y / 2,
             b.xmid + dc.stroke_x / 2,
             b.y2 + dh,
+        )
+        draw_rect(
+            pen,
+            b.xmid - dc.stroke_x / 2,
+            b.y1 - dh,
+            b.xmid + dc.stroke_x / 2,
+            b.y1 + dc.stroke_y / 2,
         )
