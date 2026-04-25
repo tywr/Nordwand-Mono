@@ -1,6 +1,6 @@
 from math import cos, sin
 from glyphs.numbers import NumberGlyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.polygon import draw_polygon
 from draw.parallelogramm import draw_parallelogramm
@@ -92,7 +92,7 @@ class SixGlyph(NumberGlyph):
         pen.lineTo((b.x1 + sx / 2, (b.y1 + ymid) / 2))
         pen.closePath()
 
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             sx,
             sy,

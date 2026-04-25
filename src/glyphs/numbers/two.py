@@ -2,7 +2,7 @@ from math import cos, sin
 from glyphs.numbers import NumberGlyph
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from utils.pens import NullPen
 
 
@@ -31,7 +31,7 @@ class TwoGlyph(NumberGlyph):
         ih = self.internal_radius * b.height
 
         # Top arch
-        params = draw_superellipse_loop(
+        params = draw_loop(
             pen,
             sx,
             sy,

@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.corner import draw_corner
 from draw.rect import draw_rect
 import ufoLib2
@@ -33,7 +33,7 @@ class LowercaseEGlyph(Glyph):
         xt = b.x2 + self.tail_offset * b.width
 
         # Half-left as the o-shape
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             sx,
             sy,

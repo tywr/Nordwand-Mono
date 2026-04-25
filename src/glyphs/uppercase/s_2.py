@@ -1,6 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.parallelogramm import draw_smooth_parallelogramm_vertical
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 
 
 class UppercaseS2Glyph(UppercaseGlyph):
@@ -47,7 +47,7 @@ class UppercaseS2Glyph(UppercaseGlyph):
             yt_bot,
             direction="top-left",
         )
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             sx,
             sy,
@@ -59,7 +59,7 @@ class UppercaseS2Glyph(UppercaseGlyph):
             hy * (1 - self.mid_height),
             cut="right",
         )
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             sx,
             sy,

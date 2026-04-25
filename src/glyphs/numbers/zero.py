@@ -1,5 +1,5 @@
 from glyphs.numbers import NumberGlyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.parallelogramm import draw_parallelogramm_vertical
 
 
@@ -22,7 +22,7 @@ class ZeroGlyph(NumberGlyph):
             number=True,
         )
 
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             dc.stroke_x * self.stroke_x_ratio,
             dc.stroke_y * self.stroke_y_ratio,

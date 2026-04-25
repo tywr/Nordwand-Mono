@@ -1,6 +1,6 @@
 import ufoLib2
 from glyphs.accents import Accent
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.rect import draw_rect
 from booleanOperations.booleanGlyph import BooleanGlyph
 
@@ -18,7 +18,7 @@ class Cedilla(Accent):
         yr = h / dc.x_height
 
         glyph = ufoLib2.objects.Glyph()
-        draw_superellipse_loop(
+        draw_loop(
             glyph.getPen(),
             self.stroke_ratio * dc.stroke_x,
             self.stroke_ratio * dc.stroke_y,

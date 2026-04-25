@@ -1,5 +1,5 @@
 from glyphs.uppercase import UppercaseGlyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
 
@@ -31,7 +31,7 @@ class UppercaseRGlyph(UppercaseGlyph):
         draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
 
         # Upper loop (narrower, displaced left)
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             sx,
             sy,

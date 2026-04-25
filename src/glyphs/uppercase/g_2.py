@@ -1,6 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.parallelogramm import draw_parallelogramm_vertical
 
 
@@ -34,8 +34,8 @@ class UppercaseG2Glyph(UppercaseGlyph):
         yt_top = dc.cap - sy - dc.v_overshoot
         ymid = b.y1 + self.mid_ratio * b.height
 
-        draw_superellipse_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, hx, hy, cut="right")
-        draw_superellipse_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, hx, hy, cut="top")
+        draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, hx, hy, cut="right")
+        draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, hx, hy, cut="top")
         draw_parallelogramm_vertical(
             pen, sx, sy, b.xmid, b.y2, xt, yt_top, delta=sy, direction="bottom-right"
         )

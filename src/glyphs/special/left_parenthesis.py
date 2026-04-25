@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 
 
 class LeftParenthesisGlyph(Glyph):
@@ -13,7 +13,7 @@ class LeftParenthesisGlyph(Glyph):
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
         ymid = dc.parenthesis
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             dc.stroke_x,
             dc.stroke_y,

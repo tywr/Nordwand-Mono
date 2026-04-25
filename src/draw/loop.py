@@ -1,7 +1,7 @@
 from shapes.superellipse import Superellipse
 
 
-def draw_superellipse_loop(
+def draw_loop(
     pen,
     stroke_x,
     stroke_y,

@@ -1,5 +1,5 @@
 from glyphs.uppercase import UppercaseGlyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.square_corner import draw_square_corner
 
 
@@ -27,7 +27,7 @@ class UppercaseQGlyph(UppercaseGlyph):
         xe = b.xmid + self.tail_width * b.width
         ye = - self.tail_height * b.height
 
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             sx,
             sy,

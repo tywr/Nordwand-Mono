@@ -1,6 +1,6 @@
 from glyphs import Glyph
 from draw.parallelogramm import draw_parallelogramm
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 
 
 class PercentMarkGlyph(Glyph):
@@ -22,7 +22,7 @@ class PercentMarkGlyph(Glyph):
         oy = self.offset_ratio_y * b.height
 
         draw_parallelogramm(pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, b.y2)
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             dc.stroke_alt,
             dc.stroke_alt,
@@ -33,7 +33,7 @@ class PercentMarkGlyph(Glyph):
             b.hx * self.zero_ratio,
             b.hy * self.zero_ratio,
         )
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             dc.stroke_alt,
             dc.stroke_alt,

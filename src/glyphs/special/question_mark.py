@@ -1,6 +1,6 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 
 
 class QuestionMarkGlyph(Glyph):
@@ -24,7 +24,7 @@ class QuestionMarkGlyph(Glyph):
         )
         g = self.gap * b.height
         h = self.loop_ratio * b.height
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -36,7 +36,7 @@ class QuestionMarkGlyph(Glyph):
             b.hy * self.loop_ratio,
             cut="bottom",
         )
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             dc.stroke_x,
             dc.stroke_y,

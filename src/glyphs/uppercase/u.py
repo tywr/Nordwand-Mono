@@ -1,5 +1,5 @@
 from glyphs.uppercase import UppercaseGlyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.rect import draw_rect
 
 
@@ -22,7 +22,7 @@ class UppercaseUGlyph(UppercaseGlyph):
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
 
-        draw_superellipse_loop(
+        draw_loop(
             pen, sx, sy, b.x1, b.y1, b.x2, b.y2, hx, hy, cut="top"
         )
 

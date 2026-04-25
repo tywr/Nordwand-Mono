@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.rect import draw_rect
 from draw.corner import draw_corner
 import ufoLib2
@@ -36,7 +36,7 @@ class LowercaseCGlyph(Glyph):
         yc2 = b.y1 + b.height * self.opening2
         xt = b.x2 - self.top_offset * b.width
 
-        draw_superellipse_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, hx, hy, cut="right")
+        draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, hx, hy, cut="right")
 
         glyph = ufoLib2.objects.Glyph()
         draw_corner(

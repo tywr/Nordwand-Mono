@@ -3,7 +3,7 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 
 from glyphs.numbers import NumberGlyph
 from draw.arch import draw_arch
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.parallelogramm import draw_parallelogramm
 from draw.rect import draw_rect
 from utils.pens import NullPen
@@ -34,7 +34,7 @@ class FiveGlyph(NumberGlyph):
         base_glyph = ufoLib2.objects.Glyph()
 
         # Bottom loop
-        params = draw_superellipse_loop(
+        params = draw_loop(
             base_glyph.getPen(),
             sx,
             sy,

@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.rect import draw_rect
 from draw.polygon import draw_polygon
@@ -69,7 +69,7 @@ class CommercialAtGlyph(Glyph):
             ],
         )
 
-        # draw_superellipse_loop(
+        # draw_loop(
         #     pen,
         #     dc.stroke_x,
         #     dc.stroke_y,
@@ -93,7 +93,7 @@ class CommercialAtGlyph(Glyph):
             b.hy,
             orientation="top-left"
         )
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             dc.stroke_x,
             dc.stroke_y,

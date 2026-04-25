@@ -1,6 +1,6 @@
 from math import sin, cos, pi
 from glyphs.numbers import NumberGlyph
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.polygon import draw_polygon
 from draw.parallelogramm import draw_parallelogramm
@@ -85,7 +85,7 @@ class NineGlyph(NumberGlyph):
             (b.x2, (b.y2 + ymid) / 2),
         )
 
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             sx,
             sy,

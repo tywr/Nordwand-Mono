@@ -1,6 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
-from draw.superellipse_loop import draw_superellipse_loop
+from draw.loop import draw_loop
 from draw.corner import draw_corner
 from draw.parallelogramm import draw_parallelogramm_vertical
 
@@ -32,7 +32,7 @@ class UppercaseJGlyph(UppercaseGlyph):
         draw_rect(pen, b.x2 - xc, b.y2 - sy, b.x2, b.y2)
 
         # Corner to bottom
-        draw_superellipse_loop(
+        draw_loop(
             pen,
             sx,
             sy,
