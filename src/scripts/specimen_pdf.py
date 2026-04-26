@@ -153,7 +153,7 @@ def render_specimen(font_path, output="specimen.pdf"):
     font_dir = os.path.dirname(font_path)
     available_variants = []
     for ps_style, display_name in FAMILY_VARIANTS:
-        path = os.path.join(font_dir, f"Nordwand Mono-{ps_style}.ttf")
+        path = os.path.join(font_dir, f"NordwandMono-{ps_style}.ttf")
         if not os.path.exists(path):
             continue
         font_name = f"Nordwand Mono-{ps_style}"
