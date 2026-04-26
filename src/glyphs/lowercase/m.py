@@ -1,3 +1,6 @@
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
+
 from glyphs import Glyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
@@ -10,10 +13,11 @@ class LowercaseMGlyph(Glyph):
     offset = 0
     width_ratio = 1.18
     mid_len = 0.7
-    top_stroke_y = 0.96
+    top_stroke_y = 1
     hx_ratio = 0.82
     taper = 0.52
     ending_thickness = 0.75
+    min_width = 100
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -28,8 +32,11 @@ class LowercaseMGlyph(Glyph):
 
         # Left arch (x1 to xmid) and store offset_x
 
+        glyph = ufoLib2.objects.Glyph()
+        gpen = glyph.getPen()
+
         arch_params = draw_arch(
-            pen,
+            gpen,
             dc.stroke_x,
             self.top_stroke_y * dc.stroke_y,
             b.x1,
@@ -44,8 +51,8 @@ class LowercaseMGlyph(Glyph):
         )
 
         # Right arch (xmid to x2)
-        draw_arch(
-            pen,
+        arch_params_2 = draw_arch(
+            gpen,
             dc.stroke_x,
             self.top_stroke_y * dc.stroke_y,
             b.xmid - mid_offset,
@@ -64,9 +71,9 @@ class LowercaseMGlyph(Glyph):
         y1, y2 = min(y1, y2), max(y1, y2)
 
         # Left stem
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, y2)
+        draw_rect(gpen, b.x1, 0, b.x1 + dc.stroke_x, y2)
         draw_polygon(
-            pen,
+            gpen,
             points=[
                 (b.x1 + self.ending_thickness * dc.stroke_x, dc.x_height),
                 (b.x1, dc.x_height),
@@ -76,13 +83,46 @@ class LowercaseMGlyph(Glyph):
         )
 
         # Right foot — reaches up to the arch midpoint
-        draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, b.ymid)
+        draw_rect(gpen, b.x2 - dc.stroke_x, 0, b.x2, b.ymid)
 
         # Middle stem extension
         draw_rect(
-            pen,
+            gpen,
             b.xmid - (1 - self.taper * dc.taper) * dc.stroke_x / 2 - dc.gap / 2,
             mid_y,
             b.xmid + (1 - self.taper * dc.taper) * dc.stroke_x / 2 + dc.gap / 2,
             y2,
         )
+
+        # We cut in the middle of the glyph in case it's not wide enough
+        cut_glyph = ufoLib2.objects.Glyph()
+        cpen = cut_glyph.getPen()
+
+        se1 = arch_params["inner"]
+        sew = se1.x2 - se1.x1
+        if sew < self.min_width:
+            dx = self.min_width - sew
+            xi1, yi1 = se1.xmid, se1.y2
+            hx, hy = se1.hx, se1.hy
+            se2 = arch_params_2["inner"]
+            xi2, yi2 = se2.xmid, se2.y2
+            dhx = dx - hx
+
+            cpen.moveTo((xi1, mid_y))
+            cpen.lineTo((xi2, mid_y))
+            cpen.lineTo((xi2, yi2))
+            cpen.lineTo((xi2 - dhx, yi2))
+            cpen.curveTo(
+                (xi2 - dhx - hx, yi2), (b.xmid + dx, b.ymid + hy), (b.xmid + dx, b.ymid)
+            )
+            cpen.lineTo((b.xmid + dx, mid_y))
+            cpen.lineTo((b.xmid - dx, mid_y))
+            cpen.lineTo((b.xmid - dx, b.ymid))
+            cpen.curveTo(
+                (b.xmid - dx, b.ymid + hy), (xi1 + dhx + hx, yi1), (xi1 + dhx, yi1)
+            )
+            cpen.lineTo((xi1, yi1))
+            cpen.closePath()
+
+        res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
+        res.draw(pen)

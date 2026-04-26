@@ -1,4 +1,9 @@
-from utils.intersection import intersection_superellipses, intersection_superellipse_x, intersection_superellipse_y, intersection_superellipse_line
+from utils.intersection import (
+    intersection_superellipses,
+    intersection_superellipse_x,
+    intersection_superellipse_y,
+    intersection_superellipse_line,
+)
 
 
 class Superellipse:
@@ -11,6 +16,10 @@ class Superellipse:
         self.y2 = y2
         self.hx = hx
         self.hy = hy
+
+    @property
+    def xmid(self):
+        return (self.x1 + self.x2) / 2
 
     def translate(self, dx=0, dy=0):
         return Superellipse(
@@ -91,14 +100,30 @@ class Superellipse:
         mid_x = (self.x1 + self.x2) / 2
         mid_y = (self.y1 + self.y2) / 2
         beziers = [
-            ((self.x2, mid_y), (self.x2, mid_y + self.hy),
-             (mid_x + self.hx, self.y2), (mid_x, self.y2)),
-            ((mid_x, self.y2), (mid_x - self.hx, self.y2),
-             (self.x1, mid_y + self.hy), (self.x1, mid_y)),
-            ((self.x1, mid_y), (self.x1, mid_y - self.hy),
-             (mid_x - self.hx, self.y1), (mid_x, self.y1)),
-            ((mid_x, self.y1), (mid_x + self.hx, self.y1),
-             (self.x2, mid_y - self.hy), (self.x2, mid_y)),
+            (
+                (self.x2, mid_y),
+                (self.x2, mid_y + self.hy),
+                (mid_x + self.hx, self.y2),
+                (mid_x, self.y2),
+            ),
+            (
+                (mid_x, self.y2),
+                (mid_x - self.hx, self.y2),
+                (self.x1, mid_y + self.hy),
+                (self.x1, mid_y),
+            ),
+            (
+                (self.x1, mid_y),
+                (self.x1, mid_y - self.hy),
+                (mid_x - self.hx, self.y1),
+                (mid_x, self.y1),
+            ),
+            (
+                (mid_x, self.y1),
+                (mid_x + self.hx, self.y1),
+                (self.x2, mid_y - self.hy),
+                (self.x2, mid_y),
+            ),
         ]
         total = 0.0
         for p0, p1, p2, p3 in beziers:
