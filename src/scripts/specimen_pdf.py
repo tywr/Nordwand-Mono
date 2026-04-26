@@ -163,9 +163,23 @@ def render_specimen(font_path, output="specimen.pdf"):
     page_w, page_h = A4
     c = canvas.Canvas(output, pagesize=A4)
 
-    # --- Cover page: black background, white "Nordwand Mono" centered ---
-    c.setFillColorRGB(0, 0, 0)
-    c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
+    # --- Cover page: banner-raw background (cover/crop), white "Nordwand Mono" centered ---
+    from reportlab.lib.utils import ImageReader
+
+    cover_img = ImageReader("assets/specimen-bg.jpg")
+    img_w, img_h = cover_img.getSize()
+    scale = max(page_w / img_w, page_h / img_h)
+    draw_w, draw_h = img_w * scale, img_h * scale
+    c.saveState()
+    p = c.beginPath()
+    p.rect(0, 0, page_w, page_h)
+    c.clipPath(p, stroke=0, fill=0)
+    c.drawImage(
+        cover_img,
+        (page_w - draw_w) / 2, (page_h - draw_h) / 2,
+        width=draw_w, height=draw_h,
+    )
+    c.restoreState()
 
     cover_size = 72
     c.setFillColorRGB(1, 1, 1)
@@ -485,7 +499,7 @@ if __name__ == "__main__":
         help="Path to font file",
     )
     parser.add_argument(
-        "-o", "--output", default="assets/specimen.pdf", help="Output filename"
+        "-o", "--output", default="specimens/specimen.pdf", help="Output filename"
     )
     args = parser.parse_args()
     render_specimen(args.font, args.output)

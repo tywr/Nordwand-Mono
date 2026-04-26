@@ -4,5 +4,8 @@ build:
 	python -m scripts.specimen_pdf
 	python -m scripts.specimen_png
 
+build-otf:
+	python -m generate_font --otf
+
 install-mac:
 	cp -r fonts/otf/NordwandMono-*.otf ~/Library/Fonts

@@ -432,14 +432,16 @@ def _style_metadata(weight, italic):
     return style_name, ps_style_name, name_table, fs_selection, mac_style
 
 
-def build_font(output_path=None, weight=400, italic=False):
+def build_font(output_path=None, weight=400, italic=False, otf=True, ttf=True):
     style_name, ps_style_name, name_table, fs_selection, mac_style = _style_metadata(
         weight, italic
     )
 
     if output_path is None:
-        os.makedirs("fonts/otf/", exist_ok=True)
-        os.makedirs("fonts/ttf/", exist_ok=True)
+        if otf:
+            os.makedirs("fonts/otf/", exist_ok=True)
+        if ttf:
+            os.makedirs("fonts/ttf/", exist_ok=True)
         fname = fc.family_name.replace(" ", "")
         output_path = f"fonts/otf/{fname}-{ps_style_name}.otf"
 
@@ -471,6 +473,52 @@ def build_font(output_path=None, weight=400, italic=False):
         if isinstance(g, LigatureGlyph):
             ligature_glyphs.append(g)
 
+    if otf:
+        _build_otf(
+            output_path,
+            weight,
+            italic,
+            active_glyphs,
+            cmap,
+            dc,
+            ligature_glyphs,
+            alternate_glyphs,
+            style_name,
+            ps_style_name,
+            name_table,
+            fs_selection,
+            mac_style,
+        )
+
+    if ttf:
+        ttf_path = output_path.replace(".otf", ".ttf").replace("/otf", "/ttf")
+        build_ttf(
+            ttf_path,
+            weight,
+            italic,
+            active_glyphs,
+            cmap,
+            dc,
+            ligature_glyphs,
+            alternate_glyphs,
+        )
+
+
+def _build_otf(
+    output_path,
+    weight,
+    italic,
+    active_glyphs,
+    cmap,
+    dc,
+    ligature_glyphs,
+    alternate_glyphs,
+    style_name,
+    ps_style_name,
+    name_table,
+    fs_selection,
+    mac_style,
+):
     # Build charstrings
     notdef_pen = T2CharStringPen(fc.window_width, None)
     draw_notdef(notdef_pen)
@@ -568,19 +616,6 @@ def build_font(output_path=None, weight=400, italic=False):
     fb.font.save(output_path)
     print(f"Font saved to {output_path}")
 
-    # Build TTF version
-    ttf_path = output_path.replace(".otf", ".ttf").replace("/otf", "/ttf")
-    build_ttf(
-        ttf_path,
-        weight,
-        italic,
-        active_glyphs,
-        cmap,
-        dc,
-        ligature_glyphs,
-        alternate_glyphs,
-    )
-
 
 def build_ttf(
     output_path, weight, italic, all_glyphs, cmap, dc, ligature_glyphs, alternate_glyphs
@@ -666,6 +701,17 @@ def build_ttf(
 
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Generate Nordwand Mono font files")
+    fmt = parser.add_mutually_exclusive_group()
+    fmt.add_argument("--ttf", action="store_true", help="Generate only TTF files")
+    fmt.add_argument("--otf", action="store_true", help="Generate only OTF files")
+    args = parser.parse_args()
+
+    build_otf = not args.ttf
+    build_ttf_flag = not args.otf
+
     for w in [100, 200, 300, 400, 500, 600, 700]:
-        build_font(weight=w)
-        build_font(weight=w, italic=True)
+        build_font(weight=w, otf=build_otf, ttf=build_ttf_flag)
+        build_font(weight=w, italic=True, otf=build_otf, ttf=build_ttf_flag)
