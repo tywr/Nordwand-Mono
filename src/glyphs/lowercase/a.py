@@ -21,17 +21,16 @@ class LowercaseAGlyph(Glyph):
     cap_offset = 0.01
     thinning = 0.89
     cap_stroke_x_ratio = 1.01
-    cap_stroke_y_ratio = 1.1
+    cap_stroke_y_ratio = 1.09
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
             overshoot_top=True,
             overshoot_bottom=True,
-            # overshoot_left=True,
             width_ratio=self.width_ratio,
         )
-        sx, sy = dc.stroke_x, dc.stroke_y
+        sx = dc.stroke_x
         csx, csy = (
             self.cap_stroke_x_ratio * dc.stroke_x,
             self.cap_stroke_y_ratio * dc.stroke_y,

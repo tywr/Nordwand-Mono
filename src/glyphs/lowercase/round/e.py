@@ -1,19 +1,17 @@
-from glyphs import Glyph
 from draw.loop import draw_loop
 from draw.corner import draw_corner
 from draw.rect import draw_rect
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
+from glyphs.lowercase.round import RoundLowercaseGlyph
 
 
-class LowercaseEGlyph(Glyph):
+class LowercaseEGlyph(RoundLowercaseGlyph):
     name = "lowercase_e"
     unicode = "0x65"
     offset = 5
     width_ratio = 1
     mid_height = 0.52
-    stroke_x_ratio = 1.00
-    stroke_y_ratio = 1.10
     thinning = 0.89
     tail_offset = 0.01
     tail_height = 0.28

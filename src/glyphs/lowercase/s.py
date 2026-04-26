@@ -10,18 +10,19 @@ class LowercaseSGlyph(Glyph):
     unicode = "0x73"
     offset = -12
     width_ratio = 1
-    stroke_x_ratio = 1.00
-    stroke_y_ratio = 1.01
+    stroke_x_ratio = 1.01
+    stroke_y_ratio = 1.03
     right_tail_offset = 0.105
     left_tail_offset = 0.0525
     hx_ratio = 1
-    hy_ratio = 1.2
+    hy_ratio = 1.15
     mid_height = 0.52
     opening1 = 0.28
     opening2 = 0.72
     thinning = 0.89
     left_offset = 0.08
     right_offset = 0.05
+    width_ratio = 0.95
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -29,6 +30,7 @@ class LowercaseSGlyph(Glyph):
             overshoot_bottom=True,
             overshoot_top=True,
             overshoot_left=True,
+            overshoot_right=True,
             width_ratio=self.width_ratio,
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y * self.stroke_y_ratio

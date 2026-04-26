@@ -1,21 +1,17 @@
-from glyphs import Glyph
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
 from draw.loop import draw_loop
 from draw.rect import draw_rect
 from draw.corner import draw_corner
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
+from glyphs.lowercase.round import RoundLowercaseGlyph
 
 
-class LowercaseCGlyph(Glyph):
+class LowercaseCGlyph(RoundLowercaseGlyph):
     name = "lowercase_c"
     unicode = "0x63"
     offset = 5
-    stroke_x_ratio = 1.05
-    stroke_y_ratio = 1.1
     opening1 = 0.28
     opening2 = 0.72
-    hy_ratio = 1
-    hx_ratio = 1
     width_ratio = 1
     thinning = 0.82
     top_offset = 0.02

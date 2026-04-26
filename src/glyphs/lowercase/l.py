@@ -6,7 +6,7 @@ class LowercaseLGlyph(Glyph):
     name = "lowercase_l"
     unicode = "0x6C"
     offset = 16
-    width_ratio = 1.1
+    width_ratio = 1.05
     cap = 0.45
 
     def draw(self, pen, dc):

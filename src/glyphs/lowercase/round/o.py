@@ -1,13 +1,11 @@
-from glyphs import Glyph
 from draw.loop import draw_loop
+from glyphs.lowercase.round import RoundLowercaseGlyph
 
 
-class LowercaseOGlyph(Glyph):
+class LowercaseOGlyph(RoundLowercaseGlyph):
     name = "lowercase_o"
     unicode = "0x6F"
     offset = 0
-    stroke_x_ratio = 1.01
-    stroke_y_ratio = 1.10
 
     def draw(
         self,
