@@ -9,12 +9,12 @@ from config import FontConfig as fc
 from glyphs.composed import ComposedGlyph
 
 from glyphs.lowercase.a import LowercaseAGlyph
-from glyphs.lowercase.e import LowercaseEGlyph
-from glyphs.lowercase.o import LowercaseOGlyph
+from glyphs.lowercase.round.e import LowercaseEGlyph
+from glyphs.lowercase.round.o import LowercaseOGlyph
+from glyphs.lowercase.round.c import LowercaseCGlyph
 from glyphs.lowercase.square.u import LowercaseUGlyph
 from glyphs.lowercase.square.n import LowercaseNGlyph
 from glyphs.lowercase.dotted.i import LowercaseIGlyph
-from glyphs.lowercase.c import LowercaseCGlyph
 from glyphs.lowercase.y import LowercaseYGlyph
 from glyphs.lowercase.s import LowercaseSGlyph
 
@@ -44,6 +44,7 @@ _cedilla_y = 0
 
 
 # ── Lowercase with acute ─────────────────────────────────────────────
+
 
 class LowercaseAAcuteGlyph(ComposedGlyph):
     name = "lowercase_aacute"
@@ -95,6 +96,7 @@ class LowercaseYAcuteGlyph(ComposedGlyph):
 
 # ── Lowercase with grave ─────────────────────────────────────────────
 
+
 class LowercaseAGraveGlyph(ComposedGlyph):
     name = "lowercase_agrave"
     unicode = "0xE0"
@@ -137,6 +139,7 @@ class LowercaseUGraveGlyph(ComposedGlyph):
 
 # ── Lowercase with circumflex ────────────────────────────────────────
 
+
 class LowercaseACircumflexGlyph(ComposedGlyph):
     name = "lowercase_acircumflex"
     unicode = "0xE2"
@@ -178,6 +181,7 @@ class LowercaseUCircumflexGlyph(ComposedGlyph):
 
 
 # ── Lowercase with dieresis ──────────────────────────────────────────
+
 
 class LowercaseADieresisGlyph(ComposedGlyph):
     name = "lowercase_adieresis"
@@ -229,6 +233,7 @@ class LowercaseYDieresisGlyph(ComposedGlyph):
 
 # ── Lowercase with tilde ─────────────────────────────────────────────
 
+
 class LowercaseATildeGlyph(ComposedGlyph):
     name = "lowercase_atilde"
     unicode = "0xE3"
@@ -255,6 +260,7 @@ class LowercaseOTildeGlyph(ComposedGlyph):
 
 # ── Lowercase with ring ──────────────────────────────────────────────
 
+
 class LowercaseARingGlyph(ComposedGlyph):
     name = "lowercase_aring"
     unicode = "0xE5"
@@ -264,6 +270,7 @@ class LowercaseARingGlyph(ComposedGlyph):
 
 
 # ── Lowercase with cedilla ───────────────────────────────────────────
+
 
 class LowercaseCCedillaGlyph(ComposedGlyph):
     name = "lowercase_ccedilla"
@@ -275,6 +282,7 @@ class LowercaseCCedillaGlyph(ComposedGlyph):
 
 # ── Lowercase with caron ─────────────────────────────────────────────
 
+
 class LowercaseSCaronGlyph(ComposedGlyph):
     name = "lowercase_scaron"
     unicode = "0x161"
@@ -284,6 +292,7 @@ class LowercaseSCaronGlyph(ComposedGlyph):
 
 
 # ── Uppercase with acute ─────────────────────────────────────────────
+
 
 class UppercaseAAcuteGlyph(ComposedGlyph):
     name = "uppercase_aacute"
@@ -335,6 +344,7 @@ class UppercaseYAcuteGlyph(ComposedGlyph):
 
 # ── Uppercase with grave ─────────────────────────────────────────────
 
+
 class UppercaseAGraveGlyph(ComposedGlyph):
     name = "uppercase_agrave"
     unicode = "0xC0"
@@ -376,6 +386,7 @@ class UppercaseUGraveGlyph(ComposedGlyph):
 
 
 # ── Uppercase with circumflex ────────────────────────────────────────
+
 
 class UppercaseACircumflexGlyph(ComposedGlyph):
     name = "uppercase_acircumflex"
@@ -419,6 +430,7 @@ class UppercaseUCircumflexGlyph(ComposedGlyph):
 
 # ── Uppercase with dieresis ──────────────────────────────────────────
 
+
 class UppercaseADieresisGlyph(ComposedGlyph):
     name = "uppercase_adieresis"
     unicode = "0xC4"
@@ -461,6 +473,7 @@ class UppercaseUDieresisGlyph(ComposedGlyph):
 
 # ── Uppercase with tilde ─────────────────────────────────────────────
 
+
 class UppercaseATildeGlyph(ComposedGlyph):
     name = "uppercase_atilde"
     unicode = "0xC3"
@@ -487,6 +500,7 @@ class UppercaseOTildeGlyph(ComposedGlyph):
 
 # ── Uppercase with ring ──────────────────────────────────────────────
 
+
 class UppercaseARingGlyph(ComposedGlyph):
     name = "uppercase_aring"
     unicode = "0xC5"
@@ -497,6 +511,7 @@ class UppercaseARingGlyph(ComposedGlyph):
 
 # ── Uppercase with cedilla ───────────────────────────────────────────
 
+
 class UppercaseCCedillaGlyph(ComposedGlyph):
     name = "uppercase_ccedilla"
     unicode = "0xC7"
@@ -506,6 +521,7 @@ class UppercaseCCedillaGlyph(ComposedGlyph):
 
 
 # ── Uppercase with caron ─────────────────────────────────────────────
+
 
 class UppercaseSCaronGlyph(ComposedGlyph):
     name = "uppercase_scaron"

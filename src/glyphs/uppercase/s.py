@@ -8,21 +8,20 @@ from draw.rect import draw_rect
 class UppercaseSGlyph(UppercaseGlyph):
     name = "uppercase_s"
     unicode = "0x53"
-    offset = 0
-    stroke_x_ratio = 1.10
-    stroke_y_ratio = 1.01
+    offset = -10
+    stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.00
+    stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.05
     right_tail_offset = 0.105
     left_tail_offset = 0.0525
     hx_ratio = 1
-    hy_ratio = 0.96
+    hy_ratio = 1
     mid_height = 0.53
     opening1 = 0.28
     opening2 = 0.72
     thinning = 0.89
     left_offset = 0.08
     right_offset = 0.05
-    stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.05
-    width_ratio = 1.10
+    width_ratio = 1.06
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -30,6 +29,7 @@ class UppercaseSGlyph(UppercaseGlyph):
             overshoot_bottom=True,
             overshoot_top=True,
             overshoot_left=True,
+            overshoot_right=True,
             height="cap",
             width_ratio=self.width_ratio,
             uppercase=True,
