@@ -6,6 +6,8 @@ A compact neo-grotesk font designed for coding.
 
 ## Samples
 
+![python](assets/samples/les_drus.png)
+
 ## Code Samples
 
 ### Python
