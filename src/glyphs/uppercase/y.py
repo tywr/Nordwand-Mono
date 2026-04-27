@@ -23,9 +23,7 @@ class UppercaseYGlyph(UppercaseGlyph):
         ov = self.overlap * sx
         yj = b.x1 + self.junction_ratio * b.height
 
-        theta, delta = draw_parallelogramm(
-            pen, sx, sy, b.xmid - ov, yj, b.x2, b.y2
-        )
+        theta, delta = draw_parallelogramm(pen, sx, sy, b.xmid - ov, yj, b.x2, b.y2)
         draw_parallelogramm(
             pen,
             sx,
