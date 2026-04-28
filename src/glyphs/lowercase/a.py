@@ -61,27 +61,41 @@ class LowercaseAGlyph(Glyph):
             side="right",
             cut="top",
         )
-        # Upper half of the bowl (corner + bar)
+        # Upper half of the bowl
         draw_corner(
             pen,
             csx,
             dc.stroke_alt,
             b.x1,
             (b.y1 + yl) / 2,
-            b.xmid,
+            b.x2 - dc.stroke_x,
             yl,
-            hx,
+            b.width / 2 - dc.stroke_x + hx,
             hy,
             orientation="top-right",
         )
+
+        # Alternative construction with flatter bar
+        # draw_corner(
+        #     pen,
+        #     csx,
+        #     dc.stroke_alt,
+        #     b.x1,
+        #     (b.y1 + yl) / 2,
+        #     b.xmid,
+        #     yl,
+        #     hx,
+        #     hy,
+        #     orientation="top-right",
+        # )
         # Middle line
-        draw_rect(
-            pen,
-            b.xmid,
-            b.y1 + b.height * ry - dc.stroke_alt,
-            b.x2 - dc.stroke_x,
-            b.y1 + b.height * ry,
-        )
+        # draw_rect(
+        #     pen,
+        #     b.xmid,
+        #     b.y1 + b.height * ry - dc.stroke_alt,
+        #     b.x2 - dc.stroke_x,
+        #     b.y1 + b.height * ry,
+        # )
 
         # Cap
         xmid = (xc + b.x2) / 2
