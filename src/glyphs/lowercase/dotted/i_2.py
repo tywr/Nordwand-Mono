@@ -1,4 +1,3 @@
-from glyphs import Glyph
 from draw.rect import draw_rect
 from draw.square_corner import draw_square_corner
 from glyphs.lowercase.dotted import DottedLowercaseGlyph
@@ -7,7 +6,7 @@ from glyphs.lowercase.dotted import DottedLowercaseGlyph
 class LowercaseI2Glyph(DottedLowercaseGlyph):
     name = "lowercase_i_2"
     unicode = "0x69"
-    font_feature = {"ss03": 1}
+    font_feature = {"cv04": 1}
     default_italic = True
     offset = -24
     width_ratio = 1.08
