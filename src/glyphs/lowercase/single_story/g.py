@@ -47,7 +47,7 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
             b.y2,
             b.hx,
             b.hy,
-            taper=dc.taper,
+            taper=dc.taper * self.taper,
             side="right",
         )
 

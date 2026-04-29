@@ -34,7 +34,7 @@ class LowercaseQGlyph(SingleStoryLowercaseGlyph):
             b.y2,
             hx,
             hy,
-            taper=dc.taper,
+            taper=dc.taper * self.taper,
             side="right",
         )
         # Compute the intersection of the outer bowl with the stem
