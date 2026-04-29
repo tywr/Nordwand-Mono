@@ -44,7 +44,7 @@ class DrawConfig(FontConfig):
     # Default parameters
     stroke_x: int = 94
     stroke_y: int = 66
-    stroke_alt: int = 62
+    stroke_alt: int = 60
 
     v_overshoot: int = 12
     h_overshoot: int = 11

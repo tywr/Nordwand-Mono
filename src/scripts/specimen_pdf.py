@@ -55,8 +55,8 @@ FAMILY_VARIANTS = [
 ]
 
 
-TITLE_FONT = "Switzer"
-TITLE_FONT_REGULAR = "Switzer-Regular"
+TITLE_FONT = "U001"
+TITLE_FONT_REGULAR = "U001"
 
 # Sentinel: when found in the samples list, force a new page before the next sample.
 SAMPLE_SEP = object()
