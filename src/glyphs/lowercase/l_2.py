@@ -1,40 +1,33 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
-from draw.square_corner import draw_square_corner
 
 
 class LowercaseL2Glyph(Glyph):
     name = "lowercase_l_2"
     unicode = "0x6C"
     font_feature = {"cv03": 1}
-    default_italic = True
-    offset = 4
+    offset = 16
     width_ratio = 1.08
-    cap = 0.5
+    cap = 0.45
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="ascent", width_ratio=self.width_ratio
         )
-        ym4 = b.y1 + b.height / 4
+        right_len = 0.5 * b.width - dc.stroke_x / 2
+        left_len = 0.5 * b.width - dc.stroke_x / 2
 
         # Stem
-        draw_rect(
-            pen, b.xmid - dc.stroke_x / 2, ym4, b.xmid + dc.stroke_x / 2, dc.ascent
-        )
+        draw_rect(pen, b.xmid - dc.stroke_x / 2, 0, b.xmid + dc.stroke_x / 2, dc.ascent)
 
         # Footer
-        draw_square_corner(
+        draw_rect(
             pen,
-            dc.stroke_x,
+            b.xmid - left_len - dc.stroke_x / 2,
+            0,
+            b.xmid + right_len + dc.stroke_x / 2,
             dc.stroke_y,
-            b.xmid - dc.stroke_x / 2,
-            ym4,
-            b.x2,
-            b.y1,
-            orientation="bottom-right",
         )
-
         # Left cap
         draw_rect(
             pen,

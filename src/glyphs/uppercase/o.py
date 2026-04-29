@@ -8,7 +8,7 @@ class UppercaseOGlyph(UppercaseGlyph):
     offset = 0
     stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.00
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.00
-    width_ratio = 1.08
+    width_ratio = 1.16
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

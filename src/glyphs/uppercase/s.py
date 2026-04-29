@@ -17,11 +17,11 @@ class UppercaseSGlyph(UppercaseGlyph):
     opening1 = 0.28
     opening2 = 0.72
     thinning = 0.89
-    left_offset = 0.02
-    right_offset = 0.02
+    left_offset = 0.04
+    right_offset = 0.04
     curve_thinning = 0.022
     curve_ratio = 2.4
-    width_ratio = 1.06
+    width_ratio = 1.10
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
