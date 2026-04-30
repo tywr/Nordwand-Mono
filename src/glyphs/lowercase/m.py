@@ -29,7 +29,7 @@ class LowercaseMGlyph(Glyph):
         )
         taper = max(self.min_taper, self.taper * dc.taper)
         mid_y = (1 - self.mid_len) * (b.height - b.y1)
-        mid_offset = ((1 + taper) * dc.stroke_x - dc.gap) / 2
+        mid_offset = ((1 + taper) * dc.stroke_x) / 2
         hx, hy = b.hx * self.hx_ratio, b.hy
 
         # Left arch (x1 to xmid) and store offset_x
@@ -68,21 +68,8 @@ class LowercaseMGlyph(Glyph):
             cut="bottom",
         )
 
-        # Compute the intersection and fill the gap
-        (_, y1), (_, y2) = arch_params["outer"].intersection_x(x=b.x1 + dc.stroke_x)
-        y1, y2 = min(y1, y2), max(y1, y2)
-
         # Left stem
-        draw_rect(gpen, b.x1, 0, b.x1 + dc.stroke_x, y2)
-        draw_polygon(
-            gpen,
-            points=[
-                (b.x1 + self.ending_thickness * dc.stroke_x, dc.x_height),
-                (b.x1, dc.x_height),
-                (b.x1, y2),
-                (b.x1 + dc.stroke_x - dc.gap, y2),
-            ],
-        )
+        draw_rect(gpen, b.x1, 0, b.x1 + dc.stroke_x, dc.x_height)
 
         # Right foot — reaches up to the arch midpoint
         draw_rect(gpen, b.x2 - dc.stroke_x, 0, b.x2, b.ymid)
@@ -90,10 +77,10 @@ class LowercaseMGlyph(Glyph):
         # Middle stem extension
         draw_rect(
             gpen,
-            b.xmid - (1 - taper) * dc.stroke_x / 2 - dc.gap / 2,
+            b.xmid - (1 - taper) * dc.stroke_x / 2,
             mid_y,
-            b.xmid + (1 - taper) * dc.stroke_x / 2 + dc.gap / 2,
-            y2,
+            b.xmid + (1 - taper) * dc.stroke_x / 2,
+            b.ymid,
         )
 
         # We cut in the middle of the glyph in case it's not wide enough

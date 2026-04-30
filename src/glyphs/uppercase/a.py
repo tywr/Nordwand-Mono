@@ -1,8 +1,7 @@
-from math import cos, tan, pi
+from math import cos
 from glyphs.uppercase import UppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
 from draw.rect import draw_rect
-from draw.dented_rect import draw_dented_rect
 
 
 class UppercaseAGlyph(UppercaseGlyph):
@@ -45,15 +44,4 @@ class UppercaseAGlyph(UppercaseGlyph):
             hb - sy,
             b.xmid + half_width - (hb - sy) * cos(theta),
             hb,
-        )
-
-        # Fill the gap
-        h = dc.gap / (2 * tan(0.5 * pi - theta))
-        p = ov * tan(theta)
-        draw_rect(
-            pen,
-            b.xmid - ov,
-            b.y2 - p - h,
-            b.xmid + ov,
-            b.y2,
         )

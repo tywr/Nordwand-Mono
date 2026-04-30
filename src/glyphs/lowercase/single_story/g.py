@@ -51,23 +51,8 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
             side="right",
         )
 
-        # Compute the intersection and fill the gap
-        (_, y1), (_, y2) = arch_params["outer"].intersection_x(
-            x=b.x2 - dc.stroke_x - dc.gap
-        )
-        y1, y2 = min(y1, y2), max(y1, y2)
-
         # Right stem with gap at baseline and dent inset
-        draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, y2)
-        draw_polygon(
-            pen,
-            points=[
-                (b.x2 - dc.stroke_x, y2),
-                (b.x2, y2),
-                (b.x2, dc.x_height),
-                (b.x2 - self.ending_thickness * dc.stroke_x, dc.x_height),
-            ],
-        )
+        draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, dc.x_height)
 
         # Corner curving down-left into the descender
         draw_corner(
@@ -105,14 +90,3 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
         )
         res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
         res.draw(pen)
-
-        draw_polygon(
-            pen,
-            points=[
-                (b.x2 - dc.stroke_x + dc.stroke_x * dc.taper / 2, b.ymid),
-                (b.x2 - dc.stroke_x - dc.gap, y1),
-                (b.x2 - dc.stroke_x, y1),
-                (b.x2 - dc.stroke_x, y2),
-                (b.x2 - dc.stroke_x - dc.gap, y2),
-            ],
-        )

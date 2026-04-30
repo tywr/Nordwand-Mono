@@ -37,14 +37,3 @@ class UppercaseVGlyph(UppercaseGlyph):
             b.y2,
             direction="top-left",
         )
-
-        # Fill the gap
-        h = dc.gap / (2 * tan(0.5 * pi - theta))
-        p = ov * tan(theta)
-        draw_rect(
-            pen,
-            b.xmid - ov,
-            b.y1,
-            b.xmid + ov,
-            b.y1 + p + h,
-        )

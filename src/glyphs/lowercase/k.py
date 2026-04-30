@@ -55,6 +55,6 @@ class LowercaseKGlyph(Glyph):
             pen,
             b.x1,
             ymid - dc.stroke_y / 2,
-            x_branch + delta + dc.gap / tan(theta),
+            x_branch + delta,
             ymid + dc.stroke_y / 2,
         )

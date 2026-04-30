@@ -42,9 +42,9 @@ class LowercaseWGlyph(Glyph):
             gpen,
             0,
             0,
-            b.x1 + dc.stroke_x + dc.gap,
+            b.x1 + dc.stroke_x,
             b.y1,
-            b.xmid - dc.gap / 2,
+            b.xmid,
             yi + delta / 2,
             direction="top-right",
             delta=delta,
@@ -53,35 +53,12 @@ class LowercaseWGlyph(Glyph):
             gpen,
             0,
             0,
-            b.x2 - dc.stroke_x - dc.gap,
+            b.x2 - dc.stroke_x,
             b.y1,
-            b.xmid + dc.gap / 2,
+            b.xmid,
             yi + delta / 2,
             direction="top-left",
             delta=delta,
-        )
-
-        # Fill the gaps
-        draw_rect(
-            gpen,
-            b.xmid - dc.gap / 2,
-            yi - delta / 2,
-            b.xmid + dc.gap / 2,
-            yi,
-        )
-        draw_rect(
-            gpen,
-            b.x1 + sx,
-            b.y1,
-            b.x1 + sx + dc.gap,
-            b.y1 + delta,
-        )
-        draw_rect(
-            gpen,
-            b.x2 - sx - dc.gap,
-            b.y1,
-            b.x2 - sx,
-            b.y1 + delta,
         )
 
         cut_glyph = ufoLib2.objects.Glyph()
@@ -100,9 +77,9 @@ class LowercaseWGlyph(Glyph):
             draw_polygon(
                 cut_glyph.getPen(),
                 points=[
-                    (b.x2 - sx - dc.gap, b.y1 + delta),
+                    (b.x2 - sx, b.y1 + delta),
                     (
-                        b.x2 - sx - dc.gap + le * sin(theta),
+                        b.x2 - sx + le * sin(theta),
                         b.y1 + delta - le * cos(theta),
                     ),
                     (
@@ -115,9 +92,9 @@ class LowercaseWGlyph(Glyph):
             draw_polygon(
                 cut_glyph.getPen(),
                 points=[
-                    (b.x1 + sx + dc.gap, b.y1 + delta),
+                    (b.x1 + sx, b.y1 + delta),
                     (
-                        b.x1 + sx + dc.gap - le * sin(theta),
+                        b.x1 + sx - le * sin(theta),
                         b.y1 + delta - le * cos(theta),
                     ),
                     (

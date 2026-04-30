@@ -50,7 +50,7 @@ class ThreeGlyph(NumberGlyph):
         )
 
         # Bottom loop
-        bottom_params = draw_arch(
+        draw_arch(
             base_glyph.getPen(),
             sx,
             sy,
@@ -62,22 +62,6 @@ class ThreeGlyph(NumberGlyph):
             b.hy * ry * 2 * self.mid_ratio,
             taper=taper,
             side="top",
-        )
-
-        # Compute the intersection of the two outer superellipses
-        # where there would be a dc.gap sized gap
-        intersection_x = max(
-            top_params["outer"].intersection_superellipse(
-                bottom_params["outer"].translate(dy=dc.gap)
-            ),
-            key=lambda x: x[0],
-        )[0]
-        draw_rect(
-            pen,
-            b.xmid,
-            ymid - sy / 2,
-            intersection_x,
-            ymid + sy / 2,
         )
 
         # Remove the left-middle part

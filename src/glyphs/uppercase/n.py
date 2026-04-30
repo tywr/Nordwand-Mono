@@ -32,13 +32,9 @@ class UppercaseNGlyph(UppercaseGlyph):
             pen,
             sx * self.middle_stroke_ratio,
             sy * self.middle_stroke_ratio,
-            b.x2 - sx - dc.gap,
+            b.x2 - sx,
             b.y1,
-            b.x1 + sx + dc.gap,
+            b.x1 + sx,
             b.y2,
             direction="top-left",
         )
-
-        # Gaps
-        draw_rect(pen, b.x1 + sx, b.y2 - delta, b.x1 + sx + dc.gap, b.y2)
-        draw_rect(pen, b.x2 - sx - dc.gap, 0, b.x2 - sx, delta)

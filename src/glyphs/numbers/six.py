@@ -31,7 +31,7 @@ class SixGlyph(NumberGlyph):
 
         ymid = b.y1 + self.loop_ratio * b.height
         xc = b.x1 + self.cap_x * b.width
-        xj = b.x1 + self.joint_x * sx + dc.gap
+        xj = b.x1 + self.joint_x * sx
 
         # Bottom loop
         params = draw_arch(
@@ -49,7 +49,7 @@ class SixGlyph(NumberGlyph):
             cut="bottom",
         )
 
-        # Compute the intersection and fill the gap
+        # Compute the intersection
         (_, y1), (_, y2) = params["outer"].intersection_x(x=xj)
         yj = max(y1, y2)
 
@@ -67,7 +67,7 @@ class SixGlyph(NumberGlyph):
             pen,
             points=[
                 (xj, yj),
-                (xj - dc.gap - delta / 2, yj),
+                (xj - delta / 2, yj),
                 (b.x1, (b.y1 + ymid) / 2),
                 (b.x1 + sx, (b.y1 + ymid) / 2),
                 (b.x1 + sx, (b.y1 + ymid) / 2 + sy / 2),
@@ -77,12 +77,12 @@ class SixGlyph(NumberGlyph):
         lp = ((b.y2 - yj) ** 2 + (xj - xc) ** 2) ** 0.5
         dx = lp * cos(theta)
         dy = lp * sin(theta)
-        xcm, ycm = xj - dc.gap - delta + 0.66 * dx, yj + 0.66 * dy
-        xcp, ycp = xj - dc.gap - delta + 0.33 * dx, yj + 0.33 * dy
+        xcm, ycm = xj - delta + 0.66 * dx, yj + 0.66 * dy
+        xcp, ycp = xj - delta + 0.33 * dx, yj + 0.33 * dy
 
-        pen.moveTo((xj - dc.gap, yj))
-        pen.lineTo((xc - delta - dc.gap, b.y2))
-        pen.lineTo((xc - 2 * delta - dc.gap, b.y2))
+        pen.moveTo((xj, yj))
+        pen.lineTo((xc - delta, b.y2))
+        pen.lineTo((xc - 2 * delta, b.y2))
         pen.lineTo((xcm, ycm))
         pen.curveTo(
             (xcp, ycp),

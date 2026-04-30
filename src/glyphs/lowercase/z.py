@@ -30,23 +30,7 @@ class LowercaseZGlyph(Glyph):
             dsx,
             dsy,
             b.x1,
-            b.y1 + dc.stroke_y + dc.gap,
-            xr,
-            b.y2 - dc.stroke_y - dc.gap,
-        )
-
-        # Fill the gaps
-        draw_rect(
-            pen,
-            xr - delta,
-            b.y2 - dc.stroke_y - dc.gap,
+            b.y1 + dc.stroke_y,
             xr,
             b.y2 - dc.stroke_y,
-        )
-        draw_rect(
-            pen,
-            b.x1,
-            b.y1 + dc.stroke_y,
-            b.x1 + delta,
-            b.y1 + dc.stroke_y + dc.gap,
         )

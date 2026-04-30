@@ -25,9 +25,6 @@ class OneGlyph(NumberGlyph):
             sy,
             b.x1,
             b.y1 + b.height * (1 - self.branch_height),
-            b.x2 - sx - dc.gap,
+            b.x2 - sx,
             b.y2,
         )
-
-        # Fill the gap
-        draw_rect(pen, b.x2 - sx - dc.gap, b.y2 - delta, b.x2, b.y2)

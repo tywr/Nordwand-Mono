@@ -31,7 +31,7 @@ class NineGlyph(NumberGlyph):
         ymid = b.y2 - self.vertical_ratio * b.height
 
         xf = b.x1 + self.foot_x * b.width
-        xj = b.x2 - self.joint_x * sx - dc.gap
+        xj = b.x2 - self.joint_x * sx
 
         # Upper loop
         params = draw_arch(
@@ -49,7 +49,7 @@ class NineGlyph(NumberGlyph):
             cut="top",
         )
 
-        # Compute the intersection and fill the gap
+        # Compute the intersection
         (_, y1), (_, y2) = params["outer"].intersection_x(x=xj)
         yj = min(y1, y2)
 
@@ -62,7 +62,7 @@ class NineGlyph(NumberGlyph):
             pen,
             points=[
                 (xj, yj),
-                (xj + dc.gap, yj),
+                (xj, yj),
                 (b.x2, (b.y2 + ymid) / 2),
                 (b.x2 - sx, (b.y2 + ymid) / 2),
                 (b.x2 - sx, (b.y2 + ymid) / 2 - sy / 2),
@@ -72,12 +72,12 @@ class NineGlyph(NumberGlyph):
         lp = ((b.y1 - yj) ** 2 + (xj - xf) ** 2) ** 0.5
         dx = lp * cos(theta)
         dy = lp * sin(theta)
-        xcm, ycm = xj + dc.gap + delta - 0.66 * dx, yj - 0.66 * dy
-        xcp, ycp = xj + dc.gap + delta - 0.33 * dx, yj - 0.33 * dy
+        xcm, ycm = xj + delta - 0.66 * dx, yj - 0.66 * dy
+        xcp, ycp = xj + delta - 0.33 * dx, yj - 0.33 * dy
 
-        pen.moveTo((xj + dc.gap, yj))
-        pen.lineTo((xf + delta + dc.gap, b.y1))
-        pen.lineTo((xf + 2 * delta + dc.gap, b.y1))
+        pen.moveTo((xj, yj))
+        pen.lineTo((xf + delta, b.y1))
+        pen.lineTo((xf + 2 * delta, b.y1))
         pen.lineTo((xcm, ycm))
         pen.curveTo(
             (xcp, ycp),

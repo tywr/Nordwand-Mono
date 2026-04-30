@@ -20,22 +20,3 @@ class UppercaseXGlyph(UppercaseGlyph):
         theta, delta = draw_parallelogramm(
             pen, sx, sy, b.x2, b.y1, b.x1, b.y2, direction="top-left"
         )
-
-        # Fill the gaps
-        h = tan(theta) * dc.gap / 2
-        epsilon = tan(theta) * delta / 2
-
-        draw_rect(
-            pen,
-            b.xmid - dc.gap / 2,
-            b.ymid + epsilon,
-            b.xmid + dc.gap / 2,
-            b.ymid + epsilon + h,
-        )
-        draw_rect(
-            pen,
-            b.xmid - dc.gap / 2,
-            b.ymid - epsilon - h,
-            b.xmid + dc.gap / 2,
-            b.ymid - epsilon,
-        )

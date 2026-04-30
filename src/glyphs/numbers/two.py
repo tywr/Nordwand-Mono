@@ -51,7 +51,7 @@ class TwoGlyph(NumberGlyph):
             sx,
             sy,
             b.x1,
-            b.y1 + sy + dc.gap,
+            b.y1 + sy,
             xj,
             yj,
         )
@@ -71,10 +71,9 @@ class TwoGlyph(NumberGlyph):
             (xj - delta + ihx, yj + ihy),
             (xj - delta, yj),
         )
-        pen.lineTo((b.x1, b.y1 + sy + dc.gap))
-        pen.lineTo((b.x1 + delta, b.y1 + sy + dc.gap))
+        pen.lineTo((b.x1, b.y1 + sy))
+        pen.lineTo((b.x1 + delta, b.y1 + sy))
         pen.closePath()
 
         # Bottom bar
         draw_rect(pen, b.x1, 0, b.x2, sy)
-        draw_rect(pen, b.x1, b.y1 + sy, b.x1 + delta, b.y1 + sy + dc.gap)

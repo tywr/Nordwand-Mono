@@ -35,7 +35,4 @@ class UppercaseYGlyph(UppercaseGlyph):
             direction="top-left",
         )
 
-        # Draw main step
-        h = dc.gap / (2 * tan(0.5 * pi - theta))
-        p = ov * tan(theta)
-        draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, yj + p + h)
+        draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, yj)

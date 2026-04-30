@@ -35,7 +35,7 @@ class UppercaseBGlyph(UppercaseGlyph):
         draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
 
         # Upper loop (narrower, displaced left)
-        arch1 = draw_arch(
+        draw_arch(
             pen,
             sx,
             sy,
@@ -50,7 +50,7 @@ class UppercaseBGlyph(UppercaseGlyph):
             cut="left",
         )
         # Lower loop (full width)
-        arch2 = draw_arch(
+        draw_arch(
             pen,
             sx,
             sy,
@@ -65,15 +65,6 @@ class UppercaseBGlyph(UppercaseGlyph):
             cut="left",
         )
 
-        # Compute the intersection of the two outer superellipses
-        # where there would be a dc.gap sized gap
-        intersection_x = max(
-            intersection_superellipses(
-                arch1["outer"], arch2["outer"].translate(dy=dc.gap)
-            ),
-            key=lambda x: x[0],
-        )[0]
-
         # Connecting bars
         draw_rect(pen, b.x1, b.y2 - sy, upper_x2 - upper_width / 2, b.y2)
         draw_rect(pen, b.x1, 0, b.x2 - lower_width / 2, sy)
@@ -81,6 +72,6 @@ class UppercaseBGlyph(UppercaseGlyph):
             pen,
             b.x1,
             ymid - sy / 2,
-            intersection_x,
+            b.xmid,
             ymid + sy / 2,
         )

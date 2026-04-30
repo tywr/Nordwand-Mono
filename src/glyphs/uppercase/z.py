@@ -29,22 +29,7 @@ class UppercaseZGlyph(UppercaseGlyph):
             sx,
             sy,
             b.x1,
-            b.y1 + sy + dc.gap,
-            xr,
-            b.y2 - sy - dc.gap,
-        )
-
-        draw_rect(
-            pen,
-            xr - delta,
-            b.y2 - sy - dc.gap,
+            b.y1 + sy,
             xr,
             b.y2 - sy,
-        )
-        draw_rect(
-            pen,
-            b.x1,
-            b.y1 + sy,
-            b.x1 + delta,
-            b.y1 + sy + dc.gap,
         )

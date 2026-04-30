@@ -1,6 +1,5 @@
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.polygon import draw_polygon
 from glyphs.lowercase.single_story import SingleStoryLowercaseGlyph
 
 
@@ -36,30 +35,4 @@ class LowercaseDGlyph(SingleStoryLowercaseGlyph):
             side="right",
         )
 
-        # Compute the intersection and fill the gap
-        (_, y1), (_, y2) = arch_params["outer"].intersection_x(
-            x=b.x2 - dc.stroke_x - dc.gap
-        )
-        y1, y2 = min(y1, y2), max(y1, y2)
-
-        draw_rect(pen, b.x2 - dc.stroke_x, y1, b.x2, dc.ascent)
-        draw_polygon(
-            pen,
-            points=[
-                (b.x2 - self.ending_thickness * dc.stroke_x, 0),
-                (b.x2, 0),
-                (b.x2, y1),
-                (b.x2 - dc.stroke_x, y1),
-            ],
-        )
-
-        draw_polygon(
-            pen,
-            points=[
-                (b.x2 - dc.stroke_x + dc.stroke_x * dc.taper / 2, b.ymid),
-                (b.x2 - dc.stroke_x - dc.gap, y1),
-                (b.x2 - dc.stroke_x, y1),
-                (b.x2 - dc.stroke_x, y2),
-                (b.x2 - dc.stroke_x - dc.gap, y2),
-            ],
-        )
+        draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, dc.ascent)

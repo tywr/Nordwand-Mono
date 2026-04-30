@@ -27,6 +27,5 @@ class SevenGlyph(NumberGlyph):
             b.x1 + ox,
             b.y1,
             b.x2,
-            b.y2 - sy - dc.gap,
+            b.y2 - sy,
         )
-        draw_rect(pen, b.x2 - delta, b.y2 - sy - dc.gap, b.x2, b.y2)

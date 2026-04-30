@@ -19,7 +19,7 @@ class LowercaseAGlyph(Glyph):
     cap_hx_ratio = 1.15
     cap_hy_ratio = 1
     cap_height = 0.72
-    cap_offset = 0.06
+    cap_offset = 0.04
     thinning = 0.89
     cap_stroke_x_ratio = 1.01
     cap_stroke_y_ratio = 1.09
@@ -75,28 +75,6 @@ class LowercaseAGlyph(Glyph):
             orientation="top-right",
         )
 
-        # Alternative construction with flatter bar
-        # draw_corner(
-        #     pen,
-        #     csx,
-        #     dc.stroke_alt,
-        #     b.x1,
-        #     (b.y1 + yl) / 2,
-        #     b.xmid,
-        #     yl,
-        #     hx,
-        #     hy,
-        #     orientation="top-right",
-        # )
-        # Middle line
-        # draw_rect(
-        #     pen,
-        #     b.xmid,
-        #     b.y1 + b.height * ry - dc.stroke_alt,
-        #     b.x2 - dc.stroke_x,
-        #     b.y1 + b.height * ry,
-        # )
-
         # Cap
         xmid = (xc + b.x2) / 2
         draw_corner(
@@ -121,37 +99,11 @@ class LowercaseAGlyph(Glyph):
         result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
         result.draw(pen)
 
-
-        # Fill the gap
-        (_, y1), (_, y2) = arch_params["outer"].intersection_x(
-            x=b.x2 - dc.stroke_x - dc.gap
-        )
-        y1, y2 = min(y1, y2), max(y1, y2)
-
         # Stem
         draw_rect(
             pen,
             b.x2 - sx,
-            y1,
+            0,
             b.x2,
             b.ymid,
-        )
-
-        draw_polygon(
-            pen,
-            points=[
-                (b.x2 - self.ending_thickness * dc.stroke_x, 0),
-                (b.x2, 0),
-                (b.x2, y1),
-                (b.x2 - dc.stroke_x, y1),
-            ],
-        )
-
-        draw_polygon(
-            pen,
-            points=[
-                (b.x2 - dc.stroke_x + dc.stroke_x * dc.taper / 2, b.ymid),
-                (b.x2 - dc.stroke_x - dc.gap, y1),
-                (b.x2 - dc.stroke_x, y1),
-            ],
         )

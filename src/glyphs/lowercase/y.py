@@ -46,14 +46,3 @@ class LowercaseYGlyph(Glyph):
             dc.descent,
             direction="bottom-left",
         )
-
-        # Fill the gap
-        h = dc.gap / (2 * tan(0.5 * pi - theta))
-        p = ov * tan(theta)
-        draw_rect(
-            pen,
-            b.xmid - ov,
-            dent_height,
-            b.xmid + ov,
-            dent_height + p + h,
-        )

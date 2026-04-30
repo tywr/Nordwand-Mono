@@ -3,7 +3,7 @@ import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_vertical, draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_vertical
 from draw.polygon import draw_polygon
 
 
@@ -41,9 +41,9 @@ class UppercaseMGlyph(UppercaseGlyph):
             gpen,
             0,
             0,
-            b.x1 + dc.stroke_x + dc.gap,
+            b.x1 + dc.stroke_x,
             b.y2,
-            b.xmid - dc.gap / 2,
+            b.xmid ,
             yi - delta / 2,
             direction="bottom-right",
             delta=delta,
@@ -52,30 +52,30 @@ class UppercaseMGlyph(UppercaseGlyph):
             gpen,
             0,
             0,
-            b.x2 - dc.stroke_x - dc.gap,
+            b.x2 - dc.stroke_x ,
             b.y2,
-            b.xmid + dc.gap / 2,
+            b.xmid ,
             yi - delta / 2,
             direction="bottom-left",
             delta=delta,
         )
         draw_rect(
             gpen,
-            b.xmid - dc.gap / 2,
+            b.xmid ,
             yi,
-            b.xmid + dc.gap / 2,
+            b.xmid ,
             yi + delta / 2,
         )
         draw_rect(
             gpen,
             b.x1 + sx,
             b.y2 - delta,
-            b.x1 + sx + dc.gap,
+            b.x1 + sx,
             b.y2,
         )
         draw_rect(
             gpen,
-            b.x2 - sx - dc.gap,
+            b.x2 - sx,
             b.y2 - delta,
             b.x2 - sx,
             b.y2,
@@ -93,9 +93,9 @@ class UppercaseMGlyph(UppercaseGlyph):
             draw_polygon(
                 cut_glyph.getPen(),
                 points=[
-                    (b.x2 - sx - dc.gap, b.y2 - delta),
+                    (b.x2 - sx , b.y2 - delta),
                     (
-                        b.x2 - sx - dc.gap + le * sin(theta),
+                        b.x2 - sx + le * sin(theta),
                         b.y2 - delta + le * cos(theta),
                     ),
                     (
@@ -108,9 +108,9 @@ class UppercaseMGlyph(UppercaseGlyph):
             draw_polygon(
                 cut_glyph.getPen(),
                 points=[
-                    (b.x1 + sx + dc.gap, b.y2 - delta),
+                    (b.x1 + sx , b.y2 - delta),
                     (
-                        b.x1 + sx + dc.gap - le * sin(theta),
+                        b.x1 + sx - le * sin(theta),
                         b.y2 - delta + le * cos(theta),
                     ),
                     (

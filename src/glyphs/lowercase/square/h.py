@@ -32,24 +32,7 @@ class LowercaseHGlyph(SquareLowercaseGlyph):
             side="left",
             cut="bottom",
         )
-        # Left stem — full ascent height with gap at the top
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
-
-        # Compute the intersection and fill the gap
-        (_, y1), (_, y2) = arch_params["outer"].intersection_x(
-            x=b.x1 + dc.stroke_x + dc.gap
-        )
-        _, y2 = min(y1, y2), max(y1, y2)
-
-        # Fill the gap
-        draw_polygon(
-            pen,
-            points=[
-                (b.x1 + dc.stroke_x + dc.gap, y2),
-                (b.x1 + dc.stroke_x, y2),
-                (b.x1 + dc.stroke_x - dc.stroke_x * dc.taper * self.taper / 2, b.ymid),
-            ],
-        )
 
         # Right stem — reaches up to the arch midpoint
         draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, b.y1 + b.height / 2)
