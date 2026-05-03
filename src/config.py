@@ -51,11 +51,11 @@ class DrawConfig(FontConfig):
 
     width: int = 348
 
-    hx: int = 172
-    hy: int = 164
+    hx: int = 150
+    hy: int = 170
 
-    cap_hx: int = 178
-    cap_hy: int = 188
+    cap_hx: int = 150
+    cap_hy: int = 190
 
     gap: int = 10
 

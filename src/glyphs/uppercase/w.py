@@ -43,7 +43,7 @@ class UppercaseWGlyph(UppercaseGlyph):
             gpen,
             0,
             0,
-            b.x1 + dc.stroke_x,
+            b.x1 + sx,
             b.y1,
             b.xmid,
             yi + delta / 2,
@@ -54,7 +54,7 @@ class UppercaseWGlyph(UppercaseGlyph):
             gpen,
             0,
             0,
-            b.x2 - dc.stroke_x,
+            b.x2 - sx,
             b.y1,
             b.xmid,
             yi + delta / 2,
@@ -93,7 +93,7 @@ class UppercaseWGlyph(UppercaseGlyph):
             draw_polygon(
                 cut_glyph.getPen(),
                 points=[
-                    (b.x1 + sx , b.y1 + delta),
+                    (b.x1 + sx, b.y1 + delta),
                     (
                         b.x1 + sx - le * sin(theta),
                         b.y1 + delta - le * cos(theta),

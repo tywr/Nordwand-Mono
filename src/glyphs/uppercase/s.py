@@ -14,9 +14,9 @@ class UppercaseSGlyph(UppercaseGlyph):
     hx_ratio = 1
     hy_ratio = 1
     mid_height = 0.52
-    opening1 = 0.28
-    opening2 = 0.72
-    thinning = 0.89
+    opening1 = 0.33
+    opening2 = 0.66
+    thinning = 1
     left_offset = 0.04
     right_offset = 0.04
     curve_thinning = 0.022

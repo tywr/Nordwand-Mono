@@ -1,9 +1,6 @@
-from math import cos, sin, tan, pi
-
 from glyphs.uppercase import UppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
 from draw.rect import draw_rect
-from draw.polygon import draw_polygon
 
 
 class UppercaseYGlyph(UppercaseGlyph):
@@ -12,27 +9,26 @@ class UppercaseYGlyph(UppercaseGlyph):
     offset = 0
     width_ratio = 1.2
     junction_ratio = 0.4
-    overlap = 0.1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, width_ratio=self.width_ratio, height="cap"
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx = dc.stroke_x * self.stroke_x_ratio
 
-        ov = self.overlap * sx
         yj = b.x1 + self.junction_ratio * b.height
 
-        theta, delta = draw_parallelogramm(pen, sx, sy, b.xmid - ov, yj, b.x2, b.y2)
+        draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, yj)
+
+        draw_parallelogramm(pen, sx, sx, b.xmid - sx / 2, yj, b.x2, b.y2, delta=sx)
         draw_parallelogramm(
             pen,
             sx,
-            sy,
-            b.xmid + ov,
+            sx,
+            b.xmid + sx / 2,
             yj,
             b.x1,
             b.y2,
             direction="top-left",
+            delta=sx,
         )
-
-        draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, yj)

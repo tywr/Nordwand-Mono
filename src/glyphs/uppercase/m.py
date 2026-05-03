@@ -26,7 +26,7 @@ class UppercaseMGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
             min_margin=dc.min_margin_uppercase,
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx = dc.stroke_x * self.stroke_x_ratio
         delta = self.inner_thickness_ratio * dc.stroke_x
         yi = b.y1 + self.inner_height * b.height
         yik = b.y1 + self.ink_trap_height * b.height
@@ -41,9 +41,9 @@ class UppercaseMGlyph(UppercaseGlyph):
             gpen,
             0,
             0,
-            b.x1 + dc.stroke_x,
+            b.x1 + sx,
             b.y2,
-            b.xmid ,
+            b.xmid,
             yi - delta / 2,
             direction="bottom-right",
             delta=delta,
@@ -52,18 +52,18 @@ class UppercaseMGlyph(UppercaseGlyph):
             gpen,
             0,
             0,
-            b.x2 - dc.stroke_x ,
+            b.x2 - sx,
             b.y2,
-            b.xmid ,
+            b.xmid,
             yi - delta / 2,
             direction="bottom-left",
             delta=delta,
         )
         draw_rect(
             gpen,
-            b.xmid ,
+            b.xmid,
             yi,
-            b.xmid ,
+            b.xmid,
             yi + delta / 2,
         )
         draw_rect(
@@ -93,7 +93,7 @@ class UppercaseMGlyph(UppercaseGlyph):
             draw_polygon(
                 cut_glyph.getPen(),
                 points=[
-                    (b.x2 - sx , b.y2 - delta),
+                    (b.x2 - sx, b.y2 - delta),
                     (
                         b.x2 - sx + le * sin(theta),
                         b.y2 - delta + le * cos(theta),
@@ -108,7 +108,7 @@ class UppercaseMGlyph(UppercaseGlyph):
             draw_polygon(
                 cut_glyph.getPen(),
                 points=[
-                    (b.x1 + sx , b.y2 - delta),
+                    (b.x1 + sx, b.y2 - delta),
                     (
                         b.x1 + sx - le * sin(theta),
                         b.y2 - delta + le * cos(theta),

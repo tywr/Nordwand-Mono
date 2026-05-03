@@ -10,11 +10,11 @@ class LowercaseCGlyph(RoundLowercaseGlyph):
     name = "lowercase_c"
     unicode = "0x63"
     offset = 5
-    opening1 = 0.28
-    opening2 = 0.72
+    opening1 = 0.33
+    opening2 = 0.66
     width_ratio = 1
-    thinning = 0.89
-    top_offset = 0.02
+    thinning = 1
+    top_offset = 0.00
 
     def draw(self, pen, dc):
 

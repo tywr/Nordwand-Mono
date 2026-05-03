@@ -14,15 +14,15 @@ class LowercaseAGlyph(Glyph):
     accent_x_offset = 16
     mid_height = 0.52
     width_ratio = 1
-    taper = 0.15
+    taper = 0.3
     hx_ratio = 1
     cap_hx_ratio = 1.15
     cap_hy_ratio = 1
-    cap_height = 0.72
+    cap_height = 0.66
     cap_offset = 0.04
-    thinning = 0.89
+    thinning = 1
     cap_stroke_x_ratio = 1.01
-    cap_stroke_y_ratio = 1.09
+    cap_stroke_y_ratio = 1.00
     ending_thickness = 0.8
 
     def draw(self, pen, dc):
