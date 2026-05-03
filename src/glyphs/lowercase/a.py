@@ -4,7 +4,6 @@ from glyphs import Glyph
 from draw.arch import draw_arch
 from draw.corner import draw_corner
 from draw.rect import draw_rect
-from draw.polygon import draw_polygon
 
 
 class LowercaseAGlyph(Glyph):
@@ -18,7 +17,7 @@ class LowercaseAGlyph(Glyph):
     hx_ratio = 1
     cap_hx_ratio = 1.15
     cap_hy_ratio = 1
-    cap_height = 0.66
+    cap_height = 0.7
     cap_offset = 0.04
     thinning = 1
     cap_stroke_x_ratio = 1.01
