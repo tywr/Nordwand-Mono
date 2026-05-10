@@ -631,7 +631,7 @@ def build_ttf(
         if italic:
             path = skew_path(path, fc.italic_angle)
         ttf_pen = TTGlyphPen(None)
-        cu2qu_pen = Cu2QuPen(ttf_pen, max_err=1.0, reverse_direction=False)
+        cu2qu_pen = Cu2QuPen(ttf_pen, max_err=1.0, reverse_direction=True)
         path.draw(cu2qu_pen)
         return ttf_pen.glyph()
 

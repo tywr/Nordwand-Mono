@@ -1,5 +1,3 @@
-import ufoLib2
-
 from glyphs import Glyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
@@ -42,7 +40,7 @@ class LowercaseMGlyph(Glyph):
 
         # Left arch (x1 to xmid) and store offset_x
 
-        glyph = ufoLib2.objects.Glyph()
+        # glyph = ufoLib2.objects.Glyph()
 
         draw_arch(
             pen,
@@ -81,13 +79,17 @@ class LowercaseMGlyph(Glyph):
         # Right foot — reaches up to the arch midpoint
         draw_rect(pen, b.x2 - sx, 0, b.x2, b.ymid)
 
-        # Middle stem extension
+        # Middle stem extension — extend past b.ymid into the arch so the
+        # union is a clean polygon. Without this overlap, pathops sees the
+        # arch's underside and the middle stem's top sharing an edge at
+        # y=b.ymid and emits the shared edge as a boundary, producing a
+        # stray horizontal stroke across the left counter in some weights.
         draw_rect(
             pen,
             b.xmid - smid / 2,
             mid_y,
             b.xmid + smid / 2,
-            b.ymid,
+            b.ymid + 1,
         )
 
         # We cut in the middle of the glyph in case it's not wide enough
