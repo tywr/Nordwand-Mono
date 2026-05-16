@@ -10,8 +10,8 @@ class CommaGlyph(Glyph):
     height_ratio = 0.75
     vertical_offset = 0.25
     foot_offset = 0.15
-    taper = 0.5
-    stroke_ratio = 1.5
+    taper = 0.66
+    stroke_ratio = 1.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
