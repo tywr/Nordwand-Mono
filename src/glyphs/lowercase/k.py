@@ -1,4 +1,3 @@
-from math import tan
 from glyphs import Glyph
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
@@ -12,6 +11,8 @@ class LowercaseKGlyph(Glyph):
     branch_ratio = 0.75
     mid_ratio = 0.52
     upper_branch_offset = 0.055
+    branch_stroke_ratio = 1.25
+    branch_overlap = 0.5
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -20,7 +21,8 @@ class LowercaseKGlyph(Glyph):
             overshoot_right=True,
             overshoot_left=True,
         )
-        x_branch = b.x1 + (1 - self.branch_ratio) * b.width
+        xb = b.x1 + self.branch_overlap * dc.stroke_x
+        sx = self.branch_stroke_ratio * dc.stroke_x
         xtop = b.x2 - self.upper_branch_offset * b.width
         ymid = b.y1 + self.mid_ratio * b.height
 
@@ -32,11 +34,12 @@ class LowercaseKGlyph(Glyph):
             pen,
             dc.stroke_x,
             dc.stroke_y,
-            x_branch,
-            ymid + dc.stroke_y / 2,
+            xb,
+            ymid,
             b.x2,
             b.y1,
             direction="bottom-right",
+            delta=sx,
         )
 
         # Upper branch
@@ -44,17 +47,9 @@ class LowercaseKGlyph(Glyph):
             pen,
             dc.stroke_x,
             dc.stroke_y,
-            x_branch,
-            ymid - dc.stroke_y / 2,
+            xb,
+            ymid,
             xtop,
             b.y2,
-        )
-
-        # Neck
-        draw_rect(
-            pen,
-            b.x1,
-            ymid - dc.stroke_y / 2,
-            x_branch + delta,
-            ymid + dc.stroke_y / 2,
+            delta=sx,
         )

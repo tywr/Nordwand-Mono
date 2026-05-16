@@ -1,8 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
 from draw.loop import draw_loop
-from draw.corner import draw_corner
-from draw.parallelogramm import draw_parallelogramm_vertical
 
 
 class UppercaseJGlyph(UppercaseGlyph):
