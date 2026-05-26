@@ -352,6 +352,64 @@ def render_composition(output, font_path, target_width):
     print(f"Saved {output} ({img.width}x{img.height})")
 
 
+WEIGHT_STYLES = [
+    ("Thin", "Thin"),
+    ("ThinItalic", "Thin Italic"),
+    ("ExtraLight", "ExtraLight"),
+    ("ExtraLightItalic", "ExtraLight Italic"),
+    ("Light", "Light"),
+    ("LightItalic", "Light Italic"),
+    ("Regular", "Regular"),
+    ("Italic", "Italic"),
+    ("Medium", "Medium"),
+    ("MediumItalic", "Medium Italic"),
+    ("SemiBold", "SemiBold"),
+    ("SemiBoldItalic", "SemiBold Italic"),
+    ("Bold", "Bold"),
+    ("BoldItalic", "Bold Italic"),
+]
+
+
+def render_weights_sample(output, font_path, target_width):
+    word = "Hamburgevons"
+    word_size = 80
+    label_size = 22
+    label_offset = 16
+    row_leading = word_size + label_size + label_offset + 32
+
+    font_dir = os.path.dirname(font_path)
+    light_path = font_path.replace("-Regular", "-Light")
+    label_font = ImageFont.truetype(
+        light_path if os.path.exists(light_path) else font_path, label_size
+    )
+
+    rows = []
+    for ps_style, display_name in WEIGHT_STYLES:
+        weight_path = os.path.join(font_dir, f"NordwandMono-{ps_style}.ttf")
+        if not os.path.exists(weight_path):
+            continue
+        rows.append((display_name, ImageFont.truetype(weight_path, word_size)))
+
+    img_h = IMAGE_PAD * 2 + len(rows) * row_leading
+    img = Image.new("RGB", (target_width, img_h), BG)
+    draw = ImageDraw.Draw(img)
+
+    y = IMAGE_PAD
+    for label, wfont in rows:
+        draw.text((IMAGE_PAD, y), label, font=label_font, fill=NOIR_3)
+        draw.text(
+            (IMAGE_PAD, y + label_size + label_offset),
+            word,
+            font=wfont,
+            fill=FG,
+        )
+        y += row_leading
+
+    os.makedirs(os.path.dirname(output), exist_ok=True)
+    img.save(output)
+    print(f"Saved {output} ({img.width}x{img.height})")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate code-sample PNGs")
     parser.add_argument(
@@ -378,6 +436,12 @@ if __name__ == "__main__":
 
     render_composition(
         os.path.join(args.output_dir, "les_drus.png"),
+        args.font,
+        target_width,
+    )
+
+    render_weights_sample(
+        os.path.join(args.output_dir, "sample_weights.png"),
         args.font,
         target_width,
     )
