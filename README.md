@@ -14,6 +14,15 @@ Amongst the inspirations for the design, you might identify:
 - Alpes Mono from Sharp Type
 - Ubuntu Mono from Dalton Maag
 
+## Compile your own custom version
+
+This font is generated with python. Each glyph is drawn from a python glyph class, in which you can inject a drawing context object. You can for example modify some metrics like the x-height, the capital height etc.
+
+To do so, open the file at `src/config.py` and edit the python file with the metrics of your choice. Then execute `make build` to generate all the font files.
+
+> [!WARNING]
+> There are no guarantees that the font might look good with different metrics, and some glyphs might require some tweaking if the metrics are altered !
+
 ## Minimal Ligatures
 
  I personally do not enjoy ligatures that much, but still appreciate the simple ones such as "->", "--", or "__" so I decided to ship the font with a minimal set of ligatures that still allow an easy spotting of the individual characters.
