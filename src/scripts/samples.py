@@ -123,9 +123,14 @@ SAMPLE_CHAR = """\
 ABCDEFGHIJKLMNOPQRSTUVWXYZ
 abcdefghijklmnopqrstuvwxyz
 0123456789
+
 !"#$%&'()+=,-./:;<*>
 ?@[\]^_`{|}~
 -> => __ -- == ===
+
+oO08 iIlL1 g9qCGQ 8%& <([{}])> .,;: ~-_=
+
+â é ù ï ø ç Ã Ē Æ œ
 
 The quick brown fox jumps over the lazy dog
 """
