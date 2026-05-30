@@ -4,7 +4,6 @@ from glyphs import Glyph
 from draw.arch import draw_arch
 from draw.corner import draw_corner
 from draw.rect import draw_rect
-from draw.loop import draw_loop
 
 
 class AeGlyph(Glyph):

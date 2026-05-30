@@ -3,7 +3,7 @@ from draw.loop import draw_loop
 from draw.rect import draw_rect
 
 
-class CapitalOSlashGlyph(UppercaseGlyph):
+class UppercaseOSlashGlyph(UppercaseGlyph):
     # Plots the same as uppercase 'O' for the moment (slash to be added later).
     name = "capital_oslash"
     unicode = "0xD8"
