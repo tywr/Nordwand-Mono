@@ -432,18 +432,18 @@ def _style_metadata(weight, italic):
     return style_name, ps_style_name, name_table, fs_selection, mac_style
 
 
-def build_font(output_path=None, weight=400, italic=False, otf=True, ttf=True):
+def build_font(output_path=None, weight=400, italic=False, otf=True, ttf=True, out_root="fonts"):
     style_name, ps_style_name, name_table, fs_selection, mac_style = _style_metadata(
         weight, italic
     )
 
     if output_path is None:
         if otf:
-            os.makedirs("fonts/otf/", exist_ok=True)
+            os.makedirs(f"{out_root}/otf/", exist_ok=True)
         if ttf:
-            os.makedirs("fonts/ttf/", exist_ok=True)
+            os.makedirs(f"{out_root}/ttf/", exist_ok=True)
         fname = fc.family_name.replace(" ", "")
-        output_path = f"fonts/otf/{fname}-{ps_style_name}.otf"
+        output_path = f"{out_root}/otf/{fname}-{ps_style_name}.otf"
 
     if weight != 400:
         dc = DrawConfig.weight(w=weight)
@@ -707,11 +707,28 @@ if __name__ == "__main__":
     fmt = parser.add_mutually_exclusive_group()
     fmt.add_argument("--ttf", action="store_true", help="Generate only TTF files")
     fmt.add_argument("--otf", action="store_true", help="Generate only OTF files")
+    parser.add_argument(
+        "--config",
+        metavar="FILE.yml",
+        help="YAML file whose values overwrite the default FontConfig values",
+    )
     args = parser.parse_args()
+
+    out_root = "fonts"
+    if args.config:
+        from config import load_config
+
+        applied = load_config(args.config)
+        print(f"Loaded config overrides from {args.config}: {applied}")
+        # Custom builds are written under ./custom-fonts/{font_name} so they
+        # don't clobber the default fonts/ output.
+        font_name = fc.family_name.replace(" ", "")
+        out_root = f"custom-fonts/{font_name}"
+        print(f"Writing custom fonts to ./{out_root}/")
 
     build_otf = not args.ttf
     build_ttf_flag = not args.otf
 
     for w in [100, 200, 300, 400, 500, 600, 700]:
-        build_font(weight=w, otf=build_otf, ttf=build_ttf_flag)
-        build_font(weight=w, italic=True, otf=build_otf, ttf=build_ttf_flag)
+        build_font(weight=w, otf=build_otf, ttf=build_ttf_flag, out_root=out_root)
+        build_font(weight=w, italic=True, otf=build_otf, ttf=build_ttf_flag, out_root=out_root)

@@ -1,3 +1,4 @@
+import dataclasses
 from dataclasses import dataclass
 from utils.bounds import BodyBounds
 
@@ -30,6 +31,23 @@ class FontConfig:
     default_stroke = 90
     italic_angle: float = 9.4
 
+    width: int = 348
+
+    hx: int = 180
+    hy: int = 180
+
+    cap_hx: int = 180
+    cap_hy: int = 190
+
+    taper: float = 0.5
+
+    stroke_x: int = 94
+    stroke_y: int = 66
+    stroke_alt: int = 60
+
+    v_overshoot: int = 12
+    h_overshoot: int = 11
+
 
 @dataclass
 class DrawConfig(FontConfig):
@@ -40,26 +58,17 @@ class DrawConfig(FontConfig):
     descent: int = FontConfig.descent
     accent: int = FontConfig.accent
     accent_cap: int = FontConfig.accent_cap
-
-    # Default parameters
-    stroke_x: int = 94
-    stroke_y: int = 66
-    stroke_alt: int = 60
-
-    v_overshoot: int = 12
-    h_overshoot: int = 11
-
-    width: int = 348
-
-    hx: int = 180
-    hy: int = 180
-
-    cap_hx: int = 180
-    cap_hy: int = 190
-
-    gap: int = 10
-
-    taper: float = 0.5
+    width: int = FontConfig.width
+    hx: int = FontConfig.hx
+    hy: int = FontConfig.hy
+    cap_hx: int = FontConfig.cap_hx
+    cap_hy: int = FontConfig.cap_hy
+    taper: int = FontConfig.taper
+    stroke_x: int = FontConfig.stroke_x
+    stroke_y: int = FontConfig.stroke_y
+    stroke_alt: int = FontConfig.stroke_alt
+    v_overshoot: int = FontConfig.v_overshoot
+    h_overshoot: int = FontConfig.h_overshoot
 
     italic: bool = False
 
@@ -103,7 +112,6 @@ class DrawConfig(FontConfig):
             stroke_y=int(cls.stroke_y),
             stroke_alt=int(cls.stroke_alt),
             taper=cls.taper,
-            gap=0,
             italic=True,
         )
 
@@ -125,7 +133,7 @@ class DrawConfig(FontConfig):
         of a character. For most lowercase, the boundaries are
         a centered rectangle of length `width` and of height `x-height`.
         For most capital letters, it's a centered rectangle of length
-        `width` of a of height `ascent`.
+        `width` and height `ascent`.
         """
         width = self.width * width_ratio
         if height not in ["x_height", "ascent", "cap"]:
@@ -135,16 +143,14 @@ class DrawConfig(FontConfig):
         x2 = self.window_width / 2 + width / 2 + self.stroke_x / 2 + offset
         y2 = getattr(self, height)
 
-        # For some wide characters (w, m, W, M) we fix a min margin for bolder weights
-        # weights
+        # For some wide characters (w, m, W, M) we fix a minimum margin
+        # for bolder weights
         if min_margin:
             x1 = max(min_margin, x1)
             x2 = min(self.window_width - min_margin, x2)
 
         v_ov = self.v_overshoot
         h_ov = self.h_overshoot
-        # if uppercase:
-        #     v_ov *= 0.6 * self.cap / self.x_height
 
         if overshoot_left:
             x1 -= h_ov / 2
@@ -172,3 +178,62 @@ class DrawConfig(FontConfig):
         return BodyBounds(
             x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy, v_ov=v_ov, h_ov=h_ov
         )
+
+
+def config_keys():
+    """Names of all overridable configuration values."""
+    keys = {f.name for f in dataclasses.fields(DrawConfig)}
+    # `default_stroke` is a plain class attribute (no annotation), not a field.
+    keys.add("default_stroke")
+    return keys
+
+
+def apply_config_overrides(overrides):
+    """Overwrite the default FontConfig / DrawConfig values in place.
+
+    `overrides` is a mapping of config name -> value. The values are written
+    onto both classes so that:
+      * static access (`fc.window_width`, `fc.accent`, ...) sees them, and
+      * instantiation (`DrawConfig()`, `.weight()`, `.for_italic()`) sees them,
+        which requires rebuilding the dataclass `__init__` defaults.
+
+    Raises ValueError on unknown keys so typos fail loudly.
+    """
+    valid = config_keys()
+    unknown = set(overrides) - valid
+    if unknown:
+        raise ValueError(
+            f"Unknown config keys: {sorted(unknown)}. "
+            f"Valid keys: {sorted(valid)}"
+        )
+
+    for key, value in overrides.items():
+        for cls in (FontConfig, DrawConfig):
+            if hasattr(cls, key):
+                setattr(cls, key, value)
+
+    # Reassigning a class attribute does not change the dataclass `__init__`
+    # default (which is baked in at class creation), so rebuild it from the
+    # current class attributes, in field order.
+    DrawConfig.__init__.__defaults__ = tuple(
+        getattr(DrawConfig, f.name) for f in dataclasses.fields(DrawConfig)
+    )
+
+    return overrides
+
+
+def load_config(path):
+    """Load a YAML file and apply it as overrides to the font configuration.
+
+    Returns the dict of applied overrides.
+    """
+    import yaml
+
+    with open(path) as fh:
+        data = yaml.safe_load(fh) or {}
+    if not isinstance(data, dict):
+        raise ValueError(
+            f"Config file {path!r} must contain a top-level mapping of "
+            f"config name -> value"
+        )
+    return apply_config_overrides(data)

@@ -1,0 +1,66 @@
+# Nordwand Mono — custom build configuration.
+#
+# Every value below overwrites the matching default in FontConfig
+# (src/config.py). All keys are optional: omit any you don't want to change.
+#
+# Usage:
+#   python -m generate_font --config config.example.yml
+#
+# Copy this file, edit the values you care about, and pass it with --config.
+
+# --- Identity ---------------------------------------------------------------
+family_name: Nordwand Mono Custom
+
+# --- Global metrics ---------------------------------------------------------
+units_per_em: 1000
+window_ascent: 1025
+window_descent: -300
+window_width: 600
+
+# --- Vertical metrics -------------------------------------------------------
+ascent: 750
+descent: -200
+cap: 710
+x_height: 540
+
+# Accent anchor heights (lowercase / uppercase).
+accent: 715
+accent_cap: 890
+
+# Vertical center used by math-like glyphs.
+math: 300
+
+# --- Parentheses / brackets -------------------------------------------------
+parenthesis: 300
+parenthesis_length: 1060
+
+# --- Side bearings ----------------------------------------------------------
+min_margin_lowercase: 26
+min_margin_uppercase: 40
+
+# --- Italic -----------------------------------------------------------------
+italic_angle: 9.4
+
+# --- Body width -------------------------------------------------------------
+width: 348
+
+# --- Superellipse handles ---------------------------------------------------
+hx: 180
+hy: 180
+cap_hx: 180
+cap_hy: 190
+
+# Corner taper (0..0.5).
+taper: 0.5
+
+# --- Stroke weights (regular / 400) -----------------------------------------
+# These are the base weights; --config keeps the multi-weight build, which
+# scales them per weight via DrawConfig.weight().
+default_stroke: 90
+stroke_x: 94
+stroke_y: 66
+stroke_alt: 60
+
+# --- Overshoots -------------------------------------------------------------
+v_overshoot: 12
+h_overshoot: 11
