@@ -5,6 +5,7 @@ from utils.bounds import BodyBounds
 
 @dataclass
 class FontConfig:
+    """Default metrics used for the project, can be overwritten with a yaml file"""
     family_name: str = "Nordwand Mono"
 
     units_per_em: int = 1000

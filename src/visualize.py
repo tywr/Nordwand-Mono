@@ -372,7 +372,18 @@ if __name__ == "__main__":
     )
     parser.add_argument("--pt", type=float, default=None, help="Point size (text mode)")
     parser.add_argument("--guides", action="store_true", help="Show helper lines (text mode)")
+    parser.add_argument(
+        "--config",
+        metavar="FILE.yml",
+        help="YAML file whose values overwrite the default FontConfig values",
+    )
     args = parser.parse_args()
+
+    if args.config:
+        from config import load_config
+
+        applied = load_config(args.config)
+        print(f"Loaded config overrides from {args.config}: {applied}")
 
     WEIGHT_ALIASES = {
         "thin": 100,
