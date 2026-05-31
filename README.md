@@ -19,7 +19,7 @@ Amongst the inspirations for the design, you might identify:
 
 This font is generated with python. Each glyph is drawn from a python glyph class, in which you can inject a drawing context object. You can for example modify some metrics like the x-height, the capital height etc.
 
-To do so, open the file at `src/config.py` and edit the python file with the metrics of your choice. Then execute `make build` to generate all the font files.
+To do so, override the config.example.yml with the values of your liking. Be sure to visualize the individual glyphs with `python -m visualize --config config.yml <glyph_id>`. Then you can geneate the full font with `python -m generate_font --config config.yml`. The font files will be generated inside `./custom-fonts`.
 
 > [!WARNING]
 > There are no guarantees that the font might look good with different metrics, and some glyphs might require some tweaking if the metrics are altered !
