@@ -55,7 +55,7 @@ class SharpSGlyph(Glyph):
             hy * (1 - self.mid_ratio),
             orientation="top-right",
         )
-        arch1 = draw_arch(
+        draw_arch(
             pen,
             sx,
             sy,
@@ -71,7 +71,7 @@ class SharpSGlyph(Glyph):
         )
 
         # Lower loop (full width)
-        arch2 = draw_arch(
+        draw_arch(
             pen,
             sx,
             sy,
@@ -86,20 +86,11 @@ class SharpSGlyph(Glyph):
             side="top",
         )
 
-        # Compute the intersection of the two outer superellipses
-        # where there would be a dc.gap sized gap
-        intersection_x = max(
-            intersection_superellipses(
-                arch1["outer"], arch2["outer"].translate(dy=dc.gap)
-            ),
-            key=lambda x: x[0],
-        )[0]
-
         draw_rect(
             pen,
             b.x1 + o,
             ymid - sy / 2,
-            intersection_x,
+            b.xmid,
             ymid + sy / 2,
         )
         draw_rect(
