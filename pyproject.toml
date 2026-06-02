@@ -1,6 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "NordwandMono"
 version = "0.0.0"
+dependencies = [
+    "fonttools>=4.47.0",
+    "skia-pathops",
+    "booleanOperations",
+    "ufoLib2",
+    "ttfautohint-py",
+    "numpy",
+    "matplotlib",
+    "Pillow",
+    "Pygments",
+    "reportlab",
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

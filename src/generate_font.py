@@ -432,7 +432,39 @@ def _style_metadata(weight, italic):
     return style_name, ps_style_name, name_table, fs_selection, mac_style
 
 
-def build_font(output_path=None, weight=400, italic=False, otf=True, ttf=True, out_root="fonts"):
+def write_web_fonts(src_path, woff=True, woff2=True, out_root="fonts"):
+    """Generate WOFF/WOFF2 web fonts from an already-built TTF/OTF file.
+
+    WOFF and WOFF2 are just compressed wrappers around the same sfnt data,
+    so we reload the saved font and re-save it with the matching flavor into
+    `{out_root}/woff/` and `{out_root}/woff2/`.
+    """
+    from fontTools.ttLib import TTFont
+
+    base = os.path.splitext(os.path.basename(src_path))[0]
+    for flavor, enabled in (("woff", woff), ("woff2", woff2)):
+        if not enabled:
+            continue
+        out_dir = f"{out_root}/{flavor}"
+        os.makedirs(out_dir, exist_ok=True)
+        out_path = f"{out_dir}/{base}.{flavor}"
+        font = TTFont(src_path)
+        font.flavor = flavor
+        font.save(out_path)
+        font.close()
+        print(f"Font saved to {out_path}")
+
+
+def build_font(
+    output_path=None,
+    weight=400,
+    italic=False,
+    otf=True,
+    ttf=True,
+    woff=False,
+    woff2=False,
+    out_root="fonts",
+):
     style_name, ps_style_name, name_table, fs_selection, mac_style = _style_metadata(
         weight, italic
     )
@@ -490,8 +522,8 @@ def build_font(output_path=None, weight=400, italic=False, otf=True, ttf=True, o
             mac_style,
         )
 
+    ttf_path = output_path.replace(".otf", ".ttf").replace("/otf", "/ttf")
     if ttf:
-        ttf_path = output_path.replace(".otf", ".ttf").replace("/otf", "/ttf")
         build_ttf(
             ttf_path,
             weight,
@@ -502,6 +534,12 @@ def build_font(output_path=None, weight=400, italic=False, otf=True, ttf=True, o
             ligature_glyphs,
             alternate_glyphs,
         )
+
+    if woff or woff2:
+        # Prefer the (autohinted) TTF as the web-font source, else the OTF.
+        web_src = ttf_path if ttf else output_path if otf else None
+        if web_src:
+            write_web_fonts(web_src, woff=woff, woff2=woff2, out_root=out_root)
 
 
 def _build_otf(

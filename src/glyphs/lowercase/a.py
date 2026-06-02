@@ -19,7 +19,7 @@ class LowercaseAGlyph(Glyph):
     cap_hx_ratio = 1.15
     cap_hy_ratio = 1
     cap_height = 0.7
-    cap_offset = 0.02
+    cap_offset = 0.015
     thinning = 1
     cap_stroke_x_ratio = 1.01
     cap_stroke_y_ratio = 1.00
