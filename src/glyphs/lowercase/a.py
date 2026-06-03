@@ -14,7 +14,7 @@ class LowercaseAGlyph(Glyph):
     mid_height = 0.52
     width_ratio = 0.98
 
-    taper = 0.3
+    taper = 0.6
 
     cap_hx_ratio = 1.15
     cap_hy_ratio = 1
@@ -59,7 +59,7 @@ class LowercaseAGlyph(Glyph):
             yl,
             hx,
             hy,
-            taper=self.taper,
+            taper=dc.taper * self.taper,
             side="right",
             cut="top",
         )

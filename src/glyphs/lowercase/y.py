@@ -9,8 +9,8 @@ class LowercaseYGlyph(Glyph):
     unicode = "0x79"
     offset = 0
     width_ratio = 1.15
-    overlap = 0.285
-    dent_ratio = 0.1
+    overlap = 0.25
+    dent_ratio = 00
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
