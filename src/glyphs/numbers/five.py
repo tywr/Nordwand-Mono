@@ -29,7 +29,7 @@ class FiveGlyph(NumberGlyph):
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         yj = b.y1 + b.height * self.junction_ratio
-        oj = self.tilt * b.width
+        oj = self.tilt * b.width + max(dc.stroke_x - 90, 0)
 
         base_glyph = ufoLib2.objects.Glyph()
 
