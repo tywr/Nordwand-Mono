@@ -13,13 +13,13 @@ class UppercaseSGlyph(UppercaseGlyph):
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.00
     hx_ratio = 1
     hy_ratio = 1
-    mid_height = 0.52
-    opening1 = 0.33
-    opening2 = 0.66
+    mid_height = 0.505
+    opening1 = 0.27
+    opening2 = 0.735
     thinning = 1
-    left_offset = 0.04
-    right_offset = 0.04
-    curve_thinning = 0.022
+    left_offset = 0.03
+    right_offset = 0.02
+    curve_thinning = 0.008
     curve_ratio = 2.4
     width_ratio = 1.10
 

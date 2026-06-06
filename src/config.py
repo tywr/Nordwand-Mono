@@ -15,7 +15,7 @@ class FontConfig:
     window_width: int = 600
 
     ascent: int = 750
-    descent: int = -200
+    descent: int = -185
     cap: int = 710
     x_height: int = 540
 
@@ -45,7 +45,7 @@ class FontConfig:
 
     stroke_x: int = 94
     stroke_y: int = 66
-    stroke_alt: int = 60
+    stroke_alt: int = 66
 
     v_overshoot: int = 12
     h_overshoot: int = 11

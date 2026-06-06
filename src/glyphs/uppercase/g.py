@@ -12,8 +12,8 @@ class UppercaseGGlyph(UppercaseGlyph):
     opening = 140
     stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.00
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.00
-    opening1 = 0.5
-    opening2 = 0.66
+    opening1 = 0.51
+    opening2 = 0.69
     hy_ratio = 1
     hx_ratio = 1
     width_ratio = 1.18

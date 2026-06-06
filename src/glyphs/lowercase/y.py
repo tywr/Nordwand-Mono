@@ -1,7 +1,6 @@
-from math import tan, pi
+from math import tan
 from glyphs import Glyph
 from draw.parallelogramm import draw_parallelogramm
-from draw.rect import draw_rect
 
 
 class LowercaseYGlyph(Glyph):
@@ -9,7 +8,7 @@ class LowercaseYGlyph(Glyph):
     unicode = "0x79"
     offset = 0
     width_ratio = 1.15
-    overlap = 0.25
+    overlap = 0.5
     dent_ratio = 00
 
     def draw(self, pen, dc):

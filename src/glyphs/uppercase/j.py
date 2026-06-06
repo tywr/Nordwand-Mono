@@ -9,7 +9,8 @@ class UppercaseJGlyph(UppercaseGlyph):
     offset = -6
     cap_ratio = 1
     hx_ratio = 1
-    loop_ratio = 0.56
+    hy_ratio = 0.45
+    loop_ratio = 0.5
     tail_len = 0.5
 
     def draw(self, pen, dc):
@@ -39,6 +40,6 @@ class UppercaseJGlyph(UppercaseGlyph):
             b.x2,
             yl,
             b.hx,
-            self.loop_ratio * b.hy,
+            self.hy_ratio * b.hy,
             cut="top",
         )

@@ -6,7 +6,7 @@ class UppercaseWGlyph(UppercaseGlyph):
     name = "uppercase_w"
     unicode = "0x57"
     offset = 0
-    overlap = 0.125
+    overlap = 0.2
     outer_branch_ratio = 0.25
     inner_height = 1
     width_ratio = 1.26

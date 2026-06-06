@@ -1,16 +1,18 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from utils.intersection import intersection_superellipses
 
 
 class UppercaseBGlyph(UppercaseGlyph):
     name = "uppercase_b"
     unicode = "0x42"
     offset = 10
-    upper_ratio = 0.9  # Upper loop width as a fraction of the lower loop width
-    mid_ratio = 0.52
+    upper_ratio = 0.85  # Upper loop width as a fraction of the lower loop width
+    mid_ratio = 0.515
     width_ratio = 1.07
+    hx_ratio = 1
+    hy_ratio = 1
+
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -20,7 +22,7 @@ class UppercaseBGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        hx, hy = b.hx, b.hy
+        hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + self.mid_ratio * b.height
 
         lower_x1 = b.x1

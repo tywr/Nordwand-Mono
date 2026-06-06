@@ -3,7 +3,6 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
 from draw.corner import draw_corner
-from draw.polygon import draw_polygon
 from glyphs.lowercase.single_story import SingleStoryLowercaseGlyph
 
 
@@ -12,12 +11,16 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
     unicode = "0x67"
     offset = -10
 
+    hy_ratio = 0.92
     tail_offset = 0
-    tail_stroke_x_ratio = 0.89
+    tail_stroke_x_ratio = 0.96
     tail_stroke_y_ratio = 1.01
+    tail_hx_ratio = 1
+    tail_hy_ratio = 0.7
     tail_offset = 0.15
-    cut_ratio = 0.25
-    tail_offset = 0.02
+    cut_ratio = 0.265
+    tail_offset = 0.04
+    y1_offset = 0.065
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -26,6 +29,7 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
             overshoot_top=True,
             overshoot_left=True,
         )
+        hy = self.hy_ratio * b.hy
         bsx, bsy = (
             self.bowl_stroke_x_ratio * dc.stroke_x,
             self.bowl_stroke_y_ratio * dc.stroke_y,
@@ -34,19 +38,26 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
             self.tail_stroke_x_ratio * dc.stroke_x,
             self.tail_stroke_y_ratio * dc.stroke_y,
         )
+        thx, thy = (
+            self.tail_hx_ratio * dc.hx,
+            self.tail_hy_ratio * dc.hy,
+        )
+        y1 = b.y1 + self.y1_offset * b.height
+
+
         xt = b.x1 + self.tail_offset * b.width
 
         # Bowl (open on the right, mirrored from b)
-        arch_params = draw_arch(
+        draw_arch(
             pen,
             bsx,
             bsy,
             b.x1,
-            b.y1,
+            y1,
             b.x2,
             b.y2,
             b.hx,
-            b.hy,
+            hy,
             taper=dc.taper * self.taper,
             side="right",
         )
@@ -63,8 +74,8 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
             0,
             b.xmid,
             dc.descent - dc.v_overshoot,
-            b.hx,
-            b.hy,
+            thx,
+            thy,
             orientation="bottom-left",
         )
 

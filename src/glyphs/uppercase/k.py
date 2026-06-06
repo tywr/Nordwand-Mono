@@ -12,7 +12,7 @@ class UppercaseKGlyph(UppercaseGlyph):
     mid_ratio = 0.52
     upper_branch_offset = 0.05
     branch_stroke_ratio = 1.3
-    branch_overlap = 0.5
+    branch_overlap = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

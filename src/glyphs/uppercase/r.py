@@ -8,9 +8,9 @@ class UppercaseRGlyph(UppercaseGlyph):
     name = "uppercase_r"
     unicode = "0x52"
     offset = 20
-    loop_ratio = 0.55
-    loop_width = 0.95
-    branch_start = 0.52
+    loop_ratio = 0.605
+    loop_width = 0.96
+    branch_start = 0.63
     width_ratio = 1.09
 
     def draw(self, pen, dc):

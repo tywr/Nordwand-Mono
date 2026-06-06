@@ -6,7 +6,7 @@ class UppercaseHGlyph(UppercaseGlyph):
     name = "uppercase_h"
     unicode = "0x48"
     offset = 0
-    bar_height = 0.52
+    bar_height = 0.51
     width_ratio = 1.02
 
     def draw(self, pen, dc):
