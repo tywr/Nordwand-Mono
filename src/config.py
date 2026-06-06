@@ -6,6 +6,7 @@ from utils.bounds import BodyBounds
 @dataclass
 class FontConfig:
     """Default metrics used for the project, can be overwritten with a yaml file"""
+
     family_name: str = "Nordwand Mono"
 
     units_per_em: int = 1000
@@ -81,7 +82,7 @@ class DrawConfig(FontConfig):
         brx = 1.7
         ratio_x = exp((w - 400) * log(brx) / 300)
 
-        bry = 1.2
+        bry = 1.4
         ratio_y = exp((w - 400) * log(bry) / 300)
 
         bhy = 1.3
@@ -90,17 +91,16 @@ class DrawConfig(FontConfig):
         # Function mapping 100 → 0.5 and 700 → 0.2
         taper = min(0.5, 0.5 - 0.0009 * (w - 400))
 
-        extra_height = int((ratio_y - 1) * cls.stroke_y)
         return cls(
             stroke_x=int(cls.stroke_x * ratio_x),
             stroke_y=int(cls.stroke_y * ratio_y),
             stroke_alt=int(cls.stroke_alt * ratio_y),
-            x_height=cls.x_height + extra_height,
-            cap=cls.cap + extra_height,
-            accent=cls.cap + extra_height,
-            accent_cap=cls.accent_cap + extra_height,
-            ascent=cls.ascent + extra_height,
-            descent=cls.descent - extra_height,
+            x_height=cls.x_height,
+            cap=cls.cap,
+            accent=cls.cap,
+            accent_cap=cls.accent_cap,
+            ascent=cls.ascent,
+            descent=cls.descent,
             taper=taper,
             hy=hy_ratio * cls.hy,
             cap_hy=hy_ratio * cls.cap_hy,
@@ -204,8 +204,7 @@ def apply_config_overrides(overrides):
     unknown = set(overrides) - valid
     if unknown:
         raise ValueError(
-            f"Unknown config keys: {sorted(unknown)}. "
-            f"Valid keys: {sorted(valid)}"
+            f"Unknown config keys: {sorted(unknown)}. Valid keys: {sorted(valid)}"
         )
 
     for key, value in overrides.items():
