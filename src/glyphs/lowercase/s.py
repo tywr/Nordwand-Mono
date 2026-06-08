@@ -9,27 +9,26 @@ class LowercaseSGlyph(Glyph):
     name = "lowercase_s"
     unicode = "0x73"
     offset = 0
-    width_ratio = 0.99
+    width_ratio = 0.92
     stroke_x_ratio = 1.01
     stroke_y_ratio = 1.03
     hx_ratio = 1
     hy_ratio = 1
-    mid_height = 0.515
+    mid_height = 0.508
     opening1 = 0.265
     opening2 = 0.74
     thinning = 1
-    left_offset = 0.02
-    right_offset = 0.02
-    curve_thinning = 0.037
-    curve_ratio = 2.8
-    width_ratio = 1
+    left_offset = 0.04
+    right_offset = 0.03
+    curve_thinning = 0.018
+    curve_ratio = 2.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
+            width_ratio=self.width_ratio,
             offset=self.offset,
             overshoot_bottom=True,
             overshoot_top=True,
-            width_ratio=self.width_ratio,
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio

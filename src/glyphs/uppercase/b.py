@@ -6,10 +6,10 @@ from draw.rect import draw_rect
 class UppercaseBGlyph(UppercaseGlyph):
     name = "uppercase_b"
     unicode = "0x42"
-    offset = 10
+    offset = 20
     upper_ratio = 0.85  # Upper loop width as a fraction of the lower loop width
     mid_ratio = 0.515
-    width_ratio = 1.07
+    width_ratio = 1.08
     hx_ratio = 1
     hy_ratio = 1
 

@@ -7,7 +7,7 @@ from glyphs.lowercase.single_story import SingleStoryLowercaseGlyph
 class LowercaseQGlyph(SingleStoryLowercaseGlyph):
     name = "lowercase_q"
     unicode = "0x71"
-    offset = -6
+    offset = -10
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

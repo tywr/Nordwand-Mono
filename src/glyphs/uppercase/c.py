@@ -9,14 +9,16 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 class UppercaseCGlyph(UppercaseGlyph):
     name = "uppercase_c"
     unicode = "0x43"
-    offset = 0
+    offset = 12
     stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.00
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.00
     opening1 = 0.29
     opening2 = 0.69
     thinning = 1
     top_offset = 0.00
-    width_ratio = 1.18
+    right_hx_ratio = 1.2
+    right_hy_ratio = 1
+    width_ratio = 1.22
 
     def draw(self, pen, dc):
 
@@ -29,6 +31,7 @@ class UppercaseCGlyph(UppercaseGlyph):
             uppercase=True,
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
+        rhx, rhy = self.right_hx_ratio * b.hx, self.right_hy_ratio * b.hy
         yc1 = b.y1 + b.height * self.opening1
         yc2 = b.y1 + b.height * self.opening2
         xt = b.x2 - self.top_offset * b.width
@@ -44,8 +47,8 @@ class UppercaseCGlyph(UppercaseGlyph):
             b.ymid,
             b.xmid,
             b.y2,
-            b.hx,
-            b.hy,
+            rhx,
+            rhy,
             orientation="top-left",
         )
         draw_corner(
@@ -56,8 +59,8 @@ class UppercaseCGlyph(UppercaseGlyph):
             b.ymid,
             b.xmid,
             b.y1,
-            b.hx,
-            b.hy,
+            rhx,
+            rhy,
             orientation="bottom-left",
         )
         cut_glyph = ufoLib2.objects.Glyph()

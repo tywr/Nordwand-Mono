@@ -6,8 +6,8 @@ from draw.parallelogramm import draw_parallelogramm
 class UppercaseKGlyph(UppercaseGlyph):
     name = "uppercase_k"
     unicode = "0x4B"
-    offset = 38
-    width_ratio = 1.16
+    offset = 50
+    width_ratio = 1.13
     branch_ratio = 0.65
     mid_ratio = 0.52
     upper_branch_offset = 0.05

@@ -7,7 +7,7 @@ class SingleStoryLowercaseGlyph(Glyph, ABC):
 
     hx_ratio = 1.15
     taper = 0.8
-    width_ratio = 0.98
+    width_ratio = 1.01
 
     ending_thickness = 0.8
 

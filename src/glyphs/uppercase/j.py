@@ -6,12 +6,13 @@ from draw.loop import draw_loop
 class UppercaseJGlyph(UppercaseGlyph):
     name = "uppercase_j"
     unicode = "0x4A"
-    offset = -6
-    cap_ratio = 1
+    offset = -15
+    cap_ratio = 0.85
     hx_ratio = 1
     hy_ratio = 0.45
     loop_ratio = 0.5
-    tail_len = 0.5
+    tail_len = 0.35
+    width_ratio = 0.93
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

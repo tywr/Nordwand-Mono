@@ -14,9 +14,9 @@ class UppercaseMGlyph(UppercaseGlyph):
     overlap = 0.65
     overlap_middle = 0.5
     depth = 0.6
-    inner_thickness_ratio = 2.6
+    inner_thickness_ratio = 2.4
     inner_height = 0.2
-    width_ratio = 1.16
+    width_ratio = 1.18
     ink_trap_height = 0.7
 
     def draw(self, pen, dc):

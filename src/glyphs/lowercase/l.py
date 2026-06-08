@@ -6,9 +6,9 @@ from draw.square_corner import draw_square_corner
 class LowercaseLGlyph(Glyph):
     name = "lowercase_l"
     unicode = "0x6C"
-    offset = -6
-    width_ratio = 1.1
-    mid_ratio = 0.48
+    offset = -12
+    width_ratio = 1.16
+    mid_ratio = 0.45
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
