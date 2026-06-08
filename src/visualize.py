@@ -46,27 +46,103 @@ def recording_to_mpl_path(recording):
     return Path(verts, codes)
 
 
-def plot_control_points(ax, recording):
+def plot_control_points(ax, recording, on_color="#2ecc71", off_color="#e74c3c"):
     """Plot on-curve points and off-curve control points with connecting lines."""
     for op, args in recording.value:
         if op == "moveTo":
-            ax.plot(*args[0], "o", color="#2ecc71", markersize=5, zorder=5)
+            ax.plot(*args[0], "o", color=on_color, markersize=5, zorder=5)
         elif op == "lineTo":
-            ax.plot(*args[0], "o", color="#2ecc71", markersize=5, zorder=5)
+            ax.plot(*args[0], "o", color=on_color, markersize=5, zorder=5)
         elif op == "curveTo":
             cp1, cp2, pt = args
-            ax.plot(*cp1, "x", color="#e74c3c", markersize=6, zorder=5)
-            ax.plot(*cp2, "x", color="#e74c3c", markersize=6, zorder=5)
-            ax.plot(*pt, "o", color="#2ecc71", markersize=5, zorder=5)
+            ax.plot(*cp1, "x", color=off_color, markersize=6, zorder=5)
+            ax.plot(*cp2, "x", color=off_color, markersize=6, zorder=5)
+            ax.plot(*pt, "o", color=on_color, markersize=5, zorder=5)
             ax.plot(
                 [cp1[0], cp2[0]],
                 [cp1[1], cp2[1]],
                 "-",
-                color="#e74c3c",
+                color=off_color,
                 linewidth=0.5,
                 alpha=0.5,
                 zorder=4,
             )
+
+
+def _recording_x_bounds(recording):
+    """Return (x_min, x_max) over all points (incl. control points) of a recording."""
+    xs = [pt[0] for op, args in recording.value for pt in args]
+    return (min(xs), max(xs)) if xs else (0, 0)
+
+
+def load_reference(font_path, char):
+    """Record a reference font's glyph for `char`.
+
+    Returns (recording, x_height, advance) in the reference font's own units.
+    The recording's curves are whatever the font stores (cubic for CFF/OTF)
+    and keep the glyph's real position, so its side bearings are preserved.
+    """
+    from fontTools.ttLib import TTFont
+    from fontTools.pens.boundsPen import BoundsPen
+
+    font = TTFont(font_path)
+    cmap = font.getBestCmap()
+    glyph_set = font.getGlyphSet()
+    if ord(char) not in cmap:
+        raise SystemExit(f"Reference font {font_path!r} has no glyph for {char!r}")
+
+    name = cmap[ord(char)]
+    rec = RecordingPen()
+    glyph_set[name].draw(rec)
+    advance = font["hmtx"][name][0]
+
+    # x-height: prefer OS/2 sxHeight, else measure 'x', else this glyph's height.
+    x_height = getattr(font.get("OS/2"), "sxHeight", 0) or 0
+    if not x_height and ord("x") in cmap:
+        bp = BoundsPen(glyph_set)
+        glyph_set[cmap[ord("x")]].draw(bp)
+        if bp.bounds:
+            x_height = bp.bounds[3] - bp.bounds[1]
+    if not x_height:
+        bp = BoundsPen(glyph_set)
+        glyph_set[name].draw(bp)
+        x_height = (bp.bounds[3] - bp.bounds[1]) if bp.bounds else fc.x_height
+
+    font.close()
+    return rec, x_height, advance
+
+
+def overlay_reference(ax, font_path, char, show_controls):
+    """Overlay a reference glyph scaled to fc.x_height, kept at the pen origin.
+
+    Origin-aligned (not centered) so the reference's own side bearings and
+    advance line up against the project glyph's. Returns the scaled advance.
+    """
+    ref_rec, ref_xh, ref_adv = load_reference(font_path, char)
+    scale = fc.x_height / ref_xh  # scale about (0, 0): baseline + origin preserved
+
+    out = RecordingPen()
+    ref_rec.replay(TransformPen(out, Transform(scale, 0, 0, scale, 0, 0)))
+
+    path = recording_to_mpl_path(out)
+    patch = mpatches.PathPatch(
+        path, facecolor="none", edgecolor="#111", linewidth=1.5, linestyle="--", alpha=0.9
+    )
+    ax.add_patch(patch)
+    if show_controls:
+        plot_control_points(ax, out, on_color="#2980b9", off_color="#e67e22")
+
+    scaled_adv = scale * ref_adv
+    ax.axvline(scaled_adv, color="#111", linewidth=1.2, linestyle="--", alpha=0.7)
+    ax.text(scaled_adv, fc.window_descent, " ref adv", fontsize=7, color="#111", va="bottom")
+
+    lo, hi = _recording_x_bounds(out)
+    print(
+        f"Reference '{char}' from {font_path}: scale={scale:.3f}; "
+        f"advance={scaled_adv:.0f}, LSB={lo:.0f}, RSB={scaled_adv - hi:.0f} "
+        f"(scaled to project x-height={fc.x_height})"
+    )
+    return scaled_adv
 
 
 COLORS = ["#222222", "#e74c3c", "#3498db", "#2ecc71", "#e67e22", "#9b59b6", "#1abc9c"]
@@ -136,7 +212,15 @@ def find_glyph(slug_name, all_glyphs):
     raise SystemExit(f"No glyph found with name '{slug_name}'")
 
 
-def visualize_glyph(slug_name, show_controls=False, show_optical_center=False, configs=None, italic=False):
+def visualize_glyph(
+    slug_name,
+    show_controls=False,
+    show_optical_center=False,
+    configs=None,
+    italic=False,
+    ref_font=None,
+    ref_char=None,
+):
     if configs is None:
         configs = [DrawConfig()]
 
@@ -172,6 +256,15 @@ def visualize_glyph(slug_name, show_controls=False, show_optical_center=False, c
 
         if show_controls:
             plot_control_points(ax, rec)
+
+    ref_advance = None
+    if ref_font:
+        char = ref_char
+        if char is None:
+            if not glyph_inst.unicode:
+                raise SystemExit(f"Glyph '{slug_name}' has no unicode; pass --ref-char")
+            char = chr(int(glyph_inst.unicode, 16))
+        ref_advance = overlay_reference(ax, ref_font, char, show_controls)
 
     if show_optical_center:
         rec = record(configs[0])
@@ -212,7 +305,7 @@ def visualize_glyph(slug_name, show_controls=False, show_optical_center=False, c
     ax.axhline(fc.window_descent, color="#555", linewidth=1.5, linestyle="-")
     ax.axhline(fc.window_ascent, color="#555", linewidth=1.5, linestyle="-")
 
-    ax.set_xlim(-50, total_width + 80)
+    ax.set_xlim(-50, max(total_width, ref_advance or 0) + 80)
     ax.set_ylim(fc.window_descent - 50, fc.window_ascent + 50)
     ax.set_aspect("equal")
     ax.set_title(f"'{slug_name}'", fontsize=16)
@@ -377,6 +470,17 @@ if __name__ == "__main__":
         metavar="FILE.yml",
         help="YAML file whose values overwrite the default FontConfig values",
     )
+    parser.add_argument(
+        "--ref",
+        metavar="FONT",
+        help="Overlay a reference glyph from this font file (e.g. an SF Pro OTF), "
+        "scaled to the project x-height and origin-aligned. Glyph mode only.",
+    )
+    parser.add_argument(
+        "--ref-char",
+        metavar="CHAR",
+        help="Character to pull from --ref (default: the visualized glyph's own char)",
+    )
     args = parser.parse_args()
 
     if args.config:
@@ -426,4 +530,6 @@ if __name__ == "__main__":
             show_optical_center=args.o,
             configs=configs,
             italic=italic,
+            ref_font=args.ref,
+            ref_char=args.ref_char,
         )

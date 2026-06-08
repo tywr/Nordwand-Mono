@@ -6,12 +6,12 @@ from draw.rect import draw_rect
 class LowercaseRGlyph(Glyph):
     name = "lowercase_r"
     unicode = "0x72"
-    offset = 10
-    loop_ratio = 0.85
+    offset = 25
+    loop_ratio = 0.88
     hx_ratio = 1.00
     hy_ratio = 0.85
-    taper = 0.5
-    width_ratio = 1
+    taper = 0.6
+    width_ratio = 0.98
     tail_offset = 0.03
 
     def draw(self, pen, dc):

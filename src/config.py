@@ -12,7 +12,7 @@ class FontConfig:
     units_per_em: int = 1000
     window_ascent: int = 1025
     window_descent: int = -300
-    window_width: int = 600
+    window_width: int = 590
 
     ascent: int = 750
     descent: int = -185
@@ -33,10 +33,10 @@ class FontConfig:
     default_stroke = 90
     italic_angle: float = 9.4
 
-    width: int = 348
+    width: int = 340
 
-    hx: int = 180
-    hy: int = 180
+    hx: int = 130
+    hy: int = 210
 
     cap_hx: int = 180
     cap_hy: int = 190
@@ -47,8 +47,8 @@ class FontConfig:
     stroke_y: int = 66
     stroke_alt: int = 66
 
-    v_overshoot: int = 12
-    h_overshoot: int = 11
+    v_overshoot: int = 10
+    h_overshoot: int = 10
 
 
 @dataclass

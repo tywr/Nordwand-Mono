@@ -9,9 +9,9 @@ from draw.polygon import draw_polygon
 class LowercaseTGlyph(Glyph):
     name = "lowercase_t"
     unicode = "0x74"
-    offset = -45
+    offset = -50
     width_ratio = 1.1
-    rl_ratio = 0.55
+    rl_ratio = 0.57
     up_ratio = 0.28
 
     def draw(self, pen, dc):

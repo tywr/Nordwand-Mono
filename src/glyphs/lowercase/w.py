@@ -7,11 +7,11 @@ class LowercaseWGlyph(Glyph):
     unicode = "0x77"
     offset = 0
     overlap = 0.125
-    outer_branch_ratio = 0.25
+    outer_branch_ratio = 0.26
     inner_height = 1
-    width_ratio = 1.26
-    stroke_ratio = 0.88
-    inner_stroke_ratio = 0.74
+    width_ratio = 1.27
+    stroke_ratio = 0.82
+    inner_stroke_ratio = 0.92
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

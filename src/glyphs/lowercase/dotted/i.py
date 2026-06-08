@@ -5,9 +5,9 @@ from glyphs.lowercase.dotted import DottedLowercaseGlyph
 class LowercaseIGlyph(DottedLowercaseGlyph):
     name = "lowercase_i"
     unicode = "0x69"
-    offset = 16
+    offset = 25
     width_ratio = 1.08
-    cap = 0.5
+    cap = 0.47
     rl_ratio = 0.5
 
     def draw_base(self, pen, dc):

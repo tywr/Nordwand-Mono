@@ -1,6 +1,5 @@
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.polygon import draw_polygon
 
 from glyphs.lowercase.square import SquareLowercaseGlyph
 
@@ -12,9 +11,9 @@ class LowercaseHGlyph(SquareLowercaseGlyph):
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
+            width_ratio=self.width_ratio,
             offset=self.offset,
             overshoot_top=True,
-            width_ratio=self.width_ratio,
         )
         yl = b.y2 - self.loop_ratio * b.height
 
