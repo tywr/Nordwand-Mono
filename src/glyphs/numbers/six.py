@@ -11,11 +11,13 @@ class SixGlyph(NumberGlyph):
     name = "six"
     unicode = "0x36"
     offset = 0
-    loop_ratio = 0.6
+    loop_ratio = 0.64
     top_ratio = 0.4
     taper = 0.8
-    cap_x = 0.9
+    cap_x = 0.98
     joint_x = 1.4
+    hx_ratio = 0.9
+    hy_ratio = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -28,6 +30,7 @@ class SixGlyph(NumberGlyph):
             number=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
 
         ymid = b.y1 + self.loop_ratio * b.height
         xc = b.x1 + self.cap_x * b.width
@@ -42,8 +45,8 @@ class SixGlyph(NumberGlyph):
             b.y1,
             b.x2,
             ymid,
-            b.hx,
-            b.hy * self.loop_ratio,
+            hx,
+            hy * self.loop_ratio,
             taper=self.taper * dc.taper,
             side="left",
             cut="bottom",
@@ -86,7 +89,7 @@ class SixGlyph(NumberGlyph):
         pen.lineTo((xcm, ycm))
         pen.curveTo(
             (xcp, ycp),
-            (b.x1, (b.y1 + ymid) / 2 + b.hx),
+            (b.x1, (b.y1 + ymid) / 2 + hx),
             (b.x1, (b.y1 + ymid) / 2),
         )
         pen.lineTo((b.x1 + sx / 2, (b.y1 + ymid) / 2))
@@ -100,7 +103,7 @@ class SixGlyph(NumberGlyph):
             b.y1,
             b.x2,
             ymid,
-            b.hx,
-            b.hy * self.loop_ratio,
+            hx,
+            hy * self.loop_ratio,
             cut="top",
         )

@@ -10,9 +10,8 @@ class TwoGlyph(NumberGlyph):
     name = "two"
     unicode = "0x32"
     offset = 0
-    xj_ratio = 0.82
-    yj_ratio = 0.55
-    radius = 0.2
+    xj_ratio = 0.68
+    yj_ratio = 0.46
     internal_radius = 0.1
     external_radius = 0.1
 

@@ -7,7 +7,7 @@ class UppercaseYGlyph(UppercaseGlyph):
     name = "uppercase_y"
     unicode = "0x59"
     offset = 0
-    width_ratio = 1.2
+    width_ratio = 1.28
     junction_ratio = 0.4
 
     def draw(self, pen, dc):

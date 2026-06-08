@@ -1,15 +1,13 @@
-from math import tan, pi
 from glyphs.uppercase import UppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
-from draw.rect import draw_rect
 
 
 class UppercaseVGlyph(UppercaseGlyph):
     name = "uppercase_v"
     unicode = "0x56"
     offset = 0
-    overlap = 0.33
-    width_ratio = 1.2
+    overlap = 0.5
+    width_ratio = 1.28
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

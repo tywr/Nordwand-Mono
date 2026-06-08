@@ -8,8 +8,8 @@ class ZeroGlyph(NumberGlyph):
     unicode = "0x30"
     offset = 0
     slash = 0.2
-    width_ratio = 1.07
-    hx_ratio = 1.2
+    width_ratio = 1.06
+    hx_ratio = 1.0
     hy_ratio = 1
 
     def draw(self, pen, dc):

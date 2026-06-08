@@ -11,11 +11,13 @@ class NineGlyph(NumberGlyph):
     name = "nine"
     unicode = "0x39"
     offset = 0
-    vertical_ratio = 0.6
+    vertical_ratio = 0.64
     bottom_cut = 0.2
     taper = 0.8
-    foot_x = 0.05
+    foot_x = 0.02
     joint_x = 1.4
+    hx_ratio = 0.9
+    hy_ratio = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -28,6 +30,7 @@ class NineGlyph(NumberGlyph):
             number=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         ymid = b.y2 - self.vertical_ratio * b.height
 
         xf = b.x1 + self.foot_x * b.width
@@ -42,8 +45,8 @@ class NineGlyph(NumberGlyph):
             ymid,
             b.x2,
             b.y2,
-            b.hx,
-            b.hy * self.vertical_ratio,
+            hx,
+            hy * self.vertical_ratio,
             taper=self.taper * dc.taper,
             side="right",
             cut="top",
@@ -81,7 +84,7 @@ class NineGlyph(NumberGlyph):
         pen.lineTo((xcm, ycm))
         pen.curveTo(
             (xcp, ycp),
-            (b.x2, (b.y2 + ymid) / 2 - b.hx),
+            (b.x2, (b.y2 + ymid) / 2 - hx),
             (b.x2, (b.y2 + ymid) / 2),
         )
 
@@ -93,7 +96,7 @@ class NineGlyph(NumberGlyph):
             ymid,
             b.x2,
             b.y2,
-            b.hx,
+            hx,
             b.hy * self.vertical_ratio,
             cut="bottom",
         )

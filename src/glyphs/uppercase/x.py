@@ -1,14 +1,12 @@
-from math import tan
 from glyphs.uppercase import UppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
-from draw.rect import draw_rect
 
 
 class UppercaseXGlyph(UppercaseGlyph):
     name = "uppercase_x"
     unicode = "0x58"
     offset = 0
-    width_ratio = 1.2
+    width_ratio = 1.25
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

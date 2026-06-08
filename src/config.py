@@ -48,6 +48,7 @@ class FontConfig:
     stroke_alt: int = 66
 
     v_overshoot: int = 10
+    v_overshoot_cap: int = 14
     h_overshoot: int = 10
 
 
@@ -150,7 +151,10 @@ class DrawConfig(FontConfig):
             x1 = max(min_margin, x1)
             x2 = min(self.window_width - min_margin, x2)
 
-        v_ov = self.v_overshoot
+        if uppercase or number:
+            v_ov = self.v_overshoot_cap
+        else:
+            v_ov = self.v_overshoot
         h_ov = self.h_overshoot
 
         if overshoot_left:
@@ -166,7 +170,7 @@ class DrawConfig(FontConfig):
             y2 += v_ov
 
         # Rescale the hx and hy for the new box
-        if uppercase:
+        if uppercase or number:
             hx = self.cap_hx
             hy = self.cap_hy
         else:

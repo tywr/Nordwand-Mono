@@ -1,17 +1,18 @@
 from glyphs.numbers import NumberGlyph
 from draw.arch import draw_arch
-from draw.rect import draw_rect
 
 
 class EightGlyph(NumberGlyph):
     name = "eight"
     unicode = "0x38"
     offset = 0
-    height_ratio = 0.53
-    loop_width_ratio = 0.92
+    height_ratio = 0.51
+    loop_width_ratio = 0.88
     taper = 1.5
     extra_overshoot = 0.000
-    width_ratio = 1.06
+    hx_ratio = 0.8
+    hy_ratio = 0.8
+    width_ratio = 1.08
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -25,6 +26,7 @@ class EightGlyph(NumberGlyph):
             number=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + b.height * self.height_ratio
         wtop = self.loop_width_ratio * b.width
         dtop = (b.width - wtop) / 2
@@ -40,8 +42,8 @@ class EightGlyph(NumberGlyph):
             ymid - sy / 2,
             b.x2 - dtop,
             b.y2 + ov,
-            b.hx,
-            b.hy * (1 - self.height_ratio),
+            hx,
+            hy * (1 - self.height_ratio),
             taper=taper,
             side="bottom",
         )

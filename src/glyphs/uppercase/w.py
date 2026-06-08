@@ -9,7 +9,7 @@ class UppercaseWGlyph(UppercaseGlyph):
     overlap = 0.2
     outer_branch_ratio = 0.25
     inner_height = 1
-    width_ratio = 1.26
+    width_ratio = 1.28
     stroke_ratio = 0.88
     inner_stroke_ratio = 0.82
 
