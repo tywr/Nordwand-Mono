@@ -15,7 +15,7 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
     tail_offset = 0
     tail_stroke_x_ratio = 0.96
     tail_stroke_y_ratio = 1.01
-    tail_hx_ratio = 1
+    tail_hx_ratio = 1.0
     tail_hy_ratio = 0.7
     tail_offset = 0.15
     cut_ratio = 0.265
@@ -30,6 +30,7 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
             overshoot_top=True,
             overshoot_left=True,
         )
+        ec = self.extra_cut(dc)
         hy = self.hy_ratio * b.hy
         bsx, bsy = (
             self.bowl_stroke_x_ratio * dc.stroke_x,
@@ -89,14 +90,14 @@ class LowercaseGGlyph(SingleStoryLowercaseGlyph):
             0,
             b.xmid,
             dc.descent - dc.v_overshoot,
-            b.hx,
-            b.hy,
+            thx,
+            thy,
         )
         cut_glyph = ufoLib2.objects.Glyph()
         draw_rect(
             cut_glyph.getPen(),
             b.x1 - 10,
-            dc.descent - dc.v_overshoot + b.height * self.cut_ratio,
+            dc.descent - dc.v_overshoot + b.height * self.cut_ratio + ec,
             b.xmid,
             b.ymid,
         )

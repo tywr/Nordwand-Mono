@@ -11,17 +11,18 @@ class UppercaseAGlyph(UppercaseGlyph):
     bar_height = 0.38
     overlap = 0.5
     stroke_x_ratio = 1.02
-    width_ratio = 1.3
+    width_ratio = 1.25
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        ec = self.extra_cut(dc)
 
         half_width = b.width / 2 - sx / 2
         ov = self.overlap * sx
-        hb = self.bar_height * b.height
+        hb = self.bar_height * b.height - ec
 
         # Left branch
         draw_parallelogramm(

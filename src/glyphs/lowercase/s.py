@@ -9,10 +9,10 @@ class LowercaseSGlyph(Glyph):
     name = "lowercase_s"
     unicode = "0x73"
     offset = 0
-    width_ratio = 0.92
+    width_ratio = 0.95
     stroke_x_ratio = 1.01
     stroke_y_ratio = 1.03
-    hx_ratio = 1
+    hx_ratio = 1.1
     hy_ratio = 1
     mid_height = 0.508
     opening1 = 0.265
@@ -30,14 +30,15 @@ class LowercaseSGlyph(Glyph):
             overshoot_bottom=True,
             overshoot_top=True,
         )
+        ec = self.extra_cut(dc)
         sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
-        yc1 = b.y1 + b.height * self.opening1
-        yc2 = b.y1 + b.height * self.opening2
+        yc1 = b.y1 + b.height * self.opening1 + ec
+        yc2 = b.y1 + b.height * self.opening2 - ec
         ymid = b.y1 + self.mid_height * b.height
         x1 = b.x1 + self.left_offset * b.width
         x2 = b.x2 - self.right_offset * b.width
-        hxt = (1 - self.left_offset - self.right_offset) * b.hx
+        hxt = (1 - self.left_offset - self.right_offset) * hx
         ym1 = (b.y2 + ymid - sy / 2) / 2
         ym2 = (b.y1 + ymid + sy / 2) / 2
         th = self.curve_thinning * b.height

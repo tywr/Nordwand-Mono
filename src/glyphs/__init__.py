@@ -24,6 +24,9 @@ class Glyph(ABC):
     @abstractmethod
     def draw(self, pen, dc) -> None: ...
 
+    def extra_cut(self, dc) -> int:
+        return 0.66 * max(0, dc.stroke_x - dc.default_stroke)
+
 
 class LigatureGlyph(Glyph):
     """Base class for ligature glyphs.

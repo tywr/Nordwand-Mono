@@ -14,8 +14,8 @@ class ThreeGlyph(NumberGlyph):
     mid_ratio = 0.51
     taper = 1.5
     len_mid = 0.7
-    hx_ratio = 0.8
-    hy_ratio = 0.8
+    hx_ratio = 1
+    hy_ratio = 1
     width_ratio = 1.08
 
     def draw(self, pen, dc):

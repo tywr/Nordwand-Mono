@@ -25,8 +25,9 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
         )
+        ec = self.extra_cut(dc)
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
-        yo = b.y1 + self.tail_height * b.height
+        yo = b.y1 + self.tail_height * b.height + ec
         ymid = b.y1 + self.mid_height * b.height
         xt = b.x2 + self.tail_offset * b.width
 

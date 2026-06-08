@@ -13,8 +13,8 @@ class LowercaseMGlyph(Glyph):
     hx_ratio = 0.75
     taper1 = 0.4
     taper2 = 0.8
-    min_taper = 0.05
-    min_taper_2 = 0.05
+    min_taper = 0.15
+    min_taper_2 = 0.15
     ending_thickness = 0.75
     min_width = 74
 
@@ -29,7 +29,7 @@ class LowercaseMGlyph(Glyph):
         taper2 = max(self.min_taper_2, self.taper2 * dc.taper)
         mid_y = (1 - self.mid_len) * (b.height - b.y1)
         hx, hy = b.hx * self.hx_ratio, b.hy
-        sx = max(0, 0.7 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
+        sx = max(0, 0.9 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
 
         wo = (b.width - 3 * sx) / 2
         if wo < self.min_width:

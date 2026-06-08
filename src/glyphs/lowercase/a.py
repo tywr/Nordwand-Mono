@@ -16,7 +16,8 @@ class LowercaseAGlyph(Glyph):
 
     taper = 0.6
 
-    bot_hx_ratio = 1.2
+    # bot_hx_ratio = 2.2
+    bot_hx_ratio = 1
     bot_hy_ratio = 1
     left_cap_hx_ratio = 1.0
     left_cap_hy_ratio = 0.65
@@ -26,7 +27,7 @@ class LowercaseAGlyph(Glyph):
     cap_height = 0.74
     cap_offset = 0.015
     thinning = 1
-    upper_bowl_mid = 0.56
+    upper_bowl_mid = 0.5
     cap_stroke_x_ratio = 1.01
     cap_stroke_y_ratio = 1.00
     ending_thickness = 0.7
@@ -35,8 +36,13 @@ class LowercaseAGlyph(Glyph):
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="x_height", width_ratio=self.width_ratio, overshoot_bottom=True, overshoot_top=True
+            offset=self.offset,
+            height="x_height",
+            width_ratio=self.width_ratio,
+            overshoot_bottom=True,
+            overshoot_top=True,
         )
+        ec = self.extra_cut(dc)
         sx = dc.stroke_x
         csx, csy = (
             self.cap_stroke_x_ratio * dc.stroke_x,
@@ -50,7 +56,7 @@ class LowercaseAGlyph(Glyph):
         yl = ymid + dc.stroke_alt / 2
         hx, hy = b.hx, b.hy * ry
         bhx, bhy = self.bot_hx_ratio * b.hx, self.bot_hy_ratio * b.hy
-        ycut = b.y1 + self.cap_height * b.height
+        ycut = b.y1 + self.cap_height * b.height - ec
         xc = b.x1 + self.cap_offset * b.width
         chx = self.cap_hx_ratio * b.hx
         lchx = self.left_cap_hx_ratio * b.hx
@@ -79,19 +85,19 @@ class LowercaseAGlyph(Glyph):
             dc.stroke_alt,
             b.x1,
             (b.y1 + yl) / 2,
-            b.x2 - sx,
+            xmu,
             yl,
             bhx,
-            bhy,
+            hy,
             orientation="top-right",
         )
-        # draw_rect(
-        #     pen,
-        #     xmu,
-        #     yl - dc.stroke_alt,
-        #     b.x2 - 0.5 * dc.stroke_x,
-        #     yl,
-        # )
+        draw_rect(
+            pen,
+            xmu,
+            yl - dc.stroke_alt,
+            b.x2 - 0.5 * dc.stroke_x,
+            yl,
+        )
 
         # Cap
         xmid = (xc + b.x2) / 2
@@ -125,4 +131,3 @@ class LowercaseAGlyph(Glyph):
             b.x2,
             ycap,
         )
-

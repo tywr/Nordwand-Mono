@@ -9,7 +9,7 @@ class ZeroGlyph(NumberGlyph):
     offset = 0
     slash = 0.2
     width_ratio = 1.06
-    hx_ratio = 1.0
+    hx_ratio = 1
     hy_ratio = 1
 
     def draw(self, pen, dc):
