@@ -40,12 +40,12 @@ class FontConfig:
     cap_hx: int = 140
     cap_hy: int = 225
 
-    taper: float = 0.5
+    taper: float = 0.7
 
-    default_stroke = 92
-    stroke_x: int = 92
-    stroke_y: int = 66
-    stroke_alt: int = 66
+    default_stroke = 88
+    stroke_x: int = 88
+    stroke_y: int = 61
+    stroke_alt: int = 61
 
     v_overshoot: int = 10
     v_overshoot_cap: int = 14
