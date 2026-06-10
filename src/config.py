@@ -42,13 +42,13 @@ class FontConfig:
 
     taper: float = 0.7
 
-    default_stroke = 88
-    stroke_x: int = 88
-    stroke_y: int = 61
-    stroke_alt: int = 61
+    default_stroke = 85
+    stroke_x: int = 85
+    stroke_y: int = 71
+    stroke_alt: int = 71
 
-    v_overshoot: int = 10
-    v_overshoot_cap: int = 14
+    v_overshoot: int = 9
+    v_overshoot_cap: int = 16
     h_overshoot: int = 10
 
 
@@ -80,7 +80,7 @@ class DrawConfig(FontConfig):
         """Return a DrawConfig with heavier stroke weights for a bold variant."""
         from math import log, exp
 
-        brx = 1.63
+        brx = 1.672
         ratio_x = exp((w - 400) * log(brx) / 300)
 
         bry = 1.45
@@ -88,6 +88,9 @@ class DrawConfig(FontConfig):
 
         bra = 1.2
         ratio_alt = exp((w - 400) * log(bra) / 300)
+
+        rx = 15
+        exh = exp((w - 400) * log(rx) / 300)
 
         bhy = 1.2
         hy_ratio = exp((w - 400) * log(bhy) / 300)
@@ -99,7 +102,7 @@ class DrawConfig(FontConfig):
             stroke_x=int(cls.stroke_x * ratio_x),
             stroke_y=int(cls.stroke_y * ratio_y),
             stroke_alt=int(cls.stroke_alt * ratio_alt),
-            x_height=cls.x_height,
+            x_height=cls.x_height + exh,
             cap=cls.cap,
             accent=cls.cap,
             accent_cap=cls.accent_cap,

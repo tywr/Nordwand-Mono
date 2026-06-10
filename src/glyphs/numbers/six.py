@@ -13,11 +13,11 @@ class SixGlyph(NumberGlyph):
     offset = 0
     loop_ratio = 0.64
     top_ratio = 0.4
-    taper = 0.8
+    taper = 0.6
     cap_x = 0.98
     joint_x = 1.4
-    hx_ratio = 1
-    hy_ratio = 1
+    hx_ratio = 0.9
+    hy_ratio = 0.9
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

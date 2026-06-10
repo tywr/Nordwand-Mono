@@ -6,12 +6,12 @@ class EightGlyph(NumberGlyph):
     name = "eight"
     unicode = "0x38"
     offset = 0
-    height_ratio = 0.51
+    height_ratio = 0.53
     loop_width_ratio = 0.88
-    taper = 1.5
+    taper = 1
     extra_overshoot = 0.000
-    hx_ratio = 1
-    hy_ratio = 1
+    hx_ratio = 0.9
+    hy_ratio = 0.9
     width_ratio = 1.08
 
     def draw(self, pen, dc):

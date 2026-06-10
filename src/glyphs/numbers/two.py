@@ -12,8 +12,9 @@ class TwoGlyph(NumberGlyph):
     offset = 0
     xj_ratio = 0.68
     yj_ratio = 0.46
-    internal_radius = 0.1
-    external_radius = 0.1
+    hx_ratio = 1
+    hy_ratio = 0.85
+    internal_radius = 0.25
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,6 +25,7 @@ class TwoGlyph(NumberGlyph):
             number=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         xj = b.x1 + self.xj_ratio * b.width + sx / 2
         yj = b.y1 + self.yj_ratio * b.height
         yt = (b.ymid + b.y2) / 2
@@ -38,8 +40,8 @@ class TwoGlyph(NumberGlyph):
             b.ymid,
             b.x2,
             b.y2,
-            b.hx,
-            b.hy / 2,
+            hx,
+            hy / 2,
             cut="bottom",
         )
         ishy = params["inner"].hy
