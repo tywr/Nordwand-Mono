@@ -28,6 +28,7 @@ class ThreeGlyph(NumberGlyph):
             width_ratio=self.width_ratio,
             number=True,
         )
+        ec = self.extra_cut(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
 
@@ -73,9 +74,9 @@ class ThreeGlyph(NumberGlyph):
         draw_rect(
             cut_glyph.getPen(),
             b.x1,
-            ymid - b.height / 4,
+            ymid - b.height / 4 + ec,
             b.x1 + b.width / 2,
-            ymid + b.height / 4,
+            ymid + b.height / 4 - ec,
         )
 
         result = BooleanGlyph(base_glyph).difference(BooleanGlyph(cut_glyph))

@@ -24,11 +24,12 @@ class TwoGlyph(NumberGlyph):
             width_ratio=self.width_ratio,
             number=True,
         )
+        ec = self.extra_cut(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         xj = b.x1 + self.xj_ratio * b.width + sx / 2
         yj = b.y1 + self.yj_ratio * b.height
-        yt = (b.ymid + b.y2) / 2
+        yt = (b.ymid + b.y2) / 2 - ec
         ih = self.internal_radius * b.height
 
         # Top arch
@@ -37,7 +38,7 @@ class TwoGlyph(NumberGlyph):
             sx,
             sy,
             b.x1,
-            b.ymid,
+            b.ymid - 2 * ec,
             b.x2,
             b.y2,
             hx,

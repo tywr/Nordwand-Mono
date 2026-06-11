@@ -28,6 +28,7 @@ class FiveGlyph(NumberGlyph):
             width_ratio=self.width_ratio,
             number=True,
         )
+        ec = self.extra_cut(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         yj = b.y1 + b.height * self.junction_ratio
         oj = self.tilt * b.width + max(dc.stroke_x - 90, 0)
@@ -72,7 +73,7 @@ class FiveGlyph(NumberGlyph):
         draw_rect(
             cut_glyph.getPen(),
             b.x1,
-            2 * ymid - yj,
+            2 * ymid - yj + ec,
             b.xmid,
             yj,
         )
