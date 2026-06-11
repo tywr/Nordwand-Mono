@@ -42,10 +42,10 @@ class FontConfig:
 
     taper: float = 0.7
 
-    default_stroke = 85
-    stroke_x: int = 85
-    stroke_y: int = 71
-    stroke_alt: int = 71
+    default_stroke = 90
+    stroke_x: int = 90
+    stroke_y: int = 64
+    stroke_alt: int = 64
 
     v_overshoot: int = 9
     v_overshoot_cap: int = 16
@@ -96,7 +96,7 @@ class DrawConfig(FontConfig):
         hy_ratio = exp((w - 400) * log(bhy) / 300)
 
         # Function mapping 100 → 0.5 and 700 → 0.2
-        taper = min(0.5, 0.5 - 0.0006 * (w - 400))
+        taper = min(0.5, 0.5 - 0.0003 * (w - 400))
 
         return cls(
             stroke_x=int(cls.stroke_x * ratio_x),
