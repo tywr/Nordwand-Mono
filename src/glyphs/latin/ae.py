@@ -13,7 +13,7 @@ class AeGlyph(Glyph):
     offset = 0
     mid_height = 0.52
     width_ratio = 1.16
-    taper = 0.3
+    taper = 1.5
     hx_ratio = 0.5
     hy_ratio = 1
     cap_hx_ratio = 0.7
@@ -65,7 +65,7 @@ class AeGlyph(Glyph):
             yl,
             hx,
             hy,
-            taper=self.taper,
+            taper=self.taper * dc.taper,
             side="right",
             cut="top",
         )
@@ -95,7 +95,16 @@ class AeGlyph(Glyph):
         # Cap
         xmid = (xc + ax2) / 2
         draw_corner(
-            pen, sx, csy, ax2, b.ymid, xmid, b.y2, chx, b.hy, orientation="top-left"
+            pen,
+            sx * self.taper * dc.taper,
+            csy,
+            ax2,
+            b.ymid,
+            xmid,
+            b.y2,
+            chx,
+            b.hy,
+            orientation="top-left",
         )
 
         loop_glyph = ufoLib2.objects.Glyph()
@@ -131,7 +140,7 @@ class AeGlyph(Glyph):
         )
         draw_corner(
             pen,
-            sx,
+            sx * self.taper * dc.taper,
             sy,
             b.xmid - sx / 2,
             b.ymid,
@@ -143,7 +152,7 @@ class AeGlyph(Glyph):
         )
         draw_corner(
             pen,
-            sx,
+            sx * self.taper * dc.taper,
             sy,
             b.xmid - sx / 2,
             b.ymid,
@@ -186,10 +195,10 @@ class AeGlyph(Glyph):
             b.x2 - dc.h_overshoot - sx / 2,
             ymid + dc.stroke_alt / 2,
         )
-        draw_rect(
-            pen,
-            b.xmid,
-            ymid - dc.stroke_alt / 2,
-            b.x2 - dc.h_overshoot,
-            max(ymid, b.ymid),
-        )
+        # draw_rect(
+        #     pen,
+        #     b.xmid,
+        #     ymid - dc.stroke_alt / 2,
+        #     b.x2 - dc.h_overshoot,
+        #     max(ymid, b.ymid),
+        # )

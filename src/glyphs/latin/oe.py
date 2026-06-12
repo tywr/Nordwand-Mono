@@ -4,6 +4,7 @@ from glyphs import Glyph
 from draw.corner import draw_corner
 from draw.rect import draw_rect
 from draw.loop import draw_loop
+from draw.arch import draw_arch
 
 
 class OeGlyph(Glyph):
@@ -12,7 +13,7 @@ class OeGlyph(Glyph):
     offset = 0
     mid_height = 0.52
     width_ratio = 1.16
-    taper = 0.3
+    taper = 1.5
     hx_ratio = 0.5
     hy_ratio = 1
     cap_hx_ratio = 0.7
@@ -53,7 +54,7 @@ class OeGlyph(Glyph):
         ax2, axmid = b.xmid + sx / 2, (b.x1 + b.xmid + sx / 2) / 2
         ex1, exmid = b.xmid - sx / 2, (b.x2 + b.xmid - sx / 2) / 2
 
-        draw_loop(
+        draw_arch(
             pen,
             sx,
             sy,
@@ -63,6 +64,8 @@ class OeGlyph(Glyph):
             b.y2,
             chx,
             hy,
+            side="right",
+            taper=self.taper * dc.taper,
         )
         # Top-right corner
         draw_corner(
@@ -79,7 +82,7 @@ class OeGlyph(Glyph):
         )
         draw_corner(
             pen,
-            sx,
+            sx * self.taper * dc.taper,
             sy,
             b.xmid - sx / 2,
             b.ymid,
@@ -91,7 +94,7 @@ class OeGlyph(Glyph):
         )
         draw_corner(
             pen,
-            sx,
+            sx * self.taper * dc.taper,
             sy,
             b.xmid - sx / 2,
             b.ymid,
