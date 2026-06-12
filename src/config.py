@@ -34,10 +34,10 @@ class FontConfig:
 
     width: int = 360
 
-    hx: int = 180
+    hx: int = 174
     hy: int = 220
 
-    cap_hx: int = 180
+    cap_hx: int = 174
     cap_hy: int = 225
 
     taper: float = 0.45
