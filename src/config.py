@@ -22,11 +22,6 @@ class FontConfig:
     accent: int = 715
     accent_cap: int = 890
 
-    math: int = 300
-
-    parenthesis: int = 300
-    parenthesis_length: int = 1060
-
     min_margin_lowercase: int = 26
     min_margin_uppercase: int = 32.5
 
@@ -72,6 +67,10 @@ class DrawConfig(FontConfig):
     stroke_alt: int = FontConfig.stroke_alt
     v_overshoot: int = FontConfig.v_overshoot
     h_overshoot: int = FontConfig.h_overshoot
+
+    math: int = (ascent + descent) / 2
+    parenthesis: int = (ascent + descent) / 2
+    parenthesis_length: int = ascent - descent + 2 * stroke_y
 
     italic: bool = False
 
