@@ -2,7 +2,6 @@ from glyphs import Glyph
 from draw.rect import draw_rect
 from draw.corner import draw_corner
 from draw.square_corner import draw_square_corner
-from utils.intersection import bezier_intersect
 
 
 class RightCurlyBracketGlyph(Glyph):
@@ -11,6 +10,7 @@ class RightCurlyBracketGlyph(Glyph):
     offset = 0
     width_ratio = 1
     peak_ratio = 0.35
+    protusion_stroke_ratio = 1.3
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -19,6 +19,7 @@ class RightCurlyBracketGlyph(Glyph):
         pl = self.peak_ratio * b.width
         ymid = dc.parenthesis
         sx, sy = dc.stroke_x, dc.stroke_y
+        sp = dc.stroke_y * self.protusion_stroke_ratio
         y1, y2 = ymid - dc.parenthesis_length / 2, ymid + dc.parenthesis_length / 2
         x1, x2, xmid = b.x1, b.x2 - pl, (b.x1 - pl + b.x2) / 2
         l4 = dc.parenthesis_length / 4
@@ -38,7 +39,7 @@ class RightCurlyBracketGlyph(Glyph):
         draw_corner(
             pen,
             sx,
-            0.75 * sx,
+            0.75 * sp,
             xmid - sx / 2,
             y2 - l4,
             x2,
@@ -61,7 +62,7 @@ class RightCurlyBracketGlyph(Glyph):
         draw_corner(
             pen,
             sx,
-            0.75 * sx,
+            0.75 * sp,
             xmid - sx / 2,
             y1 + l4,
             x2,
