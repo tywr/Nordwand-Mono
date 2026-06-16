@@ -79,11 +79,15 @@ def load_reference(font_path, char):
     """Record a reference font's glyph for `char`.
 
     Returns (recording, x_height, advance) in the reference font's own units.
-    The recording's curves are whatever the font stores (cubic for CFF/OTF)
-    and keep the glyph's real position, so its side bearings are preserved.
+    Components are decomposed and quadratic (TTF) curves are converted to cubic,
+    so the recording always contains only moveTo/lineTo/curveTo — matching the
+    project's cubic glyphs — and works for both .otf and .ttf. The glyph keeps
+    its real position, so its side bearings are preserved.
     """
     from fontTools.ttLib import TTFont
     from fontTools.pens.boundsPen import BoundsPen
+    from fontTools.pens.recordingPen import DecomposingRecordingPen
+    from fontTools.pens.qu2cuPen import Qu2CuPen
 
     font = TTFont(font_path)
     cmap = font.getBestCmap()
@@ -92,8 +96,11 @@ def load_reference(font_path, char):
         raise SystemExit(f"Reference font {font_path!r} has no glyph for {char!r}")
 
     name = cmap[ord(char)]
+    # Decompose composite glyphs, then convert any quadratic curves to cubic.
+    decomposed = DecomposingRecordingPen(glyph_set)
+    glyph_set[name].draw(decomposed)
     rec = RecordingPen()
-    glyph_set[name].draw(rec)
+    decomposed.replay(Qu2CuPen(rec, max_err=1.0, all_cubic=True))
     advance = font["hmtx"][name][0]
 
     # x-height: prefer OS/2 sxHeight, else measure 'x', else this glyph's height.
@@ -112,14 +119,22 @@ def load_reference(font_path, char):
     return rec, x_height, advance
 
 
-def overlay_reference(ax, font_path, char, show_controls):
-    """Overlay a reference glyph scaled to fc.x_height, kept at the pen origin.
+def overlay_reference(ax, font_path, char, show_controls, rescale=False):
+    """Overlay a reference glyph kept at the pen origin.
 
+    With ``rescale`` the glyph is scaled so its advance matches the project's
+    cell width (fc.window_width); the same factor is applied vertically so the
+    glyph's proportions are preserved. Otherwise it is scaled to fc.x_height.
     Origin-aligned (not centered) so the reference's own side bearings and
     advance line up against the project glyph's. Returns the scaled advance.
     """
     ref_rec, ref_xh, ref_adv = load_reference(font_path, char)
-    scale = fc.x_height / ref_xh  # scale about (0, 0): baseline + origin preserved
+    # scale about (0, 0): baseline + origin preserved. A single uniform factor
+    # keeps the reference's proportions in both axes.
+    if rescale:
+        scale = fc.window_width / ref_adv
+    else:
+        scale = fc.x_height / ref_xh
 
     out = RecordingPen()
     ref_rec.replay(TransformPen(out, Transform(scale, 0, 0, scale, 0, 0)))
@@ -136,11 +151,14 @@ def overlay_reference(ax, font_path, char, show_controls):
     ax.axvline(scaled_adv, color="#111", linewidth=1.2, linestyle="--", alpha=0.7)
     ax.text(scaled_adv, fc.window_descent, " ref adv", fontsize=7, color="#111", va="bottom")
 
+    basis = (
+        f"cell width={fc.window_width}" if rescale else f"x-height={fc.x_height}"
+    )
     lo, hi = _recording_x_bounds(out)
     print(
         f"Reference '{char}' from {font_path}: scale={scale:.3f}; "
         f"advance={scaled_adv:.0f}, LSB={lo:.0f}, RSB={scaled_adv - hi:.0f} "
-        f"(scaled to project x-height={fc.x_height})"
+        f"(scaled to project {basis})"
     )
     return scaled_adv
 
@@ -220,6 +238,7 @@ def visualize_glyph(
     italic=False,
     ref_font=None,
     ref_char=None,
+    ref_rescale=False,
 ):
     if configs is None:
         configs = [DrawConfig()]
@@ -264,7 +283,9 @@ def visualize_glyph(
             if not glyph_inst.unicode:
                 raise SystemExit(f"Glyph '{slug_name}' has no unicode; pass --ref-char")
             char = chr(int(glyph_inst.unicode, 16))
-        ref_advance = overlay_reference(ax, ref_font, char, show_controls)
+        ref_advance = overlay_reference(
+            ax, ref_font, char, show_controls, rescale=ref_rescale
+        )
 
     if show_optical_center:
         rec = record(configs[0])
@@ -481,6 +502,13 @@ if __name__ == "__main__":
         metavar="CHAR",
         help="Character to pull from --ref (default: the visualized glyph's own char)",
     )
+    parser.add_argument(
+        "--rescale",
+        action="store_true",
+        help="Scale the --ref glyph so its advance matches the project cell "
+        "width (fc.window_width), scaling vertically by the same factor to "
+        "preserve proportions, instead of matching x-height.",
+    )
     args = parser.parse_args()
 
     if args.config:
@@ -532,4 +560,5 @@ if __name__ == "__main__":
             italic=italic,
             ref_font=args.ref,
             ref_char=args.ref_char,
+            ref_rescale=args.rescale,
         )

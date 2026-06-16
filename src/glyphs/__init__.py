@@ -27,6 +27,18 @@ class Glyph(ABC):
     def extra_cut(self, dc) -> int:
         return 0.66 * max(0, dc.stroke_x - dc.default_stroke)
 
+    def diag_stroke_dampening(self, ratio, stroke, coef=0.25):
+        from math import exp
+
+        ds = max(stroke - 85, 0) / 85
+        # If ds > 0, we add some dampening, other we let as is
+        if ds <= 0:
+            return ratio * stroke
+
+        delta = exp(-ds * coef)
+        sx = delta * stroke * ratio
+        return sx
+
 
 class LigatureGlyph(Glyph):
     """Base class for ligature glyphs.
