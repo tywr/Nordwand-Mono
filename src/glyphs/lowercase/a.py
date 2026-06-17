@@ -14,7 +14,7 @@ class LowercaseAGlyph(Glyph):
     mid_height = 0.525
     width_ratio = 0.95
 
-    taper = 0.6
+    taper = 0.4
 
     # bot_hx_ratio = 2.2
     bot_hx_ratio = 1

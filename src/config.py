@@ -40,7 +40,7 @@ class FontConfig:
     cap_hx: int = 174
     cap_hy: int = 225
 
-    taper: float = 0.45
+    taper: float = 0.35
 
     default_stroke = 90
     stroke_x: int = 90
