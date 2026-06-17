@@ -80,7 +80,7 @@ class DrawConfig(FontConfig):
         """Return a DrawConfig with heavier stroke weights for a bold variant."""
         from math import log, exp
 
-        brx = 1.672
+        brx = 1.61
         ratio_x = exp((w - 400) * log(brx) / 300)
 
         bry = 1.45

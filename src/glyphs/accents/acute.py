@@ -6,8 +6,8 @@ class Acute(Accent):
     name = "acute"
     unicode = "0xB4"
     height = 0.35
-    width = 0.65
-    stroke_ratio = 1.2
+    width = 0.55
+    stroke_ratio = 1.1
 
     def draw_at(self, pen, dc, x, y):
         h = self.height * dc.x_height

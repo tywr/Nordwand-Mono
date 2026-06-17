@@ -6,9 +6,9 @@ from draw.parallelogramm import draw_parallelogramm_vertical
 class OneGlyph(NumberGlyph):
     name = "one"
     unicode = "0x31"
-    offset = -40
-    branch_height = 0.33
-    width_ratio = 0.60
+    offset = 20
+    branch_height = 0.3
+    width_ratio = 1.08
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -17,7 +17,10 @@ class OneGlyph(NumberGlyph):
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
 
         # Vertical stem (centered)
-        draw_rect(pen, b.x2 - sx, b.y1, b.x2, b.y2)
+        draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, b.y2)
+
+        # Horizontal stem
+        draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + dc.stroke_y)
 
         theta, delta = draw_parallelogramm_vertical(
             pen,
@@ -25,6 +28,6 @@ class OneGlyph(NumberGlyph):
             sy,
             b.x1,
             b.y1 + b.height * (1 - self.branch_height),
-            b.x2 - sx,
+            b.xmid - sx / 2,
             b.y2,
         )

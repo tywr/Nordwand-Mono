@@ -1,6 +1,7 @@
 from glyphs.numbers import NumberGlyph
 from draw.loop import draw_loop
 from draw.parallelogramm import draw_parallelogramm_vertical
+from draw.rect import draw_rect
 
 
 class ZeroGlyph(NumberGlyph):
@@ -9,6 +10,7 @@ class ZeroGlyph(NumberGlyph):
     offset = 0
     slash = 0.2
     width_ratio = 1.06
+    dot_stroke_ratio = 1.4
     hx_ratio = 1
     hy_ratio = 1
 
@@ -25,6 +27,7 @@ class ZeroGlyph(NumberGlyph):
         )
         hx = self.hx_ratio * b.hx
         hy = self.hy_ratio * b.hy
+        sd = min(dc.stroke_x * self.dot_stroke_ratio, 140)
 
         draw_loop(
             pen,
@@ -38,12 +41,20 @@ class ZeroGlyph(NumberGlyph):
             hy,
         )
 
-        draw_parallelogramm_vertical(
+        draw_rect(
             pen,
-            dc.stroke_alt,
-            dc.stroke_alt,
-            b.x1 + dc.stroke_x,
-            b.y1 + dc.stroke_y,
-            b.x2 - dc.stroke_x,
-            b.y2 - dc.stroke_y,
+            b.xmid - sd / 2,
+            b.ymid - sd / 2,
+            b.xmid + sd / 2,
+            b.ymid + sd / 2,
         )
+
+        # draw_parallelogramm_vertical(
+        #     pen,
+        #     dc.stroke_alt,
+        #     dc.stroke_alt,
+        #     b.x1 + dc.stroke_x,
+        #     b.y1 + dc.stroke_y,
+        #     b.x2 - dc.stroke_x,
+        #     b.y2 - dc.stroke_y,
+        # )

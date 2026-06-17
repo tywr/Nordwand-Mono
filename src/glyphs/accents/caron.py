@@ -6,15 +6,15 @@ class Caron(Accent):
     name = "caron"
     unicode = "0x2C7"
     height = 0.35
-    width = 1.3
-    stroke_ratio = 1.2
+    width = 1.1
+    stroke_ratio = 1.1
 
     def draw_at(self, pen, dc, x, y):
         h = self.height * dc.x_height
         w = self.width * dc.width
         x1, x2, xmid = x - w / 2, x + w / 2, x
         y1, y2 = y - h / 2, y + h / 2
-        d = self.stroke_ratio * dc.stroke_x
+        d = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.45)
         ov = 0.5 * d
 
         draw_parallelogramm(
