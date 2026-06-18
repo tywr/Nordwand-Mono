@@ -1,6 +1,5 @@
 from glyphs.numbers import NumberGlyph
 from draw.loop import draw_loop
-from draw.parallelogramm import draw_parallelogramm_vertical
 from draw.rect import draw_rect
 
 
@@ -11,7 +10,7 @@ class ZeroGlyph(NumberGlyph):
     slash = 0.2
     width_ratio = 1.06
     dot_stroke_ratio = 1.4
-    hx_ratio = 1
+    hx_ratio = 0.95
     hy_ratio = 1
 
     def draw(self, pen, dc):
