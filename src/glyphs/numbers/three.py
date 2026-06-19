@@ -10,9 +10,9 @@ class ThreeGlyph(NumberGlyph):
     name = "three"
     unicode = "0x33"
     offset = 0
-    loop_width_ratio = 0.88
-    mid_ratio = 0.51
-    taper = 1
+    loop_width_ratio = 0.92
+    mid_ratio = 0.515
+    taper = 1.5
     len_mid = 0.7
     hx_ratio = 0.9
     hy_ratio = 0.9
