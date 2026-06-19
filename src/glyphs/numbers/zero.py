@@ -1,7 +1,6 @@
 from glyphs.numbers import NumberGlyph
 from draw.loop import draw_loop
 from draw.rect import draw_rect
-from draw.corner_double import draw_corner_double
 
 
 class ZeroGlyph(NumberGlyph):
@@ -13,10 +12,9 @@ class ZeroGlyph(NumberGlyph):
     dot_stroke_ratio = 1.4
     hx_ratio = 0.9
     hy_ratio = 1
-    # hy_ratio = 0.2
-    # hm_ratio = 0.05
-    # x_offset = 0.1
-    # y_offset = 0.4
+    hm_ratio = 0.05
+    x_offset = 0.1
+    y_offset = 0.4
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -32,25 +30,9 @@ class ZeroGlyph(NumberGlyph):
         hx = self.hx_ratio * b.hx
         hy = self.hy_ratio * b.hy
         sd = min(dc.stroke_x * self.dot_stroke_ratio, 140)
-        # hm = self.hm_ratio * b.height
-        # ox, oy = self.x_offset * b.width, self.y_offset * b.height
-        # a = oy / ox
-        #
-        # draw_corner_double(
-        #     pen,
-        #     dc.stroke_x,
-        #     dc.stroke_y,
-        #     b.x1,
-        #     b.ymid,
-        #     b.xmid,
-        #     b.y2,
-        #     hx,
-        #     hy,
-        #     ox=self.x_offset,
-        #     oy=self.y_offset,
-        #     c=1,
-        #     orientation="top-right"
-        # )
+
+        ox, oy = self.x_offset * b.width, self.y_offset * b.height
+
 
         draw_loop(
             pen,
@@ -71,13 +53,3 @@ class ZeroGlyph(NumberGlyph):
             b.xmid + sd / 2,
             b.ymid + sd / 2,
         )
-
-        # draw_parallelogramm_vertical(
-        #     pen,
-        #     dc.stroke_alt,
-        #     dc.stroke_alt,
-        #     b.x1 + dc.stroke_x,
-        #     b.y1 + dc.stroke_y,
-        #     b.x2 - dc.stroke_x,
-        #     b.y2 - dc.stroke_y,
-        # )
