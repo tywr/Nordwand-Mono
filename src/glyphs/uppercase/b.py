@@ -9,7 +9,7 @@ class UppercaseBGlyph(UppercaseGlyph):
     offset = 20
     upper_ratio = 0.85  # Upper loop width as a fraction of the lower loop width
     mid_ratio = 0.515
-    width_ratio = 1.08
+    width_ratio = 1.06
     hx_ratio = 1
     hy_ratio = 1
 

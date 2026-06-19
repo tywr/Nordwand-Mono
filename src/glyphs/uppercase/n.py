@@ -1,8 +1,6 @@
-from math import tan, pi
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm_vertical
-from utils.pens import NullPen
 
 
 class UppercaseNGlyph(UppercaseGlyph):
@@ -11,7 +9,7 @@ class UppercaseNGlyph(UppercaseGlyph):
     offset = 0
     middle_stroke_ratio = 0.84
     overlap = 0.3
-    width_ratio = 1.06
+    width_ratio = 1.08
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

@@ -7,7 +7,7 @@ class UppercaseVGlyph(UppercaseGlyph):
     unicode = "0x56"
     offset = 0
     overlap = 0.5
-    width_ratio = 1.25
+    width_ratio = 1.28
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
