@@ -11,7 +11,7 @@ class UppercaseMGlyph(UppercaseGlyph):
     name = "uppercase_m"
     unicode = "0x4D"
     offset = 0
-    overlap = 0.65
+    overlap = 0.4
     overlap_middle = 0.5
     depth = 0.6
     inner_thickness_ratio = 2.4
