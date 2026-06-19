@@ -13,7 +13,7 @@ class UppercaseWGlyph(UppercaseGlyph):
     outer_branch_ratio = 0.25
     inner_height = 1
     width_ratio = 1.32
-    stroke_ratio = 1.3
+    stroke_ratio = 1.15
     inner_stroke_ratio = 1
     lower_section_height = 1.5
 
@@ -26,7 +26,7 @@ class UppercaseWGlyph(UppercaseGlyph):
         )
         lsh = self.lower_section_height * dc.stroke_y
         tsx = dc.stroke_x * self.stroke_ratio
-        sx = max(0, 0.75 * (tsx - 90)) + min(90, tsx)
+        sx = max(0, 0.9 * (tsx - 90)) + min(90, tsx)
         ov = self.overlap * sx
         isx = sx * self.inner_stroke_ratio
         xi1 = b.x1 + self.outer_branch_ratio * b.width
