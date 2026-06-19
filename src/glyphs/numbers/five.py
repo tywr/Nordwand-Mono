@@ -23,6 +23,8 @@ class FiveGlyph(NumberGlyph):
     ending_offset = 0.00
     thinning = 0.9
     overshoot_bottom = True
+    hx_ratio = 0.9
+    hy_ratio = 0.9
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -35,6 +37,7 @@ class FiveGlyph(NumberGlyph):
         oj = self.tilt * b.width + ew
         xc = b.x2 - self.cap_offset * b.width
         xe = b.x1 + self.ending_offset * b.width + ew
+        hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
 
         base_glyph = ufoLib2.objects.Glyph()
 
@@ -47,8 +50,8 @@ class FiveGlyph(NumberGlyph):
             (b.y1 + b.height * self.loop_ratio) / 2,
             b.xmid,
             b.y1,
-            b.hx,
-            b.hy * self.loop_ratio,
+            hx,
+            hy * self.loop_ratio,
             orientation="bottom-left",
         )
         draw_corner(
@@ -59,8 +62,8 @@ class FiveGlyph(NumberGlyph):
             (b.y1 + b.height * self.loop_ratio) / 2,
             b.xmid,
             b.y1,
-            b.hx,
-            b.hy * self.loop_ratio,
+            hx,
+            hy * self.loop_ratio,
             orientation="bottom-right",
         )
         params = draw_arch(
@@ -71,8 +74,8 @@ class FiveGlyph(NumberGlyph):
             b.y1,
             b.x2,
             b.y1 + b.height * self.loop_ratio,
-            b.hx,
-            b.hy * self.loop_ratio,
+            hx,
+            hy * self.loop_ratio,
             taper=self.taper * dc.taper,
             side="left",
             cut="bottom",

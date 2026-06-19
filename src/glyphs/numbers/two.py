@@ -12,8 +12,8 @@ class TwoGlyph(NumberGlyph):
     offset = 0
     xj_ratio = 0.68
     yj_ratio = 0.46
-    hx_ratio = 1
-    hy_ratio = 0.85
+    hx_ratio = 0.9
+    hy_ratio = 0.9
     internal_radius = 0.25
 
     def draw(self, pen, dc):

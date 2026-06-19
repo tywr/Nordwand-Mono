@@ -6,8 +6,8 @@ class EightGlyph(NumberGlyph):
     name = "eight"
     unicode = "0x38"
     offset = 0
-    height_ratio = 0.53
-    loop_width_ratio = 0.88
+    height_ratio = 0.52
+    loop_width_ratio = 0.92
     taper = 1
     extra_overshoot = 0.000
     hx_ratio = 0.9

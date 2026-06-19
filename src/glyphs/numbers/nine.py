@@ -13,7 +13,7 @@ class NineGlyph(NumberGlyph):
     offset = 0
     vertical_ratio = 0.64
     bottom_cut = 0.2
-    taper = 0.6
+    taper = 0.5
     foot_x = 0.02
     joint_x = 1.4
     hx_ratio = 0.9
