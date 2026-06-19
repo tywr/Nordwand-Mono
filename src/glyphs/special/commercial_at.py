@@ -2,7 +2,6 @@ from glyphs import Glyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.polygon import draw_polygon
 from draw.corner import draw_corner
 
 
@@ -11,9 +10,14 @@ class CommercialAtGlyph(Glyph):
     unicode = "0x40"
     offset = 0
     width_ratio = 1.22
-    inner_ratio_x = 0.65
-    inner_ratio_y = 0.45
+    mid_ratio = 0.4
+    bottom_offset_ratio = 0.12
+    bottom_reach = 0.66
+    inner_ratio_x = 0.66
+    inner_ratio_y = 0.55
     ending_thickness = 0.8
+    hx_ratio = 1.2
+    hy_ratio = 1.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,9 +28,13 @@ class CommercialAtGlyph(Glyph):
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
+        xb = b.x1 + b.width * self.bottom_reach
+        y1 = b.y1 - b.height * self.bottom_offset_ratio
+        ymid = b.y1 + b.height * self.mid_ratio
         wi, hi = self.inner_ratio_x * b.width, self.inner_ratio_y * b.height
         xi1, xi2 = b.x2 - wi, b.x2
-        yi1, yi2 = b.ymid - hi / 2, b.ymid + hi / 2
+        yi1, yi2 = ymid - hi / 2, ymid + hi / 2
+        hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
 
         draw_arch(
             pen,
@@ -36,10 +44,10 @@ class CommercialAtGlyph(Glyph):
             yi1,
             xi2,
             yi2,
-            b.hx * self.inner_ratio_x,
-            b.hy * self.inner_ratio_y,
+            hx * self.inner_ratio_x,
+            hy * self.inner_ratio_y,
             side="right",
-            taper=0.2,
+            taper=0.05,
         )
 
         draw_corner(
@@ -50,8 +58,8 @@ class CommercialAtGlyph(Glyph):
             b.ymid,
             b.xmid,
             b.y2,
-            b.hx,
-            b.hy,
+            hx,
+            hy,
             orientation="top-left",
         )
         draw_loop(
@@ -59,13 +67,13 @@ class CommercialAtGlyph(Glyph):
             dc.stroke_x,
             dc.stroke_y,
             b.x1,
-            b.y1,
+            y1,
             b.x2,
             b.y2,
-            b.hx,
-            b.hy,
+            hx,
+            hy,
             cut="right",
         )
 
         draw_rect(pen, b.x2 - dc.stroke_x, yi1, b.x2, b.ymid)
-        draw_rect(pen, b.xmid, b.y1, b.x2 - dc.stroke_x, b.y1 + dc.stroke_y)
+        draw_rect(pen, b.xmid, y1, xb, y1 + dc.stroke_y)

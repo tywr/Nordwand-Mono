@@ -12,7 +12,7 @@ class FontConfig:
     units_per_em: int = 1000
     window_ascent: int = 1025
     window_descent: int = -300
-    window_width: int = 600
+    window_width: int = 625
 
     ascent: int = 750
     descent: int = -185
