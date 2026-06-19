@@ -22,7 +22,7 @@ class LowercaseKGlyph(Glyph):
             overshoot_left=True,
         )
         xb = b.x1 + self.branch_overlap * dc.stroke_x
-        sx = self.branch_stroke_ratio * dc.stroke_x
+        sx = self.diag_stroke_dampening(self.branch_stroke_ratio, dc.stroke_x, coef=0.2)
         xtop = b.x2 - self.upper_branch_offset * b.width
         ymid = b.y1 + self.mid_ratio * b.height
 

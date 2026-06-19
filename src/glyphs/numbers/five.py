@@ -29,7 +29,7 @@ class FiveGlyph(NumberGlyph):
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        sd = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.15)
+        sd = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.05)
         yj = b.y1 + b.height * self.junction_ratio
         ew = 0.3 * max(dc.stroke_x - 90, 0)
         oj = self.tilt * b.width + ew

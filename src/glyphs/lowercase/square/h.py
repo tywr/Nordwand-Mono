@@ -27,7 +27,7 @@ class LowercaseHGlyph(SquareLowercaseGlyph):
             b.x2,
             b.y2,
             self.hx_ratio * b.hx,
-            b.hy,
+            self.hy_ratio * b.hy,
             taper=self.taper * dc.taper,
             side="left",
             cut="bottom",

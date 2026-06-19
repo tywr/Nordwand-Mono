@@ -45,7 +45,7 @@ class LowercaseY2Glyph(SquareLowercaseGlyph):
             b.x2,
             yl,
             self.hx_ratio * b.hx,
-            b.hy,
+            self.hy_ratio * b.hy,
             taper=self.taper * dc.taper,
             side="right",
             cut="top",
