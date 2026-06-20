@@ -13,7 +13,7 @@ class NineGlyph(NumberGlyph):
     offset = 0
     vertical_ratio = 0.64
     bottom_cut = 0.2
-    taper = 0.5
+    taper = 0.2
     foot_x = 0.02
     joint_x = 1.4
     hx_ratio = 0.9
@@ -61,6 +61,7 @@ class NineGlyph(NumberGlyph):
             NullPen(), sx, sy, xj, yj, xf, b.y1, direction="bottom-left"
         )
 
+        ihy = params["inner"].hy
         draw_polygon(
             pen,
             points=[
@@ -68,7 +69,7 @@ class NineGlyph(NumberGlyph):
                 (xj, yj),
                 (b.x2, (b.y2 + ymid) / 2),
                 (b.x2 - sx, (b.y2 + ymid) / 2),
-                (b.x2 - sx, (b.y2 + ymid) / 2 - sy / 2),
+                (b.x2 - sx, (b.y2 + b.ymid) / 2 - ihy),
             ],
         )
 

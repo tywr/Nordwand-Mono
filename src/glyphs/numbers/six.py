@@ -13,7 +13,7 @@ class SixGlyph(NumberGlyph):
     offset = 0
     loop_ratio = 0.64
     top_ratio = 0.4
-    taper = 0.5
+    taper = 0.2
     cap_x = 0.98
     joint_x = 1.4
     hx_ratio = 0.9
@@ -66,6 +66,7 @@ class SixGlyph(NumberGlyph):
             b.y2,
         )
 
+        ihy = params["inner"].hy
         draw_polygon(
             pen,
             points=[
@@ -73,7 +74,7 @@ class SixGlyph(NumberGlyph):
                 (xj - delta / 2, yj),
                 (b.x1, (b.y1 + ymid) / 2),
                 (b.x1 + sx, (b.y1 + ymid) / 2),
-                (b.x1 + sx, (b.y1 + ymid) / 2 + sy / 2),
+                (b.x1 + sx, (b.y1 + b.ymid) / 2 + ihy),
             ],
         )
 

@@ -25,6 +25,7 @@ class FiveGlyph(NumberGlyph):
     overshoot_bottom = True
     hx_ratio = 0.9
     hy_ratio = 0.9
+    min_taper = 0.25
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -38,6 +39,7 @@ class FiveGlyph(NumberGlyph):
         xc = b.x2 - self.cap_offset * b.width
         xe = b.x1 + self.ending_offset * b.width + ew
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
+        taper = max(self.min_taper, self.taper * dc.taper)
 
         base_glyph = ufoLib2.objects.Glyph()
 
@@ -76,7 +78,7 @@ class FiveGlyph(NumberGlyph):
             b.y1 + b.height * self.loop_ratio,
             hx,
             hy * self.loop_ratio,
-            taper=self.taper * dc.taper,
+            taper=taper,
             side="left",
             cut="bottom",
         )
