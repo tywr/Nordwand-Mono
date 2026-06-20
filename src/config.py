@@ -96,7 +96,7 @@ class DrawConfig(FontConfig):
         hy_ratio = exp((w - 400) * log(bhy) / 300)
 
         # Function mapping 100 → 0.5 and 700 → 0.2
-        taper = min(0.5, 0.5 - 0.0006 * (w - 400))
+        taper = min(0.5, 0.5 - 0.0010 * (w - 400))
 
         return cls(
             stroke_x=int(cls.stroke_x * ratio_x),

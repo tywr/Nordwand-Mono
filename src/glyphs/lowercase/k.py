@@ -9,7 +9,7 @@ class LowercaseKGlyph(Glyph):
     offset = 34
     width_ratio = 1.00
     branch_ratio = 0.75
-    mid_ratio = 0.52
+    mid_ratio = 0.57
     upper_branch_offset = 0.055
     branch_stroke_ratio = 1.25
     branch_overlap = 0.8

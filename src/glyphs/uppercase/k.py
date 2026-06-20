@@ -9,7 +9,7 @@ class UppercaseKGlyph(UppercaseGlyph):
     offset = 50
     width_ratio = 1.06
     branch_ratio = 0.65
-    mid_ratio = 0.52
+    mid_ratio = 0.55
     upper_branch_offset = 0.05
     branch_stroke_ratio = 1.3
     branch_overlap = 0.8
