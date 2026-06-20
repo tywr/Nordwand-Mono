@@ -7,7 +7,7 @@ class SolidusGlyph(Glyph):
     unicode = "0x2F"
     offset = 0
     width_ratio = 1
-    height_ratio = 0.8
+    height_ratio = 0.85
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

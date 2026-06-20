@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.parallelogramm import draw_parallelogramm_vertical
+from draw.parallelogramm import draw_parallelogramm
 
 
 class GreaterThenSignGlyph(Glyph):
@@ -18,25 +18,25 @@ class GreaterThenSignGlyph(Glyph):
         ymid = dc.math
         h = dc.parenthesis_length * self.span
         s = dc.stroke_x * self.stroke_ratio
-        draw_parallelogramm_vertical(
+        draw_parallelogramm(
             pen,
             s,
             s,
             b.x2,
-            ymid - s/2,
+            ymid,
             b.x1,
             ymid + h / 2,
             direction="top-left",
             delta=s,
         )
-        draw_parallelogramm_vertical(
+        draw_parallelogramm(
             pen,
             s,
             s,
             b.x1,
             ymid - h / 2,
             b.x2,
-            ymid + s / 2,
+            ymid,
             direction="top-right",
             delta=s,
         )

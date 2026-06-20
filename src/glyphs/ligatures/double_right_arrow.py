@@ -1,14 +1,13 @@
 from math import tan
 from glyphs import LigatureGlyph
-from draw.parallelogramm import draw_parallelogramm_vertical
-from draw.rect import draw_rect
+from draw.parallelogramm import draw_parallelogramm
 from draw.dented_rect import draw_dented_rect
 
 
 class DoubleRightArrowGlyph(LigatureGlyph):
     """Ligature glyph for =>"""
 
-    name = "double_right_arrow"
+    name = "double_right_arrow_liga"
     components = ["equals_sign", "greater_than_sign"]
     number_characters = 2
     width_ratio = 1
@@ -26,25 +25,25 @@ class DoubleRightArrowGlyph(LigatureGlyph):
         s2 = self.stroke_ratio_2 * dc.stroke_x
         ymid = dc.math
         h = dc.parenthesis_length * self.span
-        theta, delta = draw_parallelogramm_vertical(
+        theta, delta = draw_parallelogramm(
             pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x2 + dc.window_width,
-            ymid - s2 / 2,
+            ymid,
             b.x1 + dc.window_width,
             ymid + h / 2,
             direction="top-left",
-            delta=s2
+            delta=s2,
         )
-        draw_parallelogramm_vertical(
+        draw_parallelogramm(
             pen,
             dc.stroke_x,
             dc.stroke_y,
             b.x1 + dc.window_width,
             ymid - h / 2,
             b.x2 + dc.window_width,
-            ymid + s2 / 2,
+            ymid,
             direction="top-right",
             delta=s2,
         )
@@ -54,7 +53,7 @@ class DoubleRightArrowGlyph(LigatureGlyph):
             pen,
             b.x1,
             dc.math + g / 2 - s / 2,
-            b.x2 + dc.window_width - (g / 2) / tan(theta),
+            b.x2 + dc.window_width - 0.75 * g / tan(theta),
             dc.math + g / 2 + s / 2,
             side="right",
         )
@@ -62,7 +61,7 @@ class DoubleRightArrowGlyph(LigatureGlyph):
             pen,
             b.x1,
             dc.math - g / 2 - s / 2,
-            b.x2 + dc.window_width - (g / 2) / tan(theta),
+            b.x2 + dc.window_width - 0.75 * g / tan(theta),
             dc.math - g / 2 + s / 2,
             side="right",
         )
