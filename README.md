@@ -24,10 +24,6 @@ To do so, override the config.example.yml with the values of your liking. Be sur
 > [!WARNING]
 > There are no guarantees that the font might look good with different metrics, and some glyphs might require some tweaking if the metrics are altered !
 
-## Minimal Ligatures
-
-I personally do not enjoy ligatures that much, but still appreciate the simple ones such as "->", "--", or "\_\_" so I decided to ship the font with a minimal set of ligatures that still allow an easy spotting of the individual characters.
-
 ## Characters
 
 ![characters](assets/samples/sample_char.png)
