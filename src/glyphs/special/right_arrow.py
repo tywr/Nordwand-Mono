@@ -7,6 +7,8 @@ class RightArrowGlyph(Glyph):
     name = "right_arrow"
     unicode = "0x2192"
     offset = 0
+    side_offset_left = 0.05
+    side_offset_right = 0.02
     width_ratio = 1.33
     overlap = 0.6
     span = 0.65
@@ -21,14 +23,16 @@ class RightArrowGlyph(Glyph):
         h = dc.parenthesis_length * self.span
         s = dc.stroke_x * self.stroke_ratio
         sy = dc.stroke_x
-        x1 = b.x2 - self.arrow_width * b.width
+        x1 = self.side_offset_left * dc.window_width
+        x2 = dc.window_width - self.side_offset_right * dc.window_width
+        px1 = (1 - self.arrow_width) * dc.window_width
         draw_parallelogramm(
             pen,
             s,
             s,
-            b.x2,
+            x2,
             ymid,
-            x1,
+            px1,
             ymid + h / 2,
             direction="top-left",
             delta=s,
@@ -37,17 +41,17 @@ class RightArrowGlyph(Glyph):
             pen,
             s,
             s,
-            x1,
+            px1,
             ymid - h / 2,
-            b.x2,
+            x2,
             ymid,
             direction="top-right",
             delta=s,
         )
         draw_rect(
             pen,
-            b.x1,
+            x1,
             ymid - sy / 2,
-            b.x2 - s / 2,
+            x2 - s / 2,
             ymid + sy / 2,
         )
