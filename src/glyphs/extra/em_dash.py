@@ -9,10 +9,7 @@ class EmDashGlyph(Glyph):
     stroke_ratio = 0.85
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(
-            offset=self.offset, height="x_height"
-        )
         s = dc.stroke_x * self.stroke_ratio
-        w = dc.window_width
-        x1, x2 = b.xmid - w / 2, b.xmid + w / 2
-        draw_rect(pen, x1, dc.x_height / 2 + s / 2, x2, dc.x_height / 2 - s / 2)
+        draw_rect(
+            pen, 0, dc.x_height / 2 + s / 2, dc.window_width, dc.x_height / 2 - s / 2
+        )
