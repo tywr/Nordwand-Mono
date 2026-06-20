@@ -19,7 +19,7 @@ class FiveGlyph(NumberGlyph):
     junction_ratio = 0.43
     cap_offset = 0.08
     tilt = 0.24
-    taper = 0.6
+    taper = 0.8
     ending_offset = 0.00
     thinning = 0.9
     overshoot_bottom = True
