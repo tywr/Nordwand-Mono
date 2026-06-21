@@ -7,15 +7,16 @@ class LowercaseL2Glyph(Glyph):
     unicode = "0x6C"
     font_feature = {"cv03": 1}
     offset = 16
-    width_ratio = 1.08
-    cap = 0.45
+    width_ratio = 1.00
+    cap = 0.49
+    rl_ratio = 0.5
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="ascent", width_ratio=self.width_ratio
         )
-        right_len = 0.5 * b.width - dc.stroke_x / 2
-        left_len = 0.5 * b.width - dc.stroke_x / 2
+        right_len = self.rl_ratio * b.width - dc.stroke_x / 2
+        left_len = (1 - self.rl_ratio) * b.width - dc.stroke_x / 2
 
         # Stem
         draw_rect(pen, b.xmid - dc.stroke_x / 2, 0, b.xmid + dc.stroke_x / 2, dc.ascent)
