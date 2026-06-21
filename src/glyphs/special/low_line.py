@@ -7,7 +7,7 @@ class LowLineGlyph(Glyph):
     unicode = "0x5F"
     offset = 0
     side_offset = 0.05
-    stroke_ratio = 0.8
+    stroke_ratio = 0.92
     width_ratio = 1
 
     def draw(self, pen, dc):
