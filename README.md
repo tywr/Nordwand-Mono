@@ -15,6 +15,10 @@ Amongst the inspirations for the design, you might identify:
 - Alpes Mono from Sharp Type
 - Ubuntu Mono from Dalton Maag
 
+## Ligatures
+
+Don't search for ligatures, there is only one ligature for the right arrow that I quite enjoy "->". Otherwise there are none.
+
 ## Compile your own custom version
 
 This font is generated with python. Each glyph is drawn from a python glyph class, in which you can inject a drawing context object. You can for example modify some metrics like the x-height, the capital height etc.
