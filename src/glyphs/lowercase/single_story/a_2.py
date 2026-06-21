@@ -1,6 +1,5 @@
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.polygon import draw_polygon
 from glyphs.lowercase.single_story import SingleStoryLowercaseGlyph
 
 

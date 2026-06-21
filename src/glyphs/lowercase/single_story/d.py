@@ -22,7 +22,7 @@ class LowercaseDGlyph(SingleStoryLowercaseGlyph):
             self.bowl_stroke_y_ratio * dc.stroke_y,
         )
         dx = bsx - dc.stroke_x
-        arch_params = draw_arch(
+        draw_arch(
             pen,
             bsx,
             bsy,
