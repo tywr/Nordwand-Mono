@@ -1,4 +1,4 @@
-from math import cos, sin
+from math import cos, sin, atan
 from glyphs.numbers import NumberGlyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
@@ -11,10 +11,11 @@ class SixGlyph(NumberGlyph):
     name = "six"
     unicode = "0x36"
     offset = 0
+    stroke_ratio = 1.2
     loop_ratio = 0.64
     top_ratio = 0.4
     taper = 0.2
-    cap_x = 0.98
+    cap_x = 0.75
     joint_x = 1.4
     hx_ratio = 0.9
     hy_ratio = 0.9
@@ -56,15 +57,8 @@ class SixGlyph(NumberGlyph):
         (_, y1), (_, y2) = params["outer"].intersection_x(x=xj)
         yj = max(y1, y2)
 
-        theta, delta = draw_parallelogramm(
-            NullPen(),
-            sx,
-            sy,
-            xj,
-            yj,
-            xc,
-            b.y2,
-        )
+        delta = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.15)
+        theta = atan((yj - b.y2) / (xj - xc))
 
         ihy = params["inner"].hy
         draw_polygon(
@@ -81,19 +75,22 @@ class SixGlyph(NumberGlyph):
         lp = ((b.y2 - yj) ** 2 + (xj - xc) ** 2) ** 0.5
         dx = lp * cos(theta)
         dy = lp * sin(theta)
-        xcm, ycm = xj - delta + 0.66 * dx, yj + 0.66 * dy
-        xcp, ycp = xj - delta + 0.33 * dx, yj + 0.33 * dy
+        # xcm, ycm = xj - delta + 0.66 * dx, yj + 0.66 * dy
+        # xcp, ycp = xj - delta + 0.33 * dx, yj + 0.33 * dy
+        x1m, y1m = xj - delta + 0.66 * dx, yj + 0.66 * dy
+        x2m, y2m = xj - delta + 0.15 * dx, yj + 0.15 * dy
+        x3m, y3m = b.x1, yj + (b.x1 + delta - xj) * dy / dx
 
         pen.moveTo((xj, yj))
+        pen.lineTo((xc, b.y2))
         pen.lineTo((xc - delta, b.y2))
-        pen.lineTo((xc - 2 * delta, b.y2))
-        pen.lineTo((xcm, ycm))
+        pen.lineTo((x1m, y1m))
         pen.curveTo(
-            (xcp, ycp),
-            (b.x1, (b.y1 + ymid) / 2 + hx),
+            (x2m, y2m),
+            (x3m, y3m),
             (b.x1, (b.y1 + ymid) / 2),
         )
-        pen.lineTo((b.x1 + sx / 2, (b.y1 + ymid) / 2))
+        # pen.lineTo((b.x1 + sx / 2, (b.y1 + ymid) / 2))
         pen.closePath()
 
         draw_loop(
