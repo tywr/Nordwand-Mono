@@ -14,7 +14,7 @@ class TwoGlyph(NumberGlyph):
     yj_ratio = 0.46
     hx_ratio = 0.9
     hy_ratio = 0.9
-    internal_radius = 0.25
+    internal_radius = 0.22
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -64,12 +64,15 @@ class TwoGlyph(NumberGlyph):
         yl = yj - py
 
         ihx, ihy = ih * cos(theta), ih * sin(theta)
+        ehy = (b.x2 - xl) * ihy / ihx
+        ishy = (b.x2 - sx - xj + delta) * ihy / ihx
 
         pen.moveTo((xl, yl))
-        pen.curveTo((xl + ihx, yl + ihy), (b.x2, yt - oshy), (b.x2, yt))
+        # pen.curveTo((xl + ihx, yl + ihy), (b.x2, yt - oshy), (b.x2, yt))
+        pen.curveTo((xl + ihx, yl + ihy), (b.x2, yl + ehy), (b.x2, yt))
         pen.lineTo((b.x2 - sx, yt))
         pen.curveTo(
-            (b.x2 - sx, yt - ishy),
+            (b.x2 - sx, yj + ishy),
             (xj - delta + ihx, yj + ihy),
             (xj - delta, yj),
         )
