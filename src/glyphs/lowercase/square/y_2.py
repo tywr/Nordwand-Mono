@@ -43,6 +43,7 @@ class LowercaseY2Glyph(SquareLowercaseGlyph):
 
         xt = b.x1 + self.tail_offset * b.width
 
+        yo = 3
         # Bottom arch, cut at top (only lower half drawn)
         draw_arch(
             pen,

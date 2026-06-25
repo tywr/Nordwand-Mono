@@ -10,7 +10,7 @@ class LowercaseF2Glyph(Glyph):
     default_italic = True
     offset = -22
     rl_ratio = 0.55
-    width_ratio = 1.25
+    width_ratio = 1.05
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -23,7 +23,7 @@ class LowercaseF2Glyph(Glyph):
         draw_rect(
             pen,
             b.xmid - dc.stroke_x / 2,
-            dc.descent,
+            0,
             b.xmid + dc.stroke_x / 2,
             dc.x_height,
         )
@@ -47,4 +47,17 @@ class LowercaseF2Glyph(Glyph):
             right_len + dc.stroke_x,
             dc.ascent - dc.x_height,
             orientation="top-right",
+        )
+
+        draw_smooth_corner(
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.xmid + dc.stroke_x / 2,
+            0,
+            b.x1,
+            dc.descent,
+            b.hx,
+            b.hy,
+            orientation="bottom-left"
         )
