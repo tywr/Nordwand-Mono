@@ -1,5 +1,6 @@
 from draw.arch import draw_arch
 from draw.rect import draw_rect
+from draw.square_corner import draw_square_corner
 from glyphs.lowercase.single_story import SingleStoryLowercaseGlyph
 
 
@@ -9,6 +10,7 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
     default_italic = True
     unicode = "0x61"
     offset = -10
+    tail_offset = 0.03
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -23,6 +25,8 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
             self.bowl_stroke_y_ratio * dc.stroke_y,
         )
         dx = bsx - dc.stroke_x
+        ot = self.tail_offset * b.width
+
         draw_arch(
             pen,
             bsx,
@@ -37,4 +41,14 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
             side="right",
         )
 
-        draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, dc.x_height)
+        # draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, dc.x_height)
+        draw_square_corner(
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x2 - dc.stroke_x,
+            b.y2,
+            dc.window_width - ot,
+            b.y1,
+            orientation="bottom-right",
+        )
