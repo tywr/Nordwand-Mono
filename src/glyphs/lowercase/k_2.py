@@ -13,6 +13,7 @@ class LowercaseK2Glyph(Glyph):
     width_ratio = 1
     branch_ratio = 0.75
     mid_ratio = 0.43
+    branch_x_ratio = 0.33
     upper_branch_offset = 0.055
     branch_stroke_ratio = 1.25
     branch_overlap = 0.8
@@ -31,12 +32,13 @@ class LowercaseK2Glyph(Glyph):
         ymid = b.y1 + self.mid_ratio * b.height
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         xl = b.xmid + (self.loop_ratio * b.width) / 2
+        xb = b.x1 + self.branch_x_ratio * b.width
 
         # Left ascender stem
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
 
         draw_rect(pen, b.x1, b.y2 - dc.stroke_y, b.xmid, b.y2)
-        draw_rect(pen, b.x1, ymid, b.xmid, ymid + dc.stroke_y)
+        # draw_rect(pen, b.x1, ymid, b.xmid, ymid + dc.stroke_y)
         draw_loop(
             pen,
             dc.stroke_x,
@@ -55,8 +57,8 @@ class LowercaseK2Glyph(Glyph):
             pen,
             dc.stroke_x,
             dc.stroke_y,
-            b.xmid - sx / 2,
-            ymid + dc.stroke_y / 2,
+            xb,
+            ymid + dc.stroke_y,
             b.x2,
             b.y1,
             direction="bottom-right",
