@@ -27,7 +27,7 @@ def draw_square_corner(
         bottom-left:  corner at (x1, y2) — curve goes down then left
     """
     sx, sy = stroke_x, stroke_y
-    ml = max(x2, x1) - min(x2, x1)
+    ml = 2 * (max(x2, x1) - min(x2, x1))
 
     glyph = ufoLib2.objects.Glyph()
     cut_glyph = ufoLib2.objects.Glyph()
@@ -44,6 +44,7 @@ def draw_square_corner(
         gpen.lineTo((x1 - sx, y1))
         gpen.closePath()
         draw_rect(cpen, x2 - ml, y1, x2, y2)
+        draw_rect(cpen, x2, y1, x1, y1 + 100)
 
     elif orientation == "bottom-right":
         gpen.moveTo((x1, y1))
@@ -80,6 +81,7 @@ def draw_square_corner(
         gpen.lineTo((x1 + sx, y1))
         gpen.closePath()
         draw_rect(cpen, x2, y1, x2 + ml, y2)
+        draw_rect(cpen, x1, y1 - 100, x2, y1)
 
     res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
     res.draw(pen)

@@ -25,7 +25,7 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
             self.bowl_stroke_y_ratio * dc.stroke_y,
         )
         dx = bsx - dc.stroke_x
-        ot = self.tail_offset * b.width
+        # ot = self.tail_offset * b.width
 
         draw_arch(
             pen,
@@ -41,14 +41,14 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
             side="right",
         )
 
-        # draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, dc.x_height)
-        draw_square_corner(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            b.x2 - dc.stroke_x,
-            b.y2,
-            dc.window_width - ot,
-            b.y1,
-            orientation="bottom-right",
-        )
+        draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, dc.x_height)
+        # draw_square_corner(
+        #     pen,
+        #     dc.stroke_x,
+        #     dc.stroke_y,
+        #     b.x2 - dc.stroke_x,
+        #     b.y2,
+        #     dc.window_width - ot,
+        #     b.y1,
+        #     orientation="bottom-right",
+        # )
