@@ -51,7 +51,7 @@ class OeGlyph(Glyph):
         xt = b.x2 + self.tail_offset * b.width
         yo = b.y1 + self.tail_height * b.height
 
-        ax2, axmid = b.xmid + sx / 2, (b.x1 + b.xmid + sx / 2) / 2
+        ov = sx * 0.25
         ex1, exmid = b.xmid - sx / 2, (b.x2 + b.xmid - sx / 2) / 2
 
         draw_arch(
@@ -60,7 +60,7 @@ class OeGlyph(Glyph):
             sy,
             b.x1,
             b.y1,
-            b.xmid + sx / 2,
+            b.xmid + ov,
             b.y2,
             chx,
             hy,
@@ -82,9 +82,9 @@ class OeGlyph(Glyph):
         )
         draw_corner(
             pen,
-            sx * self.taper * dc.taper,
+            sx,
             sy,
-            b.xmid - sx / 2,
+            ex1,
             b.ymid,
             exmid,
             b.y2,
@@ -94,9 +94,9 @@ class OeGlyph(Glyph):
         )
         draw_corner(
             pen,
-            sx * self.taper * dc.taper,
+            sx,
             sy,
-            b.xmid - sx / 2,
+            ex1,
             b.ymid,
             exmid,
             b.y1,

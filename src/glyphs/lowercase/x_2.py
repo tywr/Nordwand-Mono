@@ -12,9 +12,9 @@ class LowercaseX2Glyph(Glyph):
     default_italic = True
     unicode = "0x78"
     offset = 0
-    width_ratio = 1.18
+    width_ratio = 1.25
     stroke_ratio = 1.1
-    mid_ratio = 0.47
+    mid_ratio = 0.49
     tail_ratio = 0.33
     hy_ratio = 0.66
     taper = 1.5
