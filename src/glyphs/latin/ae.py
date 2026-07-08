@@ -96,9 +96,9 @@ class AeGlyph(Glyph):
         xmid = (xc + ax2) / 2
         draw_corner(
             pen,
-            sx * self.taper * dc.taper,
+            sx / 2,
             csy,
-            ax2,
+            ax2 - sx / 2,
             b.ymid,
             xmid,
             b.y2,
@@ -140,7 +140,7 @@ class AeGlyph(Glyph):
         )
         draw_corner(
             pen,
-            sx * self.taper * dc.taper,
+            sx,
             sy,
             b.xmid - sx / 2,
             b.ymid,
@@ -152,7 +152,7 @@ class AeGlyph(Glyph):
         )
         draw_corner(
             pen,
-            sx * self.taper * dc.taper,
+            sx,
             sy,
             b.xmid - sx / 2,
             b.ymid,
@@ -195,10 +195,10 @@ class AeGlyph(Glyph):
             b.x2 - dc.h_overshoot - sx / 2,
             ymid + dc.stroke_alt / 2,
         )
-        # draw_rect(
-        #     pen,
-        #     b.xmid,
-        #     ymid - dc.stroke_alt / 2,
-        #     b.x2 - dc.h_overshoot,
-        #     max(ymid, b.ymid),
-        # )
+        draw_rect(
+            pen,
+            b.xmid,
+            ymid - dc.stroke_alt / 2,
+            b.x2 - dc.h_overshoot,
+            max(ymid, b.ymid),
+        )
