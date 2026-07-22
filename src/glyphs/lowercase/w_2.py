@@ -8,11 +8,11 @@ class LowercaseW2Glyph(Glyph):
     name = "lowercase_w_2"
     font_feature = {"cv08": 1}
     default_italic = True
-    width_ratio = 1.18
+    width_ratio = 1.2
     unicode = "0x77"
     offset = 0
-    tail_ratio = 0.13
-    mid_ratio = 0.45
+    tail_ratio = 0.2
+    mid_ratio = 0.47
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -21,14 +21,15 @@ class LowercaseW2Glyph(Glyph):
             overshoot_bottom=True,
         )
         xmid = b.x1 + self.mid_ratio * b.width
-        sx, sy = dc.stroke_x, dc.stroke_y
-        xt = b.x2 - self.tail_ratio * b.width - sx
+        sy = dc.stroke_y
+        sx = max(0, 0.9 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
+        xt = b.x2 - self.tail_ratio * b.width - sx / 2
 
         draw_rect(
             pen,
             b.x1,
             b.ymid,
-            b.x1 + dc.stroke_x,
+            b.x1 + sx,
             b.y2,
         )
         draw_rect(
