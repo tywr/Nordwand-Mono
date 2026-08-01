@@ -1,0 +1,50 @@
+name: Build release fonts
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install .
+
+      - name: Build fonts
+        run: make build
+
+      - name: Package fonts
+        run: |
+          zip -j NordwandMono-OTF.zip fonts/otf/*.otf
+          zip -j NordwandMono-TTF.zip fonts/ttf/*.ttf
+          zip -j NordwandMono-WOFF.zip fonts/woff/*.woff
+          zip -j NordwandMono-WOFF2.zip fonts/woff2/*.woff2
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ github.event.release.tag_name }}" \
+            NordwandMono-OTF.zip \
+            NordwandMono-TTF.zip \
+            NordwandMono-WOFF.zip \
+            NordwandMono-WOFF2.zip \
+            --clobber

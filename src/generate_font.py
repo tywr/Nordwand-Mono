@@ -746,6 +746,11 @@ if __name__ == "__main__":
     fmt.add_argument("--ttf", action="store_true", help="Generate only TTF files")
     fmt.add_argument("--otf", action="store_true", help="Generate only OTF files")
     parser.add_argument(
+        "--web-font",
+        action="store_true",
+        help="Also generate WOFF and WOFF2 files",
+    )
+    parser.add_argument(
         "--config",
         metavar="FILE.yml",
         help="YAML file whose values overwrite the default FontConfig values",
@@ -768,5 +773,20 @@ if __name__ == "__main__":
     build_ttf_flag = not args.otf
 
     for w in [100, 200, 300, 400, 500, 600, 700]:
-        build_font(weight=w, otf=build_otf, ttf=build_ttf_flag, out_root=out_root)
-        build_font(weight=w, italic=True, otf=build_otf, ttf=build_ttf_flag, out_root=out_root)
+        build_font(
+            weight=w,
+            otf=build_otf,
+            ttf=build_ttf_flag,
+            woff=args.web_font,
+            woff2=args.web_font,
+            out_root=out_root,
+        )
+        build_font(
+            weight=w,
+            italic=True,
+            otf=build_otf,
+            ttf=build_ttf_flag,
+            woff=args.web_font,
+            woff2=args.web_font,
+            out_root=out_root,
+        )
