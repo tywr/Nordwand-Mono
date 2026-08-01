@@ -8,6 +8,7 @@ import pkgutil
 
 import pathops
 from fontTools.fontBuilder import FontBuilder
+from fontTools.misc.timeTools import timestampNow
 from fontTools.pens.t2CharStringPen import T2CharStringPen
 from ttfautohint import ttfautohint
 
@@ -635,7 +636,13 @@ def _build_otf(
     )
     ital_angle = -fc.italic_angle if italic else 0
     fb.setupPost(isFixedPitch=1, italicAngle=ital_angle)
-    fb.setupHead(unitsPerEm=fc.units_per_em, macStyle=mac_style)
+    timestamp = timestampNow()
+    fb.setupHead(
+        unitsPerEm=fc.units_per_em,
+        macStyle=mac_style,
+        created=timestamp,
+        modified=timestamp,
+    )
 
     # GSUB table for ligatures and alternates
     if ligature_glyphs or alternate_glyphs:
@@ -718,7 +725,13 @@ def build_ttf(
     )
     ital_angle = -fc.italic_angle if italic else 0
     fb.setupPost(isFixedPitch=1, italicAngle=ital_angle)
-    fb.setupHead(unitsPerEm=fc.units_per_em, macStyle=mac_style)
+    timestamp = timestampNow()
+    fb.setupHead(
+        unitsPerEm=fc.units_per_em,
+        macStyle=mac_style,
+        created=timestamp,
+        modified=timestamp,
+    )
 
     # GSUB table for ligatures and alternates
     if ligature_glyphs or alternate_glyphs:
