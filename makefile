@@ -10,6 +10,9 @@ build:
 	.venv/bin/python -m scripts.specimen_pdf
 	.venv/bin/python -m scripts.samples
 
+build-font:
+	.venv/bin/python -m generate_font --web-font
+
 build-otf:
 	.venv/bin/python -m generate_font --otf
 
