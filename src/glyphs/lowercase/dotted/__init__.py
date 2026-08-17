@@ -10,6 +10,7 @@ class DottedLowercaseGlyph(Glyph, ABC):
     dot_position = "xmid"
     dot_height = 1.2
     dot_width = 1.2
+    rl_ratio = 0.5
 
     @abstractmethod
     def draw_base(self, pen, dc): ...
@@ -19,7 +20,7 @@ class DottedLowercaseGlyph(Glyph, ABC):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
         dw = self.dot_width * dc.stroke_x
         dh = min(self.dot_height * dc.stroke_x, 140)
-        xpos = getattr(b, self.dot_position)
+        xpos = b.x1 + self.rl_ratio * b.width
 
         draw_rect(
             pen,

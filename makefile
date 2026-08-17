@@ -1,20 +1,20 @@
 .PHONY: install build build-otf install-mac
 
 install:
-	python3 -m venv .venv
-	.venv/bin/python -m pip install -e .
+	uv sync
 
 build:
-	.venv/bin/python -m generate_font --web-font
-	.venv/bin/python -m scripts.banner
-	.venv/bin/python -m scripts.specimen_pdf
-	.venv/bin/python -m scripts.samples
+	uv run python -m generate_font --web-font
+	uv run python -m scripts.banner
+	uv run python -m scripts.specimen_pdf
+	uv run python -m scripts.samples
+	uv run python -m scripts.alternatives_markdown
 
 build-font:
-	.venv/bin/python -m generate_font --web-font
+	uv run python -m generate_font --web-font
 
 build-otf:
-	.venv/bin/python -m generate_font --otf
+	uv run python -m generate_font --otf
 
 install-mac:
 	cp -r fonts/otf/NordwandMono-*.otf ~/Library/Fonts
