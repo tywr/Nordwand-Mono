@@ -13,6 +13,7 @@ from fontTools.pens.t2CharStringPen import T2CharStringPen
 from ttfautohint import ttfautohint
 
 from fontTools.ttLib.tables.otTables import (
+    AlternateSubst,
     GSUB,
     ChainContextSubst,
     Coverage,
@@ -185,16 +186,46 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
         base_name = base_by_unicode.get(int(g.unicode, 16))
         if not base_name:
             continue
-        for tag in g.font_feature:
-            feature_lookups.setdefault(tag, {})
-            feature_lookups[tag][base_name] = g.name
+        for tag, alternate_index in g.font_feature.items():
+            alternatives = feature_lookups.setdefault(tag, {}).setdefault(
+                base_name, {}
+            )
+            if alternate_index in alternatives:
+                raise ValueError(
+                    f"Duplicate alternate index {alternate_index} for "
+                    f"{base_name!r} in feature {tag!r}"
+                )
+            alternatives[alternate_index] = g.name
 
     for tag in sorted(feature_lookups):
-        subst = SingleSubst()
-        subst.mapping = feature_lookups[tag]
+        indexed_alternatives = feature_lookups[tag]
+        if all(
+            set(alternatives) == {1}
+            for alternatives in indexed_alternatives.values()
+        ):
+            subst = SingleSubst()
+            subst.mapping = {
+                base_name: alternatives[1]
+                for base_name, alternatives in indexed_alternatives.items()
+            }
+            lookup_type = 1
+        else:
+            subst = AlternateSubst()
+            lookup_type = 3
+            subst.alternates = {}
+            for base_name, alternatives in indexed_alternatives.items():
+                expected = set(range(1, max(alternatives) + 1))
+                if set(alternatives) != expected:
+                    raise ValueError(
+                        f"Alternate indices for {base_name!r} in feature {tag!r} "
+                        f"must be consecutive from 1"
+                    )
+                subst.alternates[base_name] = [
+                    alternatives[index] for index in sorted(alternatives)
+                ]
 
         lookup = Lookup()
-        lookup.LookupType = 1  # Single substitution
+        lookup.LookupType = lookup_type
         lookup.LookupFlag = 0
         lookup.SubTableCount = 1
         lookup.SubTable = [subst]

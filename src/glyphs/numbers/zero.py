@@ -16,6 +16,16 @@ class ZeroGlyph(NumberGlyph):
     x_offset = 0.1
     y_offset = 0.4
 
+    def draw_mark(self, pen, dc, b):
+        sd = min(dc.stroke_x * self.dot_stroke_ratio, 140)
+        draw_rect(
+            pen,
+            b.xmid - sd / 2,
+            b.ymid - sd / 2,
+            b.xmid + sd / 2,
+            b.ymid + sd / 2,
+        )
+
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
@@ -29,10 +39,6 @@ class ZeroGlyph(NumberGlyph):
         )
         hx = self.hx_ratio * b.hx
         hy = self.hy_ratio * b.hy
-        sd = min(dc.stroke_x * self.dot_stroke_ratio, 140)
-
-        ox, oy = self.x_offset * b.width, self.y_offset * b.height
-
 
         draw_loop(
             pen,
@@ -45,11 +51,4 @@ class ZeroGlyph(NumberGlyph):
             hx,
             hy,
         )
-
-        draw_rect(
-            pen,
-            b.xmid - sd / 2,
-            b.ymid - sd / 2,
-            b.xmid + sd / 2,
-            b.ymid + sd / 2,
-        )
+        self.draw_mark(pen, dc, b)
