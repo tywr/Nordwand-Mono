@@ -8,6 +8,10 @@ class RightArrowGlyph(LigatureGlyph):
 
     name = "right_arrow_liga"
     components = ["hyphen_minus", "greater_than_sign"]
+    feature_tags = (
+        "liga",
+        "ss02",
+    )
     number_characters = 2
     width_ratio = 0.88
     overlap = 0.6

@@ -9,6 +9,10 @@ class RightArrowGlyph(LigatureGlyph):
 
     name = "double_right_arrow_liga"
     components = ["equals_sign", "greater_than_sign"]
+    feature_tags = (
+        "liga",
+        "ss02",
+    )
     number_characters = 2
     width_ratio = 0.88
     overlap = 0.6

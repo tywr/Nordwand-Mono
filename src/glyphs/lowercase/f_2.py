@@ -6,7 +6,7 @@ from draw.rect import draw_rect
 class LowercaseF2Glyph(Glyph):
     name = "lowercase_f_2"
     unicode = "0x66"
-    font_feature = {"ss02": 1}
+    font_feature = {"cv11": 1}
     default_italic = True
     offset = -22
     rl_ratio = 0.55

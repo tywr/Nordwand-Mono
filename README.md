@@ -17,7 +17,7 @@ Amongst the inspirations for the design, you might identify:
 
 ## Ligatures
 
-Don't search for ligatures, there is only one ligature for the right arrow that I quite enjoy "->". Otherwise there are none.
+Only two minimal ligatures are exposed with "->" and "=>". I might add a full set of ligatures later on, but I personally won't be using them.
 
 ## Compile your own custom version
 
