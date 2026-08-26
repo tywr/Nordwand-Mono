@@ -15,8 +15,9 @@ class LowercaseFGlyph(Glyph):
         b = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
-        right_len = b.width * self.rl_ratio - dc.stroke_x / 2
-        left_len = b.width * (1 - self.rl_ratio) - dc.stroke_x / 2
+        width = dc.width + dc.default_stroke
+        right_len = width * self.rl_ratio - dc.stroke_x / 2
+        left_len = width * (1 - self.rl_ratio) - dc.stroke_x / 2
         yc = self.cross_bar_height * dc.x_height
 
         # Stem

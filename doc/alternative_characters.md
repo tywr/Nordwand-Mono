@@ -16,3 +16,4 @@
 | `cv09=1` | `x` | `U+0078` | `lowercase_x_2` |
 | `cv10=1` | `z` | `U+007A` | `lowercase_z_2` |
 | `cv11=1` | `f` | `U+0066` | `lowercase_f_2` |
+| `cv12=1` | `m` | `U+006D` | `lowercase_m_2` |

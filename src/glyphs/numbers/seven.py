@@ -9,6 +9,7 @@ class SevenGlyph(NumberGlyph):
     offset = 0
     offset_foot = 0.15
     width_ratio = 1.08
+    stroke_ratio = 1.18
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -16,6 +17,7 @@ class SevenGlyph(NumberGlyph):
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         ox = self.offset_foot * b.width
+        delta = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.15)
 
         # Top bar
         draw_rect(pen, b.x1, b.y2 - sy, b.x2, b.y2)
@@ -29,4 +31,5 @@ class SevenGlyph(NumberGlyph):
             b.y1,
             b.x2,
             b.y2 - sy,
+            delta=delta,
         )

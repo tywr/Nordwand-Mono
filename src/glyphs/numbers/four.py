@@ -11,6 +11,7 @@ class FourGlyph(NumberGlyph):
     vertical_ratio = 0.315
     mid_bar_ratio = 0.62
     width_ratio = 1.20
+    stroke_ratio = 1.18
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -22,8 +23,10 @@ class FourGlyph(NumberGlyph):
         ymid = b.y1 + self.vertical_ratio * b.height
         ybar = b.y1 + self.mid_bar_ratio * b.height
 
+        delta = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.15)
+
         theta, delta = draw_parallelogramm(
-            pen, sx, sy, b.x1, ymid, xmid - sx / 2, b.y2
+            pen, sx, sy, b.x1, ymid, xmid - sx / 2, b.y2, delta=delta,
         )
 
         # Horizontal line

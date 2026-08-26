@@ -11,7 +11,6 @@ class SixGlyph(NumberGlyph):
     name = "six"
     unicode = "0x36"
     offset = 0
-    stroke_ratio = 1.2
     loop_ratio = 0.64
     top_ratio = 0.4
     taper = 0.2
@@ -19,6 +18,7 @@ class SixGlyph(NumberGlyph):
     joint_x = 1.4
     hx_ratio = 0.9
     hy_ratio = 0.9
+    stroke_ratio = 1.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
