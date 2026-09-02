@@ -15,6 +15,10 @@ Amongst the inspirations for the design, you might identify:
 - Alpes Mono from Sharp Type
 - Ubuntu Mono from Dalton Maag
 
+## Alternative characters
+
+Some alternative character designs are available to tweak the vibe of the font to your liking. See the [alternative characters document](doc/alternative_characters.md) for a visual comparison and the corresponding OpenType feature tags.
+
 ## Ligatures
 
 Only two minimal ligatures are exposed with "->" and "=>". I might add a full set of ligatures later on, but I personally won't be using them.
