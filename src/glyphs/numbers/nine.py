@@ -10,13 +10,13 @@ class NineGlyph(NumberGlyph):
     unicode = "0x39"
     offset = 0
     vertical_ratio = 0.64
-    stroke_ratio = 1.2
     bottom_cut = 0.2
     taper = 0.2
     foot_x = 0.25
     joint_x = 1.4
     hx_ratio = 0.9
     hy_ratio = 0.9
+    stroke_ratio = 1.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

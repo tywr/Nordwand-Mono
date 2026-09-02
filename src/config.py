@@ -42,10 +42,10 @@ class FontConfig:
 
     taper: float = 0.35
 
-    default_stroke = 86
-    stroke_x: int = 86
-    stroke_y: int = 64
-    stroke_alt: int = 64
+    default_stroke = 84
+    stroke_x: int = 84
+    stroke_y: int = 70
+    stroke_alt: int = 66
 
     v_overshoot: int = 9
     v_overshoot_cap: int = 16

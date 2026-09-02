@@ -13,6 +13,7 @@ from fontTools.pens.t2CharStringPen import T2CharStringPen
 from ttfautohint import ttfautohint
 
 from fontTools.ttLib.tables.otTables import (
+    AlternateSubst,
     GSUB,
     ChainContextSubst,
     Coverage,
@@ -174,6 +175,37 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
     lookups = []
     feature_records = []
 
+    def add_feature(tag, lookup_indices):
+        for record in feature_records:
+            if record.FeatureTag == tag:
+                record.Feature.LookupListIndex.extend(lookup_indices)
+                record.Feature.LookupCount = len(record.Feature.LookupListIndex)
+                return
+
+        feature = Feature()
+        feature.FeatureParams = None
+        feature.LookupListIndex = list(lookup_indices)
+        feature.LookupCount = len(lookup_indices)
+
+        record = FeatureRecord()
+        record.FeatureTag = tag
+        record.Feature = feature
+        feature_records.append(record)
+
+    def ligature_feature_tags(glyph):
+        tags = glyph.feature_tags
+        if isinstance(tags, str):
+            tags = (tags,)
+        tags = tuple(dict.fromkeys(tags))
+        if not tags:
+            raise ValueError(f"Ligature {glyph.name!r} must have a feature tag")
+        for tag in tags:
+            if not isinstance(tag, str) or len(tag) != 4:
+                raise ValueError(
+                    f"Invalid OpenType feature tag {tag!r} on {glyph.name!r}"
+                )
+        return tags
+
     # Reverse cmap: unicode int -> base glyph name
     base_by_unicode = {unicode_val: name for unicode_val, name in cmap.items()}
 
@@ -185,32 +217,53 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
         base_name = base_by_unicode.get(int(g.unicode, 16))
         if not base_name:
             continue
-        for tag in g.font_feature:
-            feature_lookups.setdefault(tag, {})
-            feature_lookups[tag][base_name] = g.name
+        for tag, alternate_index in g.font_feature.items():
+            alternatives = feature_lookups.setdefault(tag, {}).setdefault(
+                base_name, {}
+            )
+            if alternate_index in alternatives:
+                raise ValueError(
+                    f"Duplicate alternate index {alternate_index} for "
+                    f"{base_name!r} in feature {tag!r}"
+                )
+            alternatives[alternate_index] = g.name
 
     for tag in sorted(feature_lookups):
-        subst = SingleSubst()
-        subst.mapping = feature_lookups[tag]
+        indexed_alternatives = feature_lookups[tag]
+        if all(
+            set(alternatives) == {1}
+            for alternatives in indexed_alternatives.values()
+        ):
+            subst = SingleSubst()
+            subst.mapping = {
+                base_name: alternatives[1]
+                for base_name, alternatives in indexed_alternatives.items()
+            }
+            lookup_type = 1
+        else:
+            subst = AlternateSubst()
+            lookup_type = 3
+            subst.alternates = {}
+            for base_name, alternatives in indexed_alternatives.items():
+                expected = set(range(1, max(alternatives) + 1))
+                if set(alternatives) != expected:
+                    raise ValueError(
+                        f"Alternate indices for {base_name!r} in feature {tag!r} "
+                        f"must be consecutive from 1"
+                    )
+                subst.alternates[base_name] = [
+                    alternatives[index] for index in sorted(alternatives)
+                ]
 
         lookup = Lookup()
-        lookup.LookupType = 1  # Single substitution
+        lookup.LookupType = lookup_type
         lookup.LookupFlag = 0
         lookup.SubTableCount = 1
         lookup.SubTable = [subst]
 
         lookup_idx = len(lookups)
         lookups.append(lookup)
-
-        feature = Feature()
-        feature.FeatureParams = None
-        feature.LookupListIndex = [lookup_idx]
-        feature.LookupCount = 1
-
-        feat_record = FeatureRecord()
-        feat_record.FeatureTag = tag
-        feat_record.Feature = feature
-        feature_records.append(feat_record)
+        add_feature(tag, [lookup_idx])
 
     # Split ligatures: regular (unconditional) vs contextual (neighbor-gated)
     regular_ligs = [
@@ -224,10 +277,15 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
         if isinstance(g, ContextualLigatureGlyph) and g.name in glyph_names
     ]
 
-    # Build ligature substitution lookup (regular `liga`)
-    if regular_ligs:
+    # Build regular ligature lookups, grouped by their OpenType feature.
+    regular_ligs_by_feature = {}
+    for g in regular_ligs:
+        for tag in ligature_feature_tags(g):
+            regular_ligs_by_feature.setdefault(tag, []).append(g)
+
+    for tag in sorted(regular_ligs_by_feature):
         lig_by_first = {}
-        for g in regular_ligs:
+        for g in regular_ligs_by_feature[tag]:
             first = g.components[0]
             rest = g.components[1:]
             lig = Ligature()
@@ -247,16 +305,7 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
 
         lookup_idx = len(lookups)
         lookups.append(lookup)
-
-        feature = Feature()
-        feature.FeatureParams = None
-        feature.LookupListIndex = [lookup_idx]
-        feature.LookupCount = 1
-
-        feat_record = FeatureRecord()
-        feat_record.FeatureTag = "liga"
-        feat_record.Feature = feature
-        feature_records.append(feat_record)
+        add_feature(tag, [lookup_idx])
 
     # Build contextual ligature lookups (`calt`).
     # For each contextual ligature, emit a nested LookupType 4 that does the
@@ -265,7 +314,7 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
     # appears before or after the input sequence. Longer ligatures are
     # referenced first so the shaper tries them before shorter ones.
     contextual_ligs.sort(key=lambda g: -len(g.components))
-    calt_lookup_indices = []
+    contextual_lookup_indices = {}
     for g in contextual_ligs:
         lig = Ligature()
         lig.LigGlyph = g.name
@@ -318,19 +367,13 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
         chain_lookup.SubTable = subtables
         chain_lookup.SubTableCount = len(subtables)
 
-        calt_lookup_indices.append(len(lookups))
+        lookup_index = len(lookups)
         lookups.append(chain_lookup)
+        for tag in ligature_feature_tags(g):
+            contextual_lookup_indices.setdefault(tag, []).append(lookup_index)
 
-    if calt_lookup_indices:
-        feature = Feature()
-        feature.FeatureParams = None
-        feature.LookupListIndex = calt_lookup_indices
-        feature.LookupCount = len(calt_lookup_indices)
-
-        feat_record = FeatureRecord()
-        feat_record.FeatureTag = "calt"
-        feat_record.Feature = feature
-        feature_records.append(feat_record)
+    for tag, lookup_indices in sorted(contextual_lookup_indices.items()):
+        add_feature(tag, lookup_indices)
 
     gsub.LookupList = LookupList()
     gsub.LookupList.LookupCount = len(lookups)

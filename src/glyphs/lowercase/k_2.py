@@ -2,6 +2,7 @@ from glyphs import Glyph
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
 from draw.loop import draw_loop
+from draw.corner import draw_corner
 
 
 class LowercaseK2Glyph(Glyph):
@@ -52,18 +53,31 @@ class LowercaseK2Glyph(Glyph):
             cut="left",
         )
 
-        # Lower branch
-        draw_parallelogramm(
+        draw_corner(
             pen,
             dc.stroke_x,
             dc.stroke_y,
-            xb,
+            b.xmid - dc.stroke_x * 0.66,
             ymid + dc.stroke_y,
             b.x2,
-            b.y1,
-            direction="bottom-right",
-            delta=sx,
+            0,
+            hx,
+            hy * 2.5,
+            orientation="bottom-right",
         )
+
+        # Lower branch
+        # draw_parallelogramm(
+        #     pen,
+        #     dc.stroke_x,
+        #     dc.stroke_y,
+        #     xb,
+        #     ymid + dc.stroke_y,
+        #     b.x2,
+        #     b.y1,
+        #     direction="bottom-right",
+        #     delta=sx,
+        # )
 
         # Upper branch
         # theta, delta = draw_parallelogramm(

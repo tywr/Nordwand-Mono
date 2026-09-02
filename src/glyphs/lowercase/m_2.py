@@ -1,0 +1,132 @@
+from glyphs import Glyph
+from draw.arch import draw_arch
+from draw.rect import draw_rect
+
+
+class LowercaseM2Glyph(Glyph):
+    name = "lowercase_m_2"
+    font_feature = {"cv12": 1}
+    unicode = "0x6D"
+    offset = 0
+    width_ratio = 1.18
+    mid_len = 1.0
+    top_stroke_y = 1
+    hx_ratio = 0.75
+    taper1 = 0.2
+    taper2 = 0.6
+    min_taper = 0.1
+    min_taper_2 = 0.15
+    ending_thickness = 0.75
+    min_width = 74
+
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            overshoot_top=True,
+            width_ratio=self.width_ratio,
+            min_margin=dc.min_margin_lowercase,
+        )
+        taper1 = max(self.min_taper, self.taper1 * dc.taper)
+        taper2 = max(self.min_taper_2, self.taper2 * dc.taper)
+        mid_y = (1 - self.mid_len) * (b.height - b.y1)
+        hx, hy = b.hx * self.hx_ratio, b.hy
+        sx = max(0, 0.9 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
+
+        wo = (b.width - 3 * sx) / 2
+        if wo < self.min_width:
+            smid = b.width - 2 * sx - 2 * self.min_width
+        else:
+            smid = sx
+        mid_offset = smid / 2
+
+        # Left arch (x1 to xmid) and store offset_x
+
+        # glyph = ufoLib2.objects.Glyph()
+
+        draw_arch(
+            pen,
+            smid,
+            self.top_stroke_y * dc.stroke_y,
+            b.x1 + (sx - smid),
+            b.y1,
+            b.xmid + mid_offset,
+            b.y2,
+            hx,
+            hy,
+            taper=taper1,
+            side="left",
+            cut="bottom",
+        )
+
+        # Right arch (xmid to x2)
+        draw_arch(
+            pen,
+            sx,
+            self.top_stroke_y * dc.stroke_y,
+            b.xmid - mid_offset - (sx - smid),
+            b.y1,
+            b.x2,
+            b.y2,
+            hx,
+            hy,
+            taper=taper2,
+            side="left",
+            cut="bottom",
+        )
+
+        # Left stem
+        draw_rect(pen, b.x1, 0, b.x1 + sx, dc.x_height)
+
+        # Right foot — reaches up to the arch midpoint
+        draw_rect(pen, b.x2 - sx, 0, b.x2, b.ymid)
+
+        # Middle stem extension — extend past b.ymid into the arch so the
+        # union is a clean polygon. Without this overlap, pathops sees the
+        # arch's underside and the middle stem's top sharing an edge at
+        # y=b.ymid and emits the shared edge as a boundary, producing a
+        # stray horizontal stroke across the left counter in some weights.
+        draw_rect(
+            pen,
+            b.xmid - smid / 2,
+            mid_y,
+            b.xmid + smid / 2,
+            b.ymid + 1,
+        )
+
+        # We cut in the middle of the glyph in case it's not wide enough
+        # cut_glyph = ufoLib2.objects.Glyph()
+        # cpen = cut_glyph.getPen()
+        #
+        # se1 = arch_params["inner"]
+        # sew = se1.x2 - se1.x1
+        # sx = sx
+        # if sew < self.min_width:
+        #     dx = self.min_width - sew
+        #     xi1, yi1 = se1.xmid, se1.y2
+        #     hx, hy = se1.hx, se1.hy
+        #     se2 = arch_params_2["inner"]
+        #     xi2, yi2 = se2.xmid, se2.y2
+        #     # dhx = dx - hx
+        #
+        #     cpen.moveTo((xi1, mid_y))
+        #     cpen.lineTo((xi2, mid_y))
+        #     cpen.lineTo((xi2, yi2))
+        #     cpen.lineTo((xi2 - dx, yi2))
+        #     cpen.curveTo(
+        #         (xi2 - dx - hx, yi2),
+        #         (b.xmid + sx / 2 - dx, b.ymid + hy),
+        #         (b.xmid + sx / 2 - dx, b.ymid),
+        #     )
+        #     cpen.lineTo((b.xmid + sx / 2 - dx, mid_y))
+        #     cpen.lineTo((b.xmid - sx / 2 + dx, mid_y))
+        #     cpen.lineTo((b.xmid - sx / 2 + dx, b.ymid))
+        #     cpen.curveTo(
+        #         (b.xmid - sx / 2 + dx, b.ymid + hy),
+        #         (xi1 + dx + hx, yi1),
+        #         (xi1 + dx, yi1),
+        #     )
+        #     cpen.lineTo((xi1, yi1))
+        #     cpen.closePath()
+        #
+        # res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
+        # res.draw(pen)

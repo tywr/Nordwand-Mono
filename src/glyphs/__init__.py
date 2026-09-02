@@ -45,10 +45,13 @@ class LigatureGlyph(Glyph):
 
     Subclasses must define `components` — a list of glyph names that
     this ligature replaces (e.g. ["low_line", "low_line"] for "__").
+    Set `feature_tags` to one or more OpenType tags; enabling any listed
+    feature activates the ligature.
     """
 
     unicode = None
     offset = 0
+    feature_tags = ("liga",)
 
     @property
     @abstractmethod
@@ -65,3 +68,4 @@ class ContextualLigatureGlyph(LigatureGlyph):
     """
 
     forbidden_neighbors: list[str] = []
+    feature_tags = ("calt",)
