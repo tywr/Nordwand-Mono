@@ -92,7 +92,7 @@ def render_glyph_png(glyph, output):
     axis.add_patch(
         patches.PathPatch(
             _matplotlib_path(recording),
-            facecolor="#222222",
+            facecolor="#ffffff",
             edgecolor="none",
         )
     )
