@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.smooth_corner import draw_smooth_corner
+from draw.square_corner import draw_square_corner
 from draw.rect import draw_rect
 
 
@@ -38,7 +38,7 @@ class LowercaseF4Glyph(Glyph):
             yc,
         )
         # Corner
-        draw_smooth_corner(
+        draw_square_corner(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -46,12 +46,10 @@ class LowercaseF4Glyph(Glyph):
             dc.x_height,
             b.xmid + right_len + dc.stroke_x / 2,
             dc.ascent,
-            right_len + dc.stroke_x,
-            dc.ascent - dc.x_height,
             orientation="top-right",
         )
 
-        draw_smooth_corner(
+        draw_square_corner(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -59,7 +57,5 @@ class LowercaseF4Glyph(Glyph):
             0,
             b.x1,
             dc.descent,
-            b.hx,
-            b.hy,
             orientation="bottom-left",
         )

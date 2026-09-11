@@ -16,7 +16,7 @@ sys.path.insert(0, "src")
 from config import FontConfig as fc
 from config import DrawConfig
 from glyphs import LigatureGlyph
-from generate_font import discover_glyphs, select_italic_glyphs, skew_path
+from generate_font import discover_glyphs, select_style_glyphs, skew_path
 
 
 def _italic_transform():
@@ -339,10 +339,7 @@ def visualize_text(text, point_size=None, guides=False, dc=None, italic=False):
         dc = DrawConfig()
     all_glyphs = discover_glyphs()
 
-    if italic:
-        active_glyphs, _ = select_italic_glyphs(all_glyphs)
-    else:
-        active_glyphs = all_glyphs
+    active_glyphs, _ = select_style_glyphs(all_glyphs, italic)
 
     glyph_map = {}
     for g in active_glyphs:
