@@ -6,6 +6,6 @@
 | --- | --- | --- | --- | --- | --- |
 | `cv01=1` | `0` | `U+0030` | ![zero](alternative_characters/zero.png) | ![zero_slashed](alternative_characters/zero_slashed.png) | `zero_slashed` |
 | `cv03=1` | `l` | `U+006C` | ![lowercase_l](alternative_characters/lowercase_l.png) | ![lowercase_l_2](alternative_characters/lowercase_l_2.png) | `lowercase_l_2` |
-| `cv11=1` | `f` | `U+0066` | ![lowercase_f_2](alternative_characters/lowercase_f_2.png) | ![lowercase_f_3](alternative_characters/lowercase_f_3.png) | `lowercase_f_3` |
+| `cv11=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_3](alternative_characters/lowercase_f_3.png) | `lowercase_f_3` |
 | `cv11=1` | `f` | `U+0066` | ![lowercase_f_2](alternative_characters/lowercase_f_2.png) | ![lowercase_f_4](alternative_characters/lowercase_f_4.png) | `lowercase_f_4` |
 | `cv12=1` | `m` | `U+006D` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) | `lowercase_m_2` |
