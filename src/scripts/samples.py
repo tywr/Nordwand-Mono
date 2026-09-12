@@ -229,7 +229,7 @@ def _cyrillic_sample(font_path):
             or 0xA640 <= codepoint <= 0xA69F
         )
 
-    def rows(characters, width=40):
+    def rows(characters, width=65):
         return "\n".join(
             characters[start : start + width]
             for start in range(0, len(characters), width)
@@ -248,11 +248,9 @@ def _cyrillic_sample(font_path):
 
     return f"""\
 {rows(uppercase)}
-
 {rows(lowercase)}
 
 Быстрая рыжая лиса прыгает через ленивую собаку.
-
 Швидка руда лисиця перестрибує через ледачого пса.
 """
 
