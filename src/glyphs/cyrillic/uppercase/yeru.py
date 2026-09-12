@@ -3,14 +3,14 @@ from draw.arch import draw_arch
 from draw.rect import draw_rect
 
 
-class CyrillicUppercaseBeGlyph(UppercaseGlyph):
-    name = "cyrillic_uppercase_be"
-    unicode = "0x0411"
-    offset = 20
+class CyrillicUppercaseYeruGlyph(UppercaseGlyph):
+    name = "cyrillic_uppercase_yeru"
+    unicode = "0x042B"
+    offset = 0
     upper_ratio = 0.85  # Upper loop width as a fraction of the lower loop width
     mid_ratio = 0.54
-    top_ratio = 0.92
-    width_ratio = 1.06
+    xmid_ratio = 0.7
+    width_ratio = 1.16
     hx_ratio = 1
     hy_ratio = 1
 
@@ -22,12 +22,11 @@ class CyrillicUppercaseBeGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
+        hx, hy = b.hx * self.hx_ratio * self.xmid_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + self.mid_ratio * b.height
 
-        upper_x2 = b.x1 + self.top_ratio * b.width
         lower_x1 = b.x1
-        lower_x2 = b.x2
+        lower_x2 = b.x1 + self.xmid_ratio * b.width
         lower_width = lower_x2 - lower_x1
 
         # Left stem
@@ -50,12 +49,20 @@ class CyrillicUppercaseBeGlyph(UppercaseGlyph):
         )
 
         # Connecting bars
-        draw_rect(pen, b.x1, b.y2 - sy, upper_x2, b.y2)
-        draw_rect(pen, b.x1, 0, b.x2 - lower_width / 2, sy)
+        draw_rect(pen, b.x1, 0, (lower_x1 + lower_x2) / 2, sy)
         draw_rect(
             pen,
             b.x1,
             ymid - sy / 2,
-            b.xmid,
+            (lower_x1 + lower_x2) / 2,
             ymid + sy / 2,
+        )
+
+        # Right stroke
+        draw_rect(
+            pen,
+            b.x2 - sx,
+            b.y1,
+            b.x2,
+            b.y2
         )

@@ -1,15 +1,14 @@
-from glyphs.uppercase import UppercaseGlyph
-from draw.arch import draw_arch
+from glyphs.cyrillic.uppercase import CyrillicUppercaseGlyph
 from draw.rect import draw_rect
+from draw.arch import draw_arch
 
 
-class CyrillicUppercaseBeGlyph(UppercaseGlyph):
-    name = "cyrillic_uppercase_be"
-    unicode = "0x0411"
+class CyrillicUppercaseSoftsignGlyph(CyrillicUppercaseGlyph):
+    name = "cyrillic_uppercase_softsign"
+    unicode = "0x042C"
     offset = 20
     upper_ratio = 0.85  # Upper loop width as a fraction of the lower loop width
     mid_ratio = 0.54
-    top_ratio = 0.92
     width_ratio = 1.06
     hx_ratio = 1
     hy_ratio = 1
@@ -25,7 +24,6 @@ class CyrillicUppercaseBeGlyph(UppercaseGlyph):
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + self.mid_ratio * b.height
 
-        upper_x2 = b.x1 + self.top_ratio * b.width
         lower_x1 = b.x1
         lower_x2 = b.x2
         lower_width = lower_x2 - lower_x1
@@ -50,7 +48,6 @@ class CyrillicUppercaseBeGlyph(UppercaseGlyph):
         )
 
         # Connecting bars
-        draw_rect(pen, b.x1, b.y2 - sy, upper_x2, b.y2)
         draw_rect(pen, b.x1, 0, b.x2 - lower_width / 2, sy)
         draw_rect(
             pen,
