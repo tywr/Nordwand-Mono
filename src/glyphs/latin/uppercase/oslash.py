@@ -4,15 +4,14 @@ from draw.rect import draw_rect
 
 
 class UppercaseOSlashGlyph(UppercaseGlyph):
-    # Plots the same as uppercase 'O' for the moment (slash to be added later).
-    name = "capital_oslash"
+    name = "uppercase_oslash"
     unicode = "0xD8"
     offset = 0
     stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.00
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.00
     width_ratio = 1.18
     slash_stroke = 1.2
-    slash_length = 1.5
+    slash_length = 1.75
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -23,8 +22,11 @@ class UppercaseOSlashGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
             uppercase=True,
         )
-        sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y * self.stroke_y_ratio
-        ss = sy * self.slash_length
+        sx, sy = (
+            self.stroke_x_ratio * dc.stroke_x,
+            self.stroke_y_ratio * dc.stroke_y * self.stroke_y_ratio,
+        )
+        ss = sy * self.slash_stroke
         sl = self.slash_length * b.width
         draw_loop(
             pen,
@@ -43,5 +45,5 @@ class UppercaseOSlashGlyph(UppercaseGlyph):
             b.ymid - ss / 2,
             b.xmid + sl / 2,
             b.ymid + ss / 2,
-            rotate=55,
+            rotate=60,
         )

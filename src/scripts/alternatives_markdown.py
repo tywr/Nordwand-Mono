@@ -23,10 +23,18 @@ IMAGE_SIZE = (96, 128)
 
 def collect_alternatives():
     glyphs = discover_glyphs()
-    defaults = {
+    regular_defaults = {
         int(glyph.unicode, 16): glyph
         for glyph in glyphs
-        if glyph.unicode and not glyph.font_feature
+        if glyph.unicode
+        and not glyph.font_feature
+        and not glyph.default_italic
+        and not glyph.italic_only
+    }
+    italic_defaults = {
+        int(glyph.unicode, 16): glyph
+        for glyph in glyphs
+        if glyph.unicode and glyph.default_italic
     }
     alternatives = []
     for glyph in glyphs:
@@ -34,6 +42,7 @@ def collect_alternatives():
             continue
 
         codepoint = int(glyph.unicode, 16)
+        defaults = italic_defaults if glyph.italic_only else regular_defaults
         default = defaults.get(codepoint)
         if default is None:
             raise ValueError(f"No default glyph found for U+{codepoint:04X}")

@@ -36,6 +36,10 @@ To do so, override the config.example.yml with the values of your liking. Be sur
 
 ![characters](assets/samples/sample_char.png)
 
+## Weights
+
+![weights](assets/samples/sample_weights.png)
+
 ## Samples
 
 ![python](assets/samples/les_drus.png)
@@ -51,3 +55,9 @@ To do so, override the config.example.yml with the values of your liking. Be sur
 ### Haskell
 
 ![haskell](assets/samples/sample_3.png)
+
+## Alternative Alphabets
+
+### Cyrillic
+
+![Cyrillic](assets/samples/sample_cyrillic.jpg)

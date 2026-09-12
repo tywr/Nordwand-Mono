@@ -1,18 +1,17 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs import Glyph
-from draw.arch import draw_arch
 from draw.corner import draw_corner
 from draw.rect import draw_rect
+from draw.arch import draw_arch
 
 
-class AeGlyph(Glyph):
-    # Placeholder: plots the same as lowercase 'a' for the moment.
-    name = "ae"
-    unicode = "0xE6"
+class OeGlyph(Glyph):
+    name = "oe"
+    unicode = "0x153"
     offset = 0
     mid_height = 0.52
-    width_ratio = 1.16
+    width_ratio = 1.25
     taper = 1.5
     hx_ratio = 0.5
     hy_ratio = 1
@@ -36,95 +35,28 @@ class AeGlyph(Glyph):
         )
         sx, sy = dc.stroke_x, dc.stroke_y
         sx = max(0, 0.7 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
-        csx, csy = (
-            self.cap_stroke_x_ratio * dc.stroke_x,
-            self.cap_stroke_y_ratio * dc.stroke_y,
-        )
-        dx = csx - sx
         ry = (self.mid_height * b.height + dc.stroke_alt / 2) / b.height
         ymid = b.y1 + self.mid_height * b.height
-        yl = ymid + dc.stroke_alt / 2
         hx, hy = b.hx * self.hx_ratio, b.hy * ry * self.hy_ratio
-        ycut = b.y1 + self.cap_height * b.height
-        xc = b.x1 + self.cap_offset * b.width
         chx = self.cap_hx_ratio * b.hx
-        xt = b.x2 + self.tail_offset * b.width
         yo = b.y1 + self.tail_height * b.height
 
-        ax2, axmid = b.xmid + sx / 2, (b.x1 + b.xmid + sx / 2) / 2
+        ov = sx * 0.5
         ex1, exmid = b.xmid - sx / 2, (b.x2 + b.xmid - sx / 2) / 2
 
-        # Lower half half of the bowl
         draw_arch(
             pen,
-            csx,
-            csy,
+            sx,
+            sy,
             b.x1,
             b.y1,
-            ax2 + dx,
-            yl,
-            hx,
+            b.xmid + ov,
+            b.y2,
+            chx,
             hy,
-            taper=self.taper * dc.taper,
             side="right",
-            cut="top",
+            taper=1,
         )
-        draw_rect(pen, b.xmid - sx / 2, (yl + b.y1) / 2, b.xmid, b.ymid)
-
-        # Upper half of the bowl
-        draw_corner(
-            pen,
-            csx,
-            dc.stroke_alt,
-            b.x1,
-            (b.y1 + yl) / 2,
-            axmid,
-            yl,
-            hx,
-            hy,
-            orientation="top-right",
-        )
-        draw_rect(
-            pen,
-            axmid,
-            yl - dc.stroke_alt,
-            ax2,
-            yl,
-        )
-
-        # Cap
-        xmid = (xc + ax2) / 2
-        draw_corner(
-            pen,
-            sx / 2,
-            csy,
-            ax2 - sx / 2,
-            b.ymid,
-            xmid,
-            b.y2,
-            chx,
-            b.hy,
-            orientation="top-left",
-        )
-
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_corner(
-            loop_glyph.getPen(),
-            sx * self.thinning,
-            csy,
-            xc,
-            b.ymid,
-            xmid,
-            b.y2,
-            chx,
-            b.hy,
-            orientation="top-right",
-        )
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), b.x1, b.ymid, axmid, ycut)
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
-
         # Top-right corner
         draw_corner(
             pen,
@@ -142,7 +74,7 @@ class AeGlyph(Glyph):
             pen,
             sx,
             sy,
-            b.xmid - sx / 2,
+            ex1,
             b.ymid,
             exmid,
             b.y2,
@@ -154,7 +86,7 @@ class AeGlyph(Glyph):
             pen,
             sx,
             sy,
-            b.xmid - sx / 2,
+            ex1,
             b.ymid,
             exmid,
             b.y1,

@@ -141,6 +141,63 @@ def _register_macos_otf(reportlab_name, filename):
     )
 
 
+def _draw_unicode_inventory(c, font_path, page_w, page_h):
+    """Append a grid containing every Unicode character in the regular font."""
+    from fontTools.ttLib import TTFont as FontToolsTTFont
+
+    with FontToolsTTFont(font_path) as font:
+        codepoints = sorted(font.getBestCmap())
+
+    columns = 4
+    cell_height = 18 * mm
+    grid_x = MARGIN_X
+    grid_width = page_w - 2 * MARGIN_X
+    cell_width = grid_width / columns
+    grid_top = page_h - 45 * mm
+    grid_bottom = 20 * mm
+    rows = int((grid_top - grid_bottom) // cell_height)
+    page_capacity = columns * rows
+    page_count = (len(codepoints) + page_capacity - 1) // page_capacity
+
+    for page_index in range(page_count):
+        c.showPage()
+        c.setFillColorRGB(*BG)
+        c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
+
+        c.setFillColorRGB(*FG)
+        c.setFont(TITLE_FONT, TITLE_SIZE)
+        c.drawString(MARGIN_X, page_h - 30 * mm, "Character Set")
+        c.setFont(TITLE_FONT_REGULAR, 9)
+        c.drawRightString(
+            page_w - MARGIN_X,
+            page_h - 30 * mm,
+            f"{page_index + 1} / {page_count}",
+        )
+
+        start = page_index * page_capacity
+        page_codepoints = codepoints[start : start + page_capacity]
+        for index, codepoint in enumerate(page_codepoints):
+            row, column = divmod(index, columns)
+            x = grid_x + column * cell_width
+            y = grid_top - (row + 1) * cell_height
+
+            c.setStrokeColorRGB(0.8, 0.8, 0.8)
+            c.setLineWidth(0.5)
+            c.rect(x, y, cell_width, cell_height, fill=0, stroke=1)
+
+            c.setFillColorRGB(*FG)
+            c.setFont("Nordwand Mono", 22)
+            c.drawCentredString(x + cell_width * 0.28, y + 5.5 * mm, chr(codepoint))
+
+            c.setFillColorRGB(*LABEL_COLOR)
+            c.setFont(TITLE_FONT_REGULAR, 8)
+            c.drawCentredString(
+                x + cell_width * 0.70,
+                y + 7 * mm,
+                f"U+{codepoint:04X}",
+            )
+
+
 def render_specimen(font_path, output="specimen.pdf"):
     import os
 
@@ -485,6 +542,8 @@ def render_specimen(font_path, output="specimen.pdf"):
     for text in body_lines:
         c.drawString(MARGIN_X + box_padding_x, y, text)
         y -= report_leading
+
+    _draw_unicode_inventory(c, font_path, page_w, page_h)
 
     c.save()
     print(f"Saved {output}")

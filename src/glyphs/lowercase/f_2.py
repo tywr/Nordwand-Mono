@@ -1,12 +1,11 @@
 from glyphs import Glyph
-from draw.smooth_corner import draw_smooth_corner
+from draw.square_corner import draw_square_corner
 from draw.rect import draw_rect
 
 
 class LowercaseF2Glyph(Glyph):
     name = "lowercase_f_2"
     unicode = "0x66"
-    font_feature = {"cv11": 1}
     default_italic = True
     offset = -22
     rl_ratio = 0.55
@@ -36,7 +35,7 @@ class LowercaseF2Glyph(Glyph):
             dc.x_height,
         )
         # Corner
-        draw_smooth_corner(
+        draw_square_corner(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -44,12 +43,10 @@ class LowercaseF2Glyph(Glyph):
             dc.x_height,
             b.xmid + right_len + dc.stroke_x / 2,
             dc.ascent,
-            right_len + dc.stroke_x,
-            dc.ascent - dc.x_height,
             orientation="top-right",
         )
 
-        draw_smooth_corner(
+        draw_square_corner(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -57,7 +54,5 @@ class LowercaseF2Glyph(Glyph):
             0,
             b.x1,
             dc.descent,
-            b.hx,
-            b.hy,
-            orientation="bottom-left"
+            orientation="bottom-left",
         )

@@ -1,0 +1,125 @@
+from math import cos, sin
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
+from glyphs import Glyph
+from draw.rect import draw_rect
+from draw.parallelogramm import draw_parallelogramm_vertical
+from draw.polygon import draw_polygon
+
+
+class CyrillicLowercaseEmGlyph(Glyph):
+    name = "cyrillic_lowercase_em"
+    unicode = "0x043C"
+    offset = 0
+    overlap = 0.4
+    overlap_middle = 0.5
+    depth = 0.6
+    inner_thickness_ratio = 2.4
+    inner_height = 0.2
+    width_ratio = 1.08
+    ink_trap_height = 0.7
+
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            width_ratio=self.width_ratio,
+            min_margin=dc.min_margin_uppercase,
+        )
+        tsx = dc.stroke_x
+        sx = max(0, 0.65 * (tsx - 90)) + min(90, tsx)
+        delta = self.inner_thickness_ratio * sx
+        yi = b.y1 + self.inner_height * b.height
+        yik = b.y1 + self.ink_trap_height * b.height
+
+        # Vertical stems
+
+        glyph = ufoLib2.objects.Glyph()
+        gpen = glyph.getPen()
+        draw_rect(gpen, b.x1, b.y1, b.x1 + sx, b.y2)
+        draw_rect(gpen, b.x2 - sx, b.y1, b.x2, b.y2)
+        draw_parallelogramm_vertical(
+            gpen,
+            0,
+            0,
+            b.x1 + sx,
+            b.y2,
+            b.xmid,
+            yi - delta / 2,
+            direction="bottom-right",
+            delta=delta,
+        )
+        theta, _ = draw_parallelogramm_vertical(
+            gpen,
+            0,
+            0,
+            b.x2 - sx,
+            b.y2,
+            b.xmid,
+            yi - delta / 2,
+            direction="bottom-left",
+            delta=delta,
+        )
+        draw_rect(
+            gpen,
+            b.xmid,
+            yi,
+            b.xmid,
+            yi + delta / 2,
+        )
+        draw_rect(
+            gpen,
+            b.x1 + sx,
+            b.y2 - delta,
+            b.x1 + sx,
+            b.y2,
+        )
+        draw_rect(
+            gpen,
+            b.x2 - sx,
+            b.y2 - delta,
+            b.x2 - sx,
+            b.y2,
+        )
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(
+            cut_glyph.getPen(),
+            b.x1 + sx,
+            yi - delta / 2,
+            b.x2 - sx,
+            yi,
+        )
+        le = max(0, (yik - b.y2 + delta) / cos(theta))
+        if le > 0:
+            draw_polygon(
+                cut_glyph.getPen(),
+                points=[
+                    (b.x2 - sx, b.y2 - delta),
+                    (
+                        b.x2 - sx + le * sin(theta),
+                        b.y2 - delta + le * cos(theta),
+                    ),
+                    (
+                        b.x2 - sx + le * sin(theta),
+                        b.y2 - delta + le * cos(theta),
+                    ),
+                    (b.x2 - sx, (b.y1 + b.y2 - delta) / 2),
+                ],
+            )
+            draw_polygon(
+                cut_glyph.getPen(),
+                points=[
+                    (b.x1 + sx, b.y2 - delta),
+                    (
+                        b.x1 + sx - le * sin(theta),
+                        b.y2 - delta + le * cos(theta),
+                    ),
+                    (
+                        b.x1 + sx - le * sin(theta),
+                        b.y2 - delta + le * cos(theta),
+                    ),
+                    (b.x1 + sx, (b.y1 + b.y2 - delta) / 2),
+                ],
+            )
+
+        res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
+        res.draw(pen)

@@ -6,6 +6,7 @@ Usage: python -m scripts.samples
 
 import argparse
 import os
+import unicodedata
 
 from PIL import Image, ImageDraw, ImageFont
 from pygments import highlight
@@ -215,6 +216,45 @@ SAMPLES = [
 ]
 
 
+def _cyrillic_sample(font_path):
+    from fontTools.ttLib import TTFont
+
+    with TTFont(font_path) as font:
+        codepoints = font.getBestCmap()
+
+    def is_cyrillic(codepoint):
+        return (
+            0x0400 <= codepoint <= 0x052F
+            or 0x1C80 <= codepoint <= 0x1C8F
+            or 0xA640 <= codepoint <= 0xA69F
+        )
+
+    def rows(characters, width=65):
+        return "\n".join(
+            characters[start : start + width]
+            for start in range(0, len(characters), width)
+        )
+
+    uppercase = "".join(
+        chr(codepoint)
+        for codepoint in sorted(codepoints)
+        if is_cyrillic(codepoint) and unicodedata.category(chr(codepoint)) == "Lu"
+    )
+    lowercase = "".join(
+        chr(codepoint)
+        for codepoint in sorted(codepoints)
+        if is_cyrillic(codepoint) and unicodedata.category(chr(codepoint)) == "Ll"
+    )
+
+    return f"""\
+{rows(uppercase)}
+{rows(lowercase)}
+
+Быстрая рыжая лиса прыгает через ленивую собаку.
+Швидка руда лисиця перестрибує через ледачого пса.
+"""
+
+
 def _target_image_width(font_path):
     """Width of an image holding TARGET_CHARS monospace columns plus padding."""
     font = ImageFont.truetype(font_path, FONT_SIZE)
@@ -359,19 +399,12 @@ def render_composition(output, font_path, target_width):
 
 WEIGHT_STYLES = [
     ("Thin", "Thin"),
-    ("ThinItalic", "Thin Italic"),
     ("ExtraLight", "ExtraLight"),
-    ("ExtraLightItalic", "ExtraLight Italic"),
     ("Light", "Light"),
-    ("LightItalic", "Light Italic"),
     ("Regular", "Regular"),
-    ("Italic", "Italic"),
     ("Medium", "Medium"),
-    ("MediumItalic", "Medium Italic"),
     ("SemiBold", "SemiBold"),
-    ("SemiBoldItalic", "SemiBold Italic"),
     ("Bold", "Bold"),
-    ("BoldItalic", "Bold Italic"),
 ]
 
 
@@ -438,6 +471,14 @@ if __name__ == "__main__":
             target_width,
             font_size=font_size,
         )
+
+    render_sample(
+        os.path.join(args.output_dir, "sample_cyrillic.jpg"),
+        _lexer(),
+        _cyrillic_sample(args.font),
+        args.font,
+        target_width,
+    )
 
     render_composition(
         os.path.join(args.output_dir, "les_drus.png"),

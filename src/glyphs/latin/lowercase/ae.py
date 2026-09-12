@@ -1,18 +1,18 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs import Glyph
+from draw.arch import draw_arch
 from draw.corner import draw_corner
 from draw.rect import draw_rect
-from draw.loop import draw_loop
-from draw.arch import draw_arch
 
 
-class OeGlyph(Glyph):
-    name = "oe"
-    unicode = "0x153"
+class AeGlyph(Glyph):
+    # Placeholder: plots the same as lowercase 'a' for the moment.
+    name = "ae"
+    unicode = "0xE6"
     offset = 0
     mid_height = 0.52
-    width_ratio = 1.16
+    width_ratio = 1.2
     taper = 1.5
     hx_ratio = 0.5
     hy_ratio = 1
@@ -51,22 +51,80 @@ class OeGlyph(Glyph):
         xt = b.x2 + self.tail_offset * b.width
         yo = b.y1 + self.tail_height * b.height
 
-        ov = sx * 0.25
+        ax2, axmid = b.xmid + sx / 2, (b.x1 + b.xmid + sx / 2) / 2
         ex1, exmid = b.xmid - sx / 2, (b.x2 + b.xmid - sx / 2) / 2
 
+        # Lower half half of the bowl
         draw_arch(
             pen,
-            sx,
-            sy,
+            csx,
+            csy,
             b.x1,
             b.y1,
-            b.xmid + ov,
+            ax2 + dx,
+            yl,
+            hx,
+            hy,
+            taper=self.taper * dc.taper,
+            side="right",
+            cut="top",
+        )
+        draw_rect(pen, b.xmid - sx / 2, (yl + b.y1) / 2, b.xmid, b.ymid)
+
+        # Upper half of the bowl
+        draw_corner(
+            pen,
+            csx,
+            dc.stroke_alt,
+            b.x1,
+            (b.y1 + yl) / 2,
+            axmid,
+            yl,
+            hx,
+            hy,
+            orientation="top-right",
+        )
+        draw_rect(
+            pen,
+            axmid,
+            yl - dc.stroke_alt,
+            ax2,
+            yl,
+        )
+
+        # Cap
+        xmid = (xc + ax2) / 2
+        draw_corner(
+            pen,
+            sx / 2,
+            csy,
+            ax2 - sx / 2,
+            b.ymid,
+            xmid,
             b.y2,
             chx,
-            hy,
-            side="right",
-            taper=self.taper * dc.taper,
+            b.hy,
+            orientation="top-left",
         )
+
+        loop_glyph = ufoLib2.objects.Glyph()
+        draw_corner(
+            loop_glyph.getPen(),
+            sx * self.thinning,
+            csy,
+            xc,
+            b.ymid,
+            xmid,
+            b.y2,
+            chx,
+            b.hy,
+            orientation="top-right",
+        )
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(cut_glyph.getPen(), b.x1, b.ymid, axmid, ycut)
+        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
+        result.draw(pen)
+
         # Top-right corner
         draw_corner(
             pen,
@@ -84,7 +142,7 @@ class OeGlyph(Glyph):
             pen,
             sx,
             sy,
-            ex1,
+            b.xmid - sx / 2,
             b.ymid,
             exmid,
             b.y2,
@@ -96,7 +154,7 @@ class OeGlyph(Glyph):
             pen,
             sx,
             sy,
-            ex1,
+            b.xmid - sx / 2,
             b.ymid,
             exmid,
             b.y1,

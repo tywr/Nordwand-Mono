@@ -1,3 +1,4 @@
+from config import FontConfig as fc
 from glyphs.accents import Accent
 from draw.parallelogramm import draw_parallelogramm
 
@@ -23,3 +24,13 @@ class Acute(Accent):
             y + h / 2,
             delta=d,
         )
+
+
+class CombiningAcute(Acute):
+    name = "combining_acute"
+    unicode = "0x0301"
+    number_characters = 0
+
+    def draw(self, pen, dc):
+        # Fallback placement when shaping does not apply the ccmp glyph.
+        self.draw_at(pen, dc, x=-fc.window_width / 2, y=fc.accent_cap)
