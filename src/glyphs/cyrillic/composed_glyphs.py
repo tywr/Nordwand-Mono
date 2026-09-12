@@ -3,6 +3,7 @@ from glyphs.accents.acute import Acute
 from glyphs.accents.breve import Breve
 from glyphs.accents.dieresis import Dieresis
 from glyphs.accents.grave import Grave
+from glyphs import LigatureGlyph
 from glyphs.composed import ComposedGlyph
 from glyphs.cyrillic.lowercase.ghe import CyrillicLowercaseGheGlyph
 from glyphs.cyrillic.lowercase.i import CyrillicLowercaseIGlyph
@@ -10,19 +11,23 @@ from glyphs.cyrillic.lowercase.ka import CyrillicLowercaseKaGlyph
 from glyphs.cyrillic.lowercase.lookalikes import (
     CyrillicLowercaseAGlyph,
     CyrillicLowercaseByelorussianUkrainianIGlyph,
+    CyrillicLowercaseEsGlyph,
     CyrillicLowercaseIeGlyph,
     CyrillicLowercaseUGlyph,
 )
+from glyphs.cyrillic.lowercase.ze import CyrillicLowercaseZeGlyph
 from glyphs.cyrillic.lowercase.zhe import CyrillicLowercaseZheGlyph
 from glyphs.cyrillic.uppercase.ghe import CyrillicUppercaseGheGlyph
 from glyphs.cyrillic.uppercase.i import CyrillicUppercaseIGlyph
 from glyphs.cyrillic.uppercase.lookalikes import (
     CyrillicUppercaseAGlyph,
     CyrillicUppercaseByelorussianUkrainianIGlyph,
+    CyrillicUppercaseEsGlyph,
     CyrillicUppercaseIeGlyph,
     CyrillicUppercaseKaGlyph,
 )
 from glyphs.cyrillic.uppercase.u import CyrillicUppercaseUGlyph
+from glyphs.cyrillic.uppercase.ze import CyrillicUppercaseZeGlyph
 from glyphs.cyrillic.uppercase.zhe import CyrillicUppercaseZheGlyph
 
 
@@ -199,4 +204,44 @@ class CyrillicLowercaseIeBreveGlyph(ComposedGlyph):
     unicode = "0x04D7"
     base_glyph_class = CyrillicLowercaseIeGlyph
     accent_class = Breve
+    accent_y = fc.accent
+
+
+class CyrillicUppercaseZeAcuteGlyph(ComposedGlyph, LigatureGlyph):
+    name = "cyrillic_uppercase_ze_acute"
+    unicode = None
+    components = ["cyrillic_uppercase_ze", "combining_acute"]
+    feature_tags = ("ccmp",)
+    base_glyph_class = CyrillicUppercaseZeGlyph
+    accent_class = Acute
+    accent_y = fc.accent_cap
+
+
+class CyrillicLowercaseZeAcuteGlyph(ComposedGlyph, LigatureGlyph):
+    name = "cyrillic_lowercase_ze_acute"
+    unicode = None
+    components = ["cyrillic_lowercase_ze", "combining_acute"]
+    feature_tags = ("ccmp",)
+    base_glyph_class = CyrillicLowercaseZeGlyph
+    accent_class = Acute
+    accent_y = fc.accent
+
+
+class CyrillicUppercaseEsAcuteGlyph(ComposedGlyph, LigatureGlyph):
+    name = "cyrillic_uppercase_es_acute"
+    unicode = None
+    components = ["cyrillic_uppercase_es", "combining_acute"]
+    feature_tags = ("ccmp",)
+    base_glyph_class = CyrillicUppercaseEsGlyph
+    accent_class = Acute
+    accent_y = fc.accent_cap
+
+
+class CyrillicLowercaseEsAcuteGlyph(ComposedGlyph, LigatureGlyph):
+    name = "cyrillic_lowercase_es_acute"
+    unicode = None
+    components = ["cyrillic_lowercase_es", "combining_acute"]
+    feature_tags = ("ccmp",)
+    base_glyph_class = CyrillicLowercaseEsGlyph
+    accent_class = Acute
     accent_y = fc.accent

@@ -3,13 +3,14 @@ from draw.rect import draw_rect
 
 
 class CyrillicUppercaseGheGlyph(CyrillicUppercaseGlyph):
-    name = "cyrillic_uppercase_ghe"
-    unicode = "0x0413"
+    name = "cyrillic_uppercase_ghe_upturn"
+    unicode = "0x0490"
     offset = 20
     upper_ratio = 0.85  # Upper loop width as a fraction of the lower loop width
     mid_ratio = 0.515
     top_ratio = 0.92
     width_ratio = 1.06
+    upturn_ratio = 0.15
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -19,6 +20,8 @@ class CyrillicUppercaseGheGlyph(CyrillicUppercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        ul = self.upturn_ratio * b.height
 
         draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
         draw_rect(pen, b.x1, b.y2 - sy, b.x2, b.y2)
+        draw_rect(pen, b.x2 - sx, b.y2, b.x2, b.y2 + ul)
