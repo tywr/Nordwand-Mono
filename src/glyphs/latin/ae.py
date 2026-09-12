@@ -12,7 +12,7 @@ class AeGlyph(Glyph):
     unicode = "0xE6"
     offset = 0
     mid_height = 0.52
-    width_ratio = 1.16
+    width_ratio = 1.2
     taper = 1.5
     hx_ratio = 0.5
     hy_ratio = 1

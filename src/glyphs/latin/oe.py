@@ -3,7 +3,6 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs import Glyph
 from draw.corner import draw_corner
 from draw.rect import draw_rect
-from draw.loop import draw_loop
 from draw.arch import draw_arch
 
 
@@ -12,7 +11,7 @@ class OeGlyph(Glyph):
     unicode = "0x153"
     offset = 0
     mid_height = 0.52
-    width_ratio = 1.16
+    width_ratio = 1.25
     taper = 1.5
     hx_ratio = 0.5
     hy_ratio = 1
@@ -36,22 +35,13 @@ class OeGlyph(Glyph):
         )
         sx, sy = dc.stroke_x, dc.stroke_y
         sx = max(0, 0.7 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
-        csx, csy = (
-            self.cap_stroke_x_ratio * dc.stroke_x,
-            self.cap_stroke_y_ratio * dc.stroke_y,
-        )
-        dx = csx - sx
         ry = (self.mid_height * b.height + dc.stroke_alt / 2) / b.height
         ymid = b.y1 + self.mid_height * b.height
-        yl = ymid + dc.stroke_alt / 2
         hx, hy = b.hx * self.hx_ratio, b.hy * ry * self.hy_ratio
-        ycut = b.y1 + self.cap_height * b.height
-        xc = b.x1 + self.cap_offset * b.width
         chx = self.cap_hx_ratio * b.hx
-        xt = b.x2 + self.tail_offset * b.width
         yo = b.y1 + self.tail_height * b.height
 
-        ov = sx * 0.25
+        ov = sx * 0.5
         ex1, exmid = b.xmid - sx / 2, (b.x2 + b.xmid - sx / 2) / 2
 
         draw_arch(
@@ -65,7 +55,7 @@ class OeGlyph(Glyph):
             chx,
             hy,
             side="right",
-            taper=self.taper * dc.taper,
+            taper=1,
         )
         # Top-right corner
         draw_corner(
