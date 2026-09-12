@@ -1,0 +1,70 @@
+from glyphs.uppercase import UppercaseGlyph
+from draw.corner import draw_corner
+from draw.rect import draw_rect
+
+
+class UppercaseEthGlyph(UppercaseGlyph):
+    name = "uppercase_eth"
+    unicode = "0xD0"
+    offset = 20
+    arch_start = 0.4
+    hx_ratio = 1.1
+    hy_ratio = 1
+    width_ratio = 1.10
+    mid_ratio = 0.515
+    bar_width = 0.6
+    bar_offset = 0.09
+
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            height="cap",
+            width_ratio=self.width_ratio,
+            uppercase=True,
+        )
+        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        cut_x = b.x1 + self.arch_start * b.width
+        hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
+        ymid = b.y1 + self.mid_ratio * b.height
+        bw = self.bar_width * b.width
+        bo = self.bar_offset * b.width
+
+        # Left stem
+        draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
+
+        # Connecting bars
+        draw_rect(pen, b.x1, b.y2 - sy, cut_x, b.y2)
+        draw_rect(pen, b.x1, 0, cut_x, sy)
+        draw_rect(
+            pen,
+            b.x1 + sx / 2 - bw / 2 + bo,
+            ymid - sy / 2,
+            b.x1 + sx / 2 + bw / 2 + bo,
+            ymid + sy / 2,
+        )
+
+        # Corner
+        draw_corner(
+            pen,
+            sx,
+            sy,
+            b.x2,
+            b.ymid,
+            cut_x,
+            b.y2,
+            hx,
+            hy,
+            orientation="top-left",
+        )
+        draw_corner(
+            pen,
+            sx,
+            sy,
+            b.x2,
+            b.ymid,
+            cut_x,
+            b.y1,
+            hx,
+            hy,
+            orientation="bottom-left",
+        )
