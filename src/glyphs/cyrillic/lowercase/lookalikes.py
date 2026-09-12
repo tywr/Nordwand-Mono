@@ -7,11 +7,11 @@ from glyphs.lowercase.round.e import LowercaseEGlyph
 from glyphs.lowercase.round.e_2 import LowercaseE2Glyph
 from glyphs.lowercase.round.o import LowercaseOGlyph
 from glyphs.lowercase.s import LowercaseSGlyph
-from glyphs.lowercase.single_story.b import LowercaseBGlyph
 from glyphs.lowercase.single_story.p import LowercasePGlyph
-from glyphs.lowercase.t import LowercaseTGlyph
+from glyphs.lowercase.y import LowercaseYGlyph
 from glyphs.lowercase.x import LowercaseXGlyph
 from glyphs.lowercase.x_2 import LowercaseX2Glyph
+from glyphs.lowercase.round.c import LowercaseCGlyph
 
 
 class CyrillicLowercaseAGlyph(LowercaseAGlyph):
@@ -22,11 +22,6 @@ class CyrillicLowercaseAGlyph(LowercaseAGlyph):
 class CyrillicLowercaseAItalicGlyph(LowercaseA2Glyph):
     name = "cyrillic_lowercase_a_italic"
     unicode = "0x0430"
-
-
-class CyrillicLowercaseVeGlyph(LowercaseBGlyph):
-    name = "cyrillic_lowercase_ve"
-    unicode = "0x0432"
 
 
 class CyrillicLowercaseIeGlyph(LowercaseEGlyph):
@@ -49,9 +44,9 @@ class CyrillicLowercaseErGlyph(LowercasePGlyph):
     unicode = "0x0440"
 
 
-class CyrillicLowercaseTeGlyph(LowercaseTGlyph):
-    name = "cyrillic_lowercase_te"
-    unicode = "0x0442"
+class CyrillicLowercaseEsGlyph(LowercaseCGlyph):
+    name = "cyrillic_lowercase_es"
+    unicode = "0x0441"
 
 
 class CyrillicLowercaseHaGlyph(LowercaseXGlyph):
@@ -82,3 +77,8 @@ class CyrillicLowercaseByelorussianUkrainianIItalicGlyph(LowercaseI2Glyph):
 class CyrillicLowercaseDzeGlyph(LowercaseSGlyph):
     name = "cyrillic_lowercase_dze"
     unicode = "0x0455"
+
+
+class CyrillicLowercaseUGlyph(LowercaseYGlyph):
+    name = "cyrillic_lowercase_u"
+    unicode = "0x0443"
