@@ -3,6 +3,7 @@ from glyphs import Glyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.polygon import draw_polygon
+from draw.parallelogramm import draw_parallelogramm_vertical
 
 
 class LowercaseEthGlyph(Glyph):
@@ -18,6 +19,8 @@ class LowercaseEthGlyph(Glyph):
     hy_ratio = 0.9
     stroke_ratio = 1.2
     width_ratio = 1.0
+    ystroke_ratio = 0.65
+    ystroke_width_ratio = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -35,6 +38,9 @@ class LowercaseEthGlyph(Glyph):
         ymid = b.y1 + self.loop_ratio * b.height
         xc = b.x2 - self.cap_x * b.width
         xj = b.x2 - self.joint_x * sx
+        ysmid = b.y1 + self.ystroke_ratio * b.height
+        tx1 = b.x1 + (1 - self.ystroke_width_ratio) * b.width / 2
+        tx2 = b.x2 - (1 - self.ystroke_width_ratio) * b.width / 2
 
         # Bottom loop
         params = draw_arch(
@@ -63,10 +69,10 @@ class LowercaseEthGlyph(Glyph):
         draw_polygon(
             pen,
             points=[
-                (xj + delta / 2, yj),
-                (b.x2, (b.y1 + ymid) / 2),
-                (b.x2 - sx, (b.y1 + ymid) / 2),
                 (b.x2 - sx, (b.y1 + b.ymid) / 2 + ihy),
+                (b.x2 - sx, (b.y1 + ymid) / 2),
+                (b.x2, (b.y1 + ymid) / 2),
+                (xj + delta / 2, yj),
                 (xj, yj),
             ],
         )
@@ -78,15 +84,15 @@ class LowercaseEthGlyph(Glyph):
         x2m, y2m = xj + delta - 0.15 * dx, yj + 0.15 * dy
         x3m, y3m = b.x2, yj + (b.x2 - delta - xj) * dy / dx
 
-        pen.moveTo((xj, yj))
-        pen.lineTo((xc, b.y2))
-        pen.lineTo((xc + delta, b.y2))
-        pen.lineTo((x1m, y1m))
+        pen.moveTo((b.x2, (b.y1 + ymid) / 2))
         pen.curveTo(
-            (x2m, y2m),
             (x3m, y3m),
-            (b.x2, (b.y1 + ymid) / 2),
+            (x2m, y2m),
+            (x1m, y1m),
         )
+        pen.lineTo((xc + delta, b.y2))
+        pen.lineTo((xc, b.y2))
+        pen.lineTo((xj, yj))
         pen.closePath()
 
         draw_loop(
@@ -100,4 +106,8 @@ class LowercaseEthGlyph(Glyph):
             hx,
             hy * self.loop_ratio,
             cut="top",
+        )
+
+        draw_parallelogramm_vertical(
+            pen, sx, sy, tx1, ysmid, tx2, b.y2, direction="top-right"
         )
