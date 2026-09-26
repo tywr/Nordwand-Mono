@@ -16,7 +16,7 @@ class CyrillicLowercaseZeGlyph(Glyph):
     len_mid = 0.7
     hx_ratio = 1
     hy_ratio = 1
-    width_ratio = 1.08
+    width_ratio = 0.99
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
