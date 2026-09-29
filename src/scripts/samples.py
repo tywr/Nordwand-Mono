@@ -8,7 +8,7 @@ import argparse
 import os
 import unicodedata
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, features
 from pygments import highlight
 from pygments.filters import TokenMergeFilter
 from pygments.formatters import ImageFormatter
@@ -35,17 +35,16 @@ from pygments.token import (
 
 
 # Pygments' ImageFormatter calls PIL's draw.text() without OpenType features,
-# so ligatures/calt never fire. Inject them globally — Pillow needs libraqm,
-# which we've checked is present.
-_orig_pil_text = ImageDraw.ImageDraw.text
+# so ligatures/calt never fire. Enable them when Pillow has libraqm; otherwise
+# retain Pillow's basic renderer so sample generation still succeeds.
+if features.check_feature("raqm"):
+    _orig_pil_text = ImageDraw.ImageDraw.text
 
+    def _pil_text_with_features(self, *args, **kwargs):
+        kwargs.setdefault("features", ["liga", "calt"])
+        return _orig_pil_text(self, *args, **kwargs)
 
-def _pil_text_with_features(self, *args, **kwargs):
-    kwargs.setdefault("features", ["liga", "calt"])
-    return _orig_pil_text(self, *args, **kwargs)
-
-
-ImageDraw.ImageDraw.text = _pil_text_with_features
+    ImageDraw.ImageDraw.text = _pil_text_with_features
 
 
 # Gravity palette (~/.config/colorthemes/monochrome/gravity.yaml)
@@ -126,7 +125,7 @@ abcdefghijklmnopqrstuvwxyz
 0123456789
 
 !"#$%&'()+=,-./:;<*>
-?@[\]^_`{|}~
+?@[\\]^_`{|}~
 -> => __ -- == →
 
 oO08 iIlL1 g9qCGQ 8%& <([{}])> .,;: ~-_=

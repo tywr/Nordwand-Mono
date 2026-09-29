@@ -10,6 +10,7 @@ import pathops
 from fontTools.fontBuilder import FontBuilder
 from fontTools.misc.timeTools import timestampNow
 from fontTools.pens.t2CharStringPen import T2CharStringPen
+from fontTools.ttLib.tables.O_S_2f_2 import Panose
 from ttfautohint import ttfautohint
 
 from fontTools.ttLib.tables.otTables import (
@@ -432,6 +433,14 @@ WEIGHT_NAMES = {
 }
 
 
+def _monospace_panose():
+    """Return PANOSE metadata identifying the font as monospaced."""
+    panose = Panose()
+    panose.bFamilyType = 2  # Latin Text
+    panose.bProportion = 9  # Monospaced
+    return panose
+
+
 def _style_metadata(weight, italic):
     """Compute style name, PS name, name table entries, and OS/2 flags for a weight/italic combination."""
     if weight not in WEIGHT_NAMES:
@@ -656,7 +665,10 @@ def _build_otf(
 
     fb.setupCFF(
         psName=f"{fc.family_name}-{ps_style_name}",
-        fontInfo={"FullName": f"{fc.family_name} {style_name}"},
+        fontInfo={
+            "FullName": f"{fc.family_name} {style_name}",
+            "isFixedPitch": True,
+        },
         charStringsDict=charstrings,
         privateDict={
             "BlueValues": blue_values,
@@ -687,6 +699,8 @@ def _build_otf(
         fsType=0,
         fsSelection=fs_selection,
         usWeightClass=weight,
+        xAvgCharWidth=fc.window_width,
+        panose=_monospace_panose(),
     )
     ital_angle = -fc.italic_angle if italic else 0
     fb.setupPost(isFixedPitch=1, italicAngle=ital_angle)
@@ -776,6 +790,8 @@ def build_ttf(
         fsType=0,
         fsSelection=fs_selection,
         usWeightClass=weight,
+        xAvgCharWidth=fc.window_width,
+        panose=_monospace_panose(),
     )
     ital_angle = -fc.italic_angle if italic else 0
     fb.setupPost(isFixedPitch=1, italicAngle=ital_angle)
