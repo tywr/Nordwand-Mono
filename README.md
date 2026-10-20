@@ -2,6 +2,9 @@
 
 A compact neo-grotesk font designed for coding.
 
+> [!NOTE]
+> This is a fork of [tywr/Nordwand-Mono](https://github.com/tywr/Nordwand-Mono) by Tanguy Vivier, patched with [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) icons (OS logos, Powerline, devicons, Font Awesome, Octicons, Material Design, …) for use in terminals. All credit for the font design goes to the original author.
+
 ![Specimen](specimens/specimen.pdf)
 
 ## Philosophy
@@ -29,6 +32,17 @@ The font includes minimal `->` and `=>` ligatures. Repeated `=`, `-`, `_`, and
 `#` characters can use joining forms, allowing their horizontal bars to
 connect across runs of any length. These are off by default; enable the `dlig`
 feature to turn them on (see the [stylistic sets document](doc/stylistic_sets.md)).
+
+## Nerd Font
+
+Each release includes `NordwandMono-NerdFont.zip`, containing every weight patched with the complete Nerd Fonts glyph set. The family is named **NordwandMono Nerd Font Mono**, and icons are constrained to a single cell so the terminal grid stays intact.
+
+To build it locally (requires [FontForge](https://fontforge.org), e.g. `brew install fontforge`):
+
+```sh
+make build-nerd        # patched fonts are written to ./fonts/nerd
+make install-nerd-mac  # copy them to ~/Library/Fonts
+```
 
 ## Compile your own custom version
 

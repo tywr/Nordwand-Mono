@@ -30,8 +30,14 @@ jobs:
       - name: Install dependencies
         run: make install
 
+      - name: Install FontForge
+        run: sudo apt-get update && sudo apt-get install -y fontforge python3-fontforge
+
       - name: Build fonts
         run: make build-font
+
+      - name: Build Nerd Font
+        run: make build-nerd
 
       - name: Package fonts
         run: |
@@ -39,6 +45,7 @@ jobs:
           zip -j NordwandMono-TTF.zip fonts/ttf/*.ttf
           zip -j NordwandMono-WOFF.zip fonts/woff/*.woff
           zip -j NordwandMono-WOFF2.zip fonts/woff2/*.woff2
+          zip -j NordwandMono-NerdFont.zip fonts/nerd/*.otf LICENSE-FONT.txt ATTRIBUTIONS.md
 
       - name: Upload release assets
         env:
@@ -49,4 +56,5 @@ jobs:
             NordwandMono-TTF.zip \
             NordwandMono-WOFF.zip \
             NordwandMono-WOFF2.zip \
+            NordwandMono-NerdFont.zip \
             --clobber
