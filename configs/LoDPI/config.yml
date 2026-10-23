@@ -1,0 +1,25 @@
+# Nordwand Mono LoDPI — a Book weight for low-resolution (1x) displays.
+#
+# macOS ignores hinting, so on a non-Retina screen the Regular horizontal
+# strokes (70 units, about 0.9 px at 13 px) fall under one pixel and render
+# faint. This build exports Regular, Bold and a Book (425) weight in between,
+# whose horizontals are level with the Regular verticals and whose other
+# strokes are slightly thicker. All other metrics are the defaults.
+#
+# Usage:
+#   python -m generate_font --config configs/LoDPI/config.yml
+
+# --- Identity ---------------------------------------------------------------
+family_name: Nordwand Mono LoDPI
+
+# --- Weights ----------------------------------------------------------------
+# Only the weights listed here are exported. Strokes left out are derived
+# from the regular ones, as for the default weights.
+weights:
+  400:
+  425:
+    name: Book
+    stroke_x: 90      # Regular: 84
+    stroke_y: 84      # Regular: 70
+    stroke_alt: 72    # Regular: 66
+  700:

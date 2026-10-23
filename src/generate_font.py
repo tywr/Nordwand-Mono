@@ -36,7 +36,7 @@ from fontTools.ttLib.tables.otTables import (
 from fontTools.ttLib import newTable
 
 from config import FontConfig as fc
-from config import DrawConfig
+from config import DrawConfig, weight_name
 from glyphs import (
     Glyph,
     LigatureGlyph,
@@ -509,16 +509,6 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
     return gsub_table
 
 
-WEIGHT_NAMES = {
-    100: "Thin",
-    200: "ExtraLight",
-    300: "Light",
-    400: "Regular",
-    500: "Medium",
-    600: "SemiBold",
-    700: "Bold",
-}
-
 
 def _monospace_panose():
     """Return PANOSE metadata identifying the font as monospaced."""
@@ -541,18 +531,13 @@ def font_revision(version):
 
 def _style_metadata(weight, italic):
     """Compute style name, PS name, name table entries, and OS/2 flags for a weight/italic combination."""
-    if weight not in WEIGHT_NAMES:
-        raise ValueError(
-            f"Unsupported weight {weight}; must be one of {sorted(WEIGHT_NAMES)}"
-        )
-
-    weight_name = WEIGHT_NAMES[weight]
+    name = weight_name(weight)
     if weight == 400:
         style_name = "Italic" if italic else "Regular"
     elif weight == 700:
         style_name = "Bold Italic" if italic else "Bold"
     else:
-        style_name = f"{weight_name} Italic" if italic else weight_name
+        style_name = f"{name} Italic" if italic else name
 
     ps_style_name = style_name.replace(" ", "")
     ps_name = f"{fc.family_name.replace(' ', '')}-{ps_style_name}"
@@ -572,7 +557,7 @@ def _style_metadata(weight, italic):
             "psName": ps_name,
         }
     else:
-        legacy_family = f"{fc.family_name} {weight_name}"
+        legacy_family = f"{fc.family_name} {name}"
         legacy_sub = "Italic" if italic else "Regular"
         name_table = {
             "familyName": legacy_family,
@@ -644,13 +629,7 @@ def build_font(
         fname = fc.family_name.replace(" ", "")
         output_path = f"{out_root}/otf/{fname}-{ps_style_name}.otf"
 
-    if weight != 400:
-        dc = DrawConfig.weight(w=weight)
-    elif italic:
-        dc = DrawConfig.for_italic()
-    else:
-        dc = DrawConfig()
-    dc.italic = italic
+    dc = DrawConfig.for_weight(w=weight, italic=italic)
 
     all_glyphs = discover_glyphs()
 
@@ -961,7 +940,7 @@ if __name__ == "__main__":
     build_otf = not args.ttf
     build_ttf_flag = not args.otf
 
-    for w in [100, 200, 300, 400, 500, 600, 700]:
+    for w in fc.weights:
         build_font(
             weight=w,
             otf=build_otf,

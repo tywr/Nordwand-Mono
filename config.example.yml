@@ -61,6 +61,21 @@ stroke_x: 84
 stroke_y: 70
 stroke_alt: 66
 
+# --- Weights ----------------------------------------------------------------
+# Which weights to export, and optionally their stroke dimensions. Weights
+# without strokes are scaled from the base weights above; a weight outside
+# the standard names (100-900, 350 SemiLight, 375 Retina, 425 Book) needs a
+# `name`. Leave this out to export Thin to Bold.
+#
+# weights:
+#   400:
+#   425:
+#     name: Book
+#     stroke_x: 90
+#     stroke_y: 84
+#     stroke_alt: 72
+#   700:
+
 # --- Overshoots -------------------------------------------------------------
 v_overshoot: 9
 v_overshoot_cap: 16

@@ -14,7 +14,7 @@ from fontTools.misc.transform import Transform
 
 sys.path.insert(0, "src")
 from config import FontConfig as fc
-from config import DrawConfig
+from config import DrawConfig, WEIGHT_NAMES, weight_name
 from glyphs import InfiniteLigatureForm, LigatureGlyph
 from generate_font import discover_glyphs, select_style_glyphs, skew_path
 
@@ -508,8 +508,8 @@ if __name__ == "__main__":
         type=str,
         default="regular",
         help=(
-            "Style: weight name (thin, extralight, light, regular, medium, "
-            "semibold, bold), 'italic', or comma-separated stroke widths"
+            "Style: weight name (thin, light, regular, book, bold, ... or a "
+            "name from the config), 'italic', or comma-separated stroke widths"
         ),
     )
     parser.add_argument("--pt", type=float, default=None, help="Point size (text mode)")
@@ -547,15 +547,8 @@ if __name__ == "__main__":
         applied = load_config(args.config)
         print(f"Loaded config overrides from {args.config}: {applied}")
 
-    WEIGHT_ALIASES = {
-        "thin": 100,
-        "extralight": 200,
-        "light": 300,
-        "regular": 400,
-        "medium": 500,
-        "semibold": 600,
-        "bold": 700,
-    }
+    WEIGHT_ALIASES = {name.lower(): w for w, name in WEIGHT_NAMES.items()}
+    WEIGHT_ALIASES.update({weight_name(w).lower(): w for w in fc.weights})
 
     style = args.s.strip().lower()
     italic = False
@@ -564,7 +557,7 @@ if __name__ == "__main__":
         italic = True
     elif style in WEIGHT_ALIASES:
         w = WEIGHT_ALIASES[style]
-        configs = [DrawConfig() if w == 400 else DrawConfig.weight(w=w)]
+        configs = [DrawConfig.for_weight(w=w)]
     else:
         configs = [
             DrawConfig(stroke_x=int(s), stroke_y=int(s) - 10) for s in args.s.split(",")
