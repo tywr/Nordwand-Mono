@@ -55,6 +55,17 @@ class Superellipse:
             self.hy * sy,
         )
 
+    def resize(self, x1, y1, x2, y2):
+        """Same handles relative to the size, within new bounds."""
+        return Superellipse(
+            x1,
+            y1,
+            x2,
+            y2,
+            self.hx * (x2 - x1) / (self.x2 - self.x1),
+            self.hy * (y2 - y1) / (self.y2 - self.y1),
+        )
+
     def expand(self, right=0, left=0, top=0, bottom=0):
         old_w = self.x2 + self.x1
         old_h = self.y2 + self.y1
