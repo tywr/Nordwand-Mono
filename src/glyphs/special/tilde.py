@@ -1,40 +1,54 @@
 from glyphs import Glyph
+from draw.loop import draw_loop
+from shapes.superellipse import Superellipse
 
 
 class TildeGlyph(Glyph):
     name = "tilde"
     unicode = "0x7E"
     offset = 0
-    height_ratio = 0.25
-    x_corner_ratio = 0.24
-    y_corner_offset = 0.075
     width_ratio = 1.2
     stroke_x_ratio = 1
     stroke_y_ratio = 1.2
-    hy_ratio = 0.8
+    height_ratio = 0.25
+    end_width_ratio = 0.3
+    curve_ratio = 1.35
+    curve_thinning = 0.03
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_x * self.stroke_x_ratio
-        hy = b.hy * self.hy_ratio
+        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         h = self.height_ratio * b.height
         y1 = dc.math - h / 2 - sy / 2
         y2 = dc.math + h / 2 + sy / 2
-        xi1 = b.x1 + self.x_corner_ratio * b.width + sx / 2
-        xi2 = b.x2 - self.x_corner_ratio * b.width - sx / 2
-        yi1 = y1 + h * self.y_corner_offset
-        yi2 = y2 - h * self.y_corner_offset
-        ihx = (xi2 - xi1) / 2 - sy / 4
-        ehx = (xi2 - xi1) / 2 + sy / 4
-        ihy = b.hy * (y2 - y1) * (1 - self.y_corner_offset) / b.height
 
-        pen.moveTo((b.x1, yi1))
-        pen.curveTo((b.x1, yi1 + hy), (xi1 - ehx, y2), (xi1, y2))
-        pen.curveTo((xi1 + ehx, y2), (xi2 - ihx, y1 + sy), (xi2, y1 + sy))
-        pen.curveTo((xi2 + ihx, y1 + sy), (b.x2 - sx, y2 - ihy), (b.x2 - sx, yi2))
-        pen.lineTo((b.x2, yi2))
-        pen.curveTo((b.x2, yi2 - hy), (xi2 + ehx, y1), (xi2, y1))
-        pen.curveTo((xi2 - ehx, y1), (xi1 + ihx, y2 - sy), (xi1, y2 - sy))
-        pen.curveTo((xi1 - ihx, y2 - sy), (b.x1 + sx, yi1 + ihy), (b.x1 + sx, yi1))
+        # Each end is a quarter of a loop spanning the whole height: going up
+        # from y1 then right on the left, going right then up to y2 on the right
+        qw = self.end_width_ratio * b.width
+        qh = y2 - y1
+        loop = Superellipse(b.x1, b.y1, b.x2, b.y2, b.hx, b.hy)
+        ends = (
+            (loop.resize(b.x1, y2 - 2 * qh, b.x1 + 2 * qw, y2), "top-left"),
+            (loop.resize(b.x2 - 2 * qw, y1, b.x2, y1 + 2 * qh), "bottom-right"),
+        )
+        left, right = (
+            draw_loop(
+                pen, sx, sy, se.x1, se.y1, se.x2, se.y2, se.hx, se.hy, quarter=quarter
+            )
+            for se, quarter in ends
+        )
+
+        # Mid curve, from the top of the left end to the bottom of the right one
+        xa, xb = b.x1 + qw, b.x2 - qw
+        lhx, lihx = left["outer"].hx, left["inner"].hx
+        rhx, rihx = right["outer"].hx, right["inner"].hx
+        th = self.curve_thinning * b.height
+        r = self.curve_ratio
+        pen.moveTo((xa, y2 - sy))
+        pen.curveTo((xa + r * lihx + th, y2 - sy), (xb - r * rhx + th, y1), (xb, y1))
+        pen.lineTo((xb, y1 + sy))
+        pen.curveTo((xb - r * rihx - th, y1 + sy), (xa + r * lhx - th, y2), (xa, y2))
+        pen.closePath()
+
