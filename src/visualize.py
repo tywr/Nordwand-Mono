@@ -16,13 +16,14 @@ sys.path.insert(0, "src")
 from config import FontConfig as fc
 from config import DrawConfig, WEIGHT_NAMES, weight_name
 from glyphs import InfiniteLigatureForm, LigatureGlyph
-from generate_font import discover_glyphs, select_style_glyphs, skew_path
+from generate_font import discover_glyphs, select_style_glyphs, italicize_path
 
 
 def _italic_transform():
-    """Horizontal shear matching generate_font.skew_path."""
+    """Horizontal shear matching generate_font.skew_path (without the fit
+    into the cell of italicize_path)."""
     s = math.tan(math.radians(fc.italic_angle))
-    return Transform(1, 0, s, 1, 0, 0)
+    return Transform(1, 0, s, 1, -s * fc.italic_pivot, 0)
 
 
 def recording_to_mpl_path(recording):
@@ -425,8 +426,10 @@ def visualize_text(text, point_size=None, guides=False, dc=None, italic=False):
         simplified = pathops.simplify(
             raw_path, clockwise=False, keep_starting_points=True
         )
-        if italic:
-            simplified = skew_path(simplified, fc.italic_angle)
+        if italic and glyph.italic_skew:
+            simplified = italicize_path(
+                simplified, fc.window_width * glyph.number_characters
+            )
 
         rec = RecordingPen()
         simplified.draw(rec)

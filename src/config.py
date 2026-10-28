@@ -31,7 +31,9 @@ class FontConfig:
     min_margin_lowercase: int = 26
     min_margin_uppercase: int = 38
 
-    italic_angle: float = 9.4
+    italic_angle: float = 9
+    # Height the italic slant pivots around, so glyphs lean out on both sides
+    italic_pivot: int = 300
 
     width: int = 360
 
