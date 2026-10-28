@@ -18,6 +18,7 @@ import os
 import re
 import shutil
 import subprocess
+import tempfile
 import urllib.request
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
@@ -57,24 +58,70 @@ def style_name(path):
 
 
 def patch(patcher, path, output_dir, family_name):
-    subprocess.run(
-        [
-            "fontforge", "-script", patcher,
-            "--complete",
-            "--mono",
-            "--name", f"{family_name} {style_name(path)}",
-            "--quiet",
-            "--no-progressbars",
-            "--outputdir", output_dir,
-            path,
-        ],
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
     style = os.path.splitext(os.path.basename(path))[0].split("-", 1)[1]
-    patched = f"{family_name.replace(' ', '')}-{style}.ttf"
-    restore_advances(path, os.path.join(output_dir, patched))
+    work_dir = tempfile.mkdtemp(prefix=f".{style}.", dir=output_dir)
+    try:
+        subprocess.run(
+            [
+                "fontforge",
+                "-script",
+                patcher,
+                "--complete",
+                "--careful",
+                "--mono",
+                "--name",
+                f"{family_name} {style_name(path)}",
+                "--quiet",
+                "--no-progressbars",
+                "--outputdir",
+                work_dir,
+                path,
+            ],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        written = glob.glob(os.path.join(work_dir, "*.ttf"))
+        if len(written) != 1:
+            raise SystemExit(f"Expected exactly one font in {work_dir}, got: {written}")
+        fix_style_names(written[0], family_name, style)
+        restore_advances(path, written[0])
+        shutil.move(
+            written[0],
+            os.path.join(output_dir, f"{family_name.replace(' ', '')}-{style}.ttf"),
+        )
+    finally:
+        shutil.rmtree(work_dir, ignore_errors=True)
     print(f"Patched {path}")
+
+
+def fix_style_names(patched_path, family_name, style):
+    """Put the style back into the name tables if the patcher dropped it.
+
+    The Nerd Fonts name parser treats "Book" as an alias of "Regular" and
+    removes it from the patched font's names, which would make the Book
+    face masquerade as the Regular face.
+    """
+    italic = style.endswith("Italic")
+    weight = style[: -len("Italic")] if italic else style
+    if weight in ("", "Regular", "Bold", "Italic"):
+        return
+    font = TTFont(patched_path)
+    if weight in (font["name"].getDebugName(4) or ""):
+        return
+    full = f"{family_name} {weight}"
+    records = {
+        1: full,
+        2: "Italic" if italic else "Regular",
+        3: f"{full} {PATCHER_VERSION}",
+        4: f"{full} Italic" if italic else full,
+        6: f"{family_name}-{style}".replace(" ", ""),
+        16: family_name,
+        17: f"{weight} Italic" if italic else weight,
+    }
+    for name_id, value in records.items():
+        for platform, encoding, lang in ((1, 0, 0), (3, 1, 0x409)):
+            font["name"].setName(value, name_id, platform, encoding, lang)
+    font.save(patched_path)
 
 
 def restore_advances(src_path, patched_path):
@@ -86,6 +133,8 @@ def restore_advances(src_path, patched_path):
     src_hmtx = TTFont(src_path)["hmtx"]
     font = TTFont(patched_path)
     for name, (advance, _) in src_hmtx.metrics.items():
+        if name not in font["hmtx"].metrics:
+            continue
         patched_advance, lsb = font["hmtx"][name]
         if advance != patched_advance:
             font["hmtx"][name] = (advance, lsb)
