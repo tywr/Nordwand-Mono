@@ -54,7 +54,7 @@ class FontConfig:
 
     # Weights to export, as weight -> {name, stroke_x, stroke_y, stroke_alt}.
     # Every key is optional; strokes left out follow DrawConfig.weight().
-    weights = {w: {} for w in (100, 200, 300, 375, 400, 425, 500, 600, 700)}
+    weights = {w: {} for w in (100, 200, 300, 375, 400, 450, 500, 600, 700)}
 
 
 # Standard names, used when a weight in the config doesn't set its own.
@@ -116,15 +116,15 @@ class DrawConfig(FontConfig):
         """
         from bisect import bisect_right
 
-        ws = [100, 200, 300, 375, 400, 425, 500, 600, 700]
+        ws = [100, 200, 300, 375, 400, 450, 500, 600, 700]
         # Multipliers of the 400 values
-        ratio_x = [0.625, 0.731, 0.855, 0.962, 1, 1.04, 1.17, 1.368, 1.6]
-        ratio_y = [0.667, 0.763, 0.874, 0.967, 1, 1.034, 1.145, 1.31, 1.5]
-        ratio_alt = [0.833, 0.886, 0.941, 0.985, 1, 1.015, 1.063, 1.129, 1.2]
-        ratio_hx = [0.909, 0.938, 0.969, 0.992, 1, 1.008, 1.032, 1.066, 1.1]
-        ratio_hy = [1.0, 1.0, 1.0, 1.0, 1, 1.0, 1.0, 1.0, 1.0]
+        ratio_x = [0.4, 0.58, 0.775, 0.95, 1, 1.15, 1.2, 1.4, 1.6]
+        ratio_y = [0.4, 0.58, 0.775, 0.95, 1, 1.15, 1.2, 1.35, 1.5]
+        ratio_alt = [0.4, 0.58, 0.775, 0.95, 1, 1.15, 1.15, 1.15, 1.15]
+        ratio_hx = [0.9, 0.938, 0.969, 0.992, 1, 1.008, 1.032, 1.066, 1.1]
+        ratio_hy = [1, 1, 1, 1, 1, 1, 1, 1, 1]
         # Absolute values
-        tapers = [0.5, 0.5, 0.5, 0.5, 0.5, 0.479, 0.415, 0.33, 0.245]
+        tapers = [1, 0.8, 0.5, 0.5, 0.5, 0.479, 0.415, 0.33, 0.245]
 
         def at(values):
             i = min(max(bisect_right(ws, w), 1), len(ws) - 1)
