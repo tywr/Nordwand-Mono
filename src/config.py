@@ -121,7 +121,8 @@ class DrawConfig(FontConfig):
         ratio_x = [0.4, 0.58, 0.775, 0.95, 1, 1.15, 1.2, 1.4, 1.6]
         ratio_y = [0.4, 0.58, 0.775, 0.95, 1, 1.15, 1.2, 1.35, 1.5]
         ratio_alt = [0.4, 0.58, 0.775, 0.95, 1, 1.15, 1.15, 1.15, 1.15]
-        ratio_hx = [0.9, 0.938, 0.969, 0.992, 1, 1.008, 1.032, 1.066, 1.1]
+        # Optical corrections on top of the weight-independent curve shape
+        ratio_hx = [1, 1, 1, 1, 1, 1, 1, 1, 1]
         ratio_hy = [1, 1, 1, 1, 1, 1, 1, 1, 1]
         # Absolute values
         tapers = [1, 0.8, 0.5, 0.5, 0.5, 0.479, 0.415, 0.33, 0.245]
@@ -236,8 +237,17 @@ class DrawConfig(FontConfig):
             hx = self.hx
             hy = self.hy
 
-        hx = hx * (x2 - x1 - self.stroke_x) / self.width
-        hy = hy * (y2 - y1 - self.stroke_y) / self.x_height
+        # Handles are proportional to the outer box, so that the curve shape
+        # stays the same across weights (identical to before at the base weight)
+        inner_width = x2 - x1 - self.stroke_x
+        hx = (
+            hx
+            * inner_width
+            / self.width
+            * (x2 - x1)
+            / (inner_width + FontConfig.stroke_x)
+        )
+        hy = hy * (y2 - y1 - FontConfig.stroke_y) / self.x_height
 
         return BodyBounds(
             x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy, v_ov=v_ov, h_ov=h_ov
