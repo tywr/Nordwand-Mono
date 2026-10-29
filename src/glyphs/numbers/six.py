@@ -3,8 +3,6 @@ from glyphs.numbers import NumberGlyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.polygon import draw_polygon
-from draw.parallelogramm import draw_parallelogramm
-from utils.pens import NullPen
 
 
 class SixGlyph(NumberGlyph):

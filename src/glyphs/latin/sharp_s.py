@@ -1,8 +1,6 @@
 from glyphs import Glyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.corner import draw_corner
-from utils.intersection import intersection_superellipses
 
 
 class SharpSGlyph(Glyph):

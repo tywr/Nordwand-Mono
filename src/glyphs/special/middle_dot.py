@@ -16,3 +16,8 @@ class MiddleDotGlyph(Glyph):
         s = self.stroke_ratio * dc.stroke_x
         y = dc.math
         draw_rect(pen, b.xmid - s / 2, y - s / 2, b.xmid + s / 2, y + s / 2)
+
+
+class GreekAnoTeleiaGlyph(MiddleDotGlyph):
+    name = "greek_ano_teleia"
+    unicode = "0x0387"
