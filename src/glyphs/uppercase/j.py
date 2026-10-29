@@ -20,6 +20,7 @@ class UppercaseJGlyph(UppercaseGlyph):
             height="cap",
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
+            uppercase=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         xc = self.cap_ratio * b.width
