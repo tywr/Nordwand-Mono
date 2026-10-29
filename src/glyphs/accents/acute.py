@@ -10,6 +10,13 @@ class Acute(Accent):
     width = 0.55
     stroke_ratio = 1.1
 
+    def scaled(self, dc, k):
+        """Same slant, its height and its slanted part scaled by `k`"""
+        d = self.stroke_ratio * dc.stroke_x
+        self.width = (d + k * (self.width * dc.width - d)) / dc.width
+        self.height *= k
+        return self
+
     def draw_at(self, pen, dc, x, y):
         h = self.height * dc.x_height
         w = self.width * dc.width
