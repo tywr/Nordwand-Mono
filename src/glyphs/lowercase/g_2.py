@@ -9,8 +9,8 @@ class LowercaseG2Glyph(Glyph):
     name = "lowercase_g_2"
     unicode = "0x67"
     font_feature = {"cv04": 1}
-    offset = 0
-    width_ratio = 1.05
+    offset = 18
+    width_ratio = 1.1
 
     taper = 0.75
     bowl_y_ratio = 0.68
