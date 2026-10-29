@@ -11,6 +11,7 @@ class GreekLowercaseOmegaGlyph(Glyph):
     offset = 0
     tail_ratio = 0.2
     mid_ratio = 0.5
+    mid_y_ratio = 0.66
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -19,6 +20,7 @@ class GreekLowercaseOmegaGlyph(Glyph):
             overshoot_bottom=True,
         )
         xmid = b.x1 + self.mid_ratio * b.width
+        ymid = b.y1 + self.mid_y_ratio * b.height
         sy = dc.stroke_y
         sx = max(0, 0.9 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
         xtr = b.x2 - self.tail_ratio * b.width - sx / 2
@@ -29,14 +31,7 @@ class GreekLowercaseOmegaGlyph(Glyph):
             xmid - sx / 2,
             b.ymid,
             xmid + sx / 2,
-            b.y2,
-        )
-        draw_rect(
-            pen,
-            xmid - sx / 2,
-            b.ymid,
-            xmid + sx / 2,
-            b.y2,
+            ymid,
         )
         draw_arch(
             pen,
@@ -65,5 +60,7 @@ class GreekLowercaseOmegaGlyph(Glyph):
             cut="top",
             taper=0.6,
         )
-        draw_square_corner(pen, sx, sy, b.x1, b.ymid, xtl, b.y2, orientation="top-right")
+        draw_square_corner(
+            pen, sx, sy, b.x1, b.ymid, xtl, b.y2, orientation="top-right"
+        )
         draw_square_corner(pen, sx, sy, b.x2, b.ymid, xtr, b.y2, orientation="top-left")
