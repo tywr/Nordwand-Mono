@@ -32,6 +32,7 @@ class AmpersandGlyph(Glyph):
             overshoot_top=True,
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
+            uppercase=True,
         )
 
         ox = self.hook_outside_cell * b.width
