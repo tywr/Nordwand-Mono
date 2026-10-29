@@ -29,7 +29,11 @@ class FiveGlyph(NumberGlyph):
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="cap", width_ratio=self.width_ratio
+            offset=self.offset,
+            height="cap",
+            width_ratio=self.width_ratio,
+            overshoot_bottom=True,
+            number=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         sd = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.05)
