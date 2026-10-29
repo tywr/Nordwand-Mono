@@ -1,4 +1,3 @@
-from math import cos
 from glyphs.uppercase import UppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
 from draw.rect import draw_rect
@@ -18,11 +17,8 @@ class GreekUppercaseDeltaGlyph(UppercaseGlyph):
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        ec = self.extra_cut(dc)
 
-        half_width = b.width / 2 - sx / 2
         ov = self.overlap * sx
-        hb = self.bar_height * b.height - ec
 
         # Left branch
         draw_parallelogramm(
