@@ -14,7 +14,7 @@ class GreekLowercasePhiGlyph(Glyph):
     stroke_x_ratio = 1.01
     stroke_y_ratio = 1.0
     left_opening = 0.28
-    inner_stroke_ratio = 1
+    inner_stroke_ratio = 1.25
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
