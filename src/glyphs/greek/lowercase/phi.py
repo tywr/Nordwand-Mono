@@ -10,7 +10,7 @@ class GreekLowercasePhiGlyph(Glyph):
     name = "greek_lowercase_phi"
     unicode = "0x3C6"
     offset = 0
-    width_ratio = 1.05
+    width_ratio = 1.1
     stroke_x_ratio = 1.01
     stroke_y_ratio = 1.0
     left_opening = 0.28
