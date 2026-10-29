@@ -51,7 +51,7 @@ class FontConfig:
     stroke_alt: int = 66
 
     v_overshoot: int = 9
-    v_overshoot_cap: int = 16
+    v_overshoot_cap: int = 15
     h_overshoot: int = 10
 
     # Weights to export, as weight -> {name, stroke_x, stroke_y, stroke_alt}.
