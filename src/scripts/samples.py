@@ -211,10 +211,10 @@ SAMPLES = [
 ]
 
 
-def _script_sample(font_path, ranges, basic_capitals, pangrams):
+def _script_sample(font_path, ranges, basic_capitals, pangrams, exclude=""):
     """The letters of a script covered by the font, uppercase then lowercase,
     followed by pangrams. `ranges` and `basic_capitals` are inclusive
-    (first, last) codepoint pairs."""
+    (first, last) codepoint pairs; letters in `exclude` are left out."""
     from fontTools.ttLib import TTFont
 
     with TTFont(font_path) as font:
@@ -244,6 +244,7 @@ def _script_sample(font_path, ranges, basic_capitals, pangrams):
                     chr(codepoint)
                     for codepoint in codepoints
                     if in_script(codepoint)
+                    and chr(codepoint) not in exclude
                     and unicodedata.category(chr(codepoint)) == category
                 ),
                 key=key,
@@ -278,6 +279,7 @@ def _greek_sample(font_path):
             "Γαζίες και μυρτιές δεν θα βρω πια στο χρυσαφί ξέφωτο",
             "Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός",
         ],
+        exclude="ΆΈΉΊΌΎΏ",
     )
 
 
