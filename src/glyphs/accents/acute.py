@@ -33,6 +33,11 @@ class Acute(Accent):
         )
 
 
+class Tonos(Acute):
+    name = "tonos"
+    unicode = "0x0384"
+
+
 class CombiningAcute(Acute):
     name = "combining_acute"
     unicode = "0x0301"

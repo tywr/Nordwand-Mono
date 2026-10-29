@@ -29,3 +29,8 @@ class SemiColonGlyph(Glyph):
         )
         cg = CommaGlyph()
         cg.draw(pen, dc)
+
+
+class GreekQuestionMarkGlyph(SemiColonGlyph):
+    name = "greek_question_mark"
+    unicode = "0x037E"
