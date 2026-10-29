@@ -69,7 +69,10 @@ class LowercaseG2Glyph(Glyph):
             xt,
             yb2,
         )
-        # Half bottom loop
+        # Half bottom loop, the left half keeping the same distance between
+        # its side and its handles as the right one
+        bhx = b.hx * 2 * lb / b.width
+        bhx2 = lb2 - (lb - bhx)
         draw_loop(
             pen,
             sx,
@@ -78,7 +81,7 @@ class LowercaseG2Glyph(Glyph):
             dc.descent - dc.v_overshoot,
             xbmid + lb,
             ybt + sy,
-            b.hx * 2 * lb / b.width,
+            bhx,
             b.hy * abs(dc.descent - dc.v_overshoot - sy - ybt) / b.height,
             cut="left",
         )
@@ -92,7 +95,7 @@ class LowercaseG2Glyph(Glyph):
             xb2 - bo,
             yb1 + sy,
             b.hx * (xb2 - xb1 - 2 * bo) / b.width,
-            b.hy * (yb1 - sy - ybt) / b.height * self.bridge_hy_ratio,
+            b.hy * abs(yb1 + sy - ybt) / b.height,
             taper=dc.taper * self.taper,
             cut="right",
             side="top",
@@ -106,7 +109,7 @@ class LowercaseG2Glyph(Glyph):
             dc.descent - dc.v_overshoot,
             xbmid + lb2,
             ybt + sy,
-            b.hx * 2 * lb2 / b.width,
+            bhx2,
             b.hy * abs(dc.descent - dc.v_overshoot - sy - ybt) / b.height,
             taper=dc.taper * self.taper,
             cut="right",
