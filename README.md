@@ -143,6 +143,10 @@ It also includes the [Powerline](https://github.com/powerline/powerline) symbols
 
 ![Cyrillic sample](assets/samples/sample_cyrillic.jpg)
 
+### Greek
+
+![Greek sample](assets/samples/sample_greek.jpg)
+
 ### Powerline
 
 ![Powerline sample](assets/samples/sample_powerline.png)

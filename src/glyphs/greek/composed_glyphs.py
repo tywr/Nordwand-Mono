@@ -1,4 +1,3 @@
-from dataclasses import replace
 from fontTools.pens.transformPen import TransformPen
 from config import FontConfig as fc
 from glyphs.accents.acute import Acute
@@ -29,30 +28,32 @@ class IotaComposedGlyph(ComposedGlyph):
 
 
 class UppercaseTonosGlyph(ComposedGlyph):
-    """Capital with the tonos on its top-left side: the capital is squeezed
-    to the right to make room for it, keeping the same stem thickness"""
+    """Capital with the tonos on its top-left side: the capital is shifted
+    to the right, as a fraction of its width, to make room for it"""
 
     accent_class = Acute
-    squeeze = 0.66
-    tonos_scale = 0.5
-    tonos_gap = 0.35
+    shift = 0.0
+    tonos_scale = 0.75
+    tonos_height = 1.25
+    tonos_stroke = 1.15
+    tonos_shift = 0.0
 
     def draw(self, pen, dc):
         base_class = self._resolve_base_class(dc)
         base = base_class()
         b = dc.body_bounds(offset=base_class.offset, height="cap", uppercase=True)
 
-        s = self.squeeze
-        squeezed = TransformPen(pen, (s, 0, 0, 1, b.x2 * (1 - s), 0))
-        base.draw(squeezed, replace(dc, stroke_x=dc.stroke_x / s))
+        dx = self.shift * (b.x2 - b.x1)
+        base.draw(TransformPen(pen, (1, 0, 0, 1, dx, 0)), dc)
 
-        # Tonos ending a gap away from the left of the squeezed capital
-        tonos = self.accent_class().scaled(dc, self.tonos_scale)
-        w = tonos.width * dc.width
-        d = tonos.stroke_ratio * dc.stroke_x
+        # Tonos ending a gap away from the left of the shifted capital
+        tonos = self.accent_class()
+        tonos.stroke_ratio *= self.tonos_stroke
+        tonos.scaled(dc, self.tonos_scale)
+        tonos.height *= self.tonos_height
         h = tonos.height * dc.x_height
-        x2 = b.x2 - s * (b.x2 - b.x1) - self.tonos_gap * dc.stroke_x
-        tonos.draw_at(pen, dc, x2 - w + d / 2, dc.cap - h / 2)
+        tdx = self.tonos_shift * dc.window_width
+        tonos.draw_at(pen, dc, b.x1 + tdx, dc.cap - h / 2)
 
 
 class GreekLowercaseAlphaTonosGlyph(ComposedGlyph):
@@ -163,39 +164,52 @@ class GreekUppercaseAlphaTonosGlyph(UppercaseTonosGlyph):
     name = "greek_uppercase_alpha_tonos"
     unicode = "0x0386"
     base_glyph_class = GreekUppercaseAlphaGlyph
+    shift = 0.05
 
 
 class GreekUppercaseEpsilonTonosGlyph(UppercaseTonosGlyph):
     name = "greek_uppercase_epsilon_tonos"
     unicode = "0x0388"
     base_glyph_class = GreekUppercaseEpsilonGlyph
+    tonos_shift = -0.15
+    shift = 0.15
 
 
 class GreekUppercaseEtaTonosGlyph(UppercaseTonosGlyph):
     name = "greek_uppercase_eta_tonos"
     unicode = "0x0389"
     base_glyph_class = GreekUppercaseEtaGlyph
+    tonos_shift = -0.15
+    shift = 0.15
 
 
 class GreekUppercaseIotaTonosGlyph(UppercaseTonosGlyph):
     name = "greek_uppercase_iota_tonos"
     unicode = "0x038A"
     base_glyph_class = GreekUppercaseIotaGlyph
+    tonos_shift = -0.15
+    shift = 0.15
 
 
 class GreekUppercaseOmicronTonosGlyph(UppercaseTonosGlyph):
     name = "greek_uppercase_omicron_tonos"
     unicode = "0x038C"
     base_glyph_class = GreekUppercaseOmicronGlyph
+    tonos_shift = -0.15
+    shift = 0.15
 
 
 class GreekUppercaseUpsilonTonosGlyph(UppercaseTonosGlyph):
     name = "greek_uppercase_upsilon_tonos"
     unicode = "0x038E"
     base_glyph_class = GreekUppercaseUpsilonGlyph
+    tonos_shift = -0.15
+    shift = 0.15
 
 
 class GreekUppercaseOmegaTonosGlyph(UppercaseTonosGlyph):
     name = "greek_uppercase_omega_tonos"
     unicode = "0x038F"
     base_glyph_class = GreekUppercaseOmegaGlyph
+    tonos_shift = -0.15
+    shift = 0.15
