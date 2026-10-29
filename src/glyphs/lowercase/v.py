@@ -16,7 +16,7 @@ class LowercaseVGlyph(Glyph):
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
-        ov = self.overlap * dc.stroke_x
+        ov = self.overlap * dc.stroke_x * self.stroke_ratio
         sx = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.0)
         lsh = self.lower_section_height * dc.stroke_y
 
