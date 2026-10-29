@@ -20,7 +20,7 @@ class GreekLowercaseZetaGlyph(TailedGreekLowercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
-        ymid = self.tail_height_ratio * b.height
+        ymid = self.tail_height_ratio * dc.x_height
 
         # Top bar
         draw_rect(
