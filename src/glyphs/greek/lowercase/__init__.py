@@ -1,7 +1,6 @@
 from abc import ABC
 from glyphs import Glyph
 from draw.loop import draw_loop
-from draw.rect import draw_rect
 
 
 class TailedGreekLowercaseGlyph(Glyph, ABC):
@@ -14,23 +13,26 @@ class TailedGreekLowercaseGlyph(Glyph, ABC):
     hy_ratio = 1
     tail_depth = 0.85
     tail_terminal = 0.1
+    tail_height_ratio = 0.4
 
     def draw_tail(self, pen, dc, b, sx, sy):
         """Right half of a loop hanging below the bottom stroke of `b`; the
         glyph has to bring its own bottom stroke to `b.xmid`"""
         y1 = self.tail_depth * dc.descent
-        y2 = b.y1 + sy
+        y2 = sy
+        yl2 = self.tail_height_ratio * dc.x_height * 2
+
         # Bottom left curve, going into the tail
         draw_loop(
             pen,
             sx,
             sy,
             b.x1,
-            b.y1,
+            0,
             b.x2,
-            b.y2,
-            self.hx_ratio * b.hx,
-            self.hy_ratio * b.hy,
+            yl2,
+            self.hx_ratio * dc.hx,
+            self.hy_ratio * dc.hy * self.tail_height_ratio * 2,
             quarter="bottom-left",
         )
         draw_loop(
@@ -41,7 +43,7 @@ class TailedGreekLowercaseGlyph(Glyph, ABC):
             y1,
             b.x2,
             y2,
-            self.hx_ratio * b.hx,
-            self.hy_ratio * b.hy * (y2 - y1) / b.height,
+            self.hx_ratio * dc.hx,
+            self.hy_ratio * dc.hy * (y2 - y1) / dc.x_height,
             cut="left",
         )
