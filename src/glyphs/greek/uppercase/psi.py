@@ -10,7 +10,7 @@ class GreekUppercasePsiGlyph(UppercaseUGlyph):
     unicode = "0x3A8"
     arch_raise_ratio = 0.22
     width_ratio = 1.16
-    inner_stroke_ratio = 1.4
+    inner_stroke_ratio = 1.3
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
