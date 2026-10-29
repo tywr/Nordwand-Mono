@@ -30,6 +30,7 @@ class CommercialAtGlyph(Glyph):
             overshoot_left=True,
             overshoot_right=True,
             width_ratio=self.width_ratio,
+            uppercase=True,
         )
         xb = b.x1 + b.width * self.bottom_reach
         y1 = b.y1 - b.height * self.bottom_offset_ratio
@@ -51,7 +52,7 @@ class CommercialAtGlyph(Glyph):
             ihx,
             ihy,
             side="right",
-            taper=self.taper*dc.taper,
+            taper=self.taper * dc.taper,
         )
 
         draw_corner(
