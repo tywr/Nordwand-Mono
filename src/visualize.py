@@ -347,9 +347,12 @@ def visualize_glyph(
     plt.show()
 
 
-def visualize_text(text, point_size=None, guides=False, dc=None, italic=False):
+def visualize_text(
+    text, point_size=None, guides=False, dc=None, italic=False, variants=None
+):
     if dc is None:
         dc = DrawConfig()
+    variants = variants or {}
     all_glyphs = discover_glyphs()
 
     active_glyphs, _ = select_style_glyphs(all_glyphs, italic)
@@ -359,6 +362,13 @@ def visualize_text(text, point_size=None, guides=False, dc=None, italic=False):
         if g.unicode and not g.font_feature:
             char = chr(int(g.unicode, 16))
             glyph_map[char] = g
+    for g in active_glyphs:
+        if (
+            g.unicode
+            and g.font_feature
+            and all(variants.get(k) == v for k, v in g.font_feature.items())
+        ):
+            glyph_map[chr(int(g.unicode, 16))] = g
 
     ligature_map = {}
     for g in active_glyphs:
@@ -528,6 +538,12 @@ if __name__ == "__main__":
         "--guides", action="store_true", help="Show helper lines (text mode)"
     )
     parser.add_argument(
+        "-v",
+        "--variants",
+        default="",
+        help="Comma-separated features to enable in text mode (e.g. 'cv04=1,ss01')",
+    )
+    parser.add_argument(
         "--config",
         metavar="FILE.yml",
         help="YAML file whose values overwrite the default FontConfig values",
@@ -577,6 +593,11 @@ if __name__ == "__main__":
             parser.error(f"Unknown style {style!r} in -s")
         labels.append(style)
 
+    variants = {}
+    for feature in filter(None, (f.strip() for f in args.variants.split(","))):
+        tag, _, value = feature.partition("=")
+        variants[tag.strip()] = int(value) if value else 1
+
     if args.text is not None:
         visualize_text(
             args.text,
@@ -584,6 +605,7 @@ if __name__ == "__main__":
             guides=args.guides,
             dc=configs[0],
             italic=italic,
+            variants=variants,
         )
     else:
         if not args.slug:
