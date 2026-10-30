@@ -1505,7 +1505,20 @@ class LowercaseTCedillaGlyph(ComposedGlyph):
     unicode = "0x163"
     base_glyph_class = LowercaseTGlyph
     accent_class = Cedilla
-    accent_y = _cedilla_y
+
+    def accent_x(self, dc, base, b):
+        """Horizontal anchor of the accent; centered on the body by default."""
+        return b.xmid + 0.15 * b.width
+
+    def draw(self, pen, dc):
+        base_class = self._resolve_base_class(dc)
+        base = base_class()
+        base.draw_base(pen, dc) if hasattr(base, "draw_base") else base.draw(pen, dc)
+
+        b = dc.body_bounds(offset=base_class.offset)
+        accent_class = self.accent_class()
+        accent_class.y_start = 10
+        accent_class.draw_at(pen, dc, x=self.accent_x(dc, base, b), y=0)
 
 
 class UppercaseTCedillaGlyph(ComposedGlyph):

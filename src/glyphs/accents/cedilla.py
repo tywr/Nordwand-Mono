@@ -15,6 +15,7 @@ class Cedilla(Accent):
     neck_length = 0.05
     flat_ratio = 0.1
     slant_ratio = 1.25
+    y_start = 0
 
     def draw_at(self, pen, dc, x, y):
         h = abs(dc.descent)
@@ -37,7 +38,7 @@ class Cedilla(Accent):
             x - sl / 2,
             yn - sy,
             x + sl / 2,
-            0,
+            self.y_start,
         )
         draw_loop(
             pen,
