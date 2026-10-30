@@ -48,11 +48,10 @@ class AeGlyph(Glyph):
         ycut = b.y1 + self.cap_height * b.height
         xc = b.x1 + self.cap_offset * b.width
         chx = self.cap_hx_ratio * b.hx
-        xt = b.x2 + self.tail_offset * b.width
         yo = b.y1 + self.tail_height * b.height
 
         ax2, axmid = b.xmid + sx / 2, (b.x1 + b.xmid + sx / 2) / 2
-        ex1, exmid = b.xmid - sx / 2, (b.x2 + b.xmid - sx / 2) / 2
+        exmid = (b.x2 + b.xmid - sx / 2) / 2
 
         # Lower half half of the bowl
         draw_arch(
@@ -135,7 +134,7 @@ class AeGlyph(Glyph):
             exmid,
             b.y2,
             chx,
-            hy,
+            b.hy,
             orientation="top-left",
         )
         draw_corner(
@@ -147,7 +146,7 @@ class AeGlyph(Glyph):
             exmid,
             b.y2,
             chx,
-            hy,
+            b.hy,
             orientation="top-right",
         )
         draw_corner(
@@ -159,7 +158,7 @@ class AeGlyph(Glyph):
             exmid,
             b.y1,
             chx,
-            hy,
+            b.hy,
             orientation="bottom-right",
         )
 
