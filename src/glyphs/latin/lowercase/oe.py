@@ -35,10 +35,8 @@ class OeGlyph(Glyph):
         )
         sx, sy = dc.stroke_x, dc.stroke_y
         sx = max(0, 0.7 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
-        ry = (self.mid_height * b.height + dc.stroke_alt / 2) / b.height
         ymid = b.y1 + self.mid_height * b.height
-        hx, hy = b.hx * self.hx_ratio, b.hy * ry * self.hy_ratio
-        chx = self.cap_hx_ratio * b.hx
+        hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         yo = b.y1 + self.tail_height * b.height
 
         ov = sx * 0.5
@@ -52,7 +50,7 @@ class OeGlyph(Glyph):
             b.y1,
             b.xmid + ov,
             b.y2,
-            chx,
+            hx,
             hy,
             side="right",
             taper=1,
@@ -66,7 +64,7 @@ class OeGlyph(Glyph):
             b.ymid,
             exmid,
             b.y2,
-            chx,
+            hx,
             hy,
             orientation="top-left",
         )
@@ -78,7 +76,7 @@ class OeGlyph(Glyph):
             b.ymid,
             exmid,
             b.y2,
-            chx,
+            hx,
             hy,
             orientation="top-right",
         )
@@ -90,7 +88,7 @@ class OeGlyph(Glyph):
             b.ymid,
             exmid,
             b.y1,
-            chx,
+            hx,
             hy,
             orientation="bottom-right",
         )
@@ -104,8 +102,8 @@ class OeGlyph(Glyph):
             b.ymid,
             exmid,
             b.y1,
-            chx,
-            b.hy,
+            hx,
+            hy,
             orientation="bottom-left",
         )
 
