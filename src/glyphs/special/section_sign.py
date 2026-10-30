@@ -10,7 +10,7 @@ class SectionSignGlyph(Glyph):
     width_ratio = 0.95
     height_ratio = 1.4  # Total height, relative to the cap height
     loop_ratio = 0.42  # Middle loop height, relative to the total height
-    taper = 1.5
+    taper = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
