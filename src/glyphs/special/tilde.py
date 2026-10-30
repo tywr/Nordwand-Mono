@@ -13,7 +13,7 @@ class TildeGlyph(Glyph):
     height_ratio = 0.25
     end_width_ratio = 0.3
     curve_ratio = 1.35
-    curve_thinning = 0.03
+    curve_thinning = 0.1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -44,7 +44,7 @@ class TildeGlyph(Glyph):
         xa, xb = b.x1 + qw, b.x2 - qw
         lhx, lihx = left["outer"].hx, left["inner"].hx
         rhx, rihx = right["outer"].hx, right["inner"].hx
-        th = self.curve_thinning * b.height
+        th = self.curve_thinning * dc.stroke_x
         r = self.curve_ratio
         pen.moveTo((xa, y2 - sy))
         pen.curveTo((xa + r * lihx + th, y2 - sy), (xb - r * rhx + th, y1), (xb, y1))
