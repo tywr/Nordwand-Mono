@@ -17,5 +17,5 @@ class LessThenSignGlyph(Glyph):
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
         h = dc.parenthesis_length * self.span
-        s = dc.stroke_x * self.stroke_ratio
+        s = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.2)
         draw_chevron(pen, s, s, b.x1, b.x2, dc.math, h, delta=s)
