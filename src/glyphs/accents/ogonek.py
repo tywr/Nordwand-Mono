@@ -19,19 +19,22 @@ class Ogonek(Accent):
     tension = 0.6  # Curve handle length, as a fraction of each segment's span
     inner_turn = 0.5  # Inner edge turn point, right of the outer one, in start widths
 
-    def draw_at(self, pen, dc, x, y, width=None, start=0):
+    def draw_at(self, pen, dc, x, y, width=None, start=0, flush=False):
         """`x` is the center of the hook where it leaves the letter, `y` the
         line it hangs from and `width` its horizontal span there (by default
         a stem width), so it can cover the full stem it protrudes from.
         `start` is the height above `y` where the hook begins; the bottom
-        stays at the same depth below `y` whatever the start."""
+        stays at the same depth below `y` whatever the start. With `flush`,
+        both edges drop straight to the start line before curving, so the
+        hook continues the stem's edges instead of notching in."""
         w0 = width if width is not None else self.stem_ratio * dc.stroke_x
         w1 = self.tail_ratio * dc.stroke_y
         a = radians(self.angle)
         dx, dy = -sin(a), -cos(a)  # Shared initial direction of both edges
 
         # Overlap the letter by half a stroke so the hook joins it cleanly.
-        top = y + start + dc.stroke_y / 2
+        overlap_top = y + start + dc.stroke_y / 2
+        top = y + start if flush else overlap_top
         bottom = y - self.depth * abs(dc.descent)
         lean = self.lean * dc.width
         x_end = min(
@@ -53,10 +56,16 @@ class Ogonek(Accent):
         outer = edge(x - w0 / 2, bottom, x - lean)
         inner = edge(x + w0 / 2, bottom + w1, x - lean + self.inner_turn * w0)
 
-        pen.moveTo(outer[0])
+        if flush:
+            pen.moveTo((outer[0][0], overlap_top))
+            pen.lineTo(outer[0])
+        else:
+            pen.moveTo(outer[0])
         pen.curveTo(*outer[1:])
         pen.lineTo(inner[3])
         pen.curveTo(inner[2], inner[1], inner[0])
+        if flush:
+            pen.lineTo((inner[0][0], overlap_top))
         pen.closePath()
 
     def draw(self, pen, dc):
