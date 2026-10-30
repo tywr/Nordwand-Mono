@@ -1,7 +1,6 @@
-from math import cos
 from glyphs.uppercase import UppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
-from draw.rect import draw_rect
+from draw.polygon import draw_polygon
 
 
 class UppercaseAGlyph(UppercaseGlyph):
@@ -12,15 +11,16 @@ class UppercaseAGlyph(UppercaseGlyph):
     overlap = 0.5
     stroke_x_ratio = 1.02
     width_ratio = 1.2
+    branch_stroke_ratio = 1.0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sy = dc.stroke_y * self.stroke_y_ratio
+        sx = self.diag_stroke_dampening(self.branch_stroke_ratio, dc.stroke_x, coef=0.2)
         ec = self.extra_cut(dc)
 
-        half_width = b.width / 2 - sx / 2
         ov = self.overlap * sx
         hb = self.bar_height * b.height - ec
 
@@ -34,15 +34,30 @@ class UppercaseAGlyph(UppercaseGlyph):
             b.xmid - ov,
             b.y2,
             direction="top-left",
+            delta=sx,
         )
         # Right branch
-        theta, delta = draw_parallelogramm(pen, sx, sy, b.x1, b.y1, b.xmid + ov, b.y2)
+        draw_parallelogramm(
+            pen, sx, sy, b.x1, b.y1, b.xmid + ov, b.y2, delta=sx
+        )
 
-        # Crossbar
-        draw_rect(
+        # Crossbar: ends follow the branch centerlines, so it always
+        # reaches into both strokes and never pokes out of them
+        def lerp(x0, x1, y):
+            return x0 + (x1 - x0) * (y - b.y1) / (b.y2 - b.y1)
+
+        def left(y):
+            return lerp(b.x1 + sx / 2, b.xmid + ov - sx / 2, y)
+
+        def right(y):
+            return lerp(b.x2 - sx / 2, b.xmid - ov + sx / 2, y)
+
+        draw_polygon(
             pen,
-            b.xmid - half_width + (hb - sy) * cos(theta),
-            hb - sy,
-            b.xmid + half_width - (hb - sy) * cos(theta),
-            hb,
+            points=[
+                (left(hb - sy), hb - sy),
+                (right(hb - sy), hb - sy),
+                (right(hb), hb),
+                (left(hb), hb),
+            ],
         )
