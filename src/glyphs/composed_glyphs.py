@@ -1528,6 +1528,16 @@ class UppercaseTCedillaGlyph(ComposedGlyph):
     accent_class = Cedilla
     accent_y = _cedilla_y
 
+    def accent_x(self, dc, base, b):
+        """Neck's top-right corner (x + sl/2) on the stem's right edge."""
+        stem_right = b.xmid + base.stroke_x_ratio * dc.stroke_x / 2
+        sl = (
+            self.accent_class.slant_ratio
+            * self.accent_class.stroke_ratio_x
+            * dc.stroke_x
+        )
+        return stem_right - sl / 2
+
 
 # ── Latvian: comma below (Unicode names them "cedilla") ──────────────
 
