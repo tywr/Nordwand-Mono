@@ -46,9 +46,16 @@ class GreekLowercasePhiGlyph(Glyph):
 
         draw_rect(
             pen,
-            b.xmid - six / 2,
+            b.xmid,
             b.y1,
             b.xmid + six / 2,
+            b.y2 - sy / 2,
+        )
+        draw_rect(
+            pen,
+            b.xmid - six / 2,
+            b.y1,
+            b.xmid,
             b.y2,
         )
         draw_rect(
