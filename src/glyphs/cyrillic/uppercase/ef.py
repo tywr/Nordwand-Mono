@@ -10,7 +10,6 @@ class CyrillicUppercaseEfGlyph(CyrillicUppercaseGlyph):
     vertical_ratio = 0.9
     vertical_overflow = 0.05
     width_ratio = 1.24
-    inner_stroke_ratio = 1.3
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -20,7 +19,7 @@ class CyrillicUppercaseEfGlyph(CyrillicUppercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        six = dc.stroke_alt * self.inner_stroke_ratio
+        six = max(0, 0.5 * (sx - 90)) + min(90, sx)
         y1 = b.y1 + (1 - self.vertical_ratio) * b.height / 2
         y2 = b.y2 - (1 - self.vertical_ratio) * b.height / 2
         of = self.vertical_overflow * b.height
