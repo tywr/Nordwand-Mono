@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en-us" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Nordwand Mono – a programming font for programmers and wanderers">
+<meta name="author" content="Tanguy VIVIER">
+<title>Nordwand Mono | tywr</title>
+<link rel="icon" type="image/svg+xml" href="https://tywr.github.io/icon.svg">
+
+<script>
+addEventListener('scroll',function(){
+  document.querySelector('.site-header').classList.toggle('scrolled',window.scrollY>0)
+},{passive:true})
+</script>
+
+<style>
+/* Mirrors the "ice" theme of tywr.github.io (assets/css/*.css) */
+@font-face { font-family: "Nordwand Mono"; src: url("https://tywr.github.io/NordwandMono-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("https://tywr.github.io/NordwandMono-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("https://tywr.github.io/NordwandMono-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("https://tywr.github.io/NordwandMono-BoldItalic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: swap; }
+
+:root {
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+
+  --accent-color: #abeaff;
+  --bg: #121212;
+  --bg-alt: #181818;
+  --fg-bright: #eeeeee;
+  --fg: #cccccc;
+  --fg-secondary: #aaaaaa;
+  --fg-muted: #606060;
+  --toggle-bg: #40404050;
+  --border: #262626;
+
+  --font-mono: "Nordwand Mono", "SFMono-Regular", "SF Mono", ui-monospace, Menlo, Monaco, monospace;
+  --font-sans: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: "New York", "New York Small", "New York Medium", ui-serif, Georgia, serif;
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+a { text-decoration-line: none; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* header.css */
+.site-header { position: sticky; top: 0; z-index: 50; flex-shrink: 0; background-color: var(--bg); color: var(--fg); }
+.header-container {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  padding: .5rem 2rem;
+  box-shadow: none;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.site-header.scrolled .header-container { box-shadow: var(--shadow-lg); }
+.header-title { font-family: var(--font-mono); font-size: 1.5rem; line-height: 2rem; font-weight: 700; letter-spacing: .025em; color: var(--accent-color); }
+
+.site-nav { display: none; align-items: center; gap: 1.25rem; padding-block: .5rem; }
+.site-nav a { color: var(--fg); }
+.site-nav a:hover { color: var(--fg-bright); }
+.mobile-menu { position: relative; }
+.mobile-menu summary { cursor: pointer; list-style: none; border-radius: 8px; padding: .5rem .75rem; color: var(--fg); }
+.mobile-menu summary:hover { background-color: var(--toggle-bg); }
+.mobile-menu nav {
+  position: absolute; right: 0; margin-top: .5rem; display: flex; flex-direction: column; min-width: 10rem;
+  border-radius: 8px; border: 1px solid var(--border); background-color: var(--bg); padding: .5rem; box-shadow: var(--shadow-lg);
+}
+.mobile-menu nav a { border-radius: 8px; padding: .5rem 1rem; color: var(--fg); }
+.mobile-menu nav a:hover { background-color: var(--toggle-bg); color: var(--fg-bright); }
+@media (width >= 48rem) {
+  .site-nav { display: flex; }
+  .mobile-menu { display: none; }
+}
+
+/* post.css */
+.site-wrapper, main { display: flex; min-height: 0; flex: 1; flex-direction: column; }
+.post-layout { margin-inline: auto; box-sizing: border-box; display: grid; width: 100%; grid-template-columns: minmax(0, 1fr); padding-inline: 1rem; }
+.post-article { min-width: 0; }
+@media (width >= 64rem) {
+  .post-layout { grid-template-columns: minmax(0,1fr) minmax(0,3fr) minmax(0,1fr); gap: 2rem; padding-inline: 1.5rem; }
+  .post-article { grid-column-start: 2; grid-row-start: 1; }
+}
+.post-title { font-family: var(--font-serif); font-size: 1.875rem; line-height: 1.2; font-weight: 600; }
+.post-content { padding-block: 1.5rem; text-align: justify; }
+
+/* @tailwindcss/typography: prose prose-invert */
+.prose { color: oklch(87.2% 0.01 258.338); font-size: 1rem; line-height: 1.75; }
+.prose p { margin-block: 1.25em; }
+.prose h2 { color: #fff; font-weight: 700; font-size: 1.5em; margin-top: 2em; margin-bottom: 1em; line-height: 1.3333333; }
+.prose a { color: #fff; text-decoration: underline; font-weight: 500; }
+
+/* shortcodes/specimen.html */
+.specimen { font-family: var(--specimen-font), monospace; margin: 2rem 0; display: flex; flex-direction: column; gap: 2rem; }
+.specimen-hero {
+  font-size: clamp(6rem, 20vw, 12rem);
+  line-height: 1;
+  text-align: center;
+  color: var(--accent-color);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 2rem 0;
+  background: var(--bg-alt);
+}
+.specimen-styles { display: grid; grid-template-columns: auto 1fr; gap: 1rem 2rem; align-items: baseline; }
+.specimen-styles > span { font-size: 2.0rem; }
+.specimen-styles .style-name { font-family: var(--font-sans, sans-serif); font-size: .9rem; color: var(--fg-muted); white-space: nowrap; }
+.specimen-row { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; }
+.specimen-row > .specimen-glyphs { flex: 1 1 320px; min-width: 0; }
+.specimen-row > .specimen-styles { flex: 0 0 auto; }
+.specimen-glyphs p { margin: 0; font-size: clamp(1rem, 4.5vw, 2rem); letter-spacing: .1em; white-space: nowrap; text-align: left; overflow-x: auto; }
+.specimen-code { border: 0.2px solid transparent; border-radius: 8px; background: var(--bg-alt); overflow: hidden; text-align: left; }
+.specimen-code > input { position: absolute; opacity: 0; pointer-events: none; }
+.code-tabs { display: flex; border-bottom: 1px solid var(--border); }
+.code-tabs label { font-family: inherit; font-size: .95rem; padding: .6rem 1.1rem; cursor: pointer; color: var(--fg-muted); border-bottom: 2px solid transparent; }
+.code-tabs label:hover { color: var(--fg); }
+.code-panel { display: none; }
+.specimen-code pre {
+  font-family: inherit;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  padding: .75rem 1.5rem 1.5rem;
+  color: var(--fg);
+  overflow-x: auto;
+  border-top: 0.3px solid var(--border);
+}
+#code-cpp:checked ~ .code-tabs label[for="code-cpp"],
+#code-py:checked  ~ .code-tabs label[for="code-py"],
+#code-rs:checked  ~ .code-tabs label[for="code-rs"] { color: var(--fg-bright); border-bottom-color: var(--accent-color); }
+#code-cpp:checked ~ .panel-cpp,
+#code-py:checked  ~ .panel-py,
+#code-rs:checked  ~ .panel-rs { display: block; }
+.specimen-code .c-pre { color: var(--fg-muted); }
+.specimen-code .c-kw  { color: var(--fg-bright); }
+.specimen-code .c-fn  { color: var(--fg-bright); font-weight: 700; }
+.specimen-code .c-str { color: var(--accent-color); }
+.specimen-code .c-num { color: var(--accent-color); }
+.specimen-code .c-op  { color: var(--fg-muted); }
+.prose a.specimen-download {
+  align-self: center;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: .6rem 2rem;
+  border-radius: 999px;
+  background: var(--accent-color);
+  color: var(--bg);
+  text-decoration: none;
+  transition: opacity .15s ease;
+}
+.prose a.specimen-download:hover { opacity: .85; }
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-container">
+      <a class="header-title" href="https://tywr.github.io/">tywr</a>
+      <div class="header-right">
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="https://tywr.github.io/notes/">Notes</a>
+          <a href="https://tywr.github.io/projects/">Projects</a>
+          <a href="https://tywr.github.io/archives/">Archive</a>
+          <a href="https://tywr.github.io/tags/">Tags</a>
+        </nav>
+        <details class="mobile-menu">
+          <summary aria-label="Open navigation">Menu</summary>
+          <nav aria-label="Mobile navigation">
+            <a href="https://tywr.github.io/notes/">Notes</a>
+            <a href="https://tywr.github.io/projects/">Projects</a>
+            <a href="https://tywr.github.io/archives/">Archive</a>
+            <a href="https://tywr.github.io/tags/">Tags</a>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <div class="site-wrapper">
+    <main>
+      <div class="post-layout">
+        <article class="post-article">
+          <header class="post-header">
+            <h1 class="post-title">Nordwand Mono</h1>
+          </header>
+
+          <div class="post-content prose">
+            <p>A programming typeface that draws inspiration from Swiss typography, blending geometric precision with visual calm. Designed by a programmer for programmers, it takes an opinionated approach to code readability.</p>
+
+            <div class="specimen" style="--specimen-font: 'Nordwand Mono';">
+              <div class="specimen-hero">Aa</div>
+              <a class="specimen-download" href="https://github.com/tywr/Nordwand-Mono/releases/latest">Download</a>
+
+              <h2>Glyphs &amp; Weights</h2>
+
+              <div class="specimen-row">
+                <div class="specimen-glyphs">
+                  <p>
+                  ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+                  abcdefghijklmnopqrstuvwxyz<br>
+                  0123456789<br>
+                  !"#$%&amp;'()*+,-./:;&lt;=&gt;?@[\]^_`{|}~
+                  </p>
+                </div>
+
+                <div class="specimen-styles">
+                  <span class="style-name">Regular</span>
+                  <span style="font-weight: 400">Hamburgevons</span>
+                  <span class="style-name">Regular Italic</span>
+                  <span style="font-weight: 400; font-style: italic">Hamburgevons</span>
+                  <span class="style-name">Bold</span>
+                  <span style="font-weight: 700">Hamburgevons</span>
+                  <span class="style-name">Bold Italic</span>
+                  <span style="font-weight: 700; font-style: italic">Hamburgevons</span>
+                </div>
+              </div>
+
+              <h2>Code Samples</h2>
+
+              <div class="specimen-code">
+                <input type="radio" name="code" id="code-cpp" checked>
+                <input type="radio" name="code" id="code-py">
+                <input type="radio" name="code" id="code-rs">
+                <div class="code-tabs">
+                  <label for="code-cpp">C++</label>
+                  <label for="code-py">Python</label>
+                  <label for="code-rs">Rust</label>
+                </div>
+
+                <div class="code-panel panel-cpp">
+<pre><span class="c-kw">enum class</span> <span class="c-fn">Weather</span> { Clear, Whiteout, Storm };
+
+<span class="c-kw">struct</span> <span class="c-fn">Route</span> {
+    std::<span class="c-kw">string</span> name <span class="c-op">=</span> <span class="c-str">"Nordwand"</span>;
+    <span class="c-kw">int</span> pitches <span class="c-op">=</span> <span class="c-num">38</span>;
+    <span class="c-fn">Weather</span> conditions <span class="c-op">=</span> Weather::Whiteout;
+};
+
+<span class="c-pre">// "The mountain always has the last word."</span></pre>
+                </div>
+
+                <div class="code-panel panel-py">
+<pre><span class="c-kw">class</span> <span class="c-fn">Ascent</span>:
+    <span class="c-kw">def</span> <span class="c-fn">__init__</span>(self, peak: <span class="c-kw">str</span>, altitude_m: <span class="c-kw">int</span>):
+        self.peak <span class="c-op">=</span> peak
+        self.altitude_m <span class="c-op">=</span> altitude_m
+        self.temp_c <span class="c-op">=</span> <span class="c-num">-18.5</span>
+        self.wind_kph <span class="c-op">=</span> <span class="c-num">42</span>
+
+    <span class="c-kw">def</span> <span class="c-fn">windchill</span>(self) <span class="c-op">-&gt;</span> <span class="c-kw">float</span>:
+        <span class="c-kw">return</span> <span class="c-num">13.12</span> <span class="c-op">+</span> <span class="c-num">0.6215</span> <span class="c-op">*</span> self.temp_c <span class="c-op">\</span>
+            <span class="c-op">-</span> <span class="c-num">11.37</span> <span class="c-op">*</span> self.wind_kph <span class="c-op">**</span> <span class="c-num">0.16</span>
+
+nordwand <span class="c-op">=</span> <span class="c-fn">Ascent</span>(<span class="c-str">"Eiger North Face"</span>, <span class="c-num">3970</span>)
+<span class="c-fn">print</span>(<span class="c-str">f"{nordwand.peak}: {nordwand.windchill():.1f}°C"</span>)</pre>
+                </div>
+
+                <div class="code-panel panel-rs">
+<pre><span class="c-kw">struct</span> <span class="c-fn">BaseCamp</span> {
+    altitude_m: <span class="c-kw">u32</span>,
+    temp_c: <span class="c-kw">i32</span>,
+    oxygen_pct: <span class="c-kw">f32</span>,
+}
+
+<span class="c-kw">fn</span> <span class="c-fn">acclimatize</span>(camp: <span class="c-op">&amp;</span><span class="c-fn">BaseCamp</span>) <span class="c-op">-&gt;</span> <span class="c-kw">bool</span> {
+    camp.oxygen_pct <span class="c-op">&gt;</span> <span class="c-num">12.0</span> <span class="c-op">&amp;&amp;</span> camp.temp_c <span class="c-op">&gt;</span> <span class="c-num">-25</span>
+}
+
+<span class="c-kw">fn</span> <span class="c-fn">main</span>() {
+    <span class="c-kw">let</span> camp1 <span class="c-op">=</span> <span class="c-fn">BaseCamp</span> { altitude_m: <span class="c-num">5364</span>, temp_c: <span class="c-num">-22</span>, oxygen_pct: <span class="c-num">10.8</span> };
+    <span class="c-fn">println!</span>(<span class="c-str">"Ready to summit: {}"</span>, <span class="c-fn">acclimatize</span>(<span class="c-op">&amp;</span>camp1));
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
