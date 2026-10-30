@@ -10,6 +10,8 @@ class CyrillicUppercaseZheGlyph(CyrillicUppercaseGlyph):
     neck_ratio = 0.1
     top_ratio = 0.96
     width_ratio = 1.35
+    branch_stroke_ratio = 1.1
+    inner_stroke_ratio = 1.25
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -18,25 +20,43 @@ class CyrillicUppercaseZheGlyph(CyrillicUppercaseGlyph):
             uppercase=True,
             width_ratio=self.width_ratio,
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sy = dc.stroke_y * self.stroke_y_ratio
+        sx = self.diag_stroke_dampening(self.branch_stroke_ratio, dc.stroke_x, coef=0.2)
+        six = self.inner_stroke_ratio * dc.stroke_alt
         ymid = dc.cap / 2
         dn = self.neck_ratio * b.width
         tx1 = b.x1 + (1 - self.top_ratio) * b.width / 2
         tx2 = b.x2 - (1 - self.top_ratio) * b.width / 2
 
-        draw_rect(pen, b.xmid - sx / 2, 0, b.xmid + sx / 2, dc.cap)
+        draw_rect(pen, b.xmid - six / 2, 0, b.xmid + six / 2, dc.cap)
 
         theta, delta = draw_parallelogramm(
-            pen, sx, sy, tx1, dc.cap, b.xmid - dn, ymid, direction="bottom-right"
+            pen,
+            sx,
+            sy,
+            tx1,
+            dc.cap,
+            b.xmid - dn,
+            ymid,
+            direction="bottom-right",
+            delta=sx,
         )
         draw_parallelogramm(
-            pen, sx, sy, b.x1, 0, b.xmid - dn, ymid, direction="top-right"
+            pen, sx, sy, b.x1, 0, b.xmid - dn, ymid, direction="top-right", delta=sx
         )
         draw_parallelogramm(
-            pen, sx, sy, tx2, dc.cap, b.xmid + dn, ymid, direction="bottom-left"
+            pen,
+            sx,
+            sy,
+            tx2,
+            dc.cap,
+            b.xmid + dn,
+            ymid,
+            direction="bottom-left",
+            delta=sx,
         )
         draw_parallelogramm(
-            pen, sx, sy, b.x2, 0, b.xmid + dn, ymid, direction="top-left"
+            pen, sx, sy, b.x2, 0, b.xmid + dn, ymid, direction="top-left", delta=sx
         )
 
         draw_rect(
