@@ -1481,6 +1481,10 @@ class LowercaseTCommaGlyph(ComposedGlyph):
     accent_class = CommaBelow
     accent_y = 0
 
+    def accent_x(self, dc, base, b):
+        """Horizontal anchor of the accent; centered on the body by default."""
+        return b.xmid + 0.25 * b.width
+
 
 class UppercaseSCommaGlyph(ComposedGlyph):
     name = "uppercase_scommaaccent"
