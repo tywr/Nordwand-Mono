@@ -10,7 +10,7 @@ class DialytikaTonos(Accent):
     unicode = "0x0385"
     gap = 0.62
     tonos_scale = 1.0
-    tonos_extra_y = 0.2
+    tonos_extra_y = 0.22
 
     def draw_at(self, pen, dc, x, y):
         dieresis = Dieresis()
@@ -19,5 +19,7 @@ class DialytikaTonos(Accent):
 
         # The acute starts half a stroke left of x and leans to the right
         acute = Acute().scaled(dc, self.tonos_scale)
+        acute.stroke_ratio = 0.75
+        acute.width = 0.35
         ey = dc.x_height * self.tonos_extra_y
         acute.draw_at(pen, dc, x, y + ey)

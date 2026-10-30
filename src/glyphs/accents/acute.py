@@ -17,7 +17,7 @@ class Acute(Accent):
         self.height *= k
         return self
 
-    def draw_at(self, pen, dc, x, y):
+    def draw_at(self, pen, dc, x, y, stroke_ratio=None):
         h = self.height * dc.x_height
         w = self.width * dc.width
         d = self.stroke_ratio * dc.stroke_x
