@@ -41,10 +41,10 @@ class AeGlyph(Glyph):
             self.cap_stroke_y_ratio * dc.stroke_y,
         )
         dx = csx - sx
-        ry = (self.mid_height * b.height + dc.stroke_alt / 2) / b.height
         ymid = b.y1 + self.mid_height * b.height
         yl = ymid + dc.stroke_alt / 2
-        hx, hy = b.hx * self.hx_ratio, b.hy * ry * self.hy_ratio
+        ry = (self.mid_height * b.height + dc.stroke_alt / 2) / b.height
+        hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         ycut = b.y1 + self.cap_height * b.height
         xc = b.x1 + self.cap_offset * b.width
         chx = self.cap_hx_ratio * b.hx
@@ -63,7 +63,7 @@ class AeGlyph(Glyph):
             ax2 + dx,
             yl,
             hx,
-            hy,
+            b.hy * ry,
             taper=self.taper * dc.taper,
             side="right",
             cut="top",
@@ -80,7 +80,7 @@ class AeGlyph(Glyph):
             axmid,
             yl,
             hx,
-            hy,
+            hy * ry,
             orientation="top-right",
         )
         draw_rect(
@@ -102,7 +102,7 @@ class AeGlyph(Glyph):
             xmid,
             b.y2,
             chx,
-            b.hy,
+            hy,
             orientation="top-left",
         )
 
@@ -116,7 +116,7 @@ class AeGlyph(Glyph):
             xmid,
             b.y2,
             chx,
-            b.hy,
+            hy,
             orientation="top-right",
         )
         cut_glyph = ufoLib2.objects.Glyph()
@@ -134,7 +134,7 @@ class AeGlyph(Glyph):
             exmid,
             b.y2,
             chx,
-            b.hy,
+            hy,
             orientation="top-left",
         )
         draw_corner(
@@ -146,7 +146,7 @@ class AeGlyph(Glyph):
             exmid,
             b.y2,
             chx,
-            b.hy,
+            hy,
             orientation="top-right",
         )
         draw_corner(
@@ -158,7 +158,7 @@ class AeGlyph(Glyph):
             exmid,
             b.y1,
             chx,
-            b.hy,
+            hy,
             orientation="bottom-right",
         )
 
@@ -172,7 +172,7 @@ class AeGlyph(Glyph):
             exmid,
             b.y1,
             chx,
-            b.hy,
+            hy,
             orientation="bottom-left",
         )
 
