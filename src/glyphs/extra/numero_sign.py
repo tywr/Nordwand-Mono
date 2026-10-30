@@ -14,7 +14,7 @@ class NumeroSignGlyph(UppercaseGlyph):
     offset = 0
     counter_ratio = 0.12  # Inner diameter of the ring, relative to the cell width
     ring_stroke_ratio = 0.45  # Ring and bar strokes, relative to the regular ones
-    n_stroke_ratio = 0.85  # The N strokes, relative to the regular ones
+    n_stroke_ratio = 0.75  # The N strokes, relative to the regular ones
     gap = 0.05  # Between the N and the ring, relative to the cell width
     bar_gap = 0.06  # Between the ring and the bar below, relative to the cell width
     width_ratio = 1.22
@@ -40,8 +40,8 @@ class NumeroSignGlyph(UppercaseGlyph):
 
         # N filling the room left of the ring. body_bounds spans
         # width * width_ratio + stroke_x, centered on the cell plus offset.
-        snx = max(0, 0.2 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
-        sny = max(0, 0.2 * (dc.stroke_y - 70)) + min(70, dc.stroke_y)
+        snx = max(0, 0.2 * (dc.stroke_x - 90)) + min(90, dc.stroke_x) * self.n_stroke_ratio
+        sny = max(0, 0.2 * (dc.stroke_y - 70)) + min(70, dc.stroke_y) * self.n_stroke_ratio
         ndc = dataclasses.replace(
             dc,
             stroke_x=snx,
