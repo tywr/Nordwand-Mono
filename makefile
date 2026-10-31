@@ -11,6 +11,7 @@ build:
 	uv run python -m scripts.specimen_pdf
 	uv run python -m scripts.samples
 	uv run python -m scripts.alternatives_markdown
+	uv run python -m scripts.website
 
 build-font:
 	uv run python -m generate_font --font-version $(FONT_VERSION) --web-font
@@ -30,6 +31,5 @@ visualize:
     --args -m visualize lowercase_a
 
 website:
-	mkdir -p docs/fonts
-	cp fonts/woff2/*.woff2 docs/fonts/
+	uv run python -m scripts.website
 	uv run python -m scripts.serve

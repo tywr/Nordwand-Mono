@@ -43,10 +43,8 @@ jobs:
       - name: Build fonts
         run: make build-font
 
-      - name: Copy fonts into the site
-        run: |
-          mkdir -p docs/fonts
-          cp fonts/woff2/*.woff2 docs/fonts/
+      - name: Copy fonts into the site and refresh its glyph list
+        run: uv run python -m scripts.website
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
