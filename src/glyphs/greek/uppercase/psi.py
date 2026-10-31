@@ -23,13 +23,14 @@ class GreekUppercasePsiGlyph(UppercaseUGlyph):
         h = b.y2 - y1
         y2 = y1 + self.loop_ratio * h
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
+            dc.default_stroke, dc.stroke_x
+        )
         hx = self.hx_ratio * b.hx
         hy = self.hy_ratio * b.hy * self.loop_ratio * h / b.height
-        six = dc.stroke_alt * self.inner_stroke_ratio
-
         draw_loop(pen, sx, sy, b.x1, y1, b.x2, y2, hx, hy, cut="top")
 
         draw_rect(pen, b.x1, (y1 + y2) / 2, b.x1 + sx, b.y2)
         draw_rect(pen, b.x2 - sx, (y1 + y2) / 2, b.x2, b.y2)
         draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, y1)
-        draw_rect(pen, b.xmid - six / 2, y1, b.xmid + six / 2, b.y2)
+        draw_rect(pen, b.xmid - sx / 2, y1, b.xmid + sx / 2, b.y2)

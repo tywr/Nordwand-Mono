@@ -8,7 +8,6 @@ class GreekLowercasePsiGlyph(SquareLowercaseGlyph):
     unicode = "0x3C8"
     offset = 0
     width_ratio = 1.1
-    inner_stroke_ratio = 1.25
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -16,14 +15,16 @@ class GreekLowercasePsiGlyph(SquareLowercaseGlyph):
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
         )
-        six = dc.stroke_alt * self.inner_stroke_ratio
+        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
+            dc.default_stroke, dc.stroke_x
+        )
         yl = b.y1 + self.loop_ratio * b.height
         ym = (yl + b.y1) / 2
 
         # Bottom arch, cut at top (only lower half drawn)
         draw_loop(
             pen,
-            dc.stroke_x,
+            sx,
             dc.stroke_y,
             b.x1,
             b.y1,
@@ -35,20 +36,20 @@ class GreekLowercasePsiGlyph(SquareLowercaseGlyph):
         )
 
         # Sides — start from arch midpoint
-        draw_rect(pen, b.x1, ym, b.x1 + dc.stroke_x, dc.x_height)
-        draw_rect(pen, b.x2 - dc.stroke_x, ym, b.x2, dc.x_height)
+        draw_rect(pen, b.x1, ym, b.x1 + sx, dc.x_height)
+        draw_rect(pen, b.x2 - sx, ym, b.x2, dc.x_height)
         # Middle stem
         draw_rect(
             pen,
-            b.xmid - dc.stroke_x / 2,
+            b.xmid - sx / 2,
             dc.descent,
-            b.xmid + dc.stroke_x / 2,
+            b.xmid + sx / 2,
             0,
         )
         draw_rect(
             pen,
-            b.xmid - six / 2,
+            b.xmid - sx / 2,
             0,
-            b.xmid + six / 2,
+            b.xmid + sx / 2,
             b.y2,
         )

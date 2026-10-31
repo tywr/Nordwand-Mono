@@ -16,16 +16,16 @@ class UppercaseAGlyph(UppercaseGlyph):
     branch_stroke_ratio = 1
     upper_section_height = 1
 
-    def draw(self, pen, dc):
-        b = dc.body_bounds(
+    def body(self, dc):
+        return dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
-        sy = dc.stroke_y * self.stroke_y_ratio
-        s = self.branch_stroke_ratio * dc.stroke_x
-        ec = self.extra_cut(dc)
 
+    def draw_branches(self, pen, dc, b):
+        """Both branches meeting at the apex, with the crotch cut below it.
+        Returns the overlap at the apex and the branches' horizontal width."""
+        s = self.branch_stroke_ratio * dc.stroke_x
         ov = self.overlap * s
-        hb = self.bar_height * b.height - ec
         ush = self.upper_section_height * dc.stroke_y
 
         glyph = ufoLib2.objects.Glyph()
@@ -46,6 +46,13 @@ class UppercaseAGlyph(UppercaseGlyph):
         )
         res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
         res.draw(pen)
+        return ov, delta
+
+    def draw(self, pen, dc):
+        b = self.body(dc)
+        sy = dc.stroke_y * self.stroke_y_ratio
+        hb = self.bar_height * b.height - self.extra_cut(dc)
+        ov, delta = self.draw_branches(pen, dc, b)
 
         # Crossbar: ends follow the branch centerlines, so it always
         # reaches into both strokes and never pokes out of them

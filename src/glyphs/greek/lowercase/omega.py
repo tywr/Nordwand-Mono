@@ -22,7 +22,7 @@ class GreekLowercaseOmegaGlyph(Glyph):
         xmid = b.x1 + self.mid_ratio * b.width
         ymid = b.y1 + self.mid_y_ratio * b.height
         sy = dc.stroke_y
-        sx = max(0, 0.9 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
+        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(dc.default_stroke, dc.stroke_x)
         xtr = b.x2 - self.tail_ratio * b.width - sx / 2
         xtl = b.x1 + self.tail_ratio * b.width + sx / 2
 
