@@ -10,10 +10,10 @@ class UppercaseNGlyph(UppercaseGlyph):
     name = "uppercase_n"
     unicode = "0x4E"
     offset = 0
-    middle_stroke_ratio = 1.0
     overlap = 0.25
     width_ratio = 1.04
     section_height = 1
+    middle_stroke_ratio = 0.95
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,6 +24,8 @@ class UppercaseNGlyph(UppercaseGlyph):
             min_margin=dc.min_margin_uppercase,
         )
         sx = dc.stroke_x * self.stroke_x_ratio
+        si = dc.stroke_x * self.middle_stroke_ratio
+        si = max(0, 0.7 * (si - dc.default_stroke)) + min(dc.default_stroke, si)
         ov = sx * self.overlap
         sh = self.section_height * dc.stroke_y
 
@@ -39,7 +41,7 @@ class UppercaseNGlyph(UppercaseGlyph):
         x_bottom, x_top = b.x2 - sx + ov, b.x1 + sx - ov
         _, delta = draw_parallelogramm(
             gpen,
-            sx * self.middle_stroke_ratio,
+            si,
             x_bottom,
             b.y1,
             x_top,
