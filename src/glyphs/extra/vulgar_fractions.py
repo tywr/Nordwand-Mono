@@ -1,4 +1,4 @@
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 from glyphs import Glyph
 from glyphs.extra.ordinal_indicator import draw_scaled
 from glyphs.numbers.one import OneGlyph
@@ -31,10 +31,9 @@ class FractionGlyph(Glyph):
             )
 
         hw = self.slash_width * dc.window_width / 2
-        draw_parallelogramm_legacy(
+        draw_parallelogramm(
             pen,
             dc.stroke_x * self.slash_stroke,
-            dc.stroke_y * self.slash_stroke,
             cx - hw,
             0,
             cx + hw,

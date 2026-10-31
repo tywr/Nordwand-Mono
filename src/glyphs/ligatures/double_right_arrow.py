@@ -20,7 +20,7 @@ class RightArrowGlyph(LigatureGlyph):
     span = GreaterThenSignGlyph.span
     gap = 0.4
     rect_stroke_ratio = 0.92
-    stroke_ratio = 1.2
+    stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -29,28 +29,20 @@ class RightArrowGlyph(LigatureGlyph):
         ymid = dc.math
         h = dc.parenthesis_length * self.span
         s = dc.stroke_x * self.rect_stroke_ratio
-        s2 = self.stroke_ratio * dc.stroke_x
         g = self.gap * dc.window_width
         so = self.side_offset * dc.window_width
         x1 = so
         x_tip = b.x2 + dc.window_width
         x_back = b.x1 + dc.window_width
-        draw_chevron(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            x_tip,
-            x_back,
-            ymid,
-            h,
-            delta=s2,
+        _, delta = draw_chevron(
+            pen, self.stroke_ratio * dc.stroke_x, x_tip, x_back, ymid, h
         )
 
         def x_end(y):
             # Middle of the chevron stroke at height y, so the bar end stays
             # inside the stroke whatever the chevron angle.
             t = abs(y - ymid) / (h / 2)
-            return x_tip - t * (x_tip - x_back - s2) - s2 / 2
+            return x_tip - t * (x_tip - x_back - delta) - delta / 2
 
         for yc in (ymid + g / 2, ymid - g / 2):
             y1, y2 = yc - s / 2, yc + s / 2

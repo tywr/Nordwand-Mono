@@ -19,7 +19,7 @@ class RightArrowGlyph(LigatureGlyph):
     side_offset = 0.05
     span = GreaterThenSignGlyph.span
     gap = 0.0
-    stroke_ratio = 1.2
+    stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -28,23 +28,20 @@ class RightArrowGlyph(LigatureGlyph):
         ymid = dc.math
         h = dc.parenthesis_length * self.span
         s = dc.stroke_x
-        s2 = self.stroke_ratio * dc.stroke_x
         x1 = self.side_offset * dc.window_width
         g = self.gap * dc.window_width
-        draw_chevron(
+        _, delta = draw_chevron(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
+            self.stroke_ratio * dc.stroke_x,
             b.x2 + dc.window_width,
             b.x1 + dc.window_width,
             ymid,
             h,
-            delta=s2,
         )
         draw_rect(
             pen,
             x1,
             dc.math - s / 2,
-            b.x2 + dc.window_width - s2 - g,
+            b.x2 + dc.window_width - delta - g,
             dc.math + s / 2,
         )

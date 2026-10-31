@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 from draw.loop import draw_loop
 
 
@@ -11,6 +11,7 @@ class PercentMarkGlyph(Glyph):
     offset_ratio_x = 0.45
     offset_ratio_y = 0.45
     zero_ratio = 0.4
+    stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -21,7 +22,8 @@ class PercentMarkGlyph(Glyph):
         ox = self.offset_ratio_x * b.width
         oy = self.offset_ratio_y * b.height
 
-        draw_parallelogramm_legacy(pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, b.y2)
+        s = self.stroke_ratio * dc.stroke_x
+        draw_parallelogramm(pen, s, b.x1, b.y1, b.x2, b.y2)
         draw_loop(
             pen,
             dc.stroke_alt,

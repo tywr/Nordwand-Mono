@@ -9,7 +9,7 @@ class GreaterThenSignGlyph(Glyph):
     width_ratio = 1
     overlap = 0.6
     span = 0.50
-    stroke_ratio = 1.45
+    stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -17,4 +17,4 @@ class GreaterThenSignGlyph(Glyph):
         )
         h = dc.parenthesis_length * self.span
         s = dc.stroke_x * self.stroke_ratio
-        draw_chevron(pen, s, s, b.x2, b.x1, dc.math, h, delta=s)
+        draw_chevron(pen, s, b.x2, b.x1, dc.math, h)

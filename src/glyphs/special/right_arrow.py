@@ -13,7 +13,7 @@ class RightArrowGlyph(Glyph):
     overlap = 0.6
     span = 0.4
     arrow_width = 0.5
-    stroke_ratio = 1.2
+    stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -26,11 +26,11 @@ class RightArrowGlyph(Glyph):
         x1 = self.side_offset_left * dc.window_width
         x2 = dc.window_width - self.side_offset_right * dc.window_width
         px1 = (1 - self.arrow_width) * dc.window_width
-        draw_chevron(pen, s, s, x2, px1, ymid, h, delta=s)
+        _, delta = draw_chevron(pen, s, x2, px1, ymid, h)
         draw_rect(
             pen,
             x1,
             ymid - sy / 2,
-            x2 - s / 2,
+            x2 - delta / 2,
             ymid + sy / 2,
         )

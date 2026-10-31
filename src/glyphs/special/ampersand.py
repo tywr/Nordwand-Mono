@@ -1,4 +1,4 @@
-from math import tan
+from math import tan, pi
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 
@@ -7,7 +7,7 @@ from glyphs.numbers.three import ThreeGlyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 from utils.pens import NullPen
 
 
@@ -24,6 +24,7 @@ class AmpersandGlyph(Glyph):
     hook_below_baseline = 0
     hook_outside_cell = 0.24
     end_height_ratio = 0.5
+    diag_stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -67,16 +68,17 @@ class AmpersandGlyph(Glyph):
         # bolder weights to leave room for the curves to turn
         dhy = self.hook_below_baseline * b.height
         yd = yj - self.hook_drop * self.extra_cut(dc)
-        theta, delta = draw_parallelogramm_legacy(
+        phi, delta = draw_parallelogramm(
             NullPen(),
-            dc.stroke_x,
-            dc.stroke_y,
+            self.diag_stroke_ratio * dc.stroke_x,
             b.x2 + ox,
             -dhy,
             xj,
             yd,
             direction="top-left",
         )
+        # Angle of the diagonal from the horizontal
+        theta = pi / 2 - phi
 
         # Draw the curve to the intersection
         ym = 0.5 * yu1 + 0.5 * yu2

@@ -1,8 +1,8 @@
-from math import cos, sin
+from math import cos, sin, pi
 from glyphs.numbers import NumberGlyph
 from glyphs.numbers.three import ThreeGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 from draw.loop import draw_loop
 from utils.pens import NullPen
 
@@ -14,6 +14,7 @@ class TwoGlyph(NumberGlyph):
     xj_ratio = 0.68
     yj_ratio = 0.46
     internal_radius = 0.22
+    diag_stroke_ratio = 0.94
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -47,15 +48,19 @@ class TwoGlyph(NumberGlyph):
         ishy = params["inner"].hy
         oshy = params["outer"].hy
 
-        theta, delta = draw_parallelogramm_legacy(
+        # ponytail: clamped under the band height, only reached by the heavy
+        # digits of the bold fractions; rethink their stroke if it shows
+        s = min(self.diag_stroke_ratio * dc.stroke_x, 0.95 * (yj - b.y1 - sy))
+        phi, delta = draw_parallelogramm(
             NullPen(),
-            sx,
-            sy,
+            s,
             b.x1,
             b.y1 + sy,
             xj,
             yj,
         )
+        # Angle of the diagonal from the horizontal
+        theta = pi / 2 - phi
 
         eps = theta
         px, py = delta * sin(eps) * cos(eps), delta * sin(eps) ** 2

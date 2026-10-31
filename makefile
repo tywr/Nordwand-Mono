@@ -28,3 +28,6 @@ visualize:
 	open -n -a /Library/Frameworks/Python.framework/Versions/3.12/Resources/Python.app \
     --env "__PYVENV_LAUNCHER__=$PWD/.venv/bin/python" \
     --args -m visualize lowercase_a
+
+website:
+	uv run python -m http.server 8000 -d docs

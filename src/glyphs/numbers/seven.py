@@ -1,6 +1,6 @@
 from glyphs.numbers import NumberGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 
 
 class SevenGlyph(NumberGlyph):
@@ -9,7 +9,7 @@ class SevenGlyph(NumberGlyph):
     offset = 0
     offset_foot = 0.15
     width_ratio = 1.08
-    stroke_ratio = 1.18
+    stroke_ratio = 1.07
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -17,19 +17,10 @@ class SevenGlyph(NumberGlyph):
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         ox = self.offset_foot * b.width
-        delta = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.15)
+        s = self.stroke_ratio * dc.stroke_x
 
         # Top bar
         draw_rect(pen, b.x1, b.y2 - sy, b.x2, b.y2)
 
         # Diagonal stroke
-        theta, delta = draw_parallelogramm_legacy(
-            pen,
-            sx,
-            sy,
-            b.x1 + ox,
-            b.y1,
-            b.x2,
-            b.y2 - sy,
-            delta=delta,
-        )
+        draw_parallelogramm(pen, s, b.x1 + ox, b.y1, b.x2, b.y2 - sy)

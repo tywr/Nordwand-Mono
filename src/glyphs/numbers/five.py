@@ -3,7 +3,7 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 
 from glyphs.numbers import NumberGlyph
 from draw.arch import draw_arch
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 from draw.rect import draw_rect
 from draw.corner import draw_corner
 from utils.pens import NullPen
@@ -36,7 +36,7 @@ class FiveGlyph(NumberGlyph):
             number=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        sd = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.05)
+        sd = self.stroke_ratio * dc.stroke_x
         yj = b.y1 + b.height * self.junction_ratio
         ew = 0.3 * max(dc.stroke_x - 90, 0)
         oj = self.tilt * b.width + ew
@@ -104,10 +104,6 @@ class FiveGlyph(NumberGlyph):
         result = BooleanGlyph(base_glyph).difference(BooleanGlyph(cut_glyph))
         result.draw(pen)
 
-        theta, delta = draw_parallelogramm_legacy(
-            NullPen(), sx, sy, xj, yj, xj + oj, b.y2, delta=sd
-        )
-        draw_parallelogramm_legacy(
-            pen, sx, sy, xj - delta, yj, xj + oj - delta, b.y2, delta=sd
-        )
+        _, delta = draw_parallelogramm(NullPen(), sd, xj, yj, xj + oj, b.y2)
+        draw_parallelogramm(pen, sd, xj - delta, yj, xj + oj - delta, b.y2)
         draw_rect(pen, xj + oj - 2 * delta, b.y2 - sy, xc, b.y2)

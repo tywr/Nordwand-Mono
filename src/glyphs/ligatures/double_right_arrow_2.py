@@ -8,3 +8,4 @@ class DoubleRightArrow2Glyph(DoubleRightArrowGlyph):
     name = "double_right_arrow_liga_2"
     components = ["equals_sign", "greater_than_sign_2"]
     span = GreaterThenSign2Glyph.span
+    stroke_ratio = 1.0

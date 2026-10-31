@@ -7,4 +7,4 @@ class LessThenSign2Glyph(LessThenSignGlyph):
     font_feature = {"ss03": 1}
     span = GreaterThenSign2Glyph.span
     span = 0.85
-    stroke_ratio = 1.25
+    stroke_ratio = 1

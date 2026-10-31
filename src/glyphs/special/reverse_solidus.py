@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 
 
 class ReverseSolidusGlyph(Glyph):
@@ -8,6 +8,7 @@ class ReverseSolidusGlyph(Glyph):
     offset = 0
     width_ratio = 1
     height_ratio = 0.85
+    stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -15,13 +16,12 @@ class ReverseSolidusGlyph(Glyph):
         )
         ymid = dc.parenthesis
         h = self.height_ratio * dc.parenthesis_length
-        draw_parallelogramm_legacy(
+        draw_parallelogramm(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
+            self.stroke_ratio * dc.stroke_x,
             b.x2,
             ymid - h / 2,
             b.x1,
             ymid + h / 2,
-            direction="top-left"
+            direction="top-left",
         )

@@ -9,6 +9,7 @@ class RightPointingDoubleAngleQuotationMarkGlyph(
     name = "right_pointing_double_angle_quotation_mark"
     unicode = "0xBB"
     width_ratio = 1
+    stroke_ratio = 1
     # Width of each chevron, as a fraction of the body width
     chevron_ratio = 0.55
 
