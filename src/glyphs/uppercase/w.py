@@ -1,3 +1,4 @@
+from math import cos, radians, tan
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
@@ -10,7 +11,7 @@ class UppercaseWGlyph(UppercaseGlyph):
     unicode = "0x57"
     offset = 0
     overlap = 0.5
-    outer_branch_ratio = 0.275
+    outer_angle = 5.2  # Outer branches' edges, in degrees from vertical
     inner_height = 1
     width_ratio = 1.27
     stroke_ratio = 1
@@ -28,8 +29,13 @@ class UppercaseWGlyph(UppercaseGlyph):
         boost = self.thin_boost * max(0, dc.default_stroke - dc.stroke_x)
         so = self.stroke_ratio * dc.stroke_x
         si = self.inner_stroke_ratio * dc.stroke_x + boost
-        xi1 = b.x1 + self.outer_branch_ratio * b.width
-        xi2 = b.x2 - self.outer_branch_ratio * b.width
+        # Outer feet placed so the branches' edges keep outer_angle in every
+        # weight: their run is the slant over the height plus the horizontal
+        # width of a stroke so at that angle
+        a = radians(self.outer_angle)
+        run = b.height * tan(a) + so / cos(a)
+        xi1 = b.x1 + run
+        xi2 = b.x2 - run
         yi = b.y1 + self.inner_height * b.height
 
         glyph = ufoLib2.objects.Glyph()
