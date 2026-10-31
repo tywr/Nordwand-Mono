@@ -9,10 +9,10 @@ class UppercaseVGlyph(UppercaseGlyph):
     name = "uppercase_v"
     unicode = "0x56"
     offset = 0
-    overlap = 0.5
-    width_ratio = 1.28
-    lower_section_height = 1.5
-    branch_stroke_ratio = 0.988  # Perpendicular thickness of the branches
+    overlap = 0.25
+    width_ratio = 1.2
+    lower_section_height = 1
+    branch_stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -48,6 +48,3 @@ class UppercaseVGlyph(UppercaseGlyph):
         )
         res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
         res.draw(pen)
-
-
-

@@ -1,3 +1,5 @@
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
 from draw.polygon import draw_polygon
@@ -8,10 +10,11 @@ class UppercaseAGlyph(UppercaseGlyph):
     unicode = "0x41"
     offset = 0
     bar_height = 0.38
-    overlap = 0.5
+    overlap = 0.25
     stroke_x_ratio = 1.02
     width_ratio = 1.2
-    branch_stroke_ratio = 0.957  # Perpendicular thickness of the branches
+    branch_stroke_ratio = 1
+    upper_section_height = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -23,13 +26,26 @@ class UppercaseAGlyph(UppercaseGlyph):
 
         ov = self.overlap * s
         hb = self.bar_height * b.height - ec
+        ush = self.upper_section_height * dc.stroke_y
 
+        glyph = ufoLib2.objects.Glyph()
+        gpen = glyph.getPen()
         # Left branch
         draw_parallelogramm(
-            pen, s, b.x2, b.y1, b.xmid - ov, b.y2, direction="top-left"
+            gpen, s, b.x2, b.y1, b.xmid - ov, b.y2, direction="top-left"
         )
         # Right branch
-        _, delta = draw_parallelogramm(pen, s, b.x1, b.y1, b.xmid + ov, b.y2)
+        _, delta = draw_parallelogramm(gpen, s, b.x1, b.y1, b.xmid + ov, b.y2)
+
+        # As in the V, cut where the branches cross so the apex keeps a fixed
+        # depth above the inner crotch instead of thickening
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_polygon(
+            cut_glyph.getPen(),
+            points=[(b.x1 + delta, b.y1), (b.x2 - delta, b.y1), (b.xmid, b.y2 - ush)],
+        )
+        res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
+        res.draw(pen)
 
         # Crossbar: ends follow the branch centerlines, so it always
         # reaches into both strokes and never pokes out of them

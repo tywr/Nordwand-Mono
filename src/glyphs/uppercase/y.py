@@ -9,7 +9,7 @@ class UppercaseYGlyph(UppercaseGlyph):
     offset = 0
     width_ratio = 1.22
     junction_ratio = 0.4
-    branch_stroke_ratio = 0.87  # Perpendicular thickness of the branches
+    branch_stroke_ratio = 0.89  # Perpendicular thickness of the branches
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
