@@ -1,7 +1,7 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs import Glyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.polygon import draw_polygon
 from draw.rect import draw_rect
 
@@ -23,10 +23,10 @@ class GreekLowercaseGammaGlyph(Glyph):
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             gpen, dc.stroke_x, dc.stroke_y, b.xmid - ov, 0, b.x2, b.y2, delta=sx
         )
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             gpen,
             dc.stroke_x,
             dc.stroke_y,

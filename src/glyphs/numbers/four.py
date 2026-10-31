@@ -1,6 +1,6 @@
 from glyphs.numbers import NumberGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class FourGlyph(NumberGlyph):
@@ -25,7 +25,7 @@ class FourGlyph(NumberGlyph):
 
         delta = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.15)
 
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen, sx, sy, b.x1, ymid, xmid - sx / 2, b.y2, delta=delta,
         )
 

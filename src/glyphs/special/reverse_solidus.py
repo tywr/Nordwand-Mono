@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class ReverseSolidusGlyph(Glyph):
@@ -15,7 +15,7 @@ class ReverseSolidusGlyph(Glyph):
         )
         ymid = dc.parenthesis
         h = self.height_ratio * dc.parenthesis_length
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,

@@ -3,7 +3,7 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 
 from glyphs.numbers import NumberGlyph
 from draw.arch import draw_arch
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.rect import draw_rect
 from draw.corner import draw_corner
 from utils.pens import NullPen
@@ -104,10 +104,10 @@ class FiveGlyph(NumberGlyph):
         result = BooleanGlyph(base_glyph).difference(BooleanGlyph(cut_glyph))
         result.draw(pen)
 
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             NullPen(), sx, sy, xj, yj, xj + oj, b.y2, delta=sd
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen, sx, sy, xj - delta, yj, xj + oj - delta, b.y2, delta=sd
         )
         draw_rect(pen, xj + oj - 2 * delta, b.y2 - sy, xc, b.y2)

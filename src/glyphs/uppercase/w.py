@@ -1,7 +1,7 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.polygon import draw_polygon
 
 
@@ -35,7 +35,7 @@ class UppercaseWGlyph(UppercaseGlyph):
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             gpen,
             0,
             0,
@@ -46,7 +46,7 @@ class UppercaseWGlyph(UppercaseGlyph):
             delta=sx,
             direction="bottom-right",
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             gpen,
             0,
             0,
@@ -57,7 +57,7 @@ class UppercaseWGlyph(UppercaseGlyph):
             delta=sx,
             direction="bottom-left",
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             gpen,
             0,
             0,
@@ -68,7 +68,7 @@ class UppercaseWGlyph(UppercaseGlyph):
             delta=isx,
             direction="top-right",
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             gpen,
             0,
             0,

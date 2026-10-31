@@ -1,7 +1,7 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.loop import draw_loop
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class UppercaseRGlyph(UppercaseGlyph):
@@ -55,7 +55,7 @@ class UppercaseRGlyph(UppercaseGlyph):
         )
 
         # Right stem
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sy,

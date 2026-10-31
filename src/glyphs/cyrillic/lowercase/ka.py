@@ -1,6 +1,6 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class CyrillicLowercaseKaGlyph(Glyph):
@@ -30,7 +30,7 @@ class CyrillicLowercaseKaGlyph(Glyph):
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, b.y2)
 
         # Lower branch
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -43,7 +43,7 @@ class CyrillicLowercaseKaGlyph(Glyph):
         )
 
         # Upper branch
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,

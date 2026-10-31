@@ -1,6 +1,6 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.square_corner import draw_square_corner
 
 
@@ -38,7 +38,7 @@ class LowercaseZ2Glyph(Glyph):
         )
 
         # Diagonal stroke
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             dsx,
             dsy,

@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class GreekLowercaseLamdaGlyph(Glyph):
@@ -19,7 +19,7 @@ class GreekLowercaseLamdaGlyph(Glyph):
         sx = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.0)
         ov = sx / 2
 
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -30,7 +30,7 @@ class GreekLowercaseLamdaGlyph(Glyph):
             delta=sx,
             direction="bottom-left",
         )
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -43,7 +43,7 @@ class GreekLowercaseLamdaGlyph(Glyph):
         )
         w2 = b.x2 - (b.xmid - ov)
         dx_tail = -(w2 - sx) * (dc.ascent - yj) / yj
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sx,

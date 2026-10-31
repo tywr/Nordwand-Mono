@@ -1,6 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class UppercaseKGlyph(UppercaseGlyph):
@@ -31,7 +31,7 @@ class UppercaseKGlyph(UppercaseGlyph):
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.cap)
 
         # Lower branch
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -44,7 +44,7 @@ class UppercaseKGlyph(UppercaseGlyph):
         )
 
         # Upper branch
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,

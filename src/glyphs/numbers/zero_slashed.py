@@ -1,4 +1,4 @@
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from glyphs.numbers.zero import ZeroGlyph
 
 
@@ -11,7 +11,7 @@ class ZeroSlashedGlyph(ZeroGlyph):
     def draw_mark(self, pen, dc, b):
         x_inset = dc.stroke_x * 0.5
         y_inset = self.slash_vertical_inset * b.height
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_x * self.slash_stroke_ratio,
             dc.stroke_y * self.slash_stroke_ratio,

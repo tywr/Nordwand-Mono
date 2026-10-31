@@ -1,6 +1,6 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class CyrillicLowercaseZheGlyph(Glyph):
@@ -28,7 +28,7 @@ class CyrillicLowercaseZheGlyph(Glyph):
 
         draw_rect(pen, b.xmid - six / 2, 0, b.xmid + six / 2, b.y2)
 
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             sx,
             sy,
@@ -39,13 +39,13 @@ class CyrillicLowercaseZheGlyph(Glyph):
             direction="bottom-right",
             delta=sx,
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen, sx, sy, b.x1, 0, b.xmid - dn, ymid, direction="top-right", delta=sx
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen, sx, sy, tx2, b.y2, b.xmid + dn, ymid, direction="bottom-left", delta=sx
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen, sx, sy, b.x2, 0, b.xmid + dn, ymid, direction="top-left", delta=sx
         )
 

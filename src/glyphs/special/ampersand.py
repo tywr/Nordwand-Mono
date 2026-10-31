@@ -7,7 +7,7 @@ from glyphs.numbers.three import ThreeGlyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from utils.pens import NullPen
 
 
@@ -67,7 +67,7 @@ class AmpersandGlyph(Glyph):
         # bolder weights to leave room for the curves to turn
         dhy = self.hook_below_baseline * b.height
         yd = yj - self.hook_drop * self.extra_cut(dc)
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             NullPen(),
             dc.stroke_x,
             dc.stroke_y,

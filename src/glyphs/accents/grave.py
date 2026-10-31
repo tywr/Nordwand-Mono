@@ -1,5 +1,5 @@
 from glyphs.accents import Accent
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class Grave(Accent):
@@ -13,7 +13,7 @@ class Grave(Accent):
         h = self.height * dc.x_height
         w = self.width * dc.width
         d = self.stroke_ratio * dc.stroke_x
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_alt,
             dc.stroke_alt,

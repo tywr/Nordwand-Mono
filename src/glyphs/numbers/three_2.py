@@ -4,7 +4,7 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.numbers import NumberGlyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class ThreeGlyph(NumberGlyph):
@@ -43,7 +43,7 @@ class ThreeGlyph(NumberGlyph):
         taper = max(self.taper * dc.taper, 0.65)
 
         draw_rect(pen, xl, b.y2 - dc.stroke_y, xr, b.y2)
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sy,

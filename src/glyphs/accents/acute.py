@@ -1,6 +1,6 @@
 from config import FontConfig as fc
 from glyphs.accents import Accent
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class Acute(Accent):
@@ -21,7 +21,7 @@ class Acute(Accent):
         h = self.height * dc.x_height
         w = self.width * dc.width
         d = self.stroke_ratio * dc.stroke_x
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,

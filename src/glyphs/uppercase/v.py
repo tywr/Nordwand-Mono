@@ -1,7 +1,7 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.polygon import draw_polygon
 
 
@@ -23,7 +23,7 @@ class UppercaseVGlyph(UppercaseGlyph):
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             gpen,
             sx,
             sy,
@@ -32,7 +32,7 @@ class UppercaseVGlyph(UppercaseGlyph):
             b.x2,
             b.y2,
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             gpen,
             sx,
             sy,

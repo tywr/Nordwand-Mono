@@ -1,5 +1,5 @@
 from glyphs.uppercase import UppercaseGlyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.rect import draw_rect
 
 
@@ -21,7 +21,7 @@ class GreekUppercaseLamdaGlyph(UppercaseGlyph):
         ov = self.overlap * sx
 
         # Left branch
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sy,
@@ -32,4 +32,4 @@ class GreekUppercaseLamdaGlyph(UppercaseGlyph):
             direction="top-left",
         )
         # Right branch
-        theta, delta = draw_parallelogramm(pen, sx, sy, b.x1, b.y1, b.xmid + ov, b.y2)
+        theta, delta = draw_parallelogramm_legacy(pen, sx, sy, b.x1, b.y1, b.xmid + ov, b.y2)

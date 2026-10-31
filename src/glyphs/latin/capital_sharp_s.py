@@ -1,7 +1,7 @@
 from glyphs import Glyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.corner import draw_corner
 
 
@@ -64,7 +64,7 @@ class CapitalSharpSGlyph(Glyph):
             xu,
             b.y2,
         )
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             sx,
             sy,

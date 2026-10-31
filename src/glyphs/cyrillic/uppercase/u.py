@@ -1,5 +1,5 @@
 from glyphs.cyrillic.uppercase import CyrillicUppercaseGlyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class CyrillicUppercaseUGlyph(CyrillicUppercaseGlyph):
@@ -21,7 +21,7 @@ class CyrillicUppercaseUGlyph(CyrillicUppercaseGlyph):
         sx = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.0)
         ov = sx / 2
 
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -32,7 +32,7 @@ class CyrillicUppercaseUGlyph(CyrillicUppercaseGlyph):
             delta=sx,
             direction="top-left",
         )
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -45,7 +45,7 @@ class CyrillicUppercaseUGlyph(CyrillicUppercaseGlyph):
         w2 = b.x2 - (b.xmid - ov)
         h2 = b.height - abs(dc.descent)
         dx_tail = -(w2 - sx) * abs(dc.descent) / h2
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sx,

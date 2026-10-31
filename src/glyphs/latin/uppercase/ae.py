@@ -1,4 +1,4 @@
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.rect import draw_rect
 from glyphs.uppercase import UppercaseGlyph
 from math import cos
@@ -29,7 +29,7 @@ class UppercaseAeGlyph(UppercaseGlyph):
         xmid = b.x1 + self.xmid_ratio * b.width
 
         # Left branch
-        theta, delta = draw_parallelogramm(pen, sx, sy, b.x1, b.y1, xmid - ov, b.y2)
+        theta, delta = draw_parallelogramm_legacy(pen, sx, sy, b.x1, b.y1, xmid - ov, b.y2)
 
         # Crossbar
         draw_rect(

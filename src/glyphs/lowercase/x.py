@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class LowercaseXGlyph(Glyph):
@@ -12,10 +12,10 @@ class LowercaseXGlyph(Glyph):
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
         sx = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.0)
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen, dc.stroke_x, dc.stroke_y, b.x1, b.y1, b.x2, b.y2, delta=sx
         )
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,

@@ -1,5 +1,5 @@
 from glyphs.accents import Accent
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class Caron(Accent):
@@ -17,7 +17,7 @@ class Caron(Accent):
         d = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.45)
         ov = 0.5 * d
 
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_alt,
             dc.stroke_alt,
@@ -28,7 +28,7 @@ class Caron(Accent):
             direction="top-left",
             delta=d,
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_alt,
             dc.stroke_alt,

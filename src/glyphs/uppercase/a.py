@@ -11,35 +11,25 @@ class UppercaseAGlyph(UppercaseGlyph):
     overlap = 0.5
     stroke_x_ratio = 1.02
     width_ratio = 1.2
-    branch_stroke_ratio = 1.0
+    branch_stroke_ratio = 0.957  # Perpendicular thickness of the branches
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
         sy = dc.stroke_y * self.stroke_y_ratio
-        sx = self.diag_stroke_dampening(self.branch_stroke_ratio, dc.stroke_x, coef=0.2)
+        s = self.branch_stroke_ratio * dc.stroke_x
         ec = self.extra_cut(dc)
 
-        ov = self.overlap * sx
+        ov = self.overlap * s
         hb = self.bar_height * b.height - ec
 
         # Left branch
         draw_parallelogramm(
-            pen,
-            sx,
-            sy,
-            b.x2,
-            b.y1,
-            b.xmid - ov,
-            b.y2,
-            direction="top-left",
-            delta=sx,
+            pen, s, b.x2, b.y1, b.xmid - ov, b.y2, direction="top-left"
         )
         # Right branch
-        draw_parallelogramm(
-            pen, sx, sy, b.x1, b.y1, b.xmid + ov, b.y2, delta=sx
-        )
+        _, delta = draw_parallelogramm(pen, s, b.x1, b.y1, b.xmid + ov, b.y2)
 
         # Crossbar: ends follow the branch centerlines, so it always
         # reaches into both strokes and never pokes out of them
@@ -47,10 +37,10 @@ class UppercaseAGlyph(UppercaseGlyph):
             return x0 + (x1 - x0) * (y - b.y1) / (b.y2 - b.y1)
 
         def left(y):
-            return lerp(b.x1 + sx / 2, b.xmid + ov - sx / 2, y)
+            return lerp(b.x1 + delta / 2, b.xmid + ov - delta / 2, y)
 
         def right(y):
-            return lerp(b.x2 - sx / 2, b.xmid - ov + sx / 2, y)
+            return lerp(b.x2 - delta / 2, b.xmid - ov + delta / 2, y)
 
         draw_polygon(
             pen,

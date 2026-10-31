@@ -1,5 +1,5 @@
 from glyphs.uppercase import UppercaseGlyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.rect import draw_rect
 
 
@@ -20,8 +20,8 @@ class UppercaseYGlyph(UppercaseGlyph):
 
         draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, yj)
 
-        draw_parallelogramm(pen, sx, sx, b.xmid - sx / 2, yj, b.x2, b.y2, delta=sx)
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(pen, sx, sx, b.xmid - sx / 2, yj, b.x2, b.y2, delta=sx)
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sx,

@@ -1,6 +1,6 @@
 from glyphs.numbers import NumberGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class SevenGlyph(NumberGlyph):
@@ -23,7 +23,7 @@ class SevenGlyph(NumberGlyph):
         draw_rect(pen, b.x1, b.y2 - sy, b.x2, b.y2)
 
         # Diagonal stroke
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             sx,
             sy,

@@ -1,6 +1,6 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.loop import draw_loop
 from draw.corner import draw_corner
 
@@ -66,7 +66,7 @@ class LowercaseK2Glyph(Glyph):
         )
 
         # Lower branch
-        # draw_parallelogramm(
+        # draw_parallelogramm_legacy(
         #     pen,
         #     dc.stroke_x,
         #     dc.stroke_y,
@@ -79,7 +79,7 @@ class LowercaseK2Glyph(Glyph):
         # )
 
         # Upper branch
-        # theta, delta = draw_parallelogramm(
+        # theta, delta = draw_parallelogramm_legacy(
         #     pen,
         #     dc.stroke_x,
         #     dc.stroke_y,

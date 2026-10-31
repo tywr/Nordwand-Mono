@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class LowercaseYGlyph(Glyph):
@@ -16,7 +16,7 @@ class LowercaseYGlyph(Glyph):
         sx = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.0)
         ov = sx / 2
 
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -27,7 +27,7 @@ class LowercaseYGlyph(Glyph):
             delta=sx,
             direction="top-left",
         )
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -40,7 +40,7 @@ class LowercaseYGlyph(Glyph):
         w2 = b.x2 - (b.xmid - ov)
         h2 = b.y2 - b.y1
         dx_tail = -(w2 - sx) * abs(dc.descent) / h2
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sx,

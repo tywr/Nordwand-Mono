@@ -1,4 +1,4 @@
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 def draw_chevron(pen, stroke_x, stroke_y, x_tip, x_back, y, height, delta):
@@ -9,7 +9,7 @@ def draw_chevron(pen, stroke_x, stroke_y, x_tip, x_back, y, height, delta):
     (theta, delta) of the lower stroke.
     """
     points_right = x_tip > x_back
-    draw_parallelogramm(
+    draw_parallelogramm_legacy(
         pen,
         stroke_x,
         stroke_y,
@@ -20,7 +20,7 @@ def draw_chevron(pen, stroke_x, stroke_y, x_tip, x_back, y, height, delta):
         direction="top-left" if points_right else "top-right",
         delta=delta,
     )
-    return draw_parallelogramm(
+    return draw_parallelogramm_legacy(
         pen,
         stroke_x,
         stroke_y,

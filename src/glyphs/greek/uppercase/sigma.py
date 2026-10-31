@@ -1,6 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class GreekUppercaseSigmaGlyph(UppercaseGlyph):
@@ -17,7 +17,7 @@ class GreekUppercaseSigmaGlyph(UppercaseGlyph):
         draw_rect(pen, b.x1, b.y2 - sy, b.x2, b.y2)
         draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + sy)
 
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sy,
@@ -27,7 +27,7 @@ class GreekUppercaseSigmaGlyph(UppercaseGlyph):
             b.ymid,
             direction="top-right"
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sy,

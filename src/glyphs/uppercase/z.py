@@ -1,6 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class UppercaseZGlyph(UppercaseGlyph):
@@ -24,7 +24,7 @@ class UppercaseZGlyph(UppercaseGlyph):
         draw_rect(pen, b.x1, 0, b.x2, sy)
 
         # Diagonal stroke
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             sx,
             sy,

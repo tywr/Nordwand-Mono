@@ -1,6 +1,6 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class LowercaseZGlyph(Glyph):
@@ -25,7 +25,7 @@ class LowercaseZGlyph(Glyph):
         draw_rect(pen, b.x1, 0, b.x2, dc.stroke_y)
 
         # Diagonal stroke
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             dsx,
             dsy,

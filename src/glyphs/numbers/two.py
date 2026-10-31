@@ -2,7 +2,7 @@ from math import cos, sin
 from glyphs.numbers import NumberGlyph
 from glyphs.numbers.three import ThreeGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.loop import draw_loop
 from utils.pens import NullPen
 
@@ -47,7 +47,7 @@ class TwoGlyph(NumberGlyph):
         ishy = params["inner"].hy
         oshy = params["outer"].hy
 
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             NullPen(),
             sx,
             sy,

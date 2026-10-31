@@ -1,6 +1,6 @@
 from glyphs.cyrillic.uppercase import CyrillicUppercaseGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm_legacy
 
 
 class CyrillicUppercaseZheGlyph(CyrillicUppercaseGlyph):
@@ -30,7 +30,7 @@ class CyrillicUppercaseZheGlyph(CyrillicUppercaseGlyph):
 
         draw_rect(pen, b.xmid - six / 2, 0, b.xmid + six / 2, dc.cap)
 
-        theta, delta = draw_parallelogramm(
+        theta, delta = draw_parallelogramm_legacy(
             pen,
             sx,
             sy,
@@ -41,10 +41,10 @@ class CyrillicUppercaseZheGlyph(CyrillicUppercaseGlyph):
             direction="bottom-right",
             delta=sx,
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen, sx, sy, b.x1, 0, b.xmid - dn, ymid, direction="top-right", delta=sx
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen,
             sx,
             sy,
@@ -55,7 +55,7 @@ class CyrillicUppercaseZheGlyph(CyrillicUppercaseGlyph):
             direction="bottom-left",
             delta=sx,
         )
-        draw_parallelogramm(
+        draw_parallelogramm_legacy(
             pen, sx, sy, b.x2, 0, b.xmid + dn, ymid, direction="top-left", delta=sx
         )
 
