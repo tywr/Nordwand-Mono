@@ -1,6 +1,6 @@
 from config import FontConfig as fc
 from glyphs.accents import Accent
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm, parallelogramm_delta
 
 
 class Acute(Accent):
@@ -8,22 +8,28 @@ class Acute(Accent):
     unicode = "0xB4"
     height = 0.35
     width = 0.55
-    stroke_ratio = 1.1
+    stroke_ratio = 1.0
 
-    def draw_at(self, pen, dc, x, y):
+    def scaled(self, dc, k):
+        """Same slant, its height and its slanted part scaled by `k`"""
+        w, h = self.width * dc.width, self.height * dc.x_height
+        d = parallelogramm_delta(self.stroke_ratio * dc.stroke_x, 0, 0, w, h)
+        self.width = (d + k * (w - d)) / dc.width
+        self.height *= k
+        return self
+
+    def draw_at(self, pen, dc, x, y, stroke_ratio=None):
         h = self.height * dc.x_height
         w = self.width * dc.width
-        d = self.stroke_ratio * dc.stroke_x
-        draw_parallelogramm(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            x - d / 2,
-            y - h / 2,
-            x + w - d / 2,
-            y + h / 2,
-            delta=d,
-        )
+        s = self.stroke_ratio * dc.stroke_x
+        # Base centered on x
+        d = parallelogramm_delta(s, 0, 0, w, h)
+        draw_parallelogramm(pen, s, x - d / 2, y - h / 2, x + w - d / 2, y + h / 2)
+
+
+class Tonos(Acute):
+    name = "tonos"
+    unicode = "0x0384"
 
 
 class CombiningAcute(Acute):

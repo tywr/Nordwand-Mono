@@ -105,13 +105,12 @@ def record_glyph(glyph, **kwargs):
     return pen.getCharString()
 
 
-def skew_path(path, angle_deg):
-    """Apply an italic skew (horizontal shear) to a pathops.Path."""
-    skew = math.tan(math.radians(angle_deg))
-    skewed = pathops.Path()
-    pen = pathops.PathPen(skewed)
+def map_path(path, fn):
+    """Apply a point transformation `fn(x, y) -> (x, y)` to a pathops.Path."""
+    mapped = pathops.Path()
+    pen = pathops.PathPen(mapped)
     for verb, points in path:
-        transformed = tuple((x + y * skew, y) for x, y in points)
+        transformed = tuple(fn(x, y) for x, y in points)
         if verb == pathops.PathVerb.MOVE:
             pen.moveTo(*transformed)
         elif verb == pathops.PathVerb.LINE:
@@ -120,7 +119,36 @@ def skew_path(path, angle_deg):
             pen.curveTo(*transformed)
         elif verb == pathops.PathVerb.CLOSE:
             pen.closePath()
-    return skewed
+    return mapped
+
+
+def skew_path(path, angle_deg, pivot=0):
+    """Apply an italic skew (horizontal shear) around height `pivot`."""
+    skew = math.tan(math.radians(angle_deg))
+    return map_path(path, lambda x, y: (x + (y - pivot) * skew, y))
+
+
+def italicize_path(path, width):
+    """Slant a path for the italic, keeping it within its `width` wide cells.
+
+    Terminals clip what is drawn outside of the cells, so the slanted glyph is
+    moved, or compressed if it got wider than the cells, to not overflow more
+    than the upright glyph already did.
+    """
+    if path.area == 0:
+        return path
+    x0, _, x1, _ = path.bounds
+    lo, hi = min(0, x0), max(width, x1)
+
+    path = skew_path(path, fc.italic_angle, pivot=fc.italic_pivot)
+    a, _, b, _ = path.bounds
+    if b - a > hi - lo:
+        f = (hi - lo) / (b - a)
+        return map_path(path, lambda x, y: (lo + (x - a) * f, y))
+    shift = max(lo - a, 0) + min(hi - b, 0)
+    if shift:
+        return map_path(path, lambda x, y: (x + shift, y))
+    return path
 
 
 def select_style_glyphs(all_glyphs, italic):
@@ -712,7 +740,7 @@ def _build_otf(
     for g in active_glyphs:
         path = simplify_glyph(g, dc=dc)
         if italic and g.italic_skew:
-            path = skew_path(path, fc.italic_angle)
+            path = italicize_path(path, fc.window_width * g.number_characters)
         pen = T2CharStringPen(fc.window_width, None)
         path.draw(pen)
         charstrings[g.name] = pen.getCharString()
@@ -821,7 +849,7 @@ def build_ttf(
     def record_ttf_glyph(glyph):
         path = simplify_glyph(glyph, dc=dc)
         if italic and glyph.italic_skew:
-            path = skew_path(path, fc.italic_angle)
+            path = italicize_path(path, fc.window_width * glyph.number_characters)
         ttf_pen = TTGlyphPen(None)
         cu2qu_pen = Cu2QuPen(ttf_pen, max_err=1.0, reverse_direction=True)
         path.draw(cu2qu_pen)

@@ -14,9 +14,9 @@ from glyphs.numbers.nine import NineGlyph
 class SuperscriptDigitGlyph(OrdinalIndicatorGlyph):
     """A digit scaled down with its top at the cap height."""
 
-    scale = 0.6
+    scale = 0.72
     # Lighter than the ordinals: digits have tighter counters at this size
-    stroke_ratio = 0.85
+    stroke_ratio = 0.82
     top_ratio = 1.15
 
 

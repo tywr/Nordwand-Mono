@@ -1,5 +1,5 @@
 from glyphs.uppercase import UppercaseGlyph
-from draw.parallelogramm import draw_parallelogramm
+from draw.parallelogramm import draw_parallelogramm, parallelogramm_delta
 from draw.rect import draw_rect
 
 
@@ -9,6 +9,7 @@ class UppercaseYGlyph(UppercaseGlyph):
     offset = 0
     width_ratio = 1.22
     junction_ratio = 0.4
+    branch_stroke_ratio = 0.89
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -20,15 +21,10 @@ class UppercaseYGlyph(UppercaseGlyph):
 
         draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, yj)
 
-        draw_parallelogramm(pen, sx, sx, b.xmid - sx / 2, yj, b.x2, b.y2, delta=sx)
+        # Both feet centered on the stem, which they cover within a unit
+        s = self.branch_stroke_ratio * sx
+        d = parallelogramm_delta(s, b.xmid - sx / 2, yj, b.x2, b.y2)
+        draw_parallelogramm(pen, s, b.xmid - d / 2, yj, b.x2, b.y2)
         draw_parallelogramm(
-            pen,
-            sx,
-            sx,
-            b.xmid + sx / 2,
-            yj,
-            b.x1,
-            b.y2,
-            direction="top-left",
-            delta=sx,
+            pen, s, b.xmid + d / 2, yj, b.x1, b.y2, direction="top-left"
         )

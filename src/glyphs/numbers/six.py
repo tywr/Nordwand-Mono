@@ -3,8 +3,6 @@ from glyphs.numbers import NumberGlyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.polygon import draw_polygon
-from draw.parallelogramm import draw_parallelogramm
-from utils.pens import NullPen
 
 
 class SixGlyph(NumberGlyph):
@@ -12,7 +10,6 @@ class SixGlyph(NumberGlyph):
     unicode = "0x36"
     offset = 0
     loop_ratio = 0.64
-    top_ratio = 0.4
     taper = 0.2
     cap_x = 0.75
     joint_x = 1.4
@@ -65,7 +62,7 @@ class SixGlyph(NumberGlyph):
             pen,
             points=[
                 (xj, yj),
-                (xj - delta / 2, yj),
+                (xj - sx / 2, yj),
                 (b.x1, (b.y1 + ymid) / 2),
                 (b.x1 + sx, (b.y1 + ymid) / 2),
                 (b.x1 + sx, (b.y1 + b.ymid) / 2 + ihy),
@@ -90,7 +87,7 @@ class SixGlyph(NumberGlyph):
             (x3m, y3m),
             (b.x1, (b.y1 + ymid) / 2),
         )
-        # pen.lineTo((b.x1 + sx / 2, (b.y1 + ymid) / 2))
+        pen.lineTo((b.x1 + sx / 2, (b.y1 + ymid) / 2))
         pen.closePath()
 
         draw_loop(

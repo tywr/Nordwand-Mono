@@ -12,7 +12,7 @@ class CyrillicLowercaseZeGlyph(Glyph):
     offset = 0
     loop_width_ratio = 0.92
     mid_ratio = 0.515
-    taper = 1.5
+    taper = 1
     len_mid = 0.7
     hx_ratio = 1
     hy_ratio = 1

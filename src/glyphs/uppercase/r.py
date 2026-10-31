@@ -12,6 +12,7 @@ class UppercaseRGlyph(UppercaseGlyph):
     loop_width = 0.96
     branch_start = 0.63
     width_ratio = 1.05
+    leg_stroke_ratio = 1.0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -57,8 +58,7 @@ class UppercaseRGlyph(UppercaseGlyph):
         # Right stem
         draw_parallelogramm(
             pen,
-            sx,
-            sy,
+            self.leg_stroke_ratio * dc.stroke_x,
             b.x2,
             0,
             xb,

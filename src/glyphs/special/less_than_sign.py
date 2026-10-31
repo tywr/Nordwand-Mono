@@ -10,12 +10,12 @@ class LessThenSignGlyph(Glyph):
     width_ratio = 1
     overlap = 0.6
     span = GreaterThenSignGlyph.span
-    stroke_ratio = 1.45
+    stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
         h = dc.parenthesis_length * self.span
-        s = dc.stroke_x * self.stroke_ratio
-        draw_chevron(pen, s, s, b.x1, b.x2, dc.math, h, delta=s)
+        s = self.stroke_ratio * dc.stroke_x
+        draw_chevron(pen, s, b.x1, b.x2, dc.math, h)

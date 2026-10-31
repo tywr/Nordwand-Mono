@@ -17,6 +17,8 @@ class CyrillicUppercaseShchaGlyph(CyrillicUppercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        six = max(0, 0.5 * (sx - 90)) + min(90, sx)
         descent = self.descent_ratio * dc.descent
         rx = b.x2 - self.right_offset * b.width
         xmid = (b.x1 + rx) / 2
@@ -24,6 +26,6 @@ class CyrillicUppercaseShchaGlyph(CyrillicUppercaseGlyph):
         # Upper stems
         draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
         draw_rect(pen, rx - sx, 0, rx, b.y2)
-        draw_rect(pen, xmid - sx / 2, 0, xmid + sx / 2, b.y2)
+        draw_rect(pen, xmid - six / 2, 0, xmid + six / 2, b.y2)
         draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + sy)
         draw_rect(pen, b.x2 - sx, descent, b.x2, sy)

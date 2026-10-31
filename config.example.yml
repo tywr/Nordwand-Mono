@@ -6,7 +6,7 @@
 # Usage:
 #   python -m generate_font --config config.example.yml
 #
-# Copy this file, edit the values you care about, and pass it with --config.
+# Copy this file, edit the values you care about, and pass it with --config. 
 
 # --- Identity ---------------------------------------------------------------
 family_name: Nordwand Mono Custom

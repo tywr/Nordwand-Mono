@@ -14,9 +14,11 @@ class CyrillicLowercaseShaGlyph(Glyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
+        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        six = max(0, 0.5 * (sx - 90)) + min(90, sx)
 
         # Upper stems
         draw_rect(pen, b.x1, 0, b.x1 + sx, b.y2)
         draw_rect(pen, b.x2 - sx, 0, b.x2, b.y2)
-        draw_rect(pen, b.xmid - sx / 2, 0, b.xmid + sx / 2, b.y2)
+        draw_rect(pen, b.xmid - six / 2, 0, b.xmid + six / 2, b.y2)
         draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + sy)

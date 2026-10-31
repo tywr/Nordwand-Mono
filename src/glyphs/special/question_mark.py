@@ -1,3 +1,5 @@
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs import Glyph
 from draw.rect import draw_rect
 from draw.loop import draw_loop
@@ -32,6 +34,8 @@ class QuestionMarkGlyph(Glyph):
         h = self.loop_ratio * b.height
         sx, sy = dc.stroke_x, dc.stroke_y
         hx = self.hx_ratio * b.hx
+        ec = self.extra_cut(dc)
+        yl = b.y2 - h / 2 + dh
         draw_loop(
             pen,
             dc.stroke_x,
@@ -44,6 +48,25 @@ class QuestionMarkGlyph(Glyph):
             b.hy * self.loop_ratio,
             cut="bottom",
         )
+
+        # The left part reaches further down on bolder weights
+        loop_glyph = ufoLib2.objects.Glyph()
+        draw_loop(
+            loop_glyph.getPen(),
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x1,
+            b.y2 - h + dh,
+            b.x2,
+            b.y2 + dh,
+            hx,
+            b.hy * self.loop_ratio,
+            cut="right",
+        )
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(cut_glyph.getPen(), b.x1 - 10, b.y2 - h + dh - 10, b.xmid, yl - ec)
+        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
+        result.draw(pen)
         draw_loop(
             pen,
             dc.stroke_x,

@@ -67,6 +67,7 @@ from glyphs.accents.ogonek import Ogonek
 from glyphs.accents.stroke import Stroke, UppercaseStroke
 from glyphs.accents.comma_below import CommaBelow
 import pathops
+from draw.dot import dot_size, draw_dot
 from draw.rect import draw_rect
 from draw.square_corner import draw_square_corner
 
@@ -418,8 +419,8 @@ class LowercaseDotlessI2Glyph(LowercaseI2Glyph):
 
 def _draw_l_dot(pen, dc, x, y):
     """Middle dot centered between the stem of an L and its right edge."""
-    s = 1.4 * dc.stroke_x
-    draw_rect(pen, x - s, y - s / 2, x, y + s / 2)
+    w, _ = dot_size(dc, 1.4)
+    draw_dot(pen, dc, x - w / 2, y, 1.4)
 
 
 class LowercaseLDotGlyph(LowercaseLGlyph):
@@ -1332,14 +1333,15 @@ class OgonekComposedGlyph(ComposedGlyph):
 
     accent_class = Ogonek
     accent_y = 0
-    # Hang from the rightmost stem, spanning it from its inner to its outer
-    # edge. Otherwise the hook is a stem wide and placed by `ogonek_inset`.
+    # Hang from the rightmost stem, the hook's right edge flush with the
+    # stem's. Otherwise the hook is placed by `ogonek_inset`.
     from_stem = False
     # Hook center, measured from the base's right edge as a fraction of its
     # width (0 = flush with the right edge).
     ogonek_inset = 0.0
     ogonek_width = Ogonek.stem_ratio  # Start width, relative to stroke_x
     ogonek_start = 0.0
+    ogonek_x_offset = 0  # Manual horizontal nudge of the hook, in font units
     stem_probe = 0.25  # Height where the stem is measured, relative to x-height
     keep_dot = False  # Draw the full base (e.g. the dot of į) instead of draw_base
 
@@ -1372,21 +1374,21 @@ class OgonekComposedGlyph(ComposedGlyph):
 
         path = self._base_path(base, dc)
         start = self.ogonek_start * dc.x_height
+        width = self.ogonek_width * dc.stroke_x
         if self.from_stem:
-            x1, x2 = self._rightmost_stem(path, dc)
-            Ogonek().draw_at(
-                pen,
-                dc,
-                x=(x1 + x2) / 2,
-                y=self.accent_y,
-                width=x2 - x1,
-                start=start,
-            )
+            _, right = self._rightmost_stem(path, dc)
         else:
             x1, _, x2, _ = path.bounds
-            width = self.ogonek_width * dc.stroke_x
-            x = x2 - self.ogonek_inset * (x2 - x1) - width / 2
-            Ogonek().draw_at(pen, dc, x=x, y=self.accent_y, width=width, start=start)
+            right = x2 - self.ogonek_inset * (x2 - x1)
+        Ogonek().draw_at(
+            pen,
+            dc,
+            x=right - width / 2 + self.ogonek_x_offset,
+            y=self.accent_y,
+            width=width,
+            start=start,
+            flush=self.from_stem,
+        )
 
 
 class LowercaseAOgonekGlyph(OgonekComposedGlyph):
@@ -1408,7 +1410,7 @@ class UppercaseAOgonekGlyph(OgonekComposedGlyph):
     unicode = "0x104"
     base_glyph_class = UppercaseAGlyph
     ogonek_width = 0.85
-    ogonek_inset = 0.05
+    ogonek_inset = 0.03
 
 
 class UppercaseEOgonekGlyph(OgonekComposedGlyph):
@@ -1480,6 +1482,10 @@ class LowercaseTCommaGlyph(ComposedGlyph):
     accent_class = CommaBelow
     accent_y = 0
 
+    def accent_x(self, dc, base, b):
+        """Horizontal anchor of the accent; centered on the body by default."""
+        return b.xmid + 0.25 * b.width
+
 
 class UppercaseSCommaGlyph(ComposedGlyph):
     name = "uppercase_scommaaccent"
@@ -1505,7 +1511,20 @@ class LowercaseTCedillaGlyph(ComposedGlyph):
     unicode = "0x163"
     base_glyph_class = LowercaseTGlyph
     accent_class = Cedilla
-    accent_y = _cedilla_y
+
+    def accent_x(self, dc, base, b):
+        """Horizontal anchor of the accent; centered on the body by default."""
+        return b.xmid + 0.15 * b.width
+
+    def draw(self, pen, dc):
+        base_class = self._resolve_base_class(dc)
+        base = base_class()
+        base.draw_base(pen, dc) if hasattr(base, "draw_base") else base.draw(pen, dc)
+
+        b = dc.body_bounds(offset=base_class.offset)
+        accent_class = self.accent_class()
+        accent_class.y_start = 10
+        accent_class.draw_at(pen, dc, x=self.accent_x(dc, base, b), y=0)
 
 
 class UppercaseTCedillaGlyph(ComposedGlyph):
@@ -1514,6 +1533,16 @@ class UppercaseTCedillaGlyph(ComposedGlyph):
     base_glyph_class = UppercaseTGlyph
     accent_class = Cedilla
     accent_y = _cedilla_y
+
+    def accent_x(self, dc, base, b):
+        """Neck's top-right corner (x + sl/2) on the stem's right edge."""
+        stem_right = b.xmid + base.stroke_x_ratio * dc.stroke_x / 2
+        sl = (
+            self.accent_class.slant_ratio
+            * self.accent_class.stroke_ratio_x
+            * dc.stroke_x
+        )
+        return stem_right - sl / 2
 
 
 # ── Latvian: comma below (Unicode names them "cedilla") ──────────────
@@ -1559,6 +1588,10 @@ class LowercaseRCommaGlyph(ComposedGlyph):
     base_glyph_class = LowercaseRGlyph
     accent_class = CommaBelow
     accent_y = 0
+
+    def accent_x(self, dc, base, b):
+        """Horizontal anchor of the accent; centered on the body by default."""
+        return b.x1 + dc.stroke_x / 2
 
 
 class UppercaseGCommaGlyph(ComposedGlyph):

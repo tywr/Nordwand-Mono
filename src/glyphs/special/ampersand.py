@@ -1,8 +1,9 @@
-from math import tan
+from math import tan, pi
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 
 from glyphs import Glyph
+from glyphs.numbers.three import ThreeGlyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.rect import draw_rect
@@ -19,9 +20,11 @@ class AmpersandGlyph(Glyph):
     upper_height = 0.4
     lower_width = 1
     hook_ratio = 0.12
+    hook_drop = 2
     hook_below_baseline = 0
     hook_outside_cell = 0.24
     end_height_ratio = 0.5
+    diag_stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -30,6 +33,7 @@ class AmpersandGlyph(Glyph):
             overshoot_top=True,
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
+            uppercase=True,
         )
 
         ox = self.hook_outside_cell * b.width
@@ -37,9 +41,17 @@ class AmpersandGlyph(Glyph):
         w = self.upper_width * b.width
         xu1, xu2 = b.xmid - w / 2, b.xmid + w / 2
         yu1, yu2 = b.y2 - h, b.y2
-        hux, huy = b.hx * w / b.width, b.hy * h / b.height
 
-        params = draw_loop(
+        # Same handles as the top loop of the 3, the loop being drawn lower for
+        # bolder weights while the junction stays where it was
+        loop = ThreeGlyph().top_loop(dc).resize(xu1, yu1, xu2, yu2)
+        xj = xu1 + self.hook_ratio * w
+        (_, y1), (_, y2) = loop.intersection_x(x=xj)
+        yj = min(y1, y2)
+
+        yu1 -= 2 * self.extra_cut(dc)
+        loop = loop.resize(xu1, yu1, xu2, yu2)
+        draw_loop(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -47,42 +59,41 @@ class AmpersandGlyph(Glyph):
             yu1,
             xu2,
             yu2,
-            hux,
-            huy,
+            loop.hx,
+            loop.hy,
             cut="bottom",
         )
 
-        xj = xu1 + self.hook_ratio * w
-        (_, y1), (_, y2) = params["outer"].intersection_x(x=xj)
-        yj = min(y1, y2)
-
-        # Draw the parallelogramm to the bottom right
+        # Draw the parallelogramm to the bottom right, its top lowered for
+        # bolder weights to leave room for the curves to turn
         dhy = self.hook_below_baseline * b.height
-        theta, delta = draw_parallelogramm(
+        yd = yj - self.hook_drop * self.extra_cut(dc)
+        phi, delta = draw_parallelogramm(
             NullPen(),
-            dc.stroke_x,
-            dc.stroke_y,
+            self.diag_stroke_ratio * dc.stroke_x,
             b.x2 + ox,
             -dhy,
             xj,
-            yj,
+            yd,
             direction="top-left",
         )
+        # Angle of the diagonal from the horizontal
+        theta = pi / 2 - phi
 
         # Draw the curve to the intersection
-        hy = (0.5 * yu1 + 0.5 * yu2 - yj) - tan(theta) * (xj - xu1)
-        pen.moveTo((xu1, 0.5 * yu1 + 0.5 * yu2))
+        ym = 0.5 * yu1 + 0.5 * yu2
+        hy = ym - yd - tan(theta) * (xj - xu1)
+        pen.moveTo((xu1, ym))
         pen.curveTo(
-            (xu1, 0.5 * yu1 + 0.5 * yu2 - hy),
-            (xj, yj),
-            # (xj, yj),
+            (xu1, ym - hy),
+            (xj, yd),
             (b.x2 + ox - delta, -dhy),
         )
         pen.lineTo((b.x2 + ox, -dhy))
         pen.curveTo(
-            (xj + delta, yj),
-            (xu1 + dc.stroke_x, 0.5 * yu1 + 0.5 * yu2 - hy),
-            (xu1 + dc.stroke_x, 0.5 * yu1 + 0.5 * yu2),
+            (xj + delta, yd),
+            (xu1 + dc.stroke_x, ym - hy),
+            (xu1 + dc.stroke_x, ym),
         )
         pen.closePath()
 
@@ -122,7 +133,7 @@ class AmpersandGlyph(Glyph):
             taper=0.5,
         )
 
-        xcut = xj + delta
+        xcut = xj + delta - (yj - yd) / tan(theta)
         cut_glyph = ufoLib2.objects.Glyph()
         draw_rect(cut_glyph.getPen(), xcut, 0.5 * b.y1 + 0.5 * yj, b.x2, b.y2)
         result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))

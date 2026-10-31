@@ -21,4 +21,4 @@ class SingleRightPointingAngleQuotationMarkGlyph(Glyph):
         h = dc.x_height * self.span
         s = dc.stroke_x * self.stroke_ratio
         for x_tip, x_back in self.chevrons(b):
-            draw_chevron(pen, s, s, x_tip, x_back, dc.x_height / 2, h, delta=s)
+            draw_chevron(pen, s, x_tip, x_back, dc.x_height / 2, h)

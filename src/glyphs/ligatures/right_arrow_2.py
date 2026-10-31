@@ -8,3 +8,4 @@ class RightArrow2Glyph(RightArrowGlyph):
     name = "right_arrow_liga_2"
     components = ["hyphen_minus", "greater_than_sign_2"]
     span = GreaterThenSign2Glyph.span
+    stroke_ratio = 1.0

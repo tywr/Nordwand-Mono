@@ -34,7 +34,6 @@ class FractionGlyph(Glyph):
         draw_parallelogramm(
             pen,
             dc.stroke_x * self.slash_stroke,
-            dc.stroke_y * self.slash_stroke,
             cx - hw,
             0,
             cx + hw,

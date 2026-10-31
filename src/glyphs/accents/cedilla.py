@@ -1,52 +1,63 @@
-import ufoLib2
 from glyphs.accents import Accent
 from draw.loop import draw_loop
 from draw.rect import draw_rect
-from booleanOperations.booleanGlyph import BooleanGlyph
+from draw.parallelogramm import draw_parallelogramm
 
 
 class Cedilla(Accent):
     name = "cedilla"
     unicode = "0xB8"
-    x_ratio = 0.55
+    x_ratio = 0.4
     cut_ratio = 0.7
-    stroke_ratio = 0.6
+    stroke_ratio_x = 0.75
+    stroke_ratio_y = 0.75
+    stroke_y_dampening = 0.3
     neck_length = 0.05
+    flat_ratio = 0.1
+    slant_ratio = 1.25
+    y_start = 0
 
     def draw_at(self, pen, dc, x, y):
         h = abs(dc.descent)
         w = self.x_ratio * dc.width
+        wl = (1 - self.flat_ratio) * w
         yr = h / dc.x_height
-        yn = - self.neck_length * dc.x_height
+        yn = -self.neck_length * dc.x_height
+        esy = max(0, dc.stroke_y - 70)
+        sx = self.stroke_ratio_x * dc.stroke_x
+        sy = (
+            self.stroke_ratio_y * min(dc.stroke_y, 70)
+            + self.stroke_y_dampening * esy
+        )
+        sl = self.slant_ratio * sx
 
+        # Neck: shorter than its stroke in bold, so it's sized by its
+        # horizontal section rather than a perpendicular stroke
+        draw_parallelogramm(
+            pen,
+            0,
+            x - sl / 2,
+            yn - sy,
+            x + sl / 2,
+            self.y_start,
+            overwrite_section=sx,
+        )
+        draw_loop(
+            pen,
+            sx,
+            sy,
+            x - wl,
+            yn - h,
+            x + wl,
+            yn,
+            dc.hx * self.x_ratio,
+            dc.hy * yr,
+            cut="left",
+        )
         draw_rect(
             pen,
-            x - dc.stroke_y / 2,
-            yn - dc.stroke_y / 2,
-            x + dc.stroke_y / 2,
-            0,
-        )
-        glyph = ufoLib2.objects.Glyph()
-        draw_loop(
-            glyph.getPen(),
-            self.stroke_ratio * dc.stroke_x,
-            self.stroke_ratio * dc.stroke_y,
-            x - w / 2,
+            x - sl / 2,
             yn - h,
-            x + w / 2,
-            yn,
-            dc.hx * self.x_ratio / 2,
-            dc.hy * yr,
-        )
-
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(
-            cut_glyph.getPen(),
-            x - w / 2 - 10,
-            yn-h + self.cut_ratio * h / 2,
             x,
-            yn-self.cut_ratio * h / 2,
+            yn - h + sy,
         )
-
-        result = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)

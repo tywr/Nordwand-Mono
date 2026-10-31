@@ -6,18 +6,14 @@ from draw.corner import draw_corner
 from draw.rect import draw_rect
 
 
-class AeGlyph(Glyph):
+class LowercaseAeGlyph(Glyph):
     # Placeholder: plots the same as lowercase 'a' for the moment.
-    name = "ae"
+    name = "lowercase_ae"
     unicode = "0xE6"
     offset = 0
     mid_height = 0.52
     width_ratio = 1.2
     taper = 1.5
-    hx_ratio = 0.5
-    hy_ratio = 1
-    cap_hx_ratio = 0.7
-    cap_hy_ratio = 1
     cap_height = 0.7
     cap_offset = 0.02
     thinning = 1
@@ -35,24 +31,29 @@ class AeGlyph(Glyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
-        sx = max(0, 0.7 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
+        sx = max(0, 0.7 * (dc.stroke_x - dc.default_stroke)) + min(dc.default_stroke, dc.stroke_x)
         csx, csy = (
             self.cap_stroke_x_ratio * dc.stroke_x,
             self.cap_stroke_y_ratio * dc.stroke_y,
         )
         dx = csx - sx
-        ry = (self.mid_height * b.height + dc.stroke_alt / 2) / b.height
         ymid = b.y1 + self.mid_height * b.height
         yl = ymid + dc.stroke_alt / 2
-        hx, hy = b.hx * self.hx_ratio, b.hy * ry * self.hy_ratio
         ycut = b.y1 + self.cap_height * b.height
         xc = b.x1 + self.cap_offset * b.width
-        chx = self.cap_hx_ratio * b.hx
-        xt = b.x2 + self.tail_offset * b.width
         yo = b.y1 + self.tail_height * b.height
 
         ax2, axmid = b.xmid + sx / 2, (b.x1 + b.xmid + sx / 2) / 2
-        ex1, exmid = b.xmid - sx / 2, (b.x2 + b.xmid - sx / 2) / 2
+
+        # Handles rescaled from the body's to each quarter's size (a quarter
+        # spans half a full curve), so the curves keep the o's shape
+        def handles(x1, y1, x2, y2):
+            return (
+                b.hx * 2 * abs(x2 - x1) / b.width,
+                b.hy * 2 * abs(y2 - y1) / b.height,
+            )
+
+        exmid = (b.x2 + b.xmid - sx / 2) / 2
 
         # Lower half half of the bowl
         draw_arch(
@@ -63,9 +64,11 @@ class AeGlyph(Glyph):
             b.y1,
             ax2 + dx,
             yl,
-            hx,
-            hy,
-            taper=self.taper * dc.taper,
+            b.hx * (ax2 + dx - b.x1) / b.width,
+            b.hy * (yl - b.y1) / b.height,
+            # Above 1 the bowl's outer edge would pass x2 and poke out of the
+            # middle stem in thin weights, which raise dc.taper
+            taper=min(1, self.taper * dc.taper),
             side="right",
             cut="top",
         )
@@ -80,8 +83,7 @@ class AeGlyph(Glyph):
             (b.y1 + yl) / 2,
             axmid,
             yl,
-            hx,
-            hy,
+            *handles(b.x1, (b.y1 + yl) / 2, axmid, yl),
             orientation="top-right",
         )
         draw_rect(
@@ -92,18 +94,18 @@ class AeGlyph(Glyph):
             yl,
         )
 
-        # Cap
+        # Cap: symmetric around xmid, its right side on the stem's right edge
+        # with a full stroke so both shoulders share the same radius
         xmid = (xc + ax2) / 2
         draw_corner(
             pen,
-            sx / 2,
+            sx,
             csy,
-            ax2 - sx / 2,
+            ax2,
             b.ymid,
             xmid,
             b.y2,
-            chx,
-            b.hy,
+            *handles(ax2, b.ymid, xmid, b.y2),
             orientation="top-left",
         )
 
@@ -116,8 +118,7 @@ class AeGlyph(Glyph):
             b.ymid,
             xmid,
             b.y2,
-            chx,
-            b.hy,
+            *handles(xc, b.ymid, xmid, b.y2),
             orientation="top-right",
         )
         cut_glyph = ufoLib2.objects.Glyph()
@@ -134,8 +135,7 @@ class AeGlyph(Glyph):
             b.ymid,
             exmid,
             b.y2,
-            chx,
-            hy,
+            *handles(b.x2 - dc.h_overshoot, b.ymid, exmid, b.y2),
             orientation="top-left",
         )
         draw_corner(
@@ -146,8 +146,7 @@ class AeGlyph(Glyph):
             b.ymid,
             exmid,
             b.y2,
-            chx,
-            hy,
+            *handles(b.xmid - sx / 2, b.ymid, exmid, b.y2),
             orientation="top-right",
         )
         draw_corner(
@@ -158,8 +157,7 @@ class AeGlyph(Glyph):
             b.ymid,
             exmid,
             b.y1,
-            chx,
-            hy,
+            *handles(b.xmid - sx / 2, b.ymid, exmid, b.y1),
             orientation="bottom-right",
         )
 
@@ -172,8 +170,7 @@ class AeGlyph(Glyph):
             b.ymid,
             exmid,
             b.y1,
-            chx,
-            b.hy,
+            *handles(b.x2 - dc.h_overshoot, b.ymid, exmid, b.y1),
             orientation="bottom-left",
         )
 

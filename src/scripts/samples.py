@@ -211,18 +211,17 @@ SAMPLES = [
 ]
 
 
-def _cyrillic_sample(font_path):
+def _script_sample(font_path, ranges, basic_capitals, pangrams, exclude=""):
+    """The letters of a script covered by the font, uppercase then lowercase,
+    followed by pangrams. `ranges` and `basic_capitals` are inclusive
+    (first, last) codepoint pairs; letters in `exclude` are left out."""
     from fontTools.ttLib import TTFont
 
     with TTFont(font_path) as font:
         codepoints = font.getBestCmap()
 
-    def is_cyrillic(codepoint):
-        return (
-            0x0400 <= codepoint <= 0x052F
-            or 0x1C80 <= codepoint <= 0x1C8F
-            or 0xA640 <= codepoint <= 0xA69F
-        )
+    def in_script(codepoint):
+        return any(first <= codepoint <= last for first, last in ranges)
 
     def rows(characters, width=65):
         return "\n".join(
@@ -231,35 +230,57 @@ def _cyrillic_sample(font_path):
         )
 
     def letters(category):
-        # Order each letter by its capital form, basic А–Я first, so the
+        # Order each letter by its capital form, basic capitals first, so the
         # uppercase and lowercase rows line up pair by pair.
+        first, last = basic_capitals
+
         def key(character):
-            capital = ord(character.upper()[0])
-            return (not 0x0410 <= capital <= 0x042F, capital)
+            capital = ord(unicodedata.normalize("NFC", character.upper())[0])
+            return (not first <= capital <= last, capital)
 
         return "".join(
             sorted(
                 (
                     chr(codepoint)
                     for codepoint in codepoints
-                    if is_cyrillic(codepoint)
+                    if in_script(codepoint)
+                    and chr(codepoint) not in exclude
                     and unicodedata.category(chr(codepoint)) == category
                 ),
                 key=key,
             )
         )
 
-    uppercase = letters("Lu")
-    lowercase = letters("Ll")
+    return f"{rows(letters('Lu'))}\n{rows(letters('Ll'))}\n\n" + "".join(
+        f"{pangram}\n" for pangram in pangrams
+    )
 
-    return f"""\
-{rows(uppercase)}
-{rows(lowercase)}
 
-Съешь ещё этих мягких французских булок, да выпей же чаю
-Єхидна, ґава, їжак ще й шиплячі плазуни бігцем форсують Янцзи
-Љубазни фењерџија чађавог лица хоће да ми покаже штос
-"""
+def _cyrillic_sample(font_path):
+    return _script_sample(
+        font_path,
+        ranges=[(0x0400, 0x052F), (0x1C80, 0x1C8F), (0xA640, 0xA69F)],
+        basic_capitals=(0x0410, 0x042F),  # А–Я
+        pangrams=[
+            "Съешь ещё этих мягких французских булок, да выпей же чаю",
+            "Єхидна, ґава, їжак ще й шиплячі плазуни бігцем форсують Янцзи",
+            "Љубазни фењерџија чађавог лица хоће да ми покаже штос",
+        ],
+    )
+
+
+def _greek_sample(font_path):
+    return _script_sample(
+        font_path,
+        ranges=[(0x0370, 0x03FF), (0x1F00, 0x1FFF)],
+        basic_capitals=(0x0391, 0x03A9),  # Α–Ω
+        pangrams=[
+            "Ξεσκεπάζω την ψυχοφθόρα βδελυγμία",
+            "Γαζίες και μυρτιές δεν θα βρω πια στο χρυσαφί ξέφωτο",
+            "Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός",
+        ],
+        exclude="ΆΈΉΊΌΎΏ",
+    )
 
 
 def _target_image_width(font_path):
@@ -550,6 +571,14 @@ if __name__ == "__main__":
         os.path.join(args.output_dir, "sample_cyrillic.jpg"),
         _lexer(),
         _cyrillic_sample(args.font),
+        args.font,
+        target_width,
+    )
+
+    render_sample(
+        os.path.join(args.output_dir, "sample_greek.jpg"),
+        _lexer(),
+        _greek_sample(args.font),
         args.font,
         target_width,
     )

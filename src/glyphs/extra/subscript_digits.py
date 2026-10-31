@@ -14,7 +14,7 @@ from glyphs.numbers.nine import NineGlyph
 class SubscriptDigitGlyph(SuperscriptDigitGlyph):
     """The superscript digit lowered to dip slightly below the baseline."""
 
-    top_ratio = 0.43
+    top_ratio = 0.48
 
 
 class SubscriptZeroGlyph(SubscriptDigitGlyph):

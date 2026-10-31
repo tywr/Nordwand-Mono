@@ -13,3 +13,4 @@ custom-fonts/*
 /src/.DS_Store
 fonts/*
 .nerd-fonts
+docs/fonts

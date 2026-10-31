@@ -30,8 +30,14 @@ class FontConfig:
 
     min_margin_lowercase: int = 26
     min_margin_uppercase: int = 38
+    # Dots grow with stroke ** dot_exponent, and are flattened by dot_squash
+    # of the x/y stroke contrast (see draw.dot.dot_size)
+    dot_exponent: float = 0.6
+    dot_squash: float = 0.3
 
-    italic_angle: float = 9.4
+    italic_angle: float = 9
+    # Height the italic slant pivots around, so glyphs lean out on both sides
+    italic_pivot: int = 300
 
     width: int = 360
 
@@ -49,12 +55,12 @@ class FontConfig:
     stroke_alt: int = 66
 
     v_overshoot: int = 9
-    v_overshoot_cap: int = 16
+    v_overshoot_cap: int = 15
     h_overshoot: int = 10
 
     # Weights to export, as weight -> {name, stroke_x, stroke_y, stroke_alt}.
     # Every key is optional; strokes left out follow DrawConfig.weight().
-    weights = {w: {} for w in (100, 200, 300, 375, 400, 425, 500, 600, 700)}
+    weights = {w: {} for w in (100, 200, 300, 375, 400, 450, 500, 600, 700)}
 
 
 # Standard names, used when a weight in the config doesn't set its own.
@@ -63,9 +69,9 @@ WEIGHT_NAMES = {
     200: "ExtraLight",
     300: "Light",
     350: "SemiLight",
-    375: "Retina",
+    375: "Book",
     400: "Regular",
-    425: "Book",
+    450: "Retina",
     500: "Medium",
     600: "SemiBold",
     700: "Bold",
@@ -116,15 +122,16 @@ class DrawConfig(FontConfig):
         """
         from bisect import bisect_right
 
-        ws = [100, 200, 300, 375, 400, 425, 500, 600, 700]
+        ws = [100, 200, 300, 375, 400, 450, 500, 600, 700]
         # Multipliers of the 400 values
-        ratio_x = [0.625, 0.731, 0.855, 0.962, 1, 1.04, 1.17, 1.368, 1.6]
-        ratio_y = [0.667, 0.763, 0.874, 0.967, 1, 1.034, 1.145, 1.31, 1.5]
-        ratio_alt = [0.833, 0.886, 0.941, 0.985, 1, 1.015, 1.063, 1.129, 1.2]
-        ratio_hx = [0.909, 0.938, 0.969, 0.992, 1, 1.008, 1.032, 1.066, 1.1]
-        ratio_hy = [1.0, 1.0, 1.0, 1.0, 1, 1.0, 1.0, 1.0, 1.0]
+        ratio_x = [0.4, 0.58, 0.775, 0.95, 1, 1.12, 1.2, 1.4, 1.6]
+        ratio_y = [0.4, 0.58, 0.775, 0.95, 1, 1.12, 1.2, 1.35, 1.5]
+        ratio_alt = [0.4, 0.58, 0.775, 0.95, 1, 1.12, 1.15, 1.15, 1.15]
+        # Optical corrections on top of the weight-independent curve shape
+        ratio_hx = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ratio_hy = [1, 1, 1, 1, 1, 1, 1, 1, 1]
         # Absolute values
-        tapers = [0.5, 0.5, 0.5, 0.5, 0.5, 0.479, 0.415, 0.33, 0.245]
+        tapers = [1, 0.8, 0.5, 0.5, 0.5, 0.479, 0.415, 0.33, 0.245]
 
         def at(values):
             i = min(max(bisect_right(ws, w), 1), len(ws) - 1)
@@ -236,8 +243,17 @@ class DrawConfig(FontConfig):
             hx = self.hx
             hy = self.hy
 
-        hx = hx * (x2 - x1 - self.stroke_x) / self.width
-        hy = hy * (y2 - y1 - self.stroke_y) / self.x_height
+        # Handles are proportional to the outer box, so that the curve shape
+        # stays the same across weights (identical to before at the base weight)
+        inner_width = x2 - x1 - self.stroke_x
+        hx = (
+            hx
+            * inner_width
+            / self.width
+            * (x2 - x1)
+            / (inner_width + FontConfig.stroke_x)
+        )
+        hy = hy * (y2 - y1 - FontConfig.stroke_y) / self.x_height
 
         return BodyBounds(
             x1=x1, y1=y1, x2=x2, y2=y2, hx=hx, hy=hy, v_ov=v_ov, h_ov=h_ov

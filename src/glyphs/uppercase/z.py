@@ -10,12 +10,13 @@ class UppercaseZGlyph(UppercaseGlyph):
     right_offset = 0.01
     left_offset = 0.01
     width_ratio = 1.06
+    diag_stroke_ratio = 1.0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sy = dc.stroke_y * self.stroke_y_ratio
         xl = b.x1 + self.left_offset * b.width
         xr = b.x2 - self.right_offset * b.width
 
@@ -24,10 +25,9 @@ class UppercaseZGlyph(UppercaseGlyph):
         draw_rect(pen, b.x1, 0, b.x2, sy)
 
         # Diagonal stroke
-        theta, delta = draw_parallelogramm(
+        draw_parallelogramm(
             pen,
-            sx,
-            sy,
+            self.diag_stroke_ratio * dc.stroke_x,
             b.x1,
             b.y1 + sy,
             xr,

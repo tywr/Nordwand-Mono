@@ -19,6 +19,7 @@ class ThreeGlyph(NumberGlyph):
     hx_ratio = 0.9
     hy_ratio = 0.9
     width_ratio = 1.08
+    diag_stroke_ratio = 0.96
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -45,8 +46,7 @@ class ThreeGlyph(NumberGlyph):
         draw_rect(pen, xl, b.y2 - dc.stroke_y, xr, b.y2)
         draw_parallelogramm(
             pen,
-            sx,
-            sy,
+            self.diag_stroke_ratio * dc.stroke_x,
             b.xmid - sx,
             ymid - sy / 2,
             xr,

@@ -6,7 +6,7 @@ from draw.corner import draw_corner
 
 
 class CapitalSharpSGlyph(Glyph):
-    name = "capital_sharp_s"
+    name = "uppercase_sharp_s"
     unicode = "0x1e9e"
     offset = 12
     upper_ratio = 0.9  # Upper loop width as a fraction of the lower loop width
@@ -15,6 +15,7 @@ class CapitalSharpSGlyph(Glyph):
     offset_lower_bar = 0.3
     reach_upper_bar = 0.9
     tail_reach = 0.0
+    diag_stroke_ratio = 1.0
     stroke_x_ratio = 1.00
     stroke_y_ratio = 1.00
 
@@ -66,8 +67,7 @@ class CapitalSharpSGlyph(Glyph):
         )
         theta, delta = draw_parallelogramm(
             pen,
-            sx,
-            sy,
+            self.diag_stroke_ratio * sx,
             xu,
             b.y2 - sy,
             b.x1 + o,
@@ -96,7 +96,7 @@ class CapitalSharpSGlyph(Glyph):
             pen,
             b.x1 + o,
             ymid - sy / 2,
-            b.x1 + o + delta,
+            max(b.x1 + o + delta, (lower_x1 + lower_x2) / 2),
             ymid + sy * 0.75 - sy / 2,
         )
 

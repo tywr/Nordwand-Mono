@@ -1,22 +1,20 @@
-from glyphs import Glyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
-from draw.corner import draw_corner
-from utils.intersection import intersection_superellipses
+from glyphs.lowercase.single_story import SingleStoryLowercaseGlyph
 
 
-class SharpSGlyph(Glyph):
-    name = "sharp_s"
-    unicode = "0xdf"
+class GreekLowercaseBetaGlyph(SingleStoryLowercaseGlyph):
+    name = "greek_lowercase_beta"
+    unicode = "0x3B2"
     offset = 12
-    upper_ratio = 0.7
-    mid_ratio = 0.52
+    upper_ratio = 0.88
+    mid_ratio = 0.515
     width_ratio = 1.06
     offset_lower_bar = 0.3
     reach_upper_bar = 0.9
-    tail_reach = 0.0
     stroke_x_ratio = 1.00
     stroke_y_ratio = 1.00
+    taper = 0.75
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,14 +22,14 @@ class SharpSGlyph(Glyph):
             height="cap",
             uppercase=True,
             overshoot_top=True,
+            overshoot_bottom=True,
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx, b.hy
         ymid = b.y1 + self.mid_ratio * b.height
-        xu = b.x1 + self.reach_upper_bar * b.width
         o = self.offset_lower_bar * b.width
-        yt = -self.tail_reach * b.height
+        yt = dc.descent
 
         lower_x1 = b.x1
         lower_x2 = b.x2
@@ -44,18 +42,6 @@ class SharpSGlyph(Glyph):
         # Left stem
         draw_rect(pen, b.x1, yt, b.x1 + sx, (ymid - sy / 2 + b.y2) / 2)
 
-        # draw_corner(
-        #     pen,
-        #     sx,
-        #     sy,
-        #     b.x1,
-        #     (ymid - sy / 2 + b.y2) / 2,
-        #     (upper_x1 + upper_x2) / 2,
-        #     b.y2,
-        #     hx * (upper_x2 - upper_x1) / b.width,
-        #     hy * (1 - self.mid_ratio),
-        #     orientation="top-right",
-        # )
         draw_arch(
             pen,
             sx,
@@ -91,14 +77,28 @@ class SharpSGlyph(Glyph):
             sx,
             sy,
             lower_x1,
-            0,
+            b.y1,
             lower_x2,
             ymid + sy / 2,
             hx,
             hy * self.mid_ratio,
             taper=0.75,
-            cut="left",
+            cut="left,bottom",
             side="top",
+        )
+        draw_arch(
+            pen,
+            sx,
+            sy,
+            lower_x1,
+            b.y1,
+            lower_x2,
+            ymid + sy / 2,
+            hx,
+            hy * self.mid_ratio,
+            taper=dc.taper * self.taper,
+            cut="top",
+            side="left",
         )
 
         draw_rect(
@@ -108,17 +108,3 @@ class SharpSGlyph(Glyph):
             b.xmid,
             ymid + sy / 2,
         )
-        draw_rect(
-            pen,
-            b.x1 + o,
-            b.y1,
-            (lower_x1 + lower_x2) / 2,
-            b.y1 + sy,
-        )
-
-
-class SharpS2Glyph(SharpSGlyph):
-    name = "sharp_s_2"
-    unicode = "0xdf"
-    tail_reach = 0.15
-    font_feature = {"cv20": 1}

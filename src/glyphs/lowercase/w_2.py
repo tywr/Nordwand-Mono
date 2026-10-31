@@ -21,7 +21,9 @@ class LowercaseW2Glyph(Glyph):
         )
         xmid = b.x1 + self.mid_ratio * b.width
         sy = dc.stroke_y
-        sx = max(0, 0.9 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
+        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
+            dc.default_stroke, dc.stroke_x
+        )
         xt = b.x2 - self.tail_ratio * b.width - sx / 2
 
         draw_rect(
@@ -53,7 +55,8 @@ class LowercaseW2Glyph(Glyph):
             b.y1,
             xmid + sx / 2,
             b.y2,
-            b.hx * (1 - self.mid_ratio),
+            # Handles rescaled to the arch's width
+            b.hx * (xmid + sx / 2 - b.x1) / b.width,
             b.hy,
             cut="top",
             taper=0.6,
@@ -66,7 +69,7 @@ class LowercaseW2Glyph(Glyph):
             b.y1,
             b.x2,
             b.y2,
-            b.hx * self.mid_ratio,
+            b.hx * (b.x2 - xmid + sx / 2) / b.width,
             b.hy,
             side="left",
             cut="top",

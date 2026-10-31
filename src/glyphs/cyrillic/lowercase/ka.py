@@ -11,7 +11,7 @@ class CyrillicLowercaseKaGlyph(Glyph):
     branch_ratio = 0.75
     mid_ratio = 0.57
     upper_branch_offset = 0.055
-    branch_stroke_ratio = 1.25
+    lower_stroke_ratio = 1.0
     branch_overlap = 0.8
 
     def draw(self, pen, dc):
@@ -22,7 +22,6 @@ class CyrillicLowercaseKaGlyph(Glyph):
             overshoot_left=True,
         )
         xb = b.x1 + self.branch_overlap * dc.stroke_x
-        sx = self.diag_stroke_dampening(self.branch_stroke_ratio, dc.stroke_x, coef=0.2)
         xtop = b.x2 - self.upper_branch_offset * b.width
         ymid = b.y1 + self.mid_ratio * b.height
 
@@ -30,26 +29,23 @@ class CyrillicLowercaseKaGlyph(Glyph):
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, b.y2)
 
         # Lower branch
-        draw_parallelogramm(
+        _, d = draw_parallelogramm(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
+            self.lower_stroke_ratio * dc.stroke_x,
             xb,
             ymid,
             b.x2,
             b.y1,
             direction="bottom-right",
-            delta=sx,
         )
 
         # Upper branch
-        theta, delta = draw_parallelogramm(
+        draw_parallelogramm(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
+            0,
             xb,
             ymid,
             xtop,
             b.y2,
-            delta=sx,
+            overwrite_section=d,
         )

@@ -11,6 +11,7 @@ class CyrillicUppercaseYaGlyph(CyrillicUppercaseGlyph):
     loop_ratio = 0.605
     loop_width = 0.96
     branch_start = 0.63
+    branch_stroke_ratio = 1.0
     width_ratio = 1.05
 
     def draw(self, pen, dc):
@@ -57,8 +58,7 @@ class CyrillicUppercaseYaGlyph(CyrillicUppercaseGlyph):
         # # Right stem
         draw_parallelogramm(
             pen,
-            sx,
-            sy,
+            self.branch_stroke_ratio * sx,
             b.x1,
             0,
             xb,

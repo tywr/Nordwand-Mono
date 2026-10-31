@@ -76,4 +76,4 @@ class LeftCurlyBracketGlyph(Glyph):
             orientation="top-left",
         )
 
-        draw_rect(pen, b.x1, ymid - sp / 2, b.xmid, ymid + sp / 2)
+        draw_rect(pen, b.x1, ymid - sx / 2, b.xmid, ymid + sx / 2)

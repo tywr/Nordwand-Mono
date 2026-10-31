@@ -8,8 +8,8 @@ class Breve(Accent):
     unicode = "0x2D8"
     height = 0.5
     offset_y = 0.05
-    width = 1.1
-    stroke_ratio = 1.1
+    width = 1
+    stroke_ratio = 1
     hx_ratio = 0.5
     hy_ratio = 0.5
 
