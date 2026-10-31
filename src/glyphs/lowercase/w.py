@@ -11,7 +11,7 @@ class LowercaseWGlyph(Glyph):
     unicode = "0x77"
     offset = 0
     overlap = 0.5
-    outer_angle = 6.8  # Outer branches' edges, in degrees from vertical
+    outer_angle = 7.5
     inner_height = 1
     width_ratio = 1.27
     stroke_ratio = 1
