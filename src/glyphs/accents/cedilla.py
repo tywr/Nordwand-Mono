@@ -1,7 +1,7 @@
 from glyphs.accents import Accent
 from draw.loop import draw_loop
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 
 
 class Cedilla(Accent):
@@ -31,14 +31,16 @@ class Cedilla(Accent):
         )
         sl = self.slant_ratio * sx
 
-        theta, delta = draw_parallelogramm_legacy(
+        # Neck: shorter than its stroke in bold, so it's sized by its
+        # horizontal section rather than a perpendicular stroke
+        draw_parallelogramm(
             pen,
-            sx,
-            sy,
+            0,
             x - sl / 2,
             yn - sy,
             x + sl / 2,
             self.y_start,
+            overwrite_section=sx,
         )
         draw_loop(
             pen,

@@ -1,4 +1,5 @@
 from glyphs.accents.acute import Acute
+from draw.parallelogramm import parallelogramm_delta
 
 
 class DoubleAcute(Acute):
@@ -14,7 +15,8 @@ class DoubleAcute(Acute):
 
     def draw_at(self, pen, dc, x, y):
         w = self.width * dc.width
-        d = self.stroke_ratio * dc.stroke_x
+        h = self.height * dc.x_height
+        d = parallelogramm_delta(self.stroke_ratio * dc.stroke_x, 0, 0, w, h)
         sep = self.separation * (w + d)
         for bx in (x - sep / 2, x + sep / 2):
             super().draw_at(pen, dc, x=bx, y=y)

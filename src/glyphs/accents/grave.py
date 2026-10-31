@@ -1,5 +1,5 @@
 from glyphs.accents import Accent
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm, parallelogramm_delta
 
 
 class Grave(Accent):
@@ -7,20 +7,14 @@ class Grave(Accent):
     unicode = "0x60"
     height = 0.35
     width = 0.55
-    stroke_ratio = 1.1
+    stroke_ratio = 1.0
 
     def draw_at(self, pen, dc, x, y):
         h = self.height * dc.x_height
         w = self.width * dc.width
-        d = self.stroke_ratio * dc.stroke_x
-        draw_parallelogramm_legacy(
-            pen,
-            dc.stroke_alt,
-            dc.stroke_alt,
-            x + d / 2,
-            y - h / 2,
-            x + d / 2 - w,
-            y + h / 2,
-            delta=d,
-            direction="top-left"
+        s = self.stroke_ratio * dc.stroke_x
+        # Base centered on x
+        d = parallelogramm_delta(s, 0, 0, w, h)
+        draw_parallelogramm(
+            pen, s, x + d / 2, y - h / 2, x + d / 2 - w, y + h / 2, direction="top-left"
         )
