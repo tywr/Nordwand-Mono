@@ -15,7 +15,7 @@ class UppercaseWGlyph(UppercaseGlyph):
     inner_height = 1
     width_ratio = 1.27
     stroke_ratio = 1
-    inner_stroke_ratio = 1
+    inner_stroke_ratio = 0.9
     thin_boost = 0.1
     lower_section_height = 1
 
