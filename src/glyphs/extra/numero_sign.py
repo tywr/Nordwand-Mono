@@ -2,12 +2,12 @@ import dataclasses
 
 from glyphs.uppercase import UppercaseGlyph
 from glyphs.uppercase.n import UppercaseNGlyph
-from draw.circle import draw_circle
+from draw.loop import draw_loop
 from draw.rect import draw_rect
 
 
 class NumeroSignGlyph(UppercaseGlyph):
-    """A narrowed N followed by a degree-like ring hanging from the cap height."""
+    """A narrowed N followed by a small o-like loop hanging from the cap height."""
 
     name = "numero_sign"
     unicode = "0x2116"
@@ -27,14 +27,23 @@ class NumeroSignGlyph(UppercaseGlyph):
         x1 = margin + self.offset
         x2 = dc.window_width - margin + self.offset
 
-        # Ring, its top on the cap height and its right side on the margin
-        r = ring / 2
-        cx, cy = x2 - r, dc.cap - r
-        draw_circle(pen, cx, cy, r, clockwise=False)
-        draw_circle(pen, cx, cy, r - s, clockwise=True)
+        # Ring, its top on the cap height and its right side on the margin.
+        # Handles scaled from the lowercase o bowl to the ring's size.
+        ring_bottom = dc.cap - ring
+        draw_loop(
+            pen,
+            s,
+            self.ring_stroke_ratio * dc.stroke_y,
+            x2 - ring,
+            ring_bottom,
+            x2,
+            dc.cap,
+            dc.hx * ring / (dc.width + dc.stroke_x),
+            dc.hy * ring / dc.x_height,
+        )
 
         # Bar under the ring, as wide as it
-        bar_top = cy - r - self.bar_gap * dc.window_width
+        bar_top = ring_bottom - self.bar_gap * dc.window_width
         bar = self.ring_stroke_ratio * dc.stroke_y
         draw_rect(pen, x2 - ring, bar_top - bar, x2, bar_top)
 
