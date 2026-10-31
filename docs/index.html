@@ -19,6 +19,15 @@
 @font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
 @font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
 @font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-ThinItalic.woff2") format("woff2"); font-weight: 100; font-style: italic; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-ExtraLightItalic.woff2") format("woff2"); font-weight: 200; font-style: italic; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-LightItalic.woff2") format("woff2"); font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-BookItalic.woff2") format("woff2"); font-weight: 375; font-style: italic; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-RetinaItalic.woff2") format("woff2"); font-weight: 450; font-style: italic; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-MediumItalic.woff2") format("woff2"); font-weight: 500; font-style: italic; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-SemiBoldItalic.woff2") format("woff2"); font-weight: 600; font-style: italic; font-display: swap; }
+@font-face { font-family: "Nordwand Mono"; src: url("fonts/NordwandMono-BoldItalic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: swap; }
 
 :root {
   --accent: #abeaff;
@@ -167,7 +176,7 @@ section[data-legend]::before {
 }
 .sample:last-child { margin-bottom: 0; }
 
-.inspector { --wght: 400; padding: 0; display: grid; grid-template-columns: 1fr 1fr; }
+.inspector { --wght: 400; --style: normal; padding: 0; display: grid; grid-template-columns: 1fr 1fr; }
 .viewer {
   position: sticky;
   top: 0;
@@ -179,6 +188,7 @@ section[data-legend]::before {
 }
 .toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -196,6 +206,41 @@ section[data-legend]::before {
   border-radius: 6px;
   padding: .25rem .5rem;
 }
+.controls { display: flex; align-items: center; gap: 1rem; }
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--fg);
+  font: inherit;
+  cursor: pointer;
+}
+.switch .track {
+  position: relative;
+  width: 2.25rem;
+  height: 1.25rem;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: background .15s ease, border-color .15s ease;
+}
+.switch .track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(1.25rem - 6px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--fg-muted);
+  transition: translate .15s ease, background .15s ease;
+}
+.switch[aria-checked="true"] .track { background: var(--accent); border-color: var(--accent); }
+.switch[aria-checked="true"] .track::after { translate: 1rem 0; background: var(--bg); }
+.switch:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
 .stage { position: relative; flex: 1; }
 .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .glyph-grid {
@@ -214,6 +259,7 @@ section[data-legend]::before {
   font: inherit;
   font-size: 1.75rem;
   font-weight: var(--wght);
+  font-style: var(--style);
   cursor: pointer;
 }
 .glyph-grid button:hover { color: var(--fg-bright); background: #1c1c1c; }
@@ -282,17 +328,20 @@ abcdefghijklmnopqrstuvwxyz
     <div class="viewer">
       <div class="toolbar">
         <div><span class="glyph-name"></span><span class="glyph-code"></span></div>
-        <select class="weight-select" aria-label="Weight">
-          <option value="100">Thin</option>
-          <option value="200">ExtraLight</option>
-          <option value="300">Light</option>
-          <option value="375">Book</option>
-          <option value="400" selected>Regular</option>
-          <option value="450">Retina</option>
-          <option value="500">Medium</option>
-          <option value="600">SemiBold</option>
-          <option value="700">Bold</option>
-        </select>
+        <div class="controls">
+          <button class="switch italic-switch" type="button" role="switch" aria-checked="false"><span class="track"></span>Italic</button>
+          <select class="weight-select" aria-label="Weight">
+            <option value="100">Thin</option>
+            <option value="200">ExtraLight</option>
+            <option value="300">Light</option>
+            <option value="375">Book</option>
+            <option value="400" selected>Regular</option>
+            <option value="450">Retina</option>
+            <option value="500">Medium</option>
+            <option value="600">SemiBold</option>
+            <option value="700">Bold</option>
+          </select>
+        </div>
       </div>
       <div class="stage"><canvas></canvas></div>
     </div>
@@ -316,6 +365,7 @@ for (const el of document.querySelectorAll('.sample'))
   const grid = inspector.querySelector('.glyph-grid');
   const canvas = inspector.querySelector('canvas');
   const weight = inspector.querySelector('.weight-select');
+  const italic = inspector.querySelector('.italic-switch');
   const css = getComputedStyle(document.documentElement);
   const color = name => css.getPropertyValue(name).trim();
   let current = Math.max(0, glyphs.findIndex(([cp]) => cp === 65));
@@ -339,7 +389,8 @@ for (const el of document.querySelectorAll('.sample'))
     const [cp] = glyphs[current];
     const { width: w, height: h } = canvas.getBoundingClientRect();
     const s = scale(w, h);
-    const font = `${weight.value} ${1000 * s}px "Nordwand Mono"`;
+    const style = italic.getAttribute('aria-checked') === 'true' ? 'italic ' : '';
+    const font = `${style}${weight.value} ${1000 * s}px "Nordwand Mono"`;
     await document.fonts.load(font);
 
     const dpr = devicePixelRatio || 1;
@@ -423,6 +474,12 @@ for (const el of document.querySelectorAll('.sample'))
   });
   weight.addEventListener('change', () => {
     inspector.style.setProperty('--wght', weight.value);
+    draw();
+  });
+  italic.addEventListener('click', () => {
+    const on = italic.getAttribute('aria-checked') !== 'true';
+    italic.setAttribute('aria-checked', on);
+    inspector.style.setProperty('--style', on ? 'italic' : 'normal');
     draw();
   });
   new ResizeObserver(draw).observe(canvas);
