@@ -19,13 +19,16 @@ class UppercaseMGlyph(UppercaseGlyph):
     inner_stroke_ratio = 0.95
     upper_section_height = 1
 
-    def draw(self, pen, dc):
-        b = dc.body_bounds(
+    def body(self, dc):
+        return dc.body_bounds(
             offset=self.offset,
             height="cap",
             width_ratio=self.width_ratio,
             min_margin=dc.min_margin_uppercase,
         )
+
+    def draw(self, pen, dc):
+        b = self.body(dc)
         sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
             dc.default_stroke, dc.stroke_x
         )
