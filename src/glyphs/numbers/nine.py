@@ -63,7 +63,7 @@ class NineGlyph(NumberGlyph):
             pen,
             points=[
                 (xj, yj),
-                (xj, yj),
+                (xj + sx / 2, yj),
                 (b.x2, (b.y2 + ymid) / 2),
                 (b.x2 - sx, (b.y2 + ymid) / 2),
                 (b.x2 - sx, (b.y2 + b.ymid) / 2 - ihy),
@@ -86,6 +86,8 @@ class NineGlyph(NumberGlyph):
             (x3m, y3m),
             (b.x2, (b.y2 + ymid) / 2),
         )
+        pen.lineTo((b.x2 - sx / 2, (b.y2 + ymid) / 2))
+        pen.closePath()
 
         draw_loop(
             pen,
@@ -96,6 +98,6 @@ class NineGlyph(NumberGlyph):
             b.x2,
             b.y2,
             hx,
-            b.hy * self.vertical_ratio,
+            hy * self.vertical_ratio,
             cut="bottom",
         )
