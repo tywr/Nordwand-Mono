@@ -21,7 +21,9 @@ class LowercaseW2Glyph(Glyph):
         )
         xmid = b.x1 + self.mid_ratio * b.width
         sy = dc.stroke_y
-        sx = max(0, 0.9 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
+        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
+            dc.default_stroke, dc.stroke_x
+        )
         xt = b.x2 - self.tail_ratio * b.width - sx / 2
 
         draw_rect(

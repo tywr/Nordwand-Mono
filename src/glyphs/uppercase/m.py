@@ -26,8 +26,9 @@ class UppercaseMGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
             min_margin=dc.min_margin_uppercase,
         )
-        tsx = dc.stroke_x * self.stroke_x_ratio
-        sx = max(0, 0.6 * (tsx - 90)) + min(90, tsx)
+        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
+            dc.default_stroke, dc.stroke_x
+        )
         si = sx * self.inner_stroke_ratio
         ov = sx * self.overlap
         delta = self.inner_thickness_ratio * sx

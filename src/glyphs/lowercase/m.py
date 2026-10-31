@@ -31,7 +31,7 @@ class LowercaseMGlyph(Glyph):
         mid_y = (1 - self.mid_len) * (b.height - b.y1)
         hx, hy = b.hx * self.hx_ratio, b.hy
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        sx = max(0, 0.8 * (sx - 90)) + min(90, sx)
+        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
 
         wo = (b.width - 3 * sx) / 2
         if wo < self.min_width:

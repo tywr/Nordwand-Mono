@@ -26,8 +26,11 @@ class LowercaseWGlyph(Glyph):
         )
         lsh = self.lower_section_height * dc.stroke_y
         boost = self.thin_boost * max(0, dc.default_stroke - dc.stroke_x)
-        so = self.stroke_ratio * dc.stroke_x
-        si = self.inner_stroke_ratio * dc.stroke_x + boost
+        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
+            dc.default_stroke, dc.stroke_x
+        )
+        so = self.stroke_ratio * sx
+        si = self.inner_stroke_ratio * sx + boost
         # Outer feet placed so the branches' edges keep outer_angle in every
         # weight: their run is the slant over the height plus the horizontal
         # width of a stroke so at that angle
