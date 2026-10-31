@@ -3,7 +3,6 @@ from fontTools.pens.reverseContourPen import ReverseContourPen
 from glyphs import Glyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
-from draw.polygon import draw_polygon
 from draw.rect import draw_rect
 
 
@@ -17,9 +16,10 @@ class GreekLowercaseDeltaGlyph(Glyph):
     height_ratio = 0.76
     stroke_x_ratio = 1
     stroke_y_ratio = 1
-    taper = 0.5
+    taper = 0.2
     cap_x = 0.9
-    joint_x = 2.0
+    loop_ratio = 0.9
+    joint_x = 1.4
     hx_ratio = 1
     hy_ratio = 1
     stroke_ratio = 1.5
@@ -33,9 +33,8 @@ class GreekLowercaseDeltaGlyph(Glyph):
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
-        xh = b.x1 + self.height_ratio * b.height
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        loop_ratio = (xh + dc.v_overshoot - b.y1) / b.height
+        loop_ratio = self.loop_ratio
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy * loop_ratio
 
         ymid = b.y1 + loop_ratio * b.height
@@ -70,17 +69,6 @@ class GreekLowercaseDeltaGlyph(Glyph):
 
         # Mirrored contours wind the other way round, reverse them back
         rpen = ReverseContourPen(pen)
-        ihy = params["inner"].hy
-        draw_polygon(
-            rpen,
-            points=[
-                (xj, yj),
-                (xj + delta / 2, yj),
-                (b.x2, yq),
-                (b.x2 - sx, yq),
-                (b.x2 - sx, yq + ihy),
-            ],
-        )
 
         lp = ((yt2 - yj) ** 2 + (xj - xc) ** 2) ** 0.5
         dx = lp * cos(theta)
@@ -94,6 +82,14 @@ class GreekLowercaseDeltaGlyph(Glyph):
         rpen.lineTo((xc + delta, yt2))
         rpen.lineTo((x1m, y1m))
         rpen.curveTo((x2m, y2m), (b.x2, y3m), (b.x2, yq))
+        # Back up along the loop's outer edge, so the stroke only adds outside
+        # the loop: no hole at the joint and no cut into the counter, whatever
+        # the weight and taper
+        n = 12
+        for i in range(n):
+            y = yq + (yj - yq) * i / n
+            (x1, _), (x2, _) = params["outer"].intersection_y(y=y)
+            rpen.lineTo((max(x1, x2), y))
         rpen.closePath()
 
         draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, ymid, hx, hy, cut="top")
