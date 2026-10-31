@@ -6,16 +6,15 @@ from draw.arch import draw_arch
 class GreekLowercaseSigmaGlyph(Glyph):
     name = "greek_lowercase_sigma"
     unicode = "0x3C3"
-    offset = 0
+    offset = 20
     stroke_x_ratio = 1.01
-    right_offset = 0.075
-    width_ratio = 1.02
+    right_offset = 0.13
+    width_ratio = 1.12
     taper = 0.5
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
-            overshoot_top=True,
             overshoot_bottom=True,
             overshoot_left=True,
             overshoot_right=True,
