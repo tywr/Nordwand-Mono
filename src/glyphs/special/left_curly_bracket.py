@@ -76,4 +76,6 @@ class LeftCurlyBracketGlyph(Glyph):
             orientation="top-left",
         )
 
-        draw_rect(pen, b.x1, ymid - sx / 2, b.xmid, ymid + sx / 2)
+        # Same height as the curves' meeting tip (each ends 0.25 * sp past
+        # ymid with a 0.75 * sp stroke), so the protrusion continues it flush
+        draw_rect(pen, b.x1, ymid - sp / 2, b.xmid, ymid + sp / 2)
