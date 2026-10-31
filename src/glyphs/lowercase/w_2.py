@@ -55,7 +55,8 @@ class LowercaseW2Glyph(Glyph):
             b.y1,
             xmid + sx / 2,
             b.y2,
-            b.hx * (1 - self.mid_ratio),
+            # Handles rescaled to the arch's width
+            b.hx * (xmid + sx / 2 - b.x1) / b.width,
             b.hy,
             cut="top",
             taper=0.6,
@@ -68,7 +69,7 @@ class LowercaseW2Glyph(Glyph):
             b.y1,
             b.x2,
             b.y2,
-            b.hx * self.mid_ratio,
+            b.hx * (b.x2 - xmid + sx / 2) / b.width,
             b.hy,
             side="left",
             cut="top",

@@ -45,9 +45,13 @@ class LowercaseAeGlyph(Glyph):
 
         ax2, axmid = b.xmid + sx / 2, (b.x1 + b.xmid + sx / 2) / 2
 
-        # Same curve shape as the o, for each quarter's own radii
+        # Handles rescaled from the body's to each quarter's size (a quarter
+        # spans half a full curve), so the curves keep the o's shape
         def handles(x1, y1, x2, y2):
-            return self.o_handles(dc, abs(x2 - x1), abs(y2 - y1))
+            return (
+                b.hx * 2 * abs(x2 - x1) / b.width,
+                b.hy * 2 * abs(y2 - y1) / b.height,
+            )
 
         exmid = (b.x2 + b.xmid - sx / 2) / 2
 
@@ -60,7 +64,8 @@ class LowercaseAeGlyph(Glyph):
             b.y1,
             ax2 + dx,
             yl,
-            *self.o_handles(dc, (ax2 + dx - b.x1) / 2, (yl - b.y1) / 2),
+            b.hx * (ax2 + dx - b.x1) / b.width,
+            b.hy * (yl - b.y1) / b.height,
             # Above 1 the bowl's outer edge would pass x2 and poke out of the
             # middle stem in thin weights, which raise dc.taper
             taper=min(1, self.taper * dc.taper),

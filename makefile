@@ -1,4 +1,4 @@
-.PHONY: install build build-otf build-nerd-font install-mac
+.PHONY: install build build-font build-otf build-nerd-font install-mac visualize website
 
 FONT_VERSION ?= $(shell git describe --tags --abbrev=0 2>/dev/null || echo 1.0.0)
 
@@ -30,4 +30,6 @@ visualize:
     --args -m visualize lowercase_a
 
 website:
-	uv run python -m http.server 8000 -d docs
+	mkdir -p docs/fonts
+	cp fonts/woff2/*.woff2 docs/fonts/
+	uv run python -m scripts.serve
