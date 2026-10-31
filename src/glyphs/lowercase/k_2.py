@@ -17,8 +17,6 @@ class LowercaseK2Glyph(Glyph):
     branch_stroke_ratio = 1.25
     branch_overlap = 0.8
     loop_ratio = 0.85
-    hx_ratio = 0.85
-    hy_ratio = 0.5
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -27,11 +25,9 @@ class LowercaseK2Glyph(Glyph):
             overshoot_right=True,
             overshoot_left=True,
         )
-        sx = self.diag_stroke_dampening(self.branch_stroke_ratio, dc.stroke_x, coef=0.2)
         ymid = b.y1 + self.mid_ratio * b.height
-        hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         xl = b.xmid + (self.loop_ratio * b.width) / 2
-        xb = b.x1 + self.branch_x_ratio * b.width
+        xbl = b.xmid - dc.stroke_x * 0.66
 
         # Left ascender stem
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
@@ -46,8 +42,8 @@ class LowercaseK2Glyph(Glyph):
             ymid,
             xl,
             b.y2,
-            hx,
-            hy,
+            b.hx * (xl - b.x1) / b.width,
+            b.hy * (b.y2 - ymid) / b.height,
             cut="left",
         )
 
@@ -55,36 +51,11 @@ class LowercaseK2Glyph(Glyph):
             pen,
             dc.stroke_x,
             dc.stroke_y,
-            b.xmid - dc.stroke_x * 0.66,
+            xbl,
             ymid + dc.stroke_y,
             b.x2,
             0,
-            hx,
-            hy * 2.5,
+            b.hx * 2 * (b.x2 - xbl) / b.width,
+            b.hy * 2 * (ymid + dc.stroke_y) / b.height,
             orientation="bottom-right",
         )
-
-        # Lower branch
-        # draw_parallelogramm_legacy(
-        #     pen,
-        #     dc.stroke_x,
-        #     dc.stroke_y,
-        #     xb,
-        #     ymid + dc.stroke_y,
-        #     b.x2,
-        #     b.y1,
-        #     direction="bottom-right",
-        #     delta=sx,
-        # )
-
-        # Upper branch
-        # theta, delta = draw_parallelogramm_legacy(
-        #     pen,
-        #     dc.stroke_x,
-        #     dc.stroke_y,
-        #     xb,
-        #     ymid,
-        #     xtop,
-        #     b.y2,
-        #     delta=sx,
-        # )
