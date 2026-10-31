@@ -1,6 +1,5 @@
 from glyphs import Glyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_legacy
 from draw.loop import draw_loop
 from draw.corner import draw_corner
 

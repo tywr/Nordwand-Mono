@@ -7,7 +7,7 @@ class UppercaseXGlyph(UppercaseGlyph):
     unicode = "0x58"
     offset = 0
     width_ratio = 1.22
-    stroke_ratio = 0.964  # Perpendicular thickness of the diagonals
+    stroke_ratio = 1.0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

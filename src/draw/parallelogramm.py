@@ -119,13 +119,22 @@ def draw_parallelogramm(
     y2,
     direction="top-right",
     no_draw=False,
+    overwrite_section=None,
 ):
     """Slanted band with horizontal ends, from (x1, y1) to (x2, y2), drawn
     with a perpendicular thickness of `stroke` whatever its angle, so the
     same stroke gives the same weight on any diagonal and scales linearly
     across weights. Returns (phi, delta): the long edges' angle from
-    vertical and the horizontal width of the ends."""
-    delta = parallelogramm_delta(stroke, x1, y1, x2, y2)
+    vertical and the horizontal width of the ends.
+
+    `overwrite_section` forces that horizontal width instead, e.g. the
+    `delta` returned by another parallelogramm, so the two share the same
+    section and join flush. `stroke` is then ignored, and the thickness
+    follows from the section and the angle."""
+    if overwrite_section is None:
+        delta = parallelogramm_delta(stroke, x1, y1, x2, y2)
+    else:
+        delta = overwrite_section
     phi = atan2(abs(x2 - x1) - delta, abs(y2 - y1))
     if no_draw:
         return phi, delta

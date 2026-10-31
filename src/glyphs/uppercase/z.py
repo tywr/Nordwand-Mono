@@ -10,7 +10,7 @@ class UppercaseZGlyph(UppercaseGlyph):
     right_offset = 0.01
     left_offset = 0.01
     width_ratio = 1.06
-    diag_stroke_ratio = 0.961  # Perpendicular thickness of the diagonal
+    diag_stroke_ratio = 1.0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

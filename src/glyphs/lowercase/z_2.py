@@ -1,6 +1,5 @@
 from glyphs import Glyph
-from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 from draw.square_corner import draw_square_corner
 
 
@@ -9,7 +8,7 @@ class LowercaseZ2Glyph(Glyph):
     default_italic = True
     unicode = "0x7A"
     offset = 0
-    diag_stroke_ratio = 0.96
+    diag_stroke_ratio = 1.0
     width_ratio = 1
     right_offset = 0.04
     left_offset = 0.025
@@ -18,8 +17,6 @@ class LowercaseZ2Glyph(Glyph):
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
         sx, sy = dc.stroke_x, dc.stroke_y
-        dsx = self.diag_stroke_ratio * dc.stroke_x
-        dsy = self.diag_stroke_ratio * dc.stroke_y
         yt2 = b.y2 - self.tail_ratio * b.height
         yt1 = b.y1 + self.tail_ratio * b.height
 
@@ -38,10 +35,9 @@ class LowercaseZ2Glyph(Glyph):
         )
 
         # Diagonal stroke
-        theta, delta = draw_parallelogramm_legacy(
+        draw_parallelogramm(
             pen,
-            dsx,
-            dsy,
+            self.diag_stroke_ratio * dc.stroke_x,
             b.x1,
             b.y1 + dc.stroke_y,
             xr,

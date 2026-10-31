@@ -12,7 +12,7 @@ class UppercaseRGlyph(UppercaseGlyph):
     loop_width = 0.96
     branch_start = 0.63
     width_ratio = 1.05
-    leg_stroke_ratio = 0.971  # Perpendicular thickness of the leg
+    leg_stroke_ratio = 1.0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

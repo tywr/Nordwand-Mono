@@ -11,8 +11,7 @@ class UppercaseKGlyph(UppercaseGlyph):
     branch_ratio = 0.65
     mid_ratio = 0.55
     upper_branch_offset = 0.05
-    lower_stroke_ratio = 1.038  # Perpendicular thickness of the branches
-    upper_stroke_ratio = 0.991
+    lower_stroke_ratio = 1.0
     branch_overlap = 0.8
 
     def draw(self, pen, dc):
@@ -21,7 +20,7 @@ class UppercaseKGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
             overshoot_right=True,
             overshoot_left=True,
-            height="cap"
+            height="cap",
         )
         xb = b.x1 + self.branch_overlap * dc.stroke_x
         xtop = b.x2 - self.upper_branch_offset * b.width
@@ -31,7 +30,7 @@ class UppercaseKGlyph(UppercaseGlyph):
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.cap)
 
         # Lower branch
-        draw_parallelogramm(
+        _, d = draw_parallelogramm(
             pen,
             self.lower_stroke_ratio * dc.stroke_x,
             xb,
@@ -43,5 +42,11 @@ class UppercaseKGlyph(UppercaseGlyph):
 
         # Upper branch
         draw_parallelogramm(
-            pen, self.upper_stroke_ratio * dc.stroke_x, xb, ymid, xtop, b.y2
+            pen,
+            0,
+            xb,
+            ymid,
+            xtop,
+            b.y2,
+            overwrite_section=d,
         )
