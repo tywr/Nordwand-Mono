@@ -1,5 +1,5 @@
 from glyphs import Glyph
-from draw.rect import draw_rect
+from draw.dot import dot_size, draw_dot
 from draw.polygon import draw_polygon
 
 
@@ -8,7 +8,7 @@ class SemiColonGlyph(Glyph):
     unicode = "0x3B"
     offset = 0
     width_ratio = 1
-    stroke_ratio = 1.5
+    dot_ratio = 1.5
     gap = 1
 
     def draw(self, pen, dc):
@@ -17,16 +17,10 @@ class SemiColonGlyph(Glyph):
         b = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
-        s = self.stroke_ratio * dc.stroke_x
+        _, h = dot_size(dc, self.dot_ratio)
         g = b.height * self.gap
 
-        draw_rect(
-            pen,
-            b.xmid - s / 2,
-            b.y1 + g - s,
-            b.xmid + s / 2,
-            b.y1 + g,
-        )
+        draw_dot(pen, dc, b.xmid, b.y1 + g - h / 2, self.dot_ratio)
         cg = CommaGlyph()
         cg.draw(pen, dc)
 

@@ -67,6 +67,7 @@ from glyphs.accents.ogonek import Ogonek
 from glyphs.accents.stroke import Stroke, UppercaseStroke
 from glyphs.accents.comma_below import CommaBelow
 import pathops
+from draw.dot import dot_size, draw_dot
 from draw.rect import draw_rect
 from draw.square_corner import draw_square_corner
 
@@ -418,8 +419,8 @@ class LowercaseDotlessI2Glyph(LowercaseI2Glyph):
 
 def _draw_l_dot(pen, dc, x, y):
     """Middle dot centered between the stem of an L and its right edge."""
-    s = 1.4 * dc.stroke_x
-    draw_rect(pen, x - s, y - s / 2, x, y + s / 2)
+    w, _ = dot_size(dc, 1.4)
+    draw_dot(pen, dc, x - w / 2, y, 1.4)
 
 
 class LowercaseLDotGlyph(LowercaseLGlyph):

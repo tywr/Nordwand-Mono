@@ -1,6 +1,6 @@
 from glyphs.numbers import NumberGlyph
 from draw.loop import draw_loop
-from draw.rect import draw_rect
+from draw.dot import draw_dot
 
 
 class ZeroGlyph(NumberGlyph):
@@ -9,7 +9,7 @@ class ZeroGlyph(NumberGlyph):
     offset = 0
     slash = 0.2
     width_ratio = 1.06
-    dot_stroke_ratio = 1.4
+    dot_ratio = 1.5
     hx_ratio = 0.9
     hy_ratio = 1
     hm_ratio = 0.05
@@ -17,14 +17,7 @@ class ZeroGlyph(NumberGlyph):
     y_offset = 0.4
 
     def draw_mark(self, pen, dc, b):
-        sd = min(dc.stroke_x * self.dot_stroke_ratio, 140)
-        draw_rect(
-            pen,
-            b.xmid - sd / 2,
-            b.ymid - sd / 2,
-            b.xmid + sd / 2,
-            b.ymid + sd / 2,
-        )
+        draw_dot(pen, dc, b.xmid, b.ymid, self.dot_ratio)
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

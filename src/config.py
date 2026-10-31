@@ -30,6 +30,10 @@ class FontConfig:
 
     min_margin_lowercase: int = 26
     min_margin_uppercase: int = 38
+    # Dots grow with stroke ** dot_exponent, and are flattened by dot_squash
+    # of the x/y stroke contrast (see draw.dot.dot_size)
+    dot_exponent: float = 0.6
+    dot_squash: float = 0.3
 
     italic_angle: float = 9
     # Height the italic slant pivots around, so glyphs lean out on both sides

@@ -1,15 +1,14 @@
 from abc import ABC, abstractmethod
 from glyphs import Glyph
 
-from draw.rect import draw_rect
+from draw.dot import draw_dot
 
 
 class DottedLowercaseGlyph(Glyph, ABC):
     """Define common class variables for single-story lowercase glyphs"""
 
     dot_position = "xmid"
-    dot_height = 1.2
-    dot_width = 1.2
+    dot_ratio = 1.2
     rl_ratio = 0.5
 
     @abstractmethod
@@ -18,14 +17,5 @@ class DottedLowercaseGlyph(Glyph, ABC):
     def draw(self, pen, dc):
         self.draw_base(pen, dc)
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
-        dw = self.dot_width * dc.stroke_x
-        dh = min(self.dot_height * dc.stroke_x, 140)
         xpos = b.x1 + self.rl_ratio * b.width
-
-        draw_rect(
-            pen,
-            xpos - dw / 2,
-            dc.accent - dh / 2,
-            xpos + dw / 2,
-            dc.accent + dh / 2,
-        )
+        draw_dot(pen, dc, xpos, dc.accent, self.dot_ratio)
