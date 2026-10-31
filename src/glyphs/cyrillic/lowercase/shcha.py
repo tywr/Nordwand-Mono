@@ -15,6 +15,7 @@ class CyrillicLowercaseShchaGlyph(CyrillicLowercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
+        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
         six = max(0, 0.5 * (sx - 90)) + min(90, sx)
         descent = self.descent_ratio * dc.descent
         rx = b.x2 - self.right_offset * b.width

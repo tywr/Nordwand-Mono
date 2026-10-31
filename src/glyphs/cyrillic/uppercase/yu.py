@@ -21,6 +21,7 @@ class CyrillicUppercaseYuGlyph(CyrillicUppercaseGlyph):
             overshoot_top=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
         lx1 = b.x1 + self.mid_ratio * b.width
         hx = (1 - self.mid_ratio) * b.hx
         ymid = b.y1 + self.ymid_ratio * b.height

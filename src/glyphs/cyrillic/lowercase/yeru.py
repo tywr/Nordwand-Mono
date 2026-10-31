@@ -20,6 +20,7 @@ class CyrillicLowercaseYeruGlyph(Glyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
+        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
         hx, hy = b.hx * self.hx_ratio * self.xmid_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + self.mid_ratio * b.height
 

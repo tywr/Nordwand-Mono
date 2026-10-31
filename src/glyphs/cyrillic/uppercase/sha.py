@@ -16,6 +16,7 @@ class CyrillicUppercaseShaGlyph(CyrillicUppercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
         six = max(0, 0.5 * (sx - 90)) + min(90, sx)
 
         # Upper stems
