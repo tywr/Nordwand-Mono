@@ -1,18 +1,21 @@
 from glyphs import Glyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
+from draw.parallelogramm import draw_parallelogramm
+from draw.corner import draw_corner
 
 
-class SharpSGlyph(Glyph):
-    name = "sharp_s"
-    unicode = "0xdf"
+class CapitalSharpSGlyph(Glyph):
+    name = "uppercase_sharp_s"
+    unicode = "0x1e9e"
     offset = 12
-    upper_ratio = 0.7
+    upper_ratio = 0.9  # Upper loop width as a fraction of the lower loop width
     mid_ratio = 0.52
     width_ratio = 1.06
     offset_lower_bar = 0.3
     reach_upper_bar = 0.9
     tail_reach = 0.0
+    diag_stroke_ratio = 1.0
     stroke_x_ratio = 1.00
     stroke_y_ratio = 1.00
 
@@ -21,7 +24,6 @@ class SharpSGlyph(Glyph):
             offset=self.offset,
             height="cap",
             uppercase=True,
-            overshoot_top=True,
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
@@ -42,45 +44,35 @@ class SharpSGlyph(Glyph):
         # Left stem
         draw_rect(pen, b.x1, yt, b.x1 + sx, (ymid - sy / 2 + b.y2) / 2)
 
-        # draw_corner(
-        #     pen,
-        #     sx,
-        #     sy,
-        #     b.x1,
-        #     (ymid - sy / 2 + b.y2) / 2,
-        #     (upper_x1 + upper_x2) / 2,
-        #     b.y2,
-        #     hx * (upper_x2 - upper_x1) / b.width,
-        #     hy * (1 - self.mid_ratio),
-        #     orientation="top-right",
-        # )
-        draw_arch(
+        draw_corner(
             pen,
             sx,
             sy,
             b.x1,
-            ymid - sy / 2,
-            upper_x2,
+            (ymid - sy / 2 + b.y2) / 2,
+            (upper_x1 + upper_x2) / 2,
             b.y2,
             hx * (upper_x2 - upper_x1) / b.width,
             hy * (1 - self.mid_ratio),
-            taper=0.75,
-            side="bottom",
-            cut="left",
+            orientation="top-right",
         )
-        draw_arch(
+
+        # Upper loop
+        draw_rect(
             pen,
-            sx,
-            sy,
-            b.x1,
-            ymid - sy / 2,
-            upper_x2,
+            b.xmid,
+            b.y2 - sy,
+            xu,
             b.y2,
-            hx * (upper_x2 - upper_x1) / b.width,
-            hy * (1 - self.mid_ratio),
-            taper=0.75,
-            side="bottom",
-            cut="bottom",
+        )
+        theta, delta = draw_parallelogramm(
+            pen,
+            self.diag_stroke_ratio * sx,
+            xu,
+            b.y2 - sy,
+            b.x1 + o,
+            ymid + sy * 0.75 - sy / 2,
+            direction="bottom-left",
         )
 
         # Lower loop (full width)
@@ -99,13 +91,16 @@ class SharpSGlyph(Glyph):
             side="top",
         )
 
+        # Middle part
         draw_rect(
             pen,
             b.x1 + o,
             ymid - sy / 2,
-            b.xmid,
-            ymid + sy / 2,
+            max(b.x1 + o + delta, (lower_x1 + lower_x2) / 2),
+            ymid + sy * 0.75 - sy / 2,
         )
+
+        # Bottom extension
         draw_rect(
             pen,
             b.x1 + o,
@@ -113,10 +108,3 @@ class SharpSGlyph(Glyph):
             (lower_x1 + lower_x2) / 2,
             b.y1 + sy,
         )
-
-
-class SharpS2Glyph(SharpSGlyph):
-    name = "sharp_s_2"
-    unicode = "0xdf"
-    tail_reach = 0.15
-    font_feature = {"cv20": 1}
