@@ -1,6 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 
 
 class UppercaseKGlyph(UppercaseGlyph):
@@ -11,7 +11,8 @@ class UppercaseKGlyph(UppercaseGlyph):
     branch_ratio = 0.65
     mid_ratio = 0.55
     upper_branch_offset = 0.05
-    branch_stroke_ratio = 1.3
+    lower_stroke_ratio = 1.038  # Perpendicular thickness of the branches
+    upper_stroke_ratio = 0.991
     branch_overlap = 0.8
 
     def draw(self, pen, dc):
@@ -23,7 +24,6 @@ class UppercaseKGlyph(UppercaseGlyph):
             height="cap"
         )
         xb = b.x1 + self.branch_overlap * dc.stroke_x
-        sx = self.diag_stroke_dampening(self.branch_stroke_ratio, dc.stroke_x, coef=0.2)
         xtop = b.x2 - self.upper_branch_offset * b.width
         ymid = b.y1 + self.mid_ratio * b.height
 
@@ -31,26 +31,17 @@ class UppercaseKGlyph(UppercaseGlyph):
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.cap)
 
         # Lower branch
-        draw_parallelogramm_legacy(
+        draw_parallelogramm(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
+            self.lower_stroke_ratio * dc.stroke_x,
             xb,
             ymid,
             b.x2,
             b.y1,
             direction="bottom-right",
-            delta=sx,
         )
 
         # Upper branch
-        theta, delta = draw_parallelogramm_legacy(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            xb,
-            ymid,
-            xtop,
-            b.y2,
-            delta=sx,
+        draw_parallelogramm(
+            pen, self.upper_stroke_ratio * dc.stroke_x, xb, ymid, xtop, b.y2
         )

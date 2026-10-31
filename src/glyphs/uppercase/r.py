@@ -1,7 +1,7 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.loop import draw_loop
 from draw.rect import draw_rect
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 
 
 class UppercaseRGlyph(UppercaseGlyph):
@@ -12,6 +12,7 @@ class UppercaseRGlyph(UppercaseGlyph):
     loop_width = 0.96
     branch_start = 0.63
     width_ratio = 1.05
+    leg_stroke_ratio = 0.971  # Perpendicular thickness of the leg
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -55,10 +56,9 @@ class UppercaseRGlyph(UppercaseGlyph):
         )
 
         # Right stem
-        draw_parallelogramm_legacy(
+        draw_parallelogramm(
             pen,
-            sx,
-            sy,
+            self.leg_stroke_ratio * dc.stroke_x,
             b.x2,
             0,
             xb,

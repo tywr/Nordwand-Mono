@@ -1,7 +1,7 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
-from draw.parallelogramm import draw_parallelogramm_legacy
+from draw.parallelogramm import draw_parallelogramm
 from draw.polygon import draw_polygon
 
 
@@ -13,8 +13,8 @@ class UppercaseWGlyph(UppercaseGlyph):
     outer_branch_ratio = 0.265
     inner_height = 1
     width_ratio = 1.27
-    stroke_ratio = 1
-    inner_stroke_ratio = 1
+    stroke_ratio = 0.99  # Perpendicular thickness of the outer branches
+    inner_stroke_ratio = 0.984  # And of the inner ones
     lower_section_height = 1.5
 
     def draw(self, pen, dc):
@@ -25,74 +25,44 @@ class UppercaseWGlyph(UppercaseGlyph):
             # min_margin=dc.min_margin_lowercase,
         )
         lsh = self.lower_section_height * dc.stroke_y
-        tsx = dc.stroke_x * self.stroke_ratio
-        sx = max(0, 0.7 * (tsx - 90)) + min(90, tsx)
-        ov = self.overlap * sx
-        isx = sx * self.inner_stroke_ratio
+        so = self.stroke_ratio * dc.stroke_x
+        si = self.inner_stroke_ratio * dc.stroke_x
+        ov = self.overlap * so
         xi1 = b.x1 + self.outer_branch_ratio * b.width
         xi2 = b.x2 - self.outer_branch_ratio * b.width
         yi = b.y1 + self.inner_height * b.height
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()
-        draw_parallelogramm_legacy(
-            gpen,
-            0,
-            0,
-            b.x1,
-            b.y2,
-            xi1 + ov / 2,
-            b.y1,
-            delta=sx,
-            direction="bottom-right",
+        # Outer branches; `do` is their horizontal width
+        _, do = draw_parallelogramm(
+            gpen, so, b.x1, b.y2, xi1 + ov / 2, b.y1, direction="bottom-right"
         )
-        draw_parallelogramm_legacy(
-            gpen,
-            0,
-            0,
-            b.x2,
-            b.y2,
-            xi2 - ov / 2,
-            b.y1,
-            delta=sx,
-            direction="bottom-left",
+        draw_parallelogramm(
+            gpen, so, b.x2, b.y2, xi2 - ov / 2, b.y1, direction="bottom-left"
         )
-        draw_parallelogramm_legacy(
-            gpen,
-            0,
-            0,
-            xi1 + ov / 2 - isx,
-            b.y1,
-            b.xmid + isx / 2,
-            yi,
-            delta=isx,
-            direction="top-right",
+        # Inner branches, their feet starting where the outer ones do and
+        # meeting at the middle; `di` is their horizontal width
+        _, di = draw_parallelogramm(
+            gpen, si, xi1 + ov / 2 - do, b.y1, b.xmid + do / 2, yi, direction="top-right"
         )
-        draw_parallelogramm_legacy(
-            gpen,
-            0,
-            0,
-            xi2 - ov / 2 + isx,
-            b.y1,
-            b.xmid - isx / 2,
-            yi,
-            delta=isx,
-            direction="top-left",
+        draw_parallelogramm(
+            gpen, si, xi2 - ov / 2 + do, b.y1, b.xmid - do / 2, yi, direction="top-left"
         )
         cut_glyph = ufoLib2.objects.Glyph()
         draw_polygon(
             cut_glyph.getPen(),
             points=[
-                (b.x1 + sx, b.y2),
-                (b.xmid - isx / 2, b.y2),
+                (b.x1 + do, b.y2),
+                (b.xmid + do / 2 - di, b.y2),
                 (xi1, lsh),
             ],
         )
         draw_polygon(
             cut_glyph.getPen(),
             points=[
-                (b.xmid + isx / 2, b.y2),
-                (b.x2 - sx, b.y2),
+                (b.xmid - do / 2 + di, b.y2),
+                (b.x2 - do, b.y2),
                 (xi2, lsh),
             ],
         )
