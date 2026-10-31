@@ -14,6 +14,10 @@ class LowercaseYGlyph(Glyph):
     overlap = 0.536
     lower_section_height = 1.5
 
+    def tail_end(self, dc):
+        """Height the tail runs down to"""
+        return dc.descent
+
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
         s = self.stroke_ratio * dc.stroke_x
@@ -39,13 +43,14 @@ class LowercaseYGlyph(Glyph):
         # slope, so the same stroke gives it the same horizontal width
         w2 = b.x2 - (b.xmid - ov)
         h2 = b.y2 - b.y1
-        dx_tail = -(w2 - delta) * abs(dc.descent) / h2
+        yt = self.tail_end(dc)
+        dx_tail = -(w2 - delta) * (b.y1 - yt) / h2
         draw_parallelogramm(
             pen,
             s,
             b.xmid - ov + delta,
             b.y1,
             b.xmid - ov + dx_tail,
-            dc.descent,
+            yt,
             direction="bottom-left",
         )
