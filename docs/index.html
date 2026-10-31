@@ -56,6 +56,9 @@ section[data-legend]::before {
   position: relative;
   box-sizing: border-box;
   min-height: 100svh;
+  /* Clear the frame and the top map marks (they end ~2.7rem down), which the
+     content runs into on phones where it overflows the screen height */
+  padding-top: max(var(--pad), 4.5rem);
   padding-bottom: calc(var(--pad) + 4rem);
   display: flex;
   flex-direction: column;
