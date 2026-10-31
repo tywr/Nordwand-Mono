@@ -83,7 +83,7 @@ class GreekLowercaseBetaGlyph(SingleStoryLowercaseGlyph):
             hx,
             hy * self.mid_ratio,
             taper=0.75,
-            cut="left",
+            cut="left,bottom",
             side="top",
         )
         draw_arch(
@@ -97,7 +97,7 @@ class GreekLowercaseBetaGlyph(SingleStoryLowercaseGlyph):
             hx,
             hy * self.mid_ratio,
             taper=dc.taper * self.taper,
-            cut="right,top",
+            cut="top",
             side="left",
         )
 
