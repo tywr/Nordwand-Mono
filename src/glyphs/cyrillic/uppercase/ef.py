@@ -19,9 +19,7 @@ class CyrillicUppercaseEfGlyph(CyrillicUppercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
-            dc.default_stroke, dc.stroke_x
-        )
+        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
         y1 = b.y1 + (1 - self.vertical_ratio) * b.height / 2
         y2 = b.y2 - (1 - self.vertical_ratio) * b.height / 2
         of = self.vertical_overflow * b.height

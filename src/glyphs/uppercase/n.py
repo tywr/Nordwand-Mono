@@ -11,9 +11,9 @@ class UppercaseNGlyph(UppercaseGlyph):
     unicode = "0x4E"
     offset = 0
     middle_stroke_ratio = 1.0
-    overlap = 0.5
+    overlap = 0.25
     width_ratio = 1.04
-    section_height = 1.0  # Solid stem beyond the ink traps, in stroke_y
+    section_height = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

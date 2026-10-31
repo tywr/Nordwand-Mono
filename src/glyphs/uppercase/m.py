@@ -17,7 +17,7 @@ class UppercaseMGlyph(UppercaseGlyph):
     inner_height = 0.2
     width_ratio = 1.16
     inner_stroke_ratio = 1
-    upper_section_height = 1.0
+    upper_section_height = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
