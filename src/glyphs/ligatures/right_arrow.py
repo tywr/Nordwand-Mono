@@ -38,7 +38,7 @@ class RightArrowGlyph(LigatureGlyph):
         if join_left:
             # Start where the junction of the `-` before ends, as thick as it
             s = hyphen.horizontal_bar_stroke(dc)
-            x1 = s * hyphen.ligature_junction_width / 2
+            x1 = s * dc.ligature_junction_width / 2
         g = self.gap * dc.window_width
         _, delta = draw_chevron(
             pen,
@@ -53,8 +53,8 @@ class RightArrowGlyph(LigatureGlyph):
             draw_rect(pen, x1, ymid - s / 2, x2, ymid + s / 2)
             return
         w = dc.window_width
-        jw = s * hyphen.ligature_junction_width
-        d = s * hyphen.ligature_dent_stroke
+        jw = s * dc.ligature_junction_width
+        d = s * dc.ligature_dent_stroke
         draw_rect(pen, x1, ymid - s / 2, w - jw / 2, ymid + s / 2)
         draw_rect(pen, w - jw / 2, ymid - d / 2, w + jw / 2, ymid + d / 2)
         draw_rect(pen, w + jw / 2, ymid - s / 2, x2, ymid + s / 2)

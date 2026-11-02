@@ -47,8 +47,6 @@ class Glyph(ABC):
 class InfiniteLigatureGlyph(Glyph):
     """Glyph whose horizontal bars can join across any number of cells."""
 
-    ligature_dent_stroke = 0.5
-    ligature_junction_width = 0.5
 
     @abstractmethod
     def horizontal_bar_heights(self, dc) -> tuple[float, ...]: ...
@@ -69,8 +67,8 @@ class InfiniteLigatureGlyph(Glyph):
         from draw.rect import draw_rect
 
         stroke = self.horizontal_bar_stroke(dc)
-        dent = stroke * self.ligature_dent_stroke
-        junction_width = stroke * self.ligature_junction_width
+        dent = stroke * dc.ligature_dent_stroke
+        junction_width = stroke * dc.ligature_junction_width
         x1, x2 = self.horizontal_bar_bounds(dc)
         if join_left:
             x1 = junction_width / 2

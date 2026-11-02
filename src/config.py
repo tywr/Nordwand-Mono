@@ -35,6 +35,11 @@ class FontConfig:
     dot_exponent: float = 0.6
     dot_squash: float = 0.3
 
+    # Notch where joined ligature cells meet (`----`, `====`, `->`, `=>`),
+    # relative to the stroke of the bar it cuts: its height, and its width
+    ligature_dent_stroke: float = 0.5
+    ligature_junction_width: float = 1
+
     italic_angle: float = 9
     # Height the italic slant pivots around, so glyphs lean out on both sides
     italic_pivot: int = 300

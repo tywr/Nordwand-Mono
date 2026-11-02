@@ -42,7 +42,7 @@ class RightArrowGlyph(LigatureGlyph):
         equals = EqualsSignGlyph()
         if join_left:
             # Start where the junction of the `=` before ends, with its bars
-            x1 = equals.horizontal_bar_stroke(dc) * equals.ligature_junction_width / 2
+            x1 = equals.horizontal_bar_stroke(dc) * dc.ligature_junction_width / 2
             heights = equals.horizontal_bar_heights(dc)
         x_tip = b.x2 + dc.window_width
         x_back = b.x1 + dc.window_width
@@ -57,8 +57,8 @@ class RightArrowGlyph(LigatureGlyph):
             return x_tip - t * (x_tip - x_back - delta) - delta / 2
 
         w = dc.window_width
-        jw = s * equals.ligature_junction_width
-        d = s * equals.ligature_dent_stroke
+        jw = s * dc.ligature_junction_width
+        d = s * dc.ligature_dent_stroke
         for yc in heights:
             y1, y2 = yc - s / 2, yc + s / 2
             # Bar part in the second cell, ending in the chevron
