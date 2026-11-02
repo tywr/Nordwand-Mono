@@ -7,7 +7,8 @@
 | `cv01=1` | `0` | `U+0030` | ![zero](alternative_characters/zero.png) | ![zero_slashed](alternative_characters/zero_slashed.png) | `zero_slashed` |  |
 | `cv01=2` | `0` | `U+0030` | ![zero](alternative_characters/zero.png) | ![zero_hexagon](alternative_characters/zero_hexagon.png) | `zero_hexagon` | Berkeley Mono zero style |
 | `cv02=1` | `a` | `U+0061` | ![lowercase_a_2](alternative_characters/lowercase_a_2.png) | ![lowercase_a_3](alternative_characters/lowercase_a_3.png) | `lowercase_a_3` | Only for italic |
-| `cv03=1` | `l` | `U+006C` | ![lowercase_l](alternative_characters/lowercase_l.png) | ![lowercase_l_2](alternative_characters/lowercase_l_2.png) | `lowercase_l_2` |  |
+| `cv03=1` | `l` | `U+006C` | ![lowercase_l](alternative_characters/lowercase_l.png) | ![lowercase_l_2](alternative_characters/lowercase_l_2.png) | `lowercase_l_2` | Only applies in regular font |
+| `cv03=2` | `l` | `U+006C` | ![lowercase_l](alternative_characters/lowercase_l.png) | ![lowercase_l_3](alternative_characters/lowercase_l_3.png) | `lowercase_l_3` | Applies to both regular and italic fonts |
 | `cv04=1` | `g` | `U+0067` | ![lowercase_g](alternative_characters/lowercase_g.png) | ![lowercase_g_2](alternative_characters/lowercase_g_2.png) | `lowercase_g_2` | Only applies in regular font |
 | `cv04=2` | `g` | `U+0067` | ![lowercase_g](alternative_characters/lowercase_g.png) | ![lowercase_g_3](alternative_characters/lowercase_g_3.png) | `lowercase_g_3` | Applies to both regular and italic fonts |
 | `cv11=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_3](alternative_characters/lowercase_f_3.png) | `lowercase_f_3` |  |
@@ -15,5 +16,7 @@
 | `cv12=1` | `m` | `U+006D` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) | `lowercase_m_2` |  |
 | `cv19=1` | `3` | `U+0033` | ![three](alternative_characters/three.png) | ![three_2](alternative_characters/three_2.png) | `three_2` |  |
 | `cv20=1` | `ß` | `U+00DF` | ![lowercase_sharp_s](alternative_characters/lowercase_sharp_s.png) | ![sharp_s_2](alternative_characters/sharp_s_2.png) | `sharp_s_2` |  |
+| `ss01=1` | `l` | `U+006C` | ![lowercase_l](alternative_characters/lowercase_l.png) | ![lowercase_l_2](alternative_characters/lowercase_l_2.png) | `lowercase_l_2` | Only applies in regular font |
+| `ss01=1` | `m` | `U+006D` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) | `lowercase_m_2` |  |
 | `ss03=1` | `>` | `U+003E` | ![greater_than_sign](alternative_characters/greater_than_sign.png) | ![greater_than_sign_2](alternative_characters/greater_than_sign_2.png) | `greater_than_sign_2` | Also changes the `->` and `=>` arrows |
 | `ss03=1` | `<` | `U+003C` | ![less_than_sign](alternative_characters/less_than_sign.png) | ![less_than_sign_2](alternative_characters/less_than_sign_2.png) | `less_than_sign_2` |  |
