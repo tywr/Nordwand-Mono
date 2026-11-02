@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Nordwand Mono – a programming font for programmers and wanderers">
+<meta name="description" content="Nordwand Mono – a programming font for programmers (and adventurers)">
 <meta name="author" content="Tanguy VIVIER">
-<title>Nordwand Mono | tywr</title>
+<title>Nordwand Mono</title>
 <link rel="icon" type="image/svg+xml" href="https://tywr.github.io/icon.svg">
 <link rel="preload" href="fonts/NordwandMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
@@ -36,8 +36,11 @@
   --fg: #cccccc;
   --fg-muted: #606060;
   --border: #262626;
-  --code-string: #c5e1a5;
-  --code-number: #ffcc99;
+  /* Syntax colors of the noir Neovim theme, through the gravity palette */
+  --code-comment: #585858;
+  --code-keyword: #8a8a8a;
+  --code-string: #91c7d9;
+  --code-number: #91c7d9;
   --pad: clamp(1rem, 4vw, 4rem);
 
   font-family: "Nordwand Mono", ui-monospace, monospace;
@@ -152,8 +155,38 @@ section[data-legend]::before {
 }
 .download:hover { opacity: .85; }
 
-.intro { max-width: 46rem; margin: 0 auto; font-size: 1.05rem; }
-.intro p { margin: 0 0 1em; }
+.download .font-version { opacity: .6; }
+
+/* Description on the left, a hand-drawn route topo on the right */
+.topo {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  column-gap: var(--pad);
+  align-items: center;
+}
+.topo::before { grid-column: 1 / -1; }
+.topo-text { max-width: 36rem; font-size: 1.05rem; }
+.topo-text p { margin: 0 0 1em; }
+.topo-figure { margin: 0; }
+.topo-figure figcaption { margin-top: 1rem; font-size: .8rem; color: var(--fg-muted); text-align: right; }
+.topo-figure figcaption a { color: inherit; }
+.topo-drawing { display: block; width: 100%; height: auto; }
+.topo-drawing .rock { fill: none; stroke: var(--fg-muted); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.topo-drawing .thin { stroke-width: 1.4; }
+.topo-drawing .shade { fill: url(#hatch); }
+.topo-drawing .hatch line { stroke: var(--fg-muted); stroke-width: 1.6; }
+.topo-drawing .route { fill: none; stroke: var(--accent); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+.topo-drawing .dashed-route { stroke-dasharray: 9 8; }
+.topo-drawing .leader path { fill: none; stroke: var(--fg-muted); stroke-width: 1.4; }
+/* Labels cut a gap in the lines they cross, as on drawn topos */
+.topo-drawing text { paint-order: stroke; stroke: var(--bg); stroke-width: 8px; stroke-linejoin: round; }
+.topo-drawing .topo-note { fill: var(--fg); font-size: 24px; font-style: italic; }
+.topo-drawing .summit { fill: var(--fg-bright); font-size: 28px; }
+.topo-drawing .place { fill: var(--fg-muted); font-size: 22px; letter-spacing: .6em; }
+@media (width < 48rem) {
+  .topo { grid-template-columns: 1fr; }
+  .topo-figure { margin-top: 2rem; }
+}
 
 .glyphs { position: relative; }
 /* Level with the section legend */
@@ -362,8 +395,8 @@ section[data-legend]::before {
    and blocks join between lines */
 .code pre[data-lang="terminal"] { line-height: 1.325; }
 /* Comments use the italic */
-.code .c { color: var(--fg-muted); font-style: italic; }
-.code .k { color: var(--accent); }
+.code .c { color: var(--code-comment); font-style: italic; }
+.code .k { color: var(--code-keyword); }
 .code .s { color: var(--code-string); }
 .code .n { color: var(--code-number); }
 
@@ -373,24 +406,92 @@ footer { padding: 2rem var(--pad); font-size: .85rem; color: var(--fg-muted); bo
 <body>
   <section class="hero">
     <h1 class="title">NORDWAND MONO</h1>
-    <a class="download" href="https://github.com/tywr/Nordwand-Mono/releases/latest">Download ↓</a>
-    <div class="intro">
-      <p>Nordwand Mono is a compact neo-grotesque monospaced typeface designed for programming. It adapts elements of Adrian Frutiger's Univers to programmer-friendly proportions, blending geometric precision with visual calm.</p>
-      <p>The name refers to the north faces (<em>Nordwände</em>) of the Swiss Alps, and to the Swiss typographic tradition the design draws on. Every glyph is generated with Python code, so anyone can tune the font to fit their needs. It is free and <a href="https://github.com/tywr/Nordwand-Mono">open source</a>.</p>
-    </div>
+    <a class="download" href="https://github.com/tywr/Nordwand-Mono/releases/latest">Download <span class="font-version">v1.3.4</span> ↓</a>
     <span class="map-mark nw">46°34′39″N</span>
     <span class="map-mark ne">8°00′19″E</span>
     <span class="map-mark sw">EIGER · 3967 M</span>
     <span class="map-mark se scale-bar">0<i></i>500 M</span>
-    <a class="scroll-hint" href="#features" aria-label="Scroll to features">
+    <a class="scroll-hint" href="#topo" aria-label="Scroll to the climbing topo">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></svg>
     </a>
   </section>
 
-  <section id="features" class="features" data-legend="01 — FEATURES">
+  <section id="topo" class="topo" data-legend="01 — CLIMBING TOPO">
+    <div class="topo-text">
+      <p>Nordwand Mono is a compact neo-grotesque monospaced typeface designed for programming. It adapts elements of Adrian Frutiger's Univers to programmer-friendly proportions, blending geometric precision with visual calm.</p>
+      <p>The name refers to the north faces (<em>Nordwände</em>) of the Swiss Alps, and to the Swiss typographic tradition the design draws on. Every glyph is generated with Python code, so anyone can tune the font to fit their needs. It is free and <a href="https://github.com/tywr/Nordwand-Mono">open source</a>.</p>
+    </div>
+    <figure class="topo-figure">
+      <svg class="topo-drawing" viewBox="-30 50 1560 930" role="img" aria-label="Line drawing of the Aiguille Purtscheller and its classic south ridge route">
+        <defs>
+          <!-- Wobbles the lines, as if drawn by hand -->
+          <filter id="hand-drawn" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="7"/>
+            <feDisplacementMap in="SourceGraphic" scale="5"/>
+          </filter>
+          <!-- Gentler, so the route stays one continuous line -->
+          <filter id="hand-drawn-route" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="1" seed="3"/>
+            <feDisplacementMap in="SourceGraphic" scale="3"/>
+          </filter>
+          <!-- Pen hatching for the rock in the shade -->
+          <pattern id="hatch" class="hatch" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(40)">
+            <line x1="0" y1="0" x2="0" y2="9"/>
+          </pattern>
+        </defs>
+        <g filter="url(#hand-drawn)">
+          <g class="shade">
+            <path d="M822 300 L852 302 L858 400 L842 500 L832 600 L822 700 L800 780 L770 790 L762 700 L780 600 L792 500 L804 400 Z"/>
+            <path d="M440 490 L448 486 L458 500 L462 548 L446 560 L444 520 Z"/>
+            <path d="M602 440 L616 400 L632 368 L652 330 L640 380 L626 430 L612 470 Z"/>
+            <path d="M1100 560 L1120 590 L1140 612 L1154 642 L1160 682 L1150 722 L1130 770 L1112 760 L1126 700 L1124 640 L1106 600 Z"/>
+            <path d="M214 660 L240 640 L268 620 L298 612 L316 626 L326 660 L330 700 L310 690 L300 650 L270 646 L240 666 Z"/>
+            <path d="M704 520 L726 470 L744 500 L736 600 L716 640 L700 600 Z"/>
+            <path d="M930 420 L950 450 L946 560 L930 620 L918 560 L922 480 Z"/>
+          </g>
+          <path class="rock" d="M45 700 L70 706 L90 690 L110 700 L130 684 L150 690 L170 678 L192 684 L214 660 L240 640 L268 620 L298 612 L316 626 L326 660 L334 640 L350 610 L370 586 L394 560 L414 520 L430 505 L440 490 L448 486 L458 500 L462 548 L472 538 L490 502 L510 480 L530 466 L548 455 L560 451 L572 458 L582 463 L592 470 L602 440 L616 400 L632 368 L652 330 L680 296 L700 282 L722 270 L742 268 L762 276 L776 266 L788 280 L802 286 L816 290 L830 260 L846 240 L856 232 L864 242 L872 236 L882 230 L892 242 L902 262 L916 280 L932 300 L950 330 L972 346 L990 370 L1006 400 L1022 430 L1040 460 L1060 492 L1080 522 L1100 560 L1120 590 L1140 612 L1154 642 L1160 682 L1150 722 L1130 770 L1100 800 L1060 815 L1000 826 L950 830 L870 830 L800 825 L780 800 L720 780 L660 760 L610 756 L580 770 L560 790 L500 800 L430 810 L350 820 L300 830 L250 842 L200 860 L150 876 L110 870 L70 862 L45 870 Z"/>
+          <path class="rock" d="M500 800 Q506 660 540 640 Q574 652 584 770 M600 756 Q604 620 640 600 Q676 610 680 760 M380 812 Q392 700 420 690 Q452 698 460 806"/>
+          <path class="rock thin" d="M943 732 L937 718 L943 692 M985 501 L983 485 L978 471 L974 446 L980 421 M781 678 L790 665 L788 652 M765 449 L764 430 L767 417 L763 393 M842 450 L844 436 L841 423 L841 413 L844 388 M1094 697 L1085 682 L1094 660 L1092 635 M753 742 L755 717 L751 703 L753 691 M705 496 L699 474 L696 459 L689 433 M739 595 L734 569 L727 551 L732 534 L741 516 M790 732 L787 715 L782 692 L787 677 L785 659 M768 607 L766 591 L772 578 L765 558 L761 542 M905 506 L906 482 L901 461 M457 782 L465 765 L457 743 L450 724 M382 718 L380 696 L380 686 M974 747 L983 730 L977 704 M516 710 L509 698 L511 674 L512 657 M995 719 L997 694 L1000 669 M742 469 L747 450 L755 432 L754 412 M499 611 L503 587 L495 567 L502 551 M486 739 L480 720 L480 700 M1077 711 L1071 693 L1078 679 M922 657 L921 637 L928 616 L924 602 L921 582 M1058 626 L1066 604 L1065 584 L1065 564 M188 799 L184 774 L178 751 M814 595 L810 577 L804 566 L795 550 L789 539 M858 598 L857 585 L853 567 L851 554 L858 536 M668 464 L665 447 L664 437 L670 427 M129 792 L123 769 L132 747 L140 722 L137 699 M970 617 L970 593 L967 568 M968 523 L960 503 L956 479 L959 464 L966 444 M466 750 L473 726 L476 705 M737 585 L744 572 L736 553 L742 532 M925 680 L921 667 L921 650 L930 635 M1047 813 L1043 793 L1039 775 L1031 761 M413 794 L415 779 L423 756 M753 679 L756 654 L756 642 L753 625 M1007 614 L1014 603 L1020 590 M853 315 L856 300 L858 280 M871 716 L879 703 L884 692 L876 680 M1079 802 L1086 780 L1089 757 L1082 744 L1075 726 M677 592 L676 575 L667 551 L662 535 M448 592 L456 569 L462 557 M972 430 L974 409 L965 392 L970 379 M974 656 L981 642 L978 623 L979 607 L986 594 M202 809 L196 796 L198 781 L205 766 L208 744 M660 707 L667 692 L666 682 M983 816 L977 791 L985 765 M486 710 L484 692 L493 675 L501 649 L503 639 M218 837 L218 826 L226 802 M817 396 L815 376 L813 356 M934 484 L943 461 L947 444 L950 420 M707 636 L703 620 L695 596 L697 576 M1087 795 L1092 772 L1101 747 L1105 731 M638 708 L643 687 L638 667 M706 448 L709 437 L702 416"/>
+          <!-- Neighbouring ridge, and the glacier of the Plateau du Trient -->
+          <path class="rock" d="M1150 615 L1172 598 L1190 560 L1210 548 L1226 560 L1242 600 L1262 606 L1282 620 L1300 640 L1318 652 L1330 592 L1346 580 L1362 602 L1382 574 L1402 560 L1420 556 L1440 562 L1458 556"/>
+          <path class="rock thin" d="M1150 615 Q1300 656 1460 666 M1160 700 Q1300 690 1460 690 M600 920 Q820 860 1100 830 M700 976 Q1000 962 1320 954 M1020 892 Q1200 860 1460 850 M60 900 Q160 890 300 890"/>
+        </g>
+        <!-- Route; dashed where it is scrambled or downclimbed -->
+        <path class="route" filter="url(#hand-drawn-route)" d="M300 862 Q280 820 262 790 Q262 766 290 746 Q322 712 342 668 L372 596 Q420 580 486 566 Q514 510 550 462 Q566 452 576 466 Q586 494 612 494 Q666 482 702 400 L724 362 Q770 336 812 330 Q832 300 846 268 L856 238"/>
+        <path class="route dashed-route" d="M856 238 L866 282 M996 386 L1002 424 M1076 552 L1090 590"/>
+        <g class="leader">
+          <path d="M332 574 L332 638"/>
+          <path d="M330 490 L356 490 L370 592"/>
+          <path d="M512 428 L580 440 L580 456"/>
+          <path d="M640 310 L690 402"/>
+          <path d="M760 210 L832 258"/>
+          <path d="M1064 350 L1030 376"/>
+          <path d="M1390 476 L1390 650"/>
+          <path d="M888 140 L888 216"/>
+        </g>
+        <g class="topo-note">
+          <text class="note" x="285" y="560" text-anchor="middle"><tspan x="285" dy="0">Brèche en V</tspan></text>
+          <text class="note" x="275" y="470" text-anchor="middle"><tspan x="275" dy="0">Mur fissuré,</tspan><tspan x="275" dy="30">5a</tspan></text>
+          <text class="note" x="430" y="404" text-anchor="middle"><tspan x="430" dy="0">Courte</tspan><tspan x="430" dy="30">désescalade, 3+</tspan></text>
+          <text class="note" x="575" y="270" text-anchor="middle"><tspan x="575" dy="0">Cheminée aux</tspan><tspan x="575" dy="30">feuillets, 4c</tspan></text>
+          <text class="note" x="712" y="178" text-anchor="middle"><tspan x="712" dy="0">Dièdre de</tspan><tspan x="712" dy="30">sortie, 5a</tspan></text>
+          <text class="note" x="1127" y="306" text-anchor="middle"><tspan x="1127" dy="0">Descente: 3 rappels</tspan><tspan x="1127" dy="30">équipés en face N</tspan></text>
+          <text class="note" x="1390" y="428" text-anchor="middle"><tspan x="1390" dy="0">Col Purtscheller</tspan><tspan x="1390" dy="30">3383</tspan></text>
+          <text x="-10" y="948">← Col sup. du Tour</text>
+          <text x="1500" y="752" text-anchor="end">Aig. du Tour ↗</text>
+        </g>
+        <text class="summit" x="892" y="96" text-anchor="middle"><tspan x="892" dy="0">Aiguille Purtscheller</tspan><tspan x="892" dy="30">3478</tspan></text>
+        <text class="place" x="1020" y="944" text-anchor="middle">PLATEAU DU TRIENT</text>
+      </svg>
+      <!-- TODO: check the license of the original drawing and credit its author -->
+      <figcaption>Route after a <a href="https://media.camptocamp.org/c2corg-active/1344805143_1877062060BI.jpg">hand-drawn topo</a> on camptocamp.org</figcaption>
+    </figure>
+  </section>
+
+  <section id="features" class="features" data-legend="02 — FEATURES">
     <div class="feature">
       <h2>True Italics</h2>
-      <p>Italics are drawn, not slanted: letters like a, f, k and y get their own cursive forms.</p>
+      <p>Italics are not just slanted: letters like a, f, k and y get their own cursive forms.</p>
       <div class="feature-sample feature-lines"><span>Waxy kiwi foxes zigzag over ivy</span><span style="font-style: italic">Waxy kiwi foxes zigzag over ivy</span></div>
     </div>
     <div class="feature">
@@ -403,7 +504,7 @@ stroke_y: 70</pre>
     <div class="feature">
       <h2>Weight-Aware Drawing</h2>
       <p>Each weight is tuned on its own: stroke contrast and curve tapering adapt from Thin to Bold, instead of scaling a single outline.</p>
-      <div class="feature-sample"><span style="font-weight: 100">a</span><span style="font-weight: 400">a</span><span style="font-weight: 700">a</span></div>
+      <div class="feature-sample"><span style="font-weight: 100">weight </span><span style="font-weight: 400">weight </span><span style="font-weight: 700">weight </span></div>
     </div>
     <div class="feature">
       <h2>Free and Open Source</h2>
@@ -412,8 +513,8 @@ stroke_y: 70</pre>
     </div>
     <div class="feature">
       <h2>Character Variants</h2>
-      <p>Pick your own glyphs through OpenType features: a dotted, slashed or hexagonal zero, an l with a flat foot, an m with a full middle stem and more.</p>
-      <div class="feature-sample"><span>0<span style="font-feature-settings: 'cv01' 1">0</span><span style="font-feature-settings: 'cv01' 2">0</span></span> <span>l<span style="font-feature-settings: 'cv03' 1">l</span></span> <span>m<span style="font-feature-settings: 'cv12' 1">m</span></span></div>
+      <p>Pick your own glyphs through OpenType features: a dotted, slashed or hexagonal zero, a flat-top 3, an l or an f with a foot, an m with a full middle stem, a double-story g and more.</p>
+      <div class="feature-sample"><span>0<span style="font-feature-settings: 'cv01' 1">0</span><span style="font-feature-settings: 'cv01' 2">0</span></span> <span>l<span style="font-feature-settings: 'cv03' 1">l</span></span> <span>m<span style="font-feature-settings: 'cv12' 1">m</span></span> <span>f<span style="font-feature-settings: 'cv11' 1">f</span></span> <span>g<span style="font-feature-settings: 'cv04' 2">g</span></span> <span>3<span style="font-feature-settings: 'cv19' 1">3</span></span></div>
     </div>
     <div class="feature">
       <h2>Minimal Ligatures</h2>
@@ -422,7 +523,7 @@ stroke_y: 70</pre>
     </div>
   </section>
 
-  <section id="glyphs" class="glyphs" data-legend="02 — CHARACTERS">
+  <section id="glyphs" class="glyphs" data-legend="03 — CHARACTERS">
     <button class="switch" type="button" role="switch" aria-checked="false"><span class="track"></span>Italic</button>
     <div class="glyph-text" contenteditable="plaintext-only" spellcheck="false">ABCDEFGHIJKLMNOPQRSTUVWXYZ
 abcdefghijklmnopqrstuvwxyz
@@ -440,7 +541,7 @@ abcdefghijklmnopqrstuvwxyz
 }
 </script>
 
-  <section class="weights" data-legend="03 — WEIGHTS">
+  <section class="weights" data-legend="04 — WEIGHTS">
     <div class="label"><span>Thin</span><span>100</span></div>
     <div class="sample" contenteditable="plaintext-only" spellcheck="false" style="font-weight: 100">Eiger, 1938</div>
 
@@ -469,12 +570,16 @@ abcdefghijklmnopqrstuvwxyz
     <div class="sample" contenteditable="plaintext-only" spellcheck="false" style="font-weight: 700">Civetta, 1925</div>
   </section>
 
-  <section class="code" data-legend="04 — CODE">
+  <section class="code" data-legend="05 — CODE">
     <div class="code-tabs" role="group" aria-label="Language">
       <button type="button" data-lang="python" aria-pressed="true">Python</button>
-      <button type="button" data-lang="cpp" aria-pressed="false">C++</button>
+      <button type="button" data-lang="typescript" aria-pressed="false">TypeScript</button>
       <button type="button" data-lang="go" aria-pressed="false">Go</button>
       <button type="button" data-lang="rust" aria-pressed="false">Rust</button>
+      <button type="button" data-lang="cpp" aria-pressed="false">C++</button>
+      <button type="button" data-lang="lua" aria-pressed="false">Lua</button>
+      <button type="button" data-lang="sql" aria-pressed="false">SQL</button>
+      <button type="button" data-lang="shell" aria-pressed="false">Shell</button>
       <button type="button" data-lang="markdown" aria-pressed="false">Markdown</button>
       <button type="button" data-lang="terminal" aria-pressed="false">Terminal UI</button>
       <button type="button" data-lang="ascii" aria-pressed="false">Plain ASCII</button>
@@ -483,137 +588,143 @@ abcdefghijklmnopqrstuvwxyz
 
 NS = {"gpx": "http://www.topografix.com/GPX/1/1"}
 
-
-def read_elevations(path: str) -&gt; list[float]:
-    """Elevation of every track point of a GPX file, in meters."""
+def elevations(path: str) -&gt; list[float]:
     root = ET.parse(path).getroot()
-    return [float(e.text) for e in root.iterfind(".//gpx:trkpt/gpx:ele", NS)]
-
-
-def smooth(values: list[float], window: int = 5) -&gt; list[float]:
-    """Centered moving average, shrinking the window at both ends."""
-    half = window // 2
-    out = []
-    for i in range(len(values)):
-        chunk = values[max(0, i - half) : i + half + 1]
-        out.append(sum(chunk) / len(chunk))
-    return out
-
+    return [float(e.text) for e in root.iterfind(".//gpx:ele", NS)]
 
 def elevation_gain(values: list[float], threshold: float = 3.0) -&gt; float:
-    """Total climb, ignoring GPS noise smaller than `threshold` meters."""
+    """Total climb, ignoring GPS noise below `threshold` meters."""
     gain, ref = 0.0, values[0]
     for v in values[1:]:
-        if v - ref &gt;= threshold:
-            gain += v - ref
-            ref = v
-        elif ref - v &gt;= threshold:
+        if abs(v - ref) &gt;= threshold:
+            gain += max(v - ref, 0)
             ref = v
     return gain
 
+print(f"D+ {elevation_gain(elevations('track.gpx')):.0f} m")</pre>
+    <pre data-lang="typescript" hidden>// Naismith's rule: 1 hour per 5 km, plus 1 hour per 600 m of ascent
+interface Leg {
+  name: string;
+  distanceKm: number;
+  ascentM: number;
+}
 
-elevations = smooth(read_elevations("track.gpx"))
-print(f"D+ {elevation_gain(elevations):.0f} m")  # Total ascent</pre>
+const hours = ({ distanceKm, ascentM }: Leg): number =&gt;
+  distanceKm / 5 + ascentM / 600;
+
+const legs: Leg[] = [
+  { name: "Valley to hut", distanceKm: 8.2, ascentM: 1150 },
+  { name: "Hut to pass", distanceKm: 4.5, ascentM: 640 },
+];
+
+for (const leg of legs) {
+  const minutes = Math.round(hours(leg) * 60);
+  const mm = String(minutes % 60).padStart(2, "0");
+  console.log(`${leg.name.padEnd(14)} ${Math.floor(minutes / 60)}h${mm}`);
+}</pre>
+    <pre data-lang="go" hidden>package contour
+
+import "math"
+
+// Crossings returns the distances at which a profile of (distance,
+// elevation) points crosses the contour lines, every `interval` meters
+func Crossings(dist, ele []float64, interval float64) []float64 {
+	var out []float64
+	for i := 1; i &lt; len(ele); i++ {
+		lo, hi := math.Min(ele[i-1], ele[i]), math.Max(ele[i-1], ele[i])
+		for level := math.Ceil(lo/interval) * interval; level &lt; hi; level += interval {
+			t := (level - ele[i-1]) / (ele[i] - ele[i-1])
+			out = append(out, dist[i-1]+t*(dist[i]-dist[i-1]))
+		}
+	}
+	return out
+}</pre>
+    <pre data-lang="rust" hidden>#[derive(Clone, Copy)]
+pub struct Point { pub x: f64, pub y: f64 }
+
+/// Ramer–Douglas–Peucker: drop the points closer than `epsilon` to the line
+pub fn simplify(pts: &amp;[Point], epsilon: f64) -&gt; Vec&lt;Point&gt; {
+    if pts.len() &lt; 3 { return pts.to_vec(); }
+    let (a, b) = (pts[0], pts[pts.len() - 1]);
+    let len = (b.x - a.x).hypot(b.y - a.y).max(f64::EPSILON);
+    let dist = |p: &amp;Point| ((b.y - a.y) * p.x - (b.x - a.x) * p.y + b.x * a.y - b.y * a.x).abs() / len;
+    let (index, max) = (1..pts.len() - 1)
+        .map(|i| (i, dist(&amp;pts[i])))
+        .fold((0, 0.0), |best, cur| if cur.1 &gt; best.1 { cur } else { best });
+    if max &lt;= epsilon {
+        return vec![a, b];
+    }
+    let mut left = simplify(&amp;pts[..=index], epsilon);
+    left.pop(); // Shared with the right half
+    left.extend(simplify(&amp;pts[index..], epsilon));
+    left
+}</pre>
     <pre data-lang="cpp" hidden>#include &lt;cmath&gt;
 #include &lt;numbers&gt;
 #include &lt;vector&gt;
 
-struct Point {
-    double lat, lon;  // Degrees
-};
+struct Point { double lat, lon; };  // Degrees
 
-constexpr double kEarthRadius = 6371000.0;  // Meters
-
-// Great-circle distance between two points, with the haversine formula
-double haversine(const Point&amp; a, const Point&amp; b) {
-    auto rad = [](double deg) { return deg * std::numbers::pi / 180.0; };
-    double dlat = rad(b.lat - a.lat);
-    double dlon = rad(b.lon - a.lon);
+// Great-circle distance in meters, with the haversine formula
+double haversine(Point a, Point b) {
+    constexpr double R = 6371000.0, rad = std::numbers::pi / 180.0;
+    double dlat = (b.lat - a.lat) * rad, dlon = (b.lon - a.lon) * rad;
     double h = std::pow(std::sin(dlat / 2), 2) +
-               std::cos(rad(a.lat)) * std::cos(rad(b.lat)) * std::pow(std::sin(dlon / 2), 2);
-    return 2 * kEarthRadius * std::asin(std::sqrt(h));
+               std::cos(a.lat * rad) * std::cos(b.lat * rad) * std::pow(std::sin(dlon / 2), 2);
+    return 2 * R * std::asin(std::sqrt(h));
 }
 
 double track_length(const std::vector&lt;Point&gt;&amp; track) {
     double total = 0.0;
-    for (std::size_t i = 1; i &lt; track.size(); ++i) {
-        total += haversine(track[i - 1], track[i]);
-    }
+    for (std::size_t i = 1; i &lt; track.size(); ++i) total += haversine(track[i - 1], track[i]);
     return total;
 }</pre>
-    <pre data-lang="go" hidden>package contour
+    <pre data-lang="lua" hidden>-- Grade of each segment of a profile, and how hard it feels
+local function grades(profile)
+  local out = {}
+  for i = 2, #profile do
+    local a, b = profile[i - 1], profile[i]
+    local grade = (b.ele - a.ele) / (b.dist - a.dist) * 100
+    local level = math.abs(grade) &lt; 5 and "easy"
+      or math.abs(grade) &lt; 12 and "steady"
+      or "steep"
+    out[#out + 1] = { grade = grade, level = level }
+  end
+  return out
+end
 
-// Point is a position in grid coordinates
-type Point struct{ X, Y float64 }
+local profile = { { dist = 0, ele = 1210 }, { dist = 400, ele = 1238 }, { dist = 900, ele = 1302 } }
+for _, g in ipairs(grades(profile)) do
+  print(string.format("%5.1f%%  %s", g.grade, g.level))
+end</pre>
+    <pre data-lang="sql" hidden>-- Daily ascent per athlete over the last 30 days
+SELECT
+    a.name,
+    date_trunc('day', p.recorded_at) AS day,
+    sum(greatest(p.elevation - p.previous_elevation, 0)) AS ascent_m
+FROM (
+    SELECT *,
+           lag(elevation) OVER (PARTITION BY activity_id ORDER BY recorded_at) AS previous_elevation
+    FROM points
+) AS p
+JOIN activities AS act ON act.id = p.activity_id
+JOIN athletes AS a ON a.id = act.athlete_id
+WHERE p.recorded_at &gt; now() - INTERVAL '30 days'
+GROUP BY a.name, day
+ORDER BY day DESC, ascent_m DESC;</pre>
+    <pre data-lang="shell" hidden>#!/usr/bin/env bash
+# Convert every GPX track to GeoJSON, and print its point count
+set -euo pipefail
 
-// Segment is the piece of an isoline crossing a single grid cell
-type Segment struct{ A, B Point }
+out="geojson"
+mkdir -p "$out"
 
-// Isoline traces the contour line at `level` through a grid of elevations,
-// with marching squares: every cell edge whose corners lie on both sides
-// of the level is crossed, at a linearly interpolated position.
-func Isoline(z [][]float64, level float64) []Segment {
-	var segments []Segment
-	corners := [4]Point{{0, 0}, {1, 0}, {1, 1}, {0, 1}}
-	for y := 0; y+1 &lt; len(z); y++ {
-		for x := 0; x+1 &lt; len(z[y]); x++ {
-			var cuts []Point
-			for i, p := range corners {
-				q := corners[(i+1)%4]
-				zp := z[y+int(p.Y)][x+int(p.X)]
-				zq := z[y+int(q.Y)][x+int(q.X)]
-				if (zp &lt; level) != (zq &lt; level) {
-					t := (level - zp) / (zq - zp)
-					cuts = append(cuts, Point{
-						float64(x) + p.X + t*(q.X-p.X),
-						float64(y) + p.Y + t*(q.Y-p.Y),
-					})
-				}
-			}
-			// Saddle cells have four cuts: pair them in order
-			for i := 0; i+1 &lt; len(cuts); i += 2 {
-				segments = append(segments, Segment{cuts[i], cuts[i+1]})
-			}
-		}
-	}
-	return segments
-}</pre>
-    <pre data-lang="rust" hidden>#[derive(Clone, Copy, Debug)]
-pub struct Point {
-    pub x: f64,
-    pub y: f64,
-}
-
-/// Distance from `p` to the line through `a` and `b`
-fn distance_to_line(p: Point, a: Point, b: Point) -&gt; f64 {
-    let (dx, dy) = (b.x - a.x, b.y - a.y);
-    let len = dx.hypot(dy);
-    if len == 0.0 {
-        return (p.x - a.x).hypot(p.y - a.y);
-    }
-    (dy * p.x - dx * p.y + b.x * a.y - b.y * a.x).abs() / len
-}
-
-/// Simplify a track with Ramer–Douglas–Peucker, keeping the points
-/// farther than `epsilon` from the simplified line
-pub fn simplify(points: &amp;[Point], epsilon: f64) -&gt; Vec&lt;Point&gt; {
-    if points.len() &lt; 3 {
-        return points.to_vec();
-    }
-    let (first, last) = (points[0], points[points.len() - 1]);
-    let (index, max) = points[1..points.len() - 1]
-        .iter()
-        .enumerate()
-        .map(|(i, &amp;p)| (i + 1, distance_to_line(p, first, last)))
-        .fold((0, 0.0), |best, cur| if cur.1 &gt; best.1 { cur } else { best });
-    if max &lt;= epsilon {
-        return vec![first, last];
-    }
-    let mut left = simplify(&amp;points[..=index], epsilon);
-    left.pop(); // Shared with the right half
-    left.extend(simplify(&amp;points[index..], epsilon));
-    left
-}</pre>
+for track in tracks/*.gpx; do
+  name=$(basename "$track" .gpx)
+  ogr2ogr -f GeoJSON "$out/$name.json" "$track" track_points
+  count=$(jq '.features | length' "$out/$name.json")
+  printf '%-24s %6d points\n' "$name" "$count"
+done</pre>
     <pre data-lang="markdown" hidden># Nordwand Mono
 
 A **monospaced** typeface for programming, drawn *entirely* in Python.
@@ -645,21 +756,25 @@ Download it from the [releases](https://github.com/tywr/Nordwand-Mono/releases) 
  ├── box/       ┄ ┅ ╭ ╮ ═ ║ ╬
  ├── blocks/    ░ ▒ ▓ █ ▀ ▄ ▌ ▐
  └── arrows/    ← → ↑ ↓ ↔ ↕ ↖ ↗</pre>
-    <pre data-lang="ascii" hidden>+------------+--------+------+-------+
-| Summit     | Face   | Year | Grade |
-+------------+--------+------+-------+
-| Eiger      | North  | 1938 | VI-   |
-| Matterhorn | North  | 1931 | V+    |
-| Petit Dru  | North  | 1935 | VI    |
-+------------+--------+------+-------+
+    <pre data-lang="ascii" hidden>$ tail -n 4 /var/log/gpx-sync.log
+2026-11-02T08:14:03.512Z INFO  [sync:42]  fetched 1,284 pts from tracks/eiger_n.gpx (12.4 kB)
+2026-11-02T08:14:03.877Z WARN  [geo:118]  dt=0.75s &gt; 0.50s; gap @ idx=0x3F2 (46.5774, 8.0054)
+2026-11-02T08:14:04.019Z ERROR [db:7]     INSERT failed: duplicate key "trk_9f1c" -&gt; retry 2/3
+2026-11-02T08:14:04.233Z DEBUG [http:301] GET /api/v2/tracks?since=1730534400&amp;limit=50 =&gt; 200
 
-                     /\
-                    /  \      /\
-            /\     /    \    /  \
-           /  \   /      \  /    \
-      ____/    \_/        \/      \____
+id  | route           | dist_km |  d+_m | d-_m |   moving | pace/km |  hr
+----+-----------------+---------+-------+------+----------+---------+----
+001 | Heckmair Route  |   18.40 | 1,812 |  302 | 09:41:12 |  31'35" | 142
+002 | Schmid Route    |   11.05 | 1,221 |   88 | 07:02:40 |  38'14" | 138
+003 | Cassin Route    |    9.72 | 1,198 |   41 | 06:55:03 |  42'47" | 151
+004 | Bonatti Pillar  |    7.80 |   862 |   17 | 05:18:59 |  40'51" | 129
 
-  0O Il1| {}[]() &lt;= &gt;= != == -&gt; =&gt; :: ... ~~ //</pre>
+$ xxd -g 1 track.gpx | head -n 3
+00000000: 3c 3f 78 6d 6c 20 76 65 72 73 69 6f 6e 3d 22 31  &lt;?xml version="1
+00000010: 2e 30 22 3f 3e 0a 3c 67 70 78 20 76 65 72 73 69  .0"?&gt;.&lt;gpx versi
+00000020: 6f 6e 3d 22 31 2e 31 22 20 63 72 65 61 74 6f 72  on="1.1" creator
+
+0O Il1| oO0 rn m vv w ;: ,. `' "" {}[]() &lt;= &gt;= != == -&gt; =&gt; :: ... ~~ // 5S 2Z 8B 6b 9g</pre>
   </section>
 <script>
 {
@@ -669,10 +784,14 @@ Download it from the [releases](https://github.com/tywr/Nordwand-Mono/releases) 
   const NUM = String.raw`\b\d[\d_.]*\b`;
   const kw = words => String.raw`\b(?:${words.replace(/ /g, '|')})\b`;
   const RULES = {
-    python: [['c', '#.*'], ['s', STR + String.raw`|'(?:[^'\\\n]|\\.)*'`], ['k', kw('from import class def return for in if and or not is None True False with as while yield lambda')], ['k', '@\\w+'], ['n', NUM]],
-    cpp: [['c', String.raw`//.*|/\*[\s\S]*?\*/`], ['k', '^#\\w+.*'], ['s', STR], ['k', kw('struct class int bool auto const constexpr double for return false true void template typename using namespace')], ['n', NUM]],
-    go: [['c', '//.*'], ['s', STR], ['k', kw('package import type struct func for range go defer var make chan if else return string float64 int len append')], ['n', NUM]],
-    rust: [['c', '//.*'], ['s', STR], ['k', kw('use enum fn match let for in if else mut impl pub struct return f64 u32 usize str')], ['k', String.raw`#\[.*\]`], ['n', NUM]],
+    python: [['c', '#.*'], ['s', STR + String.raw`|'(?:[^'\\\n]|\\.)*'`], ['k', kw('from import class def return for in if elif else and or not is None True False with as while yield lambda')], ['k', '@\\w+'], ['n', NUM]],
+    typescript: [['c', '//.*'], ['s', STR + '|`[^`]*`'], ['k', kw('const let var interface type function return for of in if else new import export number string boolean')], ['n', NUM]],
+    go: [['c', '//.*'], ['s', STR], ['k', kw('package import type struct func for range go defer var if else return float64 int')], ['n', NUM]],
+    rust: [['c', '//.*'], ['s', STR], ['k', kw('use enum fn match let for in if else mut impl pub struct return f64 usize')], ['k', String.raw`#\[.*\]`], ['n', NUM]],
+    cpp: [['c', String.raw`//.*|/\*[\s\S]*?\*/`], ['k', '^#\\w+.*'], ['s', STR], ['k', kw('struct class int bool auto const constexpr double for return false true void using namespace')], ['n', NUM]],
+    lua: [['c', '--.*'], ['s', STR], ['k', kw('local function for do end return and or not if then else in')], ['n', NUM]],
+    sql: [['c', '--.*'], ['s', "'[^'\\n]*'"], ['k', kw('SELECT FROM WHERE JOIN ON AS GROUP BY ORDER DESC OVER PARTITION INTERVAL')], ['n', NUM]],
+    shell: [['c', '#.*'], ['s', STR + "|'[^'\\n]*'"], ['k', kw('for in do done set if then else fi')], ['n', NUM]],
     markdown: [['s', '```[\\s\\S]*?```'], ['k', '^#{1,6} .*'], ['c', '^> .*'], ['k', String.raw`^\s*[-*] `], ['s', '`[^`\\n]*`'], ['n', String.raw`\*\*[^*\n]+\*\*|\*[^*\n]+\*`], ['s', String.raw`\[[^\]\n]*\]\([^)\n]*\)`]],
   };
   const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
@@ -701,7 +820,7 @@ Download it from the [releases](https://github.com/tywr/Nordwand-Mono/releases) 
 }
 </script>
 
-  <section class="inspector" data-legend="05 — GLYPH INSPECTOR">
+  <section class="inspector" data-legend="06 — GLYPH INSPECTOR">
     <div class="viewer">
       <div class="toolbar">
         <div class="glyph-meta"><span class="glyph-name"></span><span class="glyph-code"></span></div>

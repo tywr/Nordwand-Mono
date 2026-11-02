@@ -2,7 +2,6 @@ import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from glyphs.uppercase import UppercaseGlyph
 from draw.rect import draw_rect
-from draw.arch import draw_arch
 from draw.corner import draw_corner
 from draw.loop import draw_loop
 
@@ -46,7 +45,6 @@ class UppercaseGGlyph(UppercaseGlyph):
         yc2 = b.y1 + b.height * self.opening2
         ymid = b.y1 + self.opening1 * b.height
         xb = b.x2 - self.bot_offset * b.width
-
 
         glyph = ufoLib2.objects.Glyph()
         draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, b.hx, b.hy, cut="right")

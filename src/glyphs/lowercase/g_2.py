@@ -26,7 +26,6 @@ class LowercaseG2Glyph(Glyph):
         b = dc.body_bounds(
             width_ratio=self.width_ratio,
             offset=self.offset,
-            # overshoot_top=True,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
         yb1, yb2 = b.y1 + (1 - self.bowl_y_ratio) * b.height, b.y2

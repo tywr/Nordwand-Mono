@@ -22,6 +22,7 @@ PAGE = DOCS / "index.html"
 GLYPH_DATA = re.compile(
     r'(<script id="glyph-data" type="application/json">)(.*?)(</script>)', re.S
 )
+FONT_VERSION = re.compile(r'(<span class="font-version">)(.*?)(</span>)')
 
 
 def name(cp, font):
@@ -105,6 +106,13 @@ def glyph_data(upright, italic):
     return data
 
 
+def version(font):
+    """Release version of a font, from its revision: 1.302 -> v1.3.2."""
+    revision = round(font["head"].fontRevision * 1000)
+    major, rest = divmod(revision, 1000)
+    return f"v{major}.{rest // 100}.{rest % 100}"
+
+
 def main():
     fonts = sorted(FONTS.glob("*.woff2"))
     if not fonts:
@@ -113,11 +121,10 @@ def main():
     for f in fonts:
         shutil.copy2(f, DOCS / "fonts" / f.name)
 
-    data = glyph_data(
-        TTFont(FONTS / "NordwandMono-Regular.woff2"),
-        TTFont(FONTS / "NordwandMono-Italic.woff2"),
-    )
+    upright = TTFont(FONTS / "NordwandMono-Regular.woff2")
+    data = glyph_data(upright, TTFont(FONTS / "NordwandMono-Italic.woff2"))
     page = PAGE.read_text()
+    page = FONT_VERSION.sub(lambda m: m.group(1) + version(upright) + m.group(3), page)
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     page, n = GLYPH_DATA.subn(lambda m: m.group(1) + blob + m.group(3), page)
     if n != 1:
