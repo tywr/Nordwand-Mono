@@ -155,7 +155,10 @@ section[data-legend]::before {
 .intro { max-width: 46rem; margin: 0 auto; font-size: 1.05rem; }
 .intro p { margin: 0 0 1em; }
 
-.glyphs {
+.glyphs { position: relative; }
+/* Level with the section legend */
+.glyphs .switch { position: absolute; top: var(--pad); right: var(--pad); font-size: .9rem; }
+.glyph-text {
   font-size: clamp(2.5rem, 9vw, 9rem);
   line-height: 1.15;
   color: var(--fg-bright);
@@ -164,9 +167,11 @@ section[data-legend]::before {
   outline: none;
 }
 
-.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 1px; }
-.features::before { grid-column: 1 / -1; }
+/* Cards share each row, so every row spans the full width, wrapped ones too */
+.features { display: flex; flex-wrap: wrap; gap: 1px; }
+.features::before { flex-basis: 100%; }
 .feature {
+  flex: 1 1 13rem;
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
@@ -398,11 +403,35 @@ stroke_y: 70</pre>
       <p>Released under the SIL Open Font License 1.1: use it, modify it and share it, including in commercial projects.</p>
       <div class="feature-sample"><a href="https://github.com/tywr/Nordwand-Mono">OFL 1.1 →</a></div>
     </div>
+    <div class="feature">
+      <h2>Character Variants</h2>
+      <p>Pick your own glyphs through OpenType features: a dotted, slashed or hexagonal zero, an l with a flat foot, an m with a full middle stem and more.</p>
+      <div class="feature-sample"><span>0<span style="font-feature-settings: 'cv01' 1">0</span><span style="font-feature-settings: 'cv01' 2">0</span></span> <span>l<span style="font-feature-settings: 'cv03' 1">l</span></span> <span>m<span style="font-feature-settings: 'cv12' 1">m</span></span></div>
+    </div>
+    <div class="feature">
+      <h2>Minimal Ligatures</h2>
+      <p style="font-variant-ligatures: none">Ligatures are not the point of this font. Only -&gt; and =&gt; join by default; continuous lines like ----, ==== or #### are opt-in, through the dlig feature.</p>
+      <div class="feature-sample"><span>-&gt; =&gt;</span> <span style="font-feature-settings: 'dlig' 1">---- ==== ####</span></div>
+    </div>
   </section>
 
-  <section id="glyphs" class="glyphs" data-legend="02 — CHARACTERS" contenteditable="plaintext-only" spellcheck="false">ABCDEFGHIJKLMNOPQRSTUVWXYZ
+  <section id="glyphs" class="glyphs" data-legend="02 — CHARACTERS">
+    <button class="switch" type="button" role="switch" aria-checked="false"><span class="track"></span>Italic</button>
+    <div class="glyph-text" contenteditable="plaintext-only" spellcheck="false">ABCDEFGHIJKLMNOPQRSTUVWXYZ
 abcdefghijklmnopqrstuvwxyz
-0123456789</section>
+0123456789</div>
+  </section>
+<script>
+{
+  const section = document.getElementById('glyphs');
+  const toggle = section.querySelector('.switch');
+  toggle.addEventListener('click', () => {
+    const on = toggle.getAttribute('aria-checked') !== 'true';
+    toggle.setAttribute('aria-checked', on);
+    section.querySelector('.glyph-text').style.fontStyle = on ? 'italic' : '';
+  });
+}
+</script>
 
   <section class="weights" data-legend="03 — WEIGHTS">
     <div class="label"><span>Thin</span><span>100</span></div>
