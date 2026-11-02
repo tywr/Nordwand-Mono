@@ -10,7 +10,7 @@ from draw.rect import draw_rect
 class ThreeGlyph(NumberGlyph):
     name = "three"
     unicode = "0x33"
-    offset = 0
+    offset = -4
     loop_width_ratio = 0.92
     mid_ratio = 0.52
     taper = 1
@@ -18,6 +18,9 @@ class ThreeGlyph(NumberGlyph):
     hx_ratio = 0.9
     hy_ratio = 0.9
     width_ratio = 1.08
+    mid_length = 0.64
+    opening1 = 0.29
+    opening2 = 0.74
 
     def body(self, dc):
         return dc.body_bounds(
@@ -51,6 +54,9 @@ class ThreeGlyph(NumberGlyph):
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
 
+        xc = b.x2 - self.mid_length * b.width - ec
+        yc1 = b.y1 + self.opening1 * b.height + ec
+        yc2 = b.y1 + self.opening2 * b.height - ec
         ymid = b.y1 + self.mid_ratio * b.height
         ry = (b.y2 - b.ymid + sy / 2) / b.height
         base_glyph = ufoLib2.objects.Glyph()
@@ -92,9 +98,9 @@ class ThreeGlyph(NumberGlyph):
         draw_rect(
             cut_glyph.getPen(),
             b.x1,
-            ymid - b.height / 4 + ec,
-            b.x1 + b.width / 2,
-            ymid + b.height / 4 - ec,
+            yc1,
+            b.xmid,
+            yc2,
         )
 
         result = BooleanGlyph(base_glyph).difference(BooleanGlyph(cut_glyph))
@@ -103,7 +109,7 @@ class ThreeGlyph(NumberGlyph):
         # Extension of the middle bar
         draw_rect(
             pen,
-            b.x1 + (1 - self.len_mid) * b.width,
+            xc,
             ymid - sy / 2,
             b.xmid,
             ymid + sy / 2,

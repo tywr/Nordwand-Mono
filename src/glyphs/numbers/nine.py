@@ -8,11 +8,11 @@ from draw.polygon import draw_polygon
 class NineGlyph(NumberGlyph):
     name = "nine"
     unicode = "0x39"
-    offset = 0
+    offset = -4
     vertical_ratio = 0.64
     bottom_cut = 0.2
     taper = 0.2
-    foot_x = 0.25
+    foot_x = 0.31
     joint_x = 1.4
     hx_ratio = 0.9
     hy_ratio = 0.9

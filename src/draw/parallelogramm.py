@@ -1,4 +1,4 @@
-from math import sqrt, atan2, sin, cos
+from math import sqrt, atan2, sin, cos, hypot, isclose
 from draw.polygon import draw_polygon
 
 
@@ -100,13 +100,18 @@ def parallelogramm_delta(stroke, x1, y1, x2, y2):
     (x1 + delta, y1) to (x2, y2), so with w and h the spans and phi the
     edges' angle from vertical, stroke = delta * cos(phi). Solving
     stroke^2 * (h^2 + (w - delta)^2) = delta^2 * h^2 for delta gives the
-    closed form below.
+    closed form below. It also holds for flat bands lower than their stroke
+    (e.g. the heavy digits of the fractions), as long as the band is longer
+    than its stroke.
     """
     w = abs(x2 - x1)
     h = abs(y2 - y1)
     t = stroke
-    if h <= t:
-        raise ValueError(f"Band height {h} must exceed its stroke {t}")
+    if w**2 + h**2 <= t**2:
+        raise ValueError(f"Band length {hypot(w, h)} must exceed its stroke {t}")
+    if isclose(h, t):
+        # Limit of the closed form, whose denominator vanishes
+        return (t**2 + w**2) / (2 * w)
     return t * (h * sqrt(w**2 + h**2 - t**2) - t * w) / (h**2 - t**2)
 
 
