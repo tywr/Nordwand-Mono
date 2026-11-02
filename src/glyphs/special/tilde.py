@@ -14,6 +14,7 @@ class TildeGlyph(Glyph):
     end_width_ratio = 0.3
     curve_ratio = 1.35
     curve_thinning = 0.1
+    overshoot_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -24,11 +25,15 @@ class TildeGlyph(Glyph):
         y1 = dc.math - h / 2 - sy / 2
         y2 = dc.math + h / 2 + sy / 2
 
+        # The round parts overshoot the flat ends, so they align optically
+        o = self.overshoot_ratio * dc.v_overshoot
+
         # Each end is a quarter of a loop spanning the whole height: going up
         # from y1 then right on the left, going right then up to y2 on the right
         qw = self.end_width_ratio * b.width
-        qh = y2 - y1
+        qh = y2 - y1 + o
         loop = Superellipse(b.x1, b.y1, b.x2, b.y2, b.hx, b.hy)
+        y1, y2 = y1 - o, y2 + o
         ends = (
             (loop.resize(b.x1, y2 - 2 * qh, b.x1 + 2 * qw, y2), "top-left"),
             (loop.resize(b.x2 - 2 * qw, y1, b.x2, y1 + 2 * qh), "bottom-right"),
