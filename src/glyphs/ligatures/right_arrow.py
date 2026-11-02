@@ -16,6 +16,9 @@ class RightArrowGlyph(LigatureGlyph):
     )
     number_characters = 2
     joinable = True
+    # Notch where the two cells meet, like the junctions of `----` (dlig),
+    # showing the ligature stands for two characters
+    dent = True
     width_ratio = 0.88
     overlap = 0.6
     side_offset = 0.05
@@ -31,9 +34,9 @@ class RightArrowGlyph(LigatureGlyph):
         h = dc.parenthesis_length * self.span
         s = dc.stroke_x
         x1 = self.side_offset * dc.window_width
+        hyphen = HyphenMinusGlyph()
         if join_left:
             # Start where the junction of the `-` before ends, as thick as it
-            hyphen = HyphenMinusGlyph()
             s = hyphen.horizontal_bar_stroke(dc)
             x1 = s * hyphen.ligature_junction_width / 2
         g = self.gap * dc.window_width
@@ -45,10 +48,13 @@ class RightArrowGlyph(LigatureGlyph):
             ymid,
             h,
         )
-        draw_rect(
-            pen,
-            x1,
-            dc.math - s / 2,
-            b.x2 + dc.window_width - delta - g,
-            dc.math + s / 2,
-        )
+        x2 = b.x2 + dc.window_width - delta - g
+        if not self.dent:
+            draw_rect(pen, x1, ymid - s / 2, x2, ymid + s / 2)
+            return
+        w = dc.window_width
+        jw = s * hyphen.ligature_junction_width
+        d = s * hyphen.ligature_dent_stroke
+        draw_rect(pen, x1, ymid - s / 2, w - jw / 2, ymid + s / 2)
+        draw_rect(pen, w - jw / 2, ymid - d / 2, w + jw / 2, ymid + d / 2)
+        draw_rect(pen, w + jw / 2, ymid - s / 2, x2, ymid + s / 2)

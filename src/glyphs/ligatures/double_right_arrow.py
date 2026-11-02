@@ -1,6 +1,7 @@
 from glyphs import LigatureGlyph
 from draw.chevron import draw_chevron
 from draw.polygon import draw_polygon
+from draw.rect import draw_rect
 from glyphs.special.greater_than_sign import GreaterThenSignGlyph
 from glyphs.special.equals_sign import EqualsSignGlyph
 
@@ -16,6 +17,9 @@ class RightArrowGlyph(LigatureGlyph):
     )
     number_characters = 2
     joinable = True
+    # Notch where the two cells meet, like the junctions of `====` (dlig),
+    # showing the ligature stands for two characters
+    dent = True
     width_ratio = 0.88
     overlap = 0.6
     side_offset = 0.05
@@ -35,9 +39,9 @@ class RightArrowGlyph(LigatureGlyph):
         so = self.side_offset * dc.window_width
         x1 = so
         heights = (ymid + g / 2, ymid - g / 2)
+        equals = EqualsSignGlyph()
         if join_left:
             # Start where the junction of the `=` before ends, with its bars
-            equals = EqualsSignGlyph()
             x1 = equals.horizontal_bar_stroke(dc) * equals.ligature_junction_width / 2
             heights = equals.horizontal_bar_heights(dc)
         x_tip = b.x2 + dc.window_width
@@ -52,8 +56,17 @@ class RightArrowGlyph(LigatureGlyph):
             t = abs(y - ymid) / (h / 2)
             return x_tip - t * (x_tip - x_back - delta) - delta / 2
 
+        w = dc.window_width
+        jw = s * equals.ligature_junction_width
+        d = s * equals.ligature_dent_stroke
         for yc in heights:
             y1, y2 = yc - s / 2, yc + s / 2
+            # Bar part in the second cell, ending in the chevron
+            x_start = w + jw / 2 if self.dent else x1
             draw_polygon(
-                pen, points=[(x1, y1), (x_end(y1), y1), (x_end(y2), y2), (x1, y2)]
+                pen,
+                points=[(x_start, y1), (x_end(y1), y1), (x_end(y2), y2), (x_start, y2)],
             )
+            if self.dent:
+                draw_rect(pen, x1, y1, w - jw / 2, y2)
+                draw_rect(pen, w - jw / 2, yc - d / 2, w + jw / 2, yc + d / 2)
