@@ -1,6 +1,3 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
-
 from math import cos, sin, pi
 from glyphs.numbers import NumberGlyph
 from draw.rect import draw_rect
@@ -17,11 +14,11 @@ class TwoGlyph(NumberGlyph):
     yj_ratio = 0.40
     internal_radius = 0.22
     diag_stroke_ratio = 1.0
-    width_ratio = 1.00
+    width_ratio = 1.04
     hx_ratio = 0.9
     hy_ratio = 0.9
     top_opening = 0.5
-    loop_x_ratio = 0.98
+    loop_x_ratio = 1.0
     loop_y_ratio = 0.62
 
     def draw(self, pen, dc):
