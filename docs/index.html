@@ -36,6 +36,8 @@
   --fg: #cccccc;
   --fg-muted: #606060;
   --border: #262626;
+  --code-string: #c5e1a5;
+  --code-number: #ffcc99;
   --pad: clamp(1rem, 4vw, 4rem);
 
   font-family: "Nordwand Mono", ui-monospace, monospace;
@@ -301,6 +303,42 @@ section[data-legend]::before {
   .viewer { height: 55svh; z-index: 1; border-right: 0; border-bottom: 1px solid var(--border); }
 }
 
+.code-tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+.code-tabs button {
+  padding: .3rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.code-tabs button:hover { color: var(--fg-bright); }
+.code-tabs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.code-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.code pre {
+  margin: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow-x: auto;
+  font: inherit;
+  font-size: clamp(.8rem, 1.3vw, 1.05rem);
+  line-height: 1.5;
+  tab-size: 4;
+  color: var(--fg);
+}
+/* Rows as tall as the font's cell (window ascent to descent), so box drawing
+   and blocks join between lines */
+.code pre[data-lang="terminal"] { line-height: 1.325; }
+/* Comments use the italic */
+.code .c { color: var(--fg-muted); font-style: italic; }
+.code .k { color: var(--accent); }
+.code .s { color: var(--code-string); }
+.code .n { color: var(--code-number); }
+
 footer { padding: 2rem var(--pad); font-size: .85rem; color: var(--fg-muted); border-top: 1px solid var(--border); }
 </style>
 </head>
@@ -354,7 +392,239 @@ abcdefghijklmnopqrstuvwxyz
     <div class="sample" contenteditable="plaintext-only" spellcheck="false" style="font-weight: 700">Civetta, 1925</div>
   </section>
 
-  <section class="inspector" data-legend="03 — GLYPH INSPECTOR">
+  <section class="code" data-legend="03 — CODE">
+    <div class="code-tabs" role="group" aria-label="Language">
+      <button type="button" data-lang="python" aria-pressed="true">Python</button>
+      <button type="button" data-lang="cpp" aria-pressed="false">C++</button>
+      <button type="button" data-lang="go" aria-pressed="false">Go</button>
+      <button type="button" data-lang="rust" aria-pressed="false">Rust</button>
+      <button type="button" data-lang="markdown" aria-pressed="false">Markdown</button>
+      <button type="button" data-lang="terminal" aria-pressed="false">Terminal UI</button>
+      <button type="button" data-lang="ascii" aria-pressed="false">Plain ASCII</button>
+    </div>
+    <pre data-lang="python">import xml.etree.ElementTree as ET
+
+NS = {"gpx": "http://www.topografix.com/GPX/1/1"}
+
+
+def read_elevations(path: str) -&gt; list[float]:
+    """Elevation of every track point of a GPX file, in meters."""
+    root = ET.parse(path).getroot()
+    return [float(e.text) for e in root.iterfind(".//gpx:trkpt/gpx:ele", NS)]
+
+
+def smooth(values: list[float], window: int = 5) -&gt; list[float]:
+    """Centered moving average, shrinking the window at both ends."""
+    half = window // 2
+    out = []
+    for i in range(len(values)):
+        chunk = values[max(0, i - half) : i + half + 1]
+        out.append(sum(chunk) / len(chunk))
+    return out
+
+
+def elevation_gain(values: list[float], threshold: float = 3.0) -&gt; float:
+    """Total climb, ignoring GPS noise smaller than `threshold` meters."""
+    gain, ref = 0.0, values[0]
+    for v in values[1:]:
+        if v - ref &gt;= threshold:
+            gain += v - ref
+            ref = v
+        elif ref - v &gt;= threshold:
+            ref = v
+    return gain
+
+
+elevations = smooth(read_elevations("track.gpx"))
+print(f"D+ {elevation_gain(elevations):.0f} m")  # Total ascent</pre>
+    <pre data-lang="cpp" hidden>#include &lt;cmath&gt;
+#include &lt;numbers&gt;
+#include &lt;vector&gt;
+
+struct Point {
+    double lat, lon;  // Degrees
+};
+
+constexpr double kEarthRadius = 6371000.0;  // Meters
+
+// Great-circle distance between two points, with the haversine formula
+double haversine(const Point&amp; a, const Point&amp; b) {
+    auto rad = [](double deg) { return deg * std::numbers::pi / 180.0; };
+    double dlat = rad(b.lat - a.lat);
+    double dlon = rad(b.lon - a.lon);
+    double h = std::pow(std::sin(dlat / 2), 2) +
+               std::cos(rad(a.lat)) * std::cos(rad(b.lat)) * std::pow(std::sin(dlon / 2), 2);
+    return 2 * kEarthRadius * std::asin(std::sqrt(h));
+}
+
+double track_length(const std::vector&lt;Point&gt;&amp; track) {
+    double total = 0.0;
+    for (std::size_t i = 1; i &lt; track.size(); ++i) {
+        total += haversine(track[i - 1], track[i]);
+    }
+    return total;
+}</pre>
+    <pre data-lang="go" hidden>package contour
+
+// Point is a position in grid coordinates
+type Point struct{ X, Y float64 }
+
+// Segment is the piece of an isoline crossing a single grid cell
+type Segment struct{ A, B Point }
+
+// Isoline traces the contour line at `level` through a grid of elevations,
+// with marching squares: every cell edge whose corners lie on both sides
+// of the level is crossed, at a linearly interpolated position.
+func Isoline(z [][]float64, level float64) []Segment {
+	var segments []Segment
+	corners := [4]Point{{0, 0}, {1, 0}, {1, 1}, {0, 1}}
+	for y := 0; y+1 &lt; len(z); y++ {
+		for x := 0; x+1 &lt; len(z[y]); x++ {
+			var cuts []Point
+			for i, p := range corners {
+				q := corners[(i+1)%4]
+				zp := z[y+int(p.Y)][x+int(p.X)]
+				zq := z[y+int(q.Y)][x+int(q.X)]
+				if (zp &lt; level) != (zq &lt; level) {
+					t := (level - zp) / (zq - zp)
+					cuts = append(cuts, Point{
+						float64(x) + p.X + t*(q.X-p.X),
+						float64(y) + p.Y + t*(q.Y-p.Y),
+					})
+				}
+			}
+			// Saddle cells have four cuts: pair them in order
+			for i := 0; i+1 &lt; len(cuts); i += 2 {
+				segments = append(segments, Segment{cuts[i], cuts[i+1]})
+			}
+		}
+	}
+	return segments
+}</pre>
+    <pre data-lang="rust" hidden>#[derive(Clone, Copy, Debug)]
+pub struct Point {
+    pub x: f64,
+    pub y: f64,
+}
+
+/// Distance from `p` to the line through `a` and `b`
+fn distance_to_line(p: Point, a: Point, b: Point) -&gt; f64 {
+    let (dx, dy) = (b.x - a.x, b.y - a.y);
+    let len = dx.hypot(dy);
+    if len == 0.0 {
+        return (p.x - a.x).hypot(p.y - a.y);
+    }
+    (dy * p.x - dx * p.y + b.x * a.y - b.y * a.x).abs() / len
+}
+
+/// Simplify a track with Ramer–Douglas–Peucker, keeping the points
+/// farther than `epsilon` from the simplified line
+pub fn simplify(points: &amp;[Point], epsilon: f64) -&gt; Vec&lt;Point&gt; {
+    if points.len() &lt; 3 {
+        return points.to_vec();
+    }
+    let (first, last) = (points[0], points[points.len() - 1]);
+    let (index, max) = points[1..points.len() - 1]
+        .iter()
+        .enumerate()
+        .map(|(i, &amp;p)| (i + 1, distance_to_line(p, first, last)))
+        .fold((0, 0.0), |best, cur| if cur.1 &gt; best.1 { cur } else { best });
+    if max &lt;= epsilon {
+        return vec![first, last];
+    }
+    let mut left = simplify(&amp;points[..=index], epsilon);
+    left.pop(); // Shared with the right half
+    left.extend(simplify(&amp;points[index..], epsilon));
+    left
+}</pre>
+    <pre data-lang="markdown" hidden># Nordwand Mono
+
+A **monospaced** typeface for programming, drawn *entirely* in Python.
+
+## Features
+
+- Nine weights, from `Thin` to `Bold`, each with an italic
+- Character variants (`cv01`, `cv02`, ...) for alternate glyphs
+- Box drawing, blocks and arrows for terminal interfaces
+
+&gt; Every glyph is drawn by code, so you can tune the font to your taste.
+
+```sh
+make install &amp;&amp; make build-font
+```
+
+Download it from the [releases](https://github.com/tywr/Nordwand-Mono/releases) page.</pre>
+    <pre data-lang="terminal" hidden>╭─ nordwand ───────────────────────────────╮
+│ ↑ 1.2 MB/s   ↓ 8.4 MB/s     CPU ▂▃▅▇▆▄▂▁ │
+├──────────────┬────────┬──────────────────┤
+│ summit       │ alt.   │ progress         │
+├──────────────┼────────┼──────────────────┤
+│ Eiger        │ 3967   │ ████████████░░░░ │
+│ Matterhorn   │ 4478   │ ██████▓▓▒▒░░░░░░ │
+│ Grandes Jor. │ 4208   │ ███████████████▏ │
+╰──────────────┴────────┴──────────────────╯
+
+ src/glyphs/
+ ├── box/       ┄ ┅ ╭ ╮ ═ ║ ╬
+ ├── blocks/    ░ ▒ ▓ █ ▀ ▄ ▌ ▐
+ └── arrows/    ← → ↑ ↓ ↔ ↕ ↖ ↗</pre>
+    <pre data-lang="ascii" hidden>+------------+--------+------+-------+
+| Summit     | Face   | Year | Grade |
++------------+--------+------+-------+
+| Eiger      | North  | 1938 | VI-   |
+| Matterhorn | North  | 1931 | V+    |
+| Petit Dru  | North  | 1935 | VI    |
++------------+--------+------+-------+
+
+                     /\
+                    /  \      /\
+            /\     /    \    /  \
+           /  \   /      \  /    \
+      ____/    \_/        \/      \____
+
+  0O Il1| {}[]() &lt;= &gt;= != == -&gt; =&gt; :: ... ~~ //</pre>
+  </section>
+<script>
+{
+  // Minimal highlighting: each language is a list of [class, pattern], the
+  // first pattern matching at a position wins
+  const STR = String.raw`"(?:[^"\\\n]|\\.)*"`;
+  const NUM = String.raw`\b\d[\d_.]*\b`;
+  const kw = words => String.raw`\b(?:${words.replace(/ /g, '|')})\b`;
+  const RULES = {
+    python: [['c', '#.*'], ['s', STR + String.raw`|'(?:[^'\\\n]|\\.)*'`], ['k', kw('from import class def return for in if and or not is None True False with as while yield lambda')], ['k', '@\\w+'], ['n', NUM]],
+    cpp: [['c', String.raw`//.*|/\*[\s\S]*?\*/`], ['k', '^#\\w+.*'], ['s', STR], ['k', kw('struct class int bool auto const constexpr double for return false true void template typename using namespace')], ['n', NUM]],
+    go: [['c', '//.*'], ['s', STR], ['k', kw('package import type struct func for range go defer var make chan if else return string float64 int len append')], ['n', NUM]],
+    rust: [['c', '//.*'], ['s', STR], ['k', kw('use enum fn match let for in if else mut impl pub struct return f64 u32 usize str')], ['k', String.raw`#\[.*\]`], ['n', NUM]],
+    markdown: [['s', '```[\\s\\S]*?```'], ['k', '^#{1,6} .*'], ['c', '^> .*'], ['k', String.raw`^\s*[-*] `], ['s', '`[^`\\n]*`'], ['n', String.raw`\*\*[^*\n]+\*\*|\*[^*\n]+\*`], ['s', String.raw`\[[^\]\n]*\]\([^)\n]*\)`]],
+  };
+  const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+  function highlight(text, rules) {
+    const re = new RegExp(rules.map(([, r]) => `(${r})`).join('|'), 'gm');
+    let out = '', last = 0;
+    for (const m of text.matchAll(re)) {
+      const i = m.slice(1).findIndex(g => g !== undefined);
+      out += esc(text.slice(last, m.index)) + `<span class="${rules[i][0]}">${esc(m[0])}</span>`;
+      last = m.index + m[0].length;
+    }
+    return out + esc(text.slice(last));
+  }
+
+  const code = document.querySelector('.code');
+  const pres = code.querySelectorAll('pre');
+  for (const pre of pres) {
+    const rules = RULES[pre.dataset.lang];
+    if (rules) pre.innerHTML = highlight(pre.textContent, rules);
+  }
+  const tabs = code.querySelectorAll('.code-tabs button');
+  for (const tab of tabs) tab.addEventListener('click', () => {
+    tabs.forEach(t => t.setAttribute('aria-pressed', t === tab));
+    pres.forEach(p => { p.hidden = p.dataset.lang !== tab.dataset.lang; });
+  });
+}
+</script>
+
+  <section class="inspector" data-legend="04 — GLYPH INSPECTOR">
     <div class="viewer">
       <div class="toolbar">
         <div class="glyph-meta"><span class="glyph-name"></span><span class="glyph-code"></span></div>
