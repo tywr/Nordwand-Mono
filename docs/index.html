@@ -167,23 +167,30 @@ section[data-legend]::before {
   outline: none;
 }
 
-/* Cards share each row, so every row spans the full width, wrapped ones too */
-.features { display: flex; flex-wrap: wrap; gap: 1px; }
-.features::before { flex-basis: 100%; }
+/* One row per feature: its title and description on the left, a live sample
+   on the right */
 .feature {
-  flex: 1 1 13rem;
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
-  box-shadow: 0 0 0 1px var(--border);
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  column-gap: var(--pad);
+  align-items: center;
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--border);
 }
-.feature h2 { margin: 0 0 .75rem; font-size: 1rem; font-weight: 500; letter-spacing: .04em; color: var(--fg-bright); }
-.feature p { margin: 0 0 1.5rem; font-size: .9rem; color: var(--fg); }
-/* Pushed to the bottom, so samples line up across cards */
-.feature-sample { margin: auto 0 0; font-size: 2.5rem; line-height: 1.2; color: var(--accent); }
+.feature:last-child { border-bottom: 1px solid var(--border); }
+.feature h2 { grid-column: 1; align-self: end; margin: 0 0 .75rem; font-size: 1.1rem; font-weight: 500; letter-spacing: .04em; color: var(--fg-bright); }
+.feature p { grid-column: 1; align-self: start; max-width: 32rem; margin: 0; font-size: .95rem; color: var(--fg); }
+/* The longest sample (ligatures, 20 characters) fits the column on one line */
+.feature-sample { grid-column: 2; grid-row: 1 / span 2; margin: 0; font-size: clamp(2rem, 3.8vw, 4.5rem); line-height: 1.2; color: var(--accent); }
 .feature-sample a { color: inherit; text-decoration: none; }
 .feature-sample a:hover { text-decoration: underline; }
-.feature-config { font: inherit; font-size: 1rem; line-height: 1.5; }
+/* Upright above italic; a 31-character sentence fits the column */
+.feature-lines { display: flex; flex-direction: column; font-size: clamp(1.1rem, 2.6vw, 3rem); }
+.feature-config { font: inherit; font-size: clamp(1rem, 1.8vw, 1.5rem); line-height: 1.5; }
+@media (width < 48rem) {
+  .feature { grid-template-columns: 1fr; }
+  .feature-sample { grid-column: 1; grid-row: auto; margin-top: 1.5rem; }
+}
 
 .label { display: flex; justify-content: space-between; font-size: .9rem; color: var(--fg-muted); }
 /* Samples are at most 16 characters (9.6em) */
@@ -384,7 +391,7 @@ footer { padding: 2rem var(--pad); font-size: .85rem; color: var(--fg-muted); bo
     <div class="feature">
       <h2>True Italics</h2>
       <p>Italics are drawn, not slanted: letters like a, f, k and y get their own cursive forms.</p>
-      <div class="feature-sample"><span>afky</span> <span style="font-style: italic">afky</span></div>
+      <div class="feature-sample feature-lines"><span>Waxy kiwi foxes zigzag over ivy</span><span style="font-style: italic">Waxy kiwi foxes zigzag over ivy</span></div>
     </div>
     <div class="feature">
       <h2>Drawn in Python</h2>
@@ -410,7 +417,7 @@ stroke_y: 70</pre>
     </div>
     <div class="feature">
       <h2>Minimal Ligatures</h2>
-      <p style="font-variant-ligatures: none">Ligatures are not the point of this font. Only -&gt; and =&gt; join by default; continuous lines like ----, ==== or #### are opt-in, through the dlig feature.</p>
+      <p style="font-variant-ligatures: none">Ligatures are not the point of this font. Only -&gt; and =&gt; join by default; continuous lines like <span style="white-space: nowrap">----,</span> ==== or #### are opt-in, through the dlig feature.</p>
       <div class="feature-sample"><span>-&gt; =&gt;</span> <span style="font-feature-settings: 'dlig' 1">---- ==== ####</span></div>
     </div>
   </section>
