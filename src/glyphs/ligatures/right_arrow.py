@@ -1,6 +1,7 @@
 from glyphs import LigatureGlyph
 from draw.chevron import draw_chevron
 from glyphs.special.greater_than_sign import GreaterThenSignGlyph
+from glyphs.special.hyphen_minus import HyphenMinusGlyph
 from draw.rect import draw_rect
 
 
@@ -14,6 +15,7 @@ class RightArrowGlyph(LigatureGlyph):
         "ss02",
     )
     number_characters = 2
+    joinable = True
     width_ratio = 0.88
     overlap = 0.6
     side_offset = 0.05
@@ -21,7 +23,7 @@ class RightArrowGlyph(LigatureGlyph):
     gap = 0.0
     stroke_ratio = 1
 
-    def draw(self, pen, dc):
+    def draw(self, pen, dc, join_left=False):
         b = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
@@ -29,6 +31,11 @@ class RightArrowGlyph(LigatureGlyph):
         h = dc.parenthesis_length * self.span
         s = dc.stroke_x
         x1 = self.side_offset * dc.window_width
+        if join_left:
+            # Start where the junction of the `-` before ends, as thick as it
+            hyphen = HyphenMinusGlyph()
+            s = hyphen.horizontal_bar_stroke(dc)
+            x1 = s * hyphen.ligature_junction_width / 2
         g = self.gap * dc.window_width
         _, delta = draw_chevron(
             pen,

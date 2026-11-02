@@ -139,10 +139,41 @@ class LigatureGlyph(Glyph):
     unicode = None
     offset = 0
     feature_tags = ("liga",)
+    # Whether the ligature can join a run of its first component on its left
+    # (e.g. `--->` with dlig): it then gets a JoinedLigatureForm, drawn with
+    # draw(pen, dc, join_left=True)
+    joinable = False
 
     @property
     @abstractmethod
     def components(self) -> list[str]: ...
+
+    def ligature_forms(self):
+        return [JoinedLigatureForm(self)] if self.joinable else []
+
+
+class JoinedLigatureForm(Glyph):
+    """Form of a joinable :class:`LigatureGlyph` that follows a run of its
+    first component, which is an :class:`InfiniteLigatureGlyph`."""
+
+    generated_only = True
+    name = None
+    unicode = None
+    offset = 0
+    font_feature = None
+    default_italic = False
+    italic_only = False
+    feature_tags = ("dlig",)
+
+    def __init__(self, source):
+        self.source = source
+        self.source_name = source.name
+        self.joins = source.components[0]
+        self.name = f"{source.name}_joined"
+        self.number_characters = source.number_characters
+
+    def draw(self, pen, dc):
+        self.source.draw(pen, dc, join_left=True)
 
 
 class ContextualLigatureGlyph(LigatureGlyph):
