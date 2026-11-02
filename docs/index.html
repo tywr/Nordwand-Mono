@@ -164,36 +164,55 @@ section[data-legend]::before {
 
 .download .font-version { opacity: .6; }
 
-/* Description on the left, a hand-drawn route topo on the right */
+/* The description over a faint route topo, which fades out behind the text
+   like the map of the hero */
 .topo {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-  column-gap: var(--pad);
-  align-items: center;
+  isolation: isolate;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: min(80svh, 52rem);
 }
-.topo::before { grid-column: 1 / -1; }
-.topo-text { max-width: 36rem; font-size: 1.05rem; }
+/* The legend stays at the top like in other sections, the text centered below */
+.topo-text { max-width: 36rem; margin-block: auto; font-size: 1.05rem; }
 .topo-text p { margin: 0 0 1em; }
-.topo-figure { margin: 0; }
-.topo-figure figcaption { margin-top: 1rem; font-size: .8rem; color: var(--fg-muted); text-align: right; }
-.topo-figure figcaption a { color: inherit; }
-.topo-drawing { display: block; width: 100%; height: auto; }
-.topo-drawing .rock { fill: none; stroke: var(--fg-muted); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.topo-figure {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  /* Starts after the text column, or from 45% on narrower screens where its
+     faded edge tucks under the text; reaches nearly to the edge */
+  padding: var(--pad) 1rem var(--pad) min(calc(var(--pad) + 38rem), 45%);
+  opacity: .22;
+  mask-image: linear-gradient(to right, transparent 30rem, #000 50rem);
+  pointer-events: none;
+}
+.topo-credit { position: absolute; right: var(--pad); bottom: 1.25rem; margin: 0; font-size: .75rem; color: var(--fg-muted); opacity: .6; }
+.topo-credit a { color: inherit; text-decoration-color: var(--border); }
+.topo-credit a:hover { text-decoration-color: currentColor; }
+.topo-drawing { display: block; width: 100%; max-width: 72rem; height: auto; }
+.topo-drawing .rock { fill: none; stroke: var(--fg); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .topo-drawing .thin { stroke-width: 1.4; }
-.topo-drawing .frame { fill: none; stroke: var(--fg-muted); stroke-width: 2; }
 .topo-drawing .shade { fill: url(#hatch); }
-.topo-drawing .hatch line { stroke: var(--fg-muted); stroke-width: 1.6; }
-.topo-drawing .route { fill: none; stroke: var(--accent); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+.topo-drawing .hatch line { stroke: var(--fg); stroke-width: 1.6; }
+.topo-drawing .route { fill: none; stroke: var(--fg-bright); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
 .topo-drawing .dashed-route { stroke-dasharray: 9 8; }
-.topo-drawing .leader path { fill: none; stroke: var(--fg-muted); stroke-width: 1.4; }
+.topo-drawing .leader path { fill: none; stroke: var(--fg); stroke-width: 1.4; }
 /* Labels cut a gap in the lines they cross, as on drawn topos */
 .topo-drawing text { paint-order: stroke; stroke: var(--bg); stroke-width: 8px; stroke-linejoin: round; }
 .topo-drawing .topo-note { fill: var(--fg); font-size: 24px; }
 .topo-drawing .summit { fill: var(--fg-bright); font-size: 28px; }
-.topo-drawing .place { fill: var(--fg-muted); font-size: 22px; letter-spacing: .6em; }
+.topo-drawing .place { fill: var(--fg); font-size: 22px; letter-spacing: .1em; }
+/* On phones the topo sits below the text, fading out upwards */
 @media (width < 48rem) {
-  .topo { grid-template-columns: 1fr; }
-  .topo-figure { margin-top: 2rem; }
+  .topo { min-height: 0; padding-bottom: calc(var(--pad) + 4rem + 62vw); }
+  .topo-figure { align-items: flex-end; padding: var(--pad) var(--pad) 3rem; mask-image: linear-gradient(to bottom, transparent 40%, #000 75%); }
+  .topo-drawing { width: 100%; }
+}
 }
 
 .glyphs { position: relative; }
@@ -431,7 +450,7 @@ footer { padding: 2rem var(--pad); font-size: .85rem; color: var(--fg-muted); bo
       <p>The name refers to the north faces (<em>Nordwände</em>) of the Swiss Alps, and to the Swiss typographic tradition the design draws on. Every glyph is generated with Python code, so anyone can tune the font to fit their needs.</p>
       <p>It is free and <a href="https://github.com/tywr/Nordwand-Mono">open source</a>.</p>
     </div>
-    <figure class="topo-figure">
+    <figure class="topo-figure" aria-hidden="true">
       <svg class="topo-drawing" viewBox="-50 30 1600 980" role="img" aria-label="Line drawing of the Aiguille Purtscheller and its classic south ridge route">
         <defs>
           <!-- Wobbles the lines, as if drawn by hand -->
@@ -449,9 +468,6 @@ footer { padding: 2rem var(--pad); font-size: .85rem; color: var(--fg-muted); bo
             <line x1="0" y1="0" x2="0" y2="9"/>
           </pattern>
         </defs>
-        <!-- Double ruled frame, as on a printed topo -->
-        <rect class="frame" x="-46" y="34" width="1592" height="972"/>
-        <rect class="frame" x="-36" y="44" width="1572" height="952"/>
         <g filter="url(#hand-drawn)">
         <g class="shade">
             <path d="M822 300 L852 302 L858 400 L842 500 L832 600 L822 700 L800 780 L770 790 L762 700 L780 600 L792 500 L804 400 Z"/>
@@ -496,8 +512,8 @@ footer { padding: 2rem var(--pad); font-size: .85rem; color: var(--fg-muted); bo
         <text class="place" x="1020" y="944" text-anchor="middle">PLATEAU DU TRIENT</text>
       </svg>
       <!-- TODO: check the license of the original drawing and credit its author -->
-      <figcaption>(original from <a href="https://media.camptocamp.org/c2corg-active/1344805143_1877062060BI.jpg">camptocamp.org</a>)</figcaption>
     </figure>
+    <p class="topo-credit">Original from <a href="https://media.camptocamp.org/c2corg-active/1344805143_1877062060BI.jpg">camptocamp.org</a></p>
   </section>
 
   <section id="features" class="features" data-legend="FEATURES">
