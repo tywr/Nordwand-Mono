@@ -28,6 +28,7 @@ Stylistic sets switch groups of related glyphs at once:
 
 | Tag | Effect |
 | --- | --- |
+| `ss01` | Classic `l` and `m` (upright `l` only) |
 | `ss02` | Arrow ligatures |
 | `ss03` | Wide-angled `<`, `>` and arrow heads |
 
