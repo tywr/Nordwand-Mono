@@ -190,7 +190,9 @@ def select_style_glyphs(all_glyphs, italic):
             code = int(glyph.unicode, 16)
             has_italic_default = defaults[code].default_italic
             if italic:
-                if glyph.italic_only or not has_italic_default:
+                if not glyph.regular_only and (
+                    glyph.italic_only or not has_italic_default
+                ):
                     active.append(glyph)
             elif not glyph.italic_only:
                 active.append(glyph)
@@ -306,14 +308,11 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
             lookup_type = 3
             subst.alternates = {}
             for base_name, alternatives in indexed_alternatives.items():
-                expected = set(range(1, max(alternatives) + 1))
-                if set(alternatives) != expected:
-                    raise ValueError(
-                        f"Alternate indices for {base_name!r} in feature {tag!r} "
-                        f"must be consecutive from 1"
-                    )
+                # A missing index (e.g. a regular_only alternate in the italic)
+                # keeps the base glyph
                 subst.alternates[base_name] = [
-                    alternatives[index] for index in sorted(alternatives)
+                    alternatives.get(index, base_name)
+                    for index in range(1, max(alternatives) + 1)
                 ]
 
         lookup = Lookup()
