@@ -1,8 +1,11 @@
-"""Serve docs/ locally, telling the browser not to cache anything so a rebuilt
-font shows on a plain reload (the font files keep the same names)."""
+"""Serve a directory (docs/ by default) locally, telling the browser not to
+cache anything so a rebuilt font shows on a plain reload (the font files keep
+the same names). `make lab` serves the repo root on its own port, for lab/ to
+load fonts/."""
 
 import functools
 import http.server
+import sys
 
 
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
@@ -12,6 +15,9 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    handler = functools.partial(NoCacheHandler, directory="docs")
-    print("Serving docs/ on http://localhost:8000")
-    http.server.ThreadingHTTPServer(("", 8000), handler).serve_forever()
+    directory = sys.argv[1] if len(sys.argv) > 1 else "docs"
+    port = int(sys.argv[2]) if len(sys.argv) > 2 else 8000
+    handler = functools.partial(NoCacheHandler, directory=directory)
+    print(f"Serving {directory} on http://localhost:{port}/")
+    # Local only: the lab serves the whole repo
+    http.server.ThreadingHTTPServer(("localhost", port), handler).serve_forever()

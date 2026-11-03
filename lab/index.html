@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nordwand Mono Lab</title>
+<style>
+:root {
+  --bg: #121212;
+  --fg: #cccccc;
+  --fg-muted: #606060;
+  --border: #262626;
+  --accent: #abeaff;
+  color-scheme: dark;
+}
+:root.light { --bg: #fafafa; --fg: #1a1a1a; --fg-muted: #909090; --border: #dddddd; color-scheme: light; }
+
+body { margin: 0; display: grid; grid-template-columns: 16rem 1fr; height: 100vh; background: var(--bg); color: var(--fg); font: 13px/1.4 "Nordwand Mono", ui-monospace, monospace; }
+aside { padding: 1rem; border-right: 1px solid var(--border); overflow-y: auto; }
+aside h2 { margin: 1.25rem 0 .5rem; font-size: inherit; font-weight: normal; color: var(--fg-muted); text-transform: uppercase; letter-spacing: .1em; }
+aside h2:first-child { margin-top: 0; }
+aside label { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin: .3rem 0; }
+aside input[type="range"] { width: 8rem; accent-color: var(--accent); }
+aside select, aside input[type="text"] { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: .15rem .3rem; }
+aside output { min-width: 4ch; text-align: right; color: var(--fg-muted); }
+.features { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1rem; }
+
+main { display: flex; min-width: 0; }
+textarea { flex: 1; min-width: 0; margin: 0; padding: 1.5rem; border: 0; resize: none; outline: none; background: var(--bg); color: var(--fg); white-space: pre; overflow: auto; }
+textarea + textarea { border-left: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<aside>
+  <form>
+    <h2>Sample</h2>
+    <select name="sample"></select>
+
+    <h2>Style</h2>
+    <label>Weight
+      <select name="weight">
+        <option value="100">Thin</option>
+        <option value="200">ExtraLight</option>
+        <option value="300">Light</option>
+        <option value="375">Book</option>
+        <option value="400" selected>Regular</option>
+        <option value="450">Retina</option>
+        <option value="500">Medium</option>
+        <option value="600">SemiBold</option>
+        <option value="700">Bold</option>
+      </select>
+    </label>
+    <label>Italic <input type="checkbox" name="italic"></label>
+    <label>Size <input type="range" name="size" min="8" max="200" value="16"><output></output></label>
+    <label>Line height <input type="range" name="leading" min="0.8" max="2.5" step="0.05" value="1.5"><output></output></label>
+
+    <h2>Features</h2>
+    <div class="features"></div>
+
+    <h2>Display</h2>
+    <label>Light background <input type="checkbox" name="light"></label>
+    <label>Compare with <input type="text" name="compare" list="fonts" placeholder="font family" size="12"></label>
+    <datalist id="fonts">
+      <option value="JetBrains Mono">
+      <option value="SF Mono">
+      <option value="Menlo">
+      <option value="Berkeley Mono">
+    </datalist>
+  </form>
+</aside>
+<main>
+  <textarea spellcheck="false"></textarea>
+  <textarea spellcheck="false" hidden></textarea>
+</main>
+
+<script>
+{
+  // Served from the repo root by `make lab`, so this is the latest build;
+  // the server sends no-store, so a plain reload picks up a rebuild
+  const STYLES = [[100, 'Thin'], [200, 'ExtraLight'], [300, 'Light'], [375, 'Book'], [400, ''], [450, 'Retina'], [500, 'Medium'], [600, 'SemiBold'], [700, 'Bold']];
+  const css = STYLES.flatMap(([weight, name]) => [
+    [weight, name || 'Regular', 'normal'],
+    [weight, (name || '') + 'Italic', 'italic'],
+  ]).map(([weight, file, style]) =>
+    `@font-face { font-family: "Nordwand Mono"; src: url("/fonts/woff2/NordwandMono-${file}.woff2") format("woff2"); font-weight: ${weight}; font-style: ${style}; }`
+  ).join('\n');
+  document.head.append(Object.assign(document.createElement('style'), { textContent: css }));
+
+  // [tag, highest value]; ponytail: kept by hand, update with doc/alternative_characters.md and doc/stylistic_sets.md
+  const FEATURES = [
+    ['cv01', 2], ['cv02', 1], ['cv03', 2], ['cv04', 2], ['cv11', 1], ['cv12', 1], ['cv19', 1], ['cv20', 1],
+    ['ss01', 1], ['ss02', 1], ['ss03', 1], ['dlig', 1],
+  ];
+
+  const SAMPLES = {
+    'Alphabet': `abcdefghijklmnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+0123456789
+!"#$%&'()*+,-./:;<=>?@[\\]^_\`{|}~
+‘single’ “double” ‚low‛ „low‟ «guillemets» ‹single›`,
+    'Spacing': `nnnonnnmnnnlnnninnnrnnn
+oooaooobooocooodoooeooo
+HHHOHHHAHHHBHHHCHHHDHHH
+hamburgefonstiv HAMBURGEFONSTIV`,
+    'Confusables': `Il1| O0oQ rn m vv w cl d
+\`'"‘’“” ,.;: -–—_ ~^
+{[()]} <> /\\ ß B 8 3 5 S 2 Z`,
+    'Ligatures': `-> => <- <= >= != == === !== :: ... ||
+---- ==== ____ #### <!-- --> |> <|
+x->y; f => g; a >= b && c <= d`,
+    'Python': `from dataclasses import dataclass
+
+@dataclass
+class Summit:
+    name: str
+    height_m: int
+    first_ascent: int | None = None
+
+def taller(peaks: list[Summit], limit: int = 4000) -> list[str]:
+    """Names of the summits over \`limit\` meters, highest first."""
+    return [p.name for p in sorted(peaks, key=lambda p: -p.height_m) if p.height_m > limit]
+
+print(taller([Summit("Eiger", 3967, 1858), Summit("Matterhorn", 4478, 1865)]))`,
+    'Rust': `#[derive(Debug, Clone, Copy)]
+struct Point { lat: f64, lon: f64, ele: f64 }
+
+fn gain(track: &[Point]) -> f64 {
+    track.windows(2).map(|w| (w[1].ele - w[0].ele).max(0.0)).sum()
+}
+
+fn main() {
+    let track = vec![Point { lat: 46.58, lon: 8.00, ele: 2061.0 }];
+    println!("D+ {:.0} m", gain(&track));
+}`,
+    'Box drawing': `╭─ nordwand ──────────────╮
+│ ▓▓▓▓▓▓▓▓▒▒▒▒░░░░  58%   │
+├─────────┬───────────────┤
+│ eiger   │ ████████▌     │
+│ jungfrau│ ██████▏       │
+╰─────────┴───────────────╯`,
+    'Latin extended': `àáâãäåāăą çćĉċč ďđ èéêëēĕėęě ĝğġģ ĥħ ìíîïĩīĭįı ĵ ķ ĺļľŀł
+ñńņňŉ òóôõöøōŏő ŕŗř śŝşšș ţťŧț ùúûüũūŭůűų ŵ ýÿŷ źżž
+ÀÁÂÃÄÅĀĂĄ ÇĆĈĊČ ĎĐ ÈÉÊËĒĔĖĘĚ ÑŃŅŇ ÒÓÔÕÖØŌŎŐ ŚŜŞŠ ÙÚÛÜŨŪŬŮŰŲ ÝŸŶ ŹŻŽ
+æœ ÆŒ ðþ ÐÞ ß ẞ`,
+    'Pangrams': `The quick brown fox jumps over the lazy dog.
+Sphinx of black quartz, judge my vow.
+Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich.
+Portez ce vieux whisky au juge blond qui fume.`,
+  };
+
+  const form = document.querySelector('form');
+  const [text, other] = document.querySelectorAll('textarea');
+  const featureBox = form.querySelector('.features');
+  for (const [tag, max] of FEATURES) {
+    const label = document.createElement('label');
+    label.textContent = tag;
+    if (max > 1) {
+      const select = document.createElement('select');
+      select.name = tag;
+      for (let v = 0; v <= max; v++) select.add(new Option(v || 'off', v));
+      label.append(select);
+    } else {
+      label.append(Object.assign(document.createElement('input'), { type: 'checkbox', name: tag }));
+    }
+    featureBox.append(label);
+  }
+  for (const name of Object.keys(SAMPLES)) form.sample.add(new Option(name));
+
+  // Settings live in the URL, so a reload keeps them and a link shares them
+  const read = el => el.type === 'checkbox' ? (el.checked ? '1' : '') : el.value;
+  const params = new URLSearchParams(location.search);
+  for (const el of form.elements) {
+    if (!el.name || !params.has(el.name)) continue;
+    if (el.type === 'checkbox') el.checked = params.get(el.name) === '1';
+    else el.value = params.get(el.name);
+  }
+
+  function apply() {
+    const features = FEATURES.map(([tag]) => [tag, +read(form[tag])]).filter(([, v]) => v);
+    for (const el of [text, other]) Object.assign(el.style, {
+      fontWeight: form.weight.value,
+      fontStyle: form.italic.checked ? 'italic' : 'normal',
+      fontSize: `${form.size.value}px`,
+      lineHeight: form.leading.value,
+      fontFeatureSettings: features.map(([tag, v]) => `"${tag}" ${v}`).join(', ') || 'normal',
+    });
+    text.style.fontFamily = '"Nordwand Mono", monospace';
+    other.style.fontFamily = `"${form.compare.value}", monospace`;
+    other.hidden = !form.compare.value;
+    document.documentElement.classList.toggle('light', form.light.checked);
+    for (const out of form.querySelectorAll('output')) out.textContent = out.previousElementSibling.value;
+
+    const state = new URLSearchParams();
+    for (const el of form.elements) if (el.name && read(el)) state.set(el.name, read(el));
+    history.replaceState(null, '', `?${state}`);
+  }
+
+  const loadSample = () => { text.value = other.value = SAMPLES[form.sample.value]; };
+  form.sample.addEventListener('change', loadSample);
+  form.addEventListener('input', apply);
+  form.addEventListener('submit', e => e.preventDefault());
+  // Both panes hold the same editable text
+  text.addEventListener('input', () => { other.value = text.value; });
+  other.addEventListener('input', () => { text.value = other.value; });
+  loadSample();
+  apply();
+}
+</script>
+</body>
+</html>

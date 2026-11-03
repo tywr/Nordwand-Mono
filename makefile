@@ -1,4 +1,4 @@
-.PHONY: install build build-font build-otf build-nerd-font install-mac visualize website
+.PHONY: install build build-font build-otf build-nerd-font install-mac visualize website lab
 
 FONT_VERSION ?= $(shell git describe --tags --abbrev=0 2>/dev/null || echo 1.0.0)
 
@@ -33,3 +33,7 @@ visualize:
 website:
 	uv run python -m scripts.website
 	uv run python -m scripts.serve
+
+lab:
+	@echo "Lab on http://localhost:8001/lab/"
+	uv run python -m scripts.serve . 8001
