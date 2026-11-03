@@ -1,8 +1,9 @@
 name: Deploy website
 
+# Only a new font version redeploys the site; it can still be run by hand
 on:
-  push:
-    branches: [main]
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:
@@ -25,6 +26,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
+          # The released tag, or the branch picked when run by hand
+          ref: ${{ github.event.release.tag_name || github.ref }}
           fetch-depth: 0
 
       - name: Set up Python
