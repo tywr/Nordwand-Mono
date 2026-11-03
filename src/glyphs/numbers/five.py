@@ -18,7 +18,7 @@ class FiveGlyph(NumberGlyph):
     stroke_ratio = 0.88
     loop_ratio = 0.67
     junction_ratio = 0.45
-    cap_offset = 0.1
+    cap_offset = 0.07
     tilt = 0.24
     taper = 1
     ending_offset = 0.00
