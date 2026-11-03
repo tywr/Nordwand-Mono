@@ -34,6 +34,8 @@ class FiveGlyph(NumberGlyph):
             height="cap",
             width_ratio=self.width_ratio,
             overshoot_bottom=True,
+            overshoot_left=True,
+            overshoot_right=True,
             number=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
