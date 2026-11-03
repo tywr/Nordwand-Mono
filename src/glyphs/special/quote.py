@@ -19,11 +19,11 @@ class QuoteGlyph(Glyph):
     name = "quote"
     offset = 0
     width_ratio = 1
-    tail_ratio = 2
+    tail_ratio = 2.2
     foot_offset = 0.05
     stroke_ratio = 1
-    head_ratio = 1.5
-    tail_stroke_ratio = 0.75
+    head_ratio = 1.9
+    tail_stroke_ratio = 0.8
     gap = QuotationMarkGlyph.gap
     turned = False
     double = False
