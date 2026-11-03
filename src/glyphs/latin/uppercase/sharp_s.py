@@ -18,6 +18,7 @@ class CapitalSharpSGlyph(Glyph):
     diag_stroke_ratio = 1.0
     stroke_x_ratio = 1.00
     stroke_y_ratio = 1.00
+    taper = 0.9
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -71,7 +72,7 @@ class CapitalSharpSGlyph(Glyph):
             xu,
             b.y2 - sy,
             b.x1 + o,
-            ymid + sy * 0.75 - sy / 2,
+            ymid + sy * self.taper - sy / 2,
             direction="bottom-left",
         )
 
@@ -86,7 +87,7 @@ class CapitalSharpSGlyph(Glyph):
             ymid + sy / 2,
             hx,
             hy * self.mid_ratio,
-            taper=0.75,
+            taper=self.taper,
             cut="left",
             side="top",
         )
@@ -97,7 +98,7 @@ class CapitalSharpSGlyph(Glyph):
             b.x1 + o,
             ymid - sy / 2,
             max(b.x1 + o + delta, (lower_x1 + lower_x2) / 2),
-            ymid + sy * 0.75 - sy / 2,
+            ymid + sy * self.taper - sy / 2,
         )
 
         # Bottom extension
