@@ -11,6 +11,7 @@ class QuoteGlyph(Glyph):
     away from the center. `turned` rotates it 180° for the opening quotes,
     `double` draws it twice, spaced like the bars of `"`. `low` drops it so
     the head sits on the baseline, with the tail below like a comma.
+    `mirrored` flips it left to right for the reversed-9 quotes.
 
     Leaves `unicode` undefined so it stays abstract and isn't exported;
     each quote subclass sets its own.
@@ -28,6 +29,7 @@ class QuoteGlyph(Glyph):
     turned = False
     double = False
     low = False
+    mirrored = False
 
     def shape(self, dc):
         """Head dot center, and the tail's lower-left and upper-right corners,
@@ -54,11 +56,16 @@ class QuoteGlyph(Glyph):
             # Rotating swaps the tail's ends: the joint becomes its lower-left
             pts = [(2 * cx - x, 2 * cy - y) for x, y in (head, joint, foot)]
         pts = [(x + b.xmid - cx, y) for x, y in pts]
+        if self.mirrored:
+            # Centered on xmid, so flipping around it keeps it centered
+            pts = [(2 * b.xmid - x, y) for x, y in pts]
         return pts[0], pts[1], pts[2]
 
     def draw(self, pen, dc):
         (hx, hy), (x1, y1), (x2, y2) = self.shape(dc)
         st = self.tail_stroke_ratio * dc.stroke_x
+        # Mirrored, the foot is the tail's lower-right corner
+        direction = "top-left" if self.mirrored else "top-right"
         offsets = (0,)
         if self.double:
             b = dc.body_bounds(
@@ -68,4 +75,4 @@ class QuoteGlyph(Glyph):
             offsets = (-d, d)
         for dx in offsets:
             draw_dot(pen, dc, hx + dx, hy, self.head_ratio)
-            draw_parallelogramm(pen, st, x1 + dx, y1, x2 + dx, y2)
+            draw_parallelogramm(pen, st, x1 + dx, y1, x2 + dx, y2, direction=direction)
