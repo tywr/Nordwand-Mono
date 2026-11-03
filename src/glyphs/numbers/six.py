@@ -8,10 +8,10 @@ from draw.polygon import draw_polygon
 class SixGlyph(NumberGlyph):
     name = "six"
     unicode = "0x36"
-    offset = 0
+    offset = 5
     loop_ratio = 0.64
     taper = 0.2
-    cap_x = 0.75
+    cap_x = 0.69
     joint_x = 1.4
     hx_ratio = 0.9
     hy_ratio = 0.9

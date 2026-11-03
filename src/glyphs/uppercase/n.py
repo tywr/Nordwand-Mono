@@ -14,15 +14,19 @@ class UppercaseNGlyph(UppercaseGlyph):
     width_ratio = 1.04
     section_height = 1
     middle_stroke_ratio = 0.95
+    height = "cap"
 
-    def draw(self, pen, dc):
-        b = dc.body_bounds(
+    def bounds(self, dc):
+        return dc.body_bounds(
             offset=self.offset,
-            height="cap",
+            height=self.height,
             width_ratio=self.width_ratio,
             uppercase=True,
             min_margin=dc.min_margin_uppercase,
         )
+
+    def draw(self, pen, dc):
+        b = self.bounds(dc)
         sx = dc.stroke_x * self.stroke_x_ratio
         si = dc.stroke_x * self.middle_stroke_ratio
         si = max(0, 0.7 * (si - dc.default_stroke)) + min(dc.default_stroke, si)

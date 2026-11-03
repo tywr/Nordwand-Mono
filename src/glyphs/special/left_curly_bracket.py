@@ -1,16 +1,13 @@
-from glyphs import Glyph
+from glyphs.special.right_curly_bracket import RightCurlyBracketGlyph
 from draw.rect import draw_rect
 from draw.corner import draw_corner
 from draw.square_corner import draw_square_corner
 
 
-class LeftCurlyBracketGlyph(Glyph):
+class LeftCurlyBracketGlyph(RightCurlyBracketGlyph):
     name = "left_curly_bracket"
     unicode = "0x7B"
     offset = 0
-    width_ratio = 1
-    peak_ratio = 0.35
-    protusion_stroke_ratio = 1.3
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -19,7 +16,7 @@ class LeftCurlyBracketGlyph(Glyph):
         pl = self.peak_ratio * b.width
         ymid = dc.parenthesis
         sx, sy = dc.stroke_x, dc.stroke_y
-        sp = dc.stroke_y * self.protusion_stroke_ratio
+        sp = dc.stroke_x * self.protusion_stroke_ratio
         y1, y2 = ymid - dc.parenthesis_length / 2, ymid + dc.parenthesis_length / 2
         x1, x2, xmid = b.x1 + pl, b.x2, (b.x1 + pl + b.x2) / 2
         l4 = dc.parenthesis_length / 4
@@ -76,4 +73,6 @@ class LeftCurlyBracketGlyph(Glyph):
             orientation="top-left",
         )
 
-        draw_rect(pen, b.x1, ymid - sx / 2, b.xmid, ymid + sx / 2)
+        # Same height as the curves' meeting tip (each ends 0.25 * sp past
+        # ymid with a 0.75 * sp stroke), so the protrusion continues it flush
+        draw_rect(pen, b.x1, ymid - sp / 2, b.xmid, ymid + sp / 2)

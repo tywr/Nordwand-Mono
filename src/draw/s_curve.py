@@ -28,7 +28,10 @@ def draw_s_curve(
 
     xi1, yi1 = x2 - sx - dx, y1 + dy * rbot
     xi2, yi2 = x1 + sx + dx, y2 - dy * rtop
-    theta, delta = draw_parallelogramm_vertical(NullPen(), sx, sy, xi1, yi1, xi2, yi2)
+    phi, delta = draw_parallelogramm_vertical(NullPen(), sx, xi1, yi1, xi2, yi2)
+
+    # Angle of the diagonal from the vertical
+    theta = pi / 2 - phi
 
     eps = pi / 2 - theta
     px, py = delta * sin(eps) * cos(eps), delta * sin(eps) ** 2

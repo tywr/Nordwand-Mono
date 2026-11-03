@@ -76,6 +76,12 @@ stroke_alt: 66
 #     stroke_alt: 72
 #   700:
 
+# --- Ligature junctions ----------------------------------------------------
+# Notch where joined cells meet in `----`, `====`, `->` and `=>`, relative to
+# the stroke of the bar: its height, and its width.
+ligature_dent_stroke: 0.5
+ligature_junction_width: 0.5
+
 # --- Overshoots -------------------------------------------------------------
 v_overshoot: 9
 v_overshoot_cap: 16

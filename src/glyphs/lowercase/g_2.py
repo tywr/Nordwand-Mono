@@ -9,6 +9,8 @@ class LowercaseG2Glyph(Glyph):
     name = "lowercase_g_2"
     unicode = "0x67"
     font_feature = {"cv04": 1}
+    regular_only = True
+    alternative_character_comment = "Only applies in regular font"
     offset = 18
     width_ratio = 1.1
 
@@ -24,7 +26,6 @@ class LowercaseG2Glyph(Glyph):
         b = dc.body_bounds(
             width_ratio=self.width_ratio,
             offset=self.offset,
-            # overshoot_top=True,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
         yb1, yb2 = b.y1 + (1 - self.bowl_y_ratio) * b.height, b.y2

@@ -43,6 +43,7 @@ from glyphs import (
     ContextualLigatureGlyph,
     InfiniteLigatureGlyph,
     InfiniteLigatureForm,
+    JoinedLigatureForm,
 )
 
 import glyphs
@@ -77,7 +78,7 @@ def discover_glyphs():
     joining_forms = [
         form
         for glyph in discovered
-        if isinstance(glyph, InfiniteLigatureGlyph)
+        if isinstance(glyph, (InfiniteLigatureGlyph, LigatureGlyph))
         for form in glyph.ligature_forms()
     ]
     return discovered + joining_forms
@@ -190,7 +191,9 @@ def select_style_glyphs(all_glyphs, italic):
             code = int(glyph.unicode, 16)
             has_italic_default = defaults[code].default_italic
             if italic:
-                if glyph.italic_only or not has_italic_default:
+                if not glyph.regular_only and (
+                    glyph.italic_only or not has_italic_default
+                ):
                     active.append(glyph)
             elif not glyph.italic_only:
                 active.append(glyph)
@@ -306,14 +309,11 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
             lookup_type = 3
             subst.alternates = {}
             for base_name, alternatives in indexed_alternatives.items():
-                expected = set(range(1, max(alternatives) + 1))
-                if set(alternatives) != expected:
-                    raise ValueError(
-                        f"Alternate indices for {base_name!r} in feature {tag!r} "
-                        f"must be consecutive from 1"
-                    )
+                # A missing index (e.g. a regular_only alternate in the italic)
+                # keeps the base glyph
                 subst.alternates[base_name] = [
-                    alternatives[index] for index in sorted(alternatives)
+                    alternatives.get(index, base_name)
+                    for index in range(1, max(alternatives) + 1)
                 ]
 
         lookup = Lookup()
@@ -449,6 +449,11 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
     forms_by_source = {}
     for form in infinite_forms:
         forms_by_source.setdefault(form.source_name, {})[form.position] = form
+    # Joinable ligatures (e.g. `->` after `-`) end a run like one more cell
+    joined_by_source = {}
+    for g in ligature_glyphs:
+        if isinstance(g, JoinedLigatureForm) and g.name in glyph_names:
+            joined_by_source.setdefault(g.joins, []).append(g)
 
     infinite_lookup_indices = []
     for position in ("start", "middle", "end"):
@@ -462,10 +467,11 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
             start = forms["start"].name
             middle = forms["middle"].name
             replacement = forms[position].name
+            joined = joined_by_source.get(source_name, [])
             if position == "start":
                 input_name = source_name
                 backtrack = []
-                lookahead = [source_name]
+                lookahead = [[source_name] + [j.source_name for j in joined]]
             elif position == "middle":
                 input_name = start
                 backtrack = [[start, middle]]
@@ -475,8 +481,11 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
                 backtrack = [[start, middle]]
                 lookahead = []
 
+            mapping = {input_name: replacement}
+            if position == "end":
+                mapping.update({j.source_name: j.name for j in joined})
             nested_subst = SingleSubst()
-            nested_subst.mapping = {input_name: replacement}
+            nested_subst.mapping = mapping
             nested_lookup = Lookup()
             nested_lookup.LookupType = 1
             nested_lookup.LookupFlag = 0
@@ -493,7 +502,7 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
             chain_lookup.LookupFlag = 0
             chain_lookup.SubTable = [
                 _chain_subtable(
-                    input_seq=[input_name],
+                    input_seq=[list(mapping)],
                     backtrack=backtrack,
                     lookahead=lookahead,
                     subst_records=[rec],
@@ -671,7 +680,7 @@ def build_font(
             alternate_glyphs.append(g)
         elif g.unicode:
             cmap[int(g.unicode, 16)] = g.name
-        if isinstance(g, (LigatureGlyph, InfiniteLigatureForm)):
+        if isinstance(g, (LigatureGlyph, InfiniteLigatureForm, JoinedLigatureForm)):
             ligature_glyphs.append(g)
     # No-break space and soft hyphen share the space and hyphen glyphs
     cmap[0xA0] = "space"

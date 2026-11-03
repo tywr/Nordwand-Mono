@@ -5,7 +5,9 @@ from draw.rect import draw_rect
 class LowercaseL2Glyph(Glyph):
     name = "lowercase_l_2"
     unicode = "0x6C"
-    font_feature = {"cv03": 1}
+    font_feature = {"cv03": 1, "ss01": 1}
+    regular_only = True
+    alternative_character_comment = "Only applies in regular font"
     offset = 16
     width_ratio = 1.00
     cap = 0.49

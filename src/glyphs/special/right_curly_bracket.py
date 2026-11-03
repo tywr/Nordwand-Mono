@@ -8,9 +8,9 @@ class RightCurlyBracketGlyph(Glyph):
     name = "right_curly_bracket"
     unicode = "0x7D"
     offset = 0
-    width_ratio = 1
+    width_ratio = 1.0
     peak_ratio = 0.35
-    protusion_stroke_ratio = 1.3
+    protusion_stroke_ratio = 1.1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -19,7 +19,7 @@ class RightCurlyBracketGlyph(Glyph):
         pl = self.peak_ratio * b.width
         ymid = dc.parenthesis
         sx, sy = dc.stroke_x, dc.stroke_y
-        sp = dc.stroke_y * self.protusion_stroke_ratio
+        sp = dc.stroke_x * self.protusion_stroke_ratio
         y1, y2 = ymid - dc.parenthesis_length / 2, ymid + dc.parenthesis_length / 2
         x1, x2, xmid = b.x1, b.x2 - pl, (b.x1 - pl + b.x2) / 2
         l4 = dc.parenthesis_length / 4
@@ -43,7 +43,7 @@ class RightCurlyBracketGlyph(Glyph):
             xmid - sx / 2,
             y2 - l4,
             x2,
-            ymid - 0.25 * sx,
+            ymid - 0.25 * sp,
             hx,
             hy,
             orientation="bottom-right",
@@ -66,11 +66,12 @@ class RightCurlyBracketGlyph(Glyph):
             xmid - sx / 2,
             y1 + l4,
             x2,
-            ymid + 0.25 * sx,
+            ymid + 0.25 * sp,
             hx,
             hy,
             orientation="top-right",
         )
 
-
-        draw_rect(pen, b.xmid, ymid - sx / 2, b.x2, ymid + sx / 2)
+        # Same height as the curves' meeting tip (each ends 0.25 * sp past
+        # ymid with a 0.75 * sp stroke), so the protrusion continues it flush
+        draw_rect(pen, b.xmid, ymid - sp / 2, b.x2, ymid + sp / 2)

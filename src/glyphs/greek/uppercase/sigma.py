@@ -8,7 +8,7 @@ class GreekUppercaseSigmaGlyph(UppercaseGlyph):
     unicode = "0x3A3"
     offset = 0
     x_mid_ratio = 0.77
-    diag_stroke_ratio = 0.944  # Perpendicular thickness of the diagonals
+    diag_stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, height="cap", uppercase=True)

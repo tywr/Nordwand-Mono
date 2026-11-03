@@ -15,7 +15,7 @@ from fontTools.misc.transform import Transform
 sys.path.insert(0, "src")
 from config import FontConfig as fc
 from config import DrawConfig, WEIGHT_NAMES, weight_name
-from glyphs import InfiniteLigatureForm, LigatureGlyph
+from glyphs import InfiniteLigatureForm, JoinedLigatureForm, LigatureGlyph
 from generate_font import discover_glyphs, select_style_glyphs, italicize_path
 
 
@@ -383,6 +383,9 @@ def visualize_text(
         if len(seq) == len(g.components):
             ligature_map[seq] = g
     ligatures = sorted(ligature_map.keys(), key=len, reverse=True)
+    joined_map = {
+        g.source_name: g for g in active_glyphs if isinstance(g, JoinedLigatureForm)
+    }
 
     infinite_ligature_map = {}
     glyphs_by_name = {g.name: g for g in active_glyphs}
@@ -404,6 +407,9 @@ def visualize_text(
             if text[i : i + len(seq)] == seq:
                 glyph = ligature_map[seq]
                 consumed = len(seq)
+                # After a run of its first character, e.g. `--->`
+                if i > 0 and text[i - 1] == seq[0] and glyph.name in joined_map:
+                    glyph = joined_map[glyph.name]
                 break
 
         ch = text[i]

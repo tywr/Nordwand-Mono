@@ -6,16 +6,16 @@ from draw.parallelogramm import draw_parallelogramm
 class SevenGlyph(NumberGlyph):
     name = "seven"
     unicode = "0x37"
-    offset = 0
-    offset_foot = 0.15
-    width_ratio = 1.08
-    stroke_ratio = 1.07
+    offset = -10
+    offset_foot = 0.22
+    width_ratio = 0.97
+    stroke_ratio = 1.00
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio, number=True
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sy = dc.stroke_y * self.stroke_y_ratio
         ox = self.offset_foot * b.width
         s = self.stroke_ratio * dc.stroke_x
 

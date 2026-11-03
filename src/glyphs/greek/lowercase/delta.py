@@ -13,7 +13,6 @@ class GreekLowercaseDeltaGlyph(Glyph):
     unicode = "0x3B4"
     offset = 0
     width_ratio = 1
-    height_ratio = 0.76
     stroke_x_ratio = 1
     stroke_y_ratio = 1
     taper = 0.2

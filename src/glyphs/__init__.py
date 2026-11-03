@@ -21,6 +21,8 @@ class Glyph(ABC):
     alternative_character_comment: str = None
     default_italic: bool = False
     italic_only: bool = False
+    # Alternate left out of the italic, which keeps the default design
+    regular_only: bool = False
     italic_skew: bool = True
 
     @abstractmethod
@@ -45,8 +47,6 @@ class Glyph(ABC):
 class InfiniteLigatureGlyph(Glyph):
     """Glyph whose horizontal bars can join across any number of cells."""
 
-    ligature_dent_stroke = 0.5
-    ligature_junction_width = 0.5
 
     @abstractmethod
     def horizontal_bar_heights(self, dc) -> tuple[float, ...]: ...
@@ -67,8 +67,8 @@ class InfiniteLigatureGlyph(Glyph):
         from draw.rect import draw_rect
 
         stroke = self.horizontal_bar_stroke(dc)
-        dent = stroke * self.ligature_dent_stroke
-        junction_width = stroke * self.ligature_junction_width
+        dent = stroke * dc.ligature_dent_stroke
+        junction_width = stroke * dc.ligature_junction_width
         x1, x2 = self.horizontal_bar_bounds(dc)
         if join_left:
             x1 = junction_width / 2
@@ -137,10 +137,41 @@ class LigatureGlyph(Glyph):
     unicode = None
     offset = 0
     feature_tags = ("liga",)
+    # Whether the ligature can join a run of its first component on its left
+    # (e.g. `--->` with dlig): it then gets a JoinedLigatureForm, drawn with
+    # draw(pen, dc, join_left=True)
+    joinable = False
 
     @property
     @abstractmethod
     def components(self) -> list[str]: ...
+
+    def ligature_forms(self):
+        return [JoinedLigatureForm(self)] if self.joinable else []
+
+
+class JoinedLigatureForm(Glyph):
+    """Form of a joinable :class:`LigatureGlyph` that follows a run of its
+    first component, which is an :class:`InfiniteLigatureGlyph`."""
+
+    generated_only = True
+    name = None
+    unicode = None
+    offset = 0
+    font_feature = None
+    default_italic = False
+    italic_only = False
+    feature_tags = ("dlig",)
+
+    def __init__(self, source):
+        self.source = source
+        self.source_name = source.name
+        self.joins = source.components[0]
+        self.name = f"{source.name}_joined"
+        self.number_characters = source.number_characters
+
+    def draw(self, pen, dc):
+        self.source.draw(pen, dc, join_left=True)
 
 
 class ContextualLigatureGlyph(LigatureGlyph):

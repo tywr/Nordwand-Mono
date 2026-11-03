@@ -14,12 +14,12 @@ class ThreeGlyph(NumberGlyph):
     offset = 0
     loop_width_ratio = 0.92
     mid_ratio = 0.55
-    taper = 1.5
+    taper = 0.9
     len_mid = 0.7
     hx_ratio = 0.9
     hy_ratio = 0.9
     width_ratio = 1.08
-    diag_stroke_ratio = 0.96
+    diag_stroke_ratio = 1.0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -40,15 +40,12 @@ class ThreeGlyph(NumberGlyph):
         base_glyph = ufoLib2.objects.Glyph()
         ry = (b.y2 - b.ymid + sy / 2) / b.height
 
-        # Top loop
-        taper = max(self.taper * dc.taper, 0.65)
-
         draw_rect(pen, xl, b.y2 - dc.stroke_y, xr, b.y2)
-        draw_parallelogramm(
+        _, delta = draw_parallelogramm(
             pen,
             self.diag_stroke_ratio * dc.stroke_x,
             b.xmid - sx,
-            ymid - sy / 2,
+            ymid + sy * self.taper - sy / 2,
             xr,
             b.y2 - dc.stroke_y,
             direction="top-right",
@@ -65,7 +62,7 @@ class ThreeGlyph(NumberGlyph):
             ymid + sy / 2,
             hx,
             hy * ry * 2 * self.mid_ratio,
-            taper=1,
+            taper=self.taper,
             side="top",
         )
 
@@ -83,10 +80,10 @@ class ThreeGlyph(NumberGlyph):
         result.draw(pen)
 
         # Extension of the middle bar
-        # draw_rect(
-        #     pen,
-        #     b.x1 + (1 - self.len_mid) * b.width,
-        #     ymid - sy / 2,
-        #     b.xmid,
-        #     ymid + sy / 2,
-        # )
+        draw_rect(
+            pen,
+            b.xmid - sx,
+            ymid - sy / 2,
+            b.xmid - sx + delta,
+            ymid + sy * self.taper - sy / 2,
+        )

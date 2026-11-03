@@ -5,9 +5,25 @@ by default and can be turned on independently.
 
 | Feature | Affects | Effect |
 | --- | --- | --- |
+| `ss01` | `l` `m` | Uses the standard constructions of the `l` and the `m` |
 | `ss02` | `->` `=>` | Turns on the arrow ligatures, even where standard ligatures (`liga`) are disabled |
 | `ss03` | `<` `>` `->` `=>` | Uses a wide angle for the comparison signs and the arrow heads |
 | `dlig` | `=` `-` `_` `#` | Joins the horizontal bars of repeated characters |
+
+## `ss01` — classic flavour
+
+For those who prefer more conventional letterforms, `ss01` switches the `l`
+and the `m` to their standard constructions in one go. It is equivalent to
+`cv03=1` and `cv12=1`. In the italic, only the `m` changes; the `l` keeps its
+italic design so the two styles stay easy to tell apart.
+
+| Character | Default | `ss01` |
+| --- | --- | --- |
+| `l` | ![lowercase_l](alternative_characters/lowercase_l.png) | ![lowercase_l_2](alternative_characters/lowercase_l_2.png) |
+| `m` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) |
+
+To get the classic `l` in the italic as well, use `cv03=2` together with
+`cv12=1` instead.
 
 ## `ss02` — arrow ligatures
 

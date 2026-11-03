@@ -16,8 +16,10 @@ class Cedilla(Accent):
     flat_ratio = 0.1
     slant_ratio = 1.25
     y_start = 0
+    x_offset = -0.05
 
     def draw_at(self, pen, dc, x, y):
+        o = dc.width * self.x_offset
         h = abs(dc.descent)
         w = self.x_ratio * dc.width
         wl = (1 - self.flat_ratio) * w
@@ -25,10 +27,7 @@ class Cedilla(Accent):
         yn = -self.neck_length * dc.x_height
         esy = max(0, dc.stroke_y - 70)
         sx = self.stroke_ratio_x * dc.stroke_x
-        sy = (
-            self.stroke_ratio_y * min(dc.stroke_y, 70)
-            + self.stroke_y_dampening * esy
-        )
+        sy = self.stroke_ratio_y * min(dc.stroke_y, 70) + self.stroke_y_dampening * esy
         sl = self.slant_ratio * sx
 
         # Neck: shorter than its stroke in bold, so it's sized by its
@@ -36,9 +35,9 @@ class Cedilla(Accent):
         draw_parallelogramm(
             pen,
             0,
-            x - sl / 2,
+            x - sl / 2 + o,
             yn - sy,
-            x + sl / 2,
+            x + sl / 2 + o,
             self.y_start,
             overwrite_section=sx,
         )
@@ -46,9 +45,9 @@ class Cedilla(Accent):
             pen,
             sx,
             sy,
-            x - wl,
+            x - wl + o,
             yn - h,
-            x + wl,
+            x + wl + o,
             yn,
             dc.hx * self.x_ratio,
             dc.hy * yr,
@@ -56,8 +55,8 @@ class Cedilla(Accent):
         )
         draw_rect(
             pen,
-            x - sl / 2,
+            x - sl / 2 + o,
             yn - h,
-            x,
+            x + o,
             yn - h + sy,
         )
