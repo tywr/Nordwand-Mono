@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>index.html
 <html lang="en-us">
 <head>
 <meta charset="utf-8">
@@ -312,7 +312,7 @@ section[data-legend]::before {
 /* Only the name gives way, keeping a few letters; past that the box clips */
 .glyph-name { flex: 0 1 auto; min-width: 5ch; overflow: hidden; text-overflow: ellipsis; color: var(--fg-bright); }
 .glyph-code { flex: none; margin-left: 1em; color: var(--fg-muted); }
-.toolbar select {
+.toolbar select, .code-options select {
   font: inherit;
   color: var(--fg);
   background: var(--bg);
@@ -425,6 +425,20 @@ section[data-legend]::before {
 .code-tabs button:hover { color: var(--fg-bright); }
 .code-tabs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
 .code-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Set by the options above the snippets; the size stays fluid until moved */
+.code-options { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-bottom: 1rem; font-size: .9rem; }
+.code-variants { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; }
+.code-options label { display: inline-flex; align-items: center; gap: .5em; }
+/* Flat slider: a hairline track and a small round thumb, in the page greys */
+.code-options input { appearance: none; width: 8rem; height: 1rem; margin: 0; background: none; cursor: pointer; }
+.code-options input::-webkit-slider-runnable-track { height: 1px; background: var(--border); }
+.code-options input::-moz-range-track { height: 1px; background: var(--border); }
+.code-options input::-webkit-slider-thumb { appearance: none; width: .6rem; height: .6rem; margin-top: calc(-.3rem + .5px); border: 0; border-radius: 50%; background: var(--fg-muted); }
+.code-options input::-moz-range-thumb { width: .6rem; height: .6rem; border: 0; border-radius: 50%; background: var(--fg-muted); }
+.code-options input:hover::-webkit-slider-thumb { background: var(--fg); }
+.code-options input:hover::-moz-range-thumb { background: var(--fg); }
+.code-options input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.code-options output { min-width: 4ch; color: var(--fg-muted); }
 .code pre {
   margin: 0;
   padding: 1.5rem;
@@ -432,7 +446,9 @@ section[data-legend]::before {
   border-radius: 6px;
   overflow-x: auto;
   font: inherit;
-  font-size: clamp(.8rem, 1.3vw, 1.05rem);
+  font-size: var(--code-size, clamp(.8rem, 1.3vw, 1.05rem));
+  font-weight: var(--code-wght, 400);
+  font-feature-settings: var(--code-features, normal);
   line-height: 1.5;
   tab-size: 4;
   color: var(--fg);
@@ -636,6 +652,26 @@ abcdefghijklmnopqrstuvwxyz
       <button type="button" data-lang="markdown" aria-pressed="false">Markdown</button>
       <button type="button" data-lang="terminal" aria-pressed="false">Terminal UI</button>
       <button type="button" data-lang="ascii" aria-pressed="false">Plain ASCII</button>
+    </div>
+    <div class="code-options">
+      <div class="code-variants" role="group" aria-label="Character variants">
+        <button class="switch" type="button" role="switch" aria-checked="false" data-feature="cv12"><span class="track"></span><span style="font-feature-settings: 'cv12'">m</span></button>
+        <button class="switch" type="button" role="switch" aria-checked="false" data-feature="cv03"><span class="track"></span><span style="font-feature-settings: 'cv03'">l</span></button>
+        <button class="switch" type="button" role="switch" aria-checked="false" data-feature="cv04"><span class="track"></span><span style="font-feature-settings: 'cv04'">g</span></button>
+        <button class="switch" type="button" role="switch" aria-checked="false" data-feature="cv11"><span class="track"></span><span style="font-feature-settings: 'cv11'">f</span></button>
+      </div>
+      <select aria-label="Weight">
+        <option value="100">Thin</option>
+        <option value="200">ExtraLight</option>
+        <option value="300">Light</option>
+        <option value="375">Book</option>
+        <option value="400" selected>Regular</option>
+        <option value="450">Retina</option>
+        <option value="500">Medium</option>
+        <option value="600">SemiBold</option>
+        <option value="700">Bold</option>
+      </select>
+      <label>Size <input type="range" min="10" max="28" value="16"> <output>16px</output></label>
     </div>
     <pre data-lang="python">import xml.etree.ElementTree as ET
 
@@ -869,6 +905,23 @@ $ xxd -g 1 track.gpx | head -n 3
   for (const tab of tabs) tab.addEventListener('click', () => {
     tabs.forEach(t => t.setAttribute('aria-pressed', t === tab));
     pres.forEach(p => { p.hidden = p.dataset.lang !== tab.dataset.lang; });
+  });
+
+  const options = code.querySelector('.code-options');
+  // Each switch toggles its letter's first cvXX variant, which its label shows
+  const switches = options.querySelectorAll('[data-feature]');
+  for (const toggle of switches) toggle.addEventListener('click', () => {
+    toggle.setAttribute('aria-checked', toggle.getAttribute('aria-checked') !== 'true');
+    const active = [...switches].filter(s => s.getAttribute('aria-checked') === 'true');
+    code.style.setProperty('--code-features', active.map(s => `"${s.dataset.feature}"`).join(', ') || 'normal');
+  });
+  options.querySelector('select').addEventListener('change', e => {
+    code.style.setProperty('--code-wght', e.target.value);
+  });
+  const size = options.querySelector('input');
+  size.addEventListener('input', () => {
+    code.style.setProperty('--code-size', `${size.value}px`);
+    options.querySelector('output').textContent = `${size.value}px`;
   });
 }
 </script>
