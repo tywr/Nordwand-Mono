@@ -16,6 +16,8 @@ from pathlib import Path
 from fontTools.pens.recordingPen import RecordingPen
 from fontTools.ttLib import TTFont
 
+from scripts.topo import topo
+
 FONTS = Path("fonts/woff2")
 DOCS = Path("docs")
 PAGE = DOCS / "index.html"
@@ -23,6 +25,7 @@ GLYPH_DATA = re.compile(
     r'(<script id="glyph-data" type="application/json">)(.*?)(</script>)', re.S
 )
 FONT_VERSION = re.compile(r'(<span class="font-version">)(.*?)(</span>)')
+TOPO = re.compile(r'(<svg class="topo-drawing"[^>]*>\s*)(.*?)(\s*</svg>)', re.S)
 
 
 def name(cp, font):
@@ -129,6 +132,10 @@ def main():
     page, n = GLYPH_DATA.subn(lambda m: m.group(1) + blob + m.group(3), page)
     if n != 1:
         raise SystemExit(f'Expected one <script id="glyph-data"> in {PAGE}')
+    bold = TTFont(FONTS / "NordwandMono-Bold.woff2")
+    page, n = TOPO.subn(lambda m: m.group(1) + topo(bold) + m.group(3), page)
+    if n != 1:
+        raise SystemExit(f'Expected one <svg class="topo-drawing"> in {PAGE}')
     PAGE.write_text(page)
 
     alternates = sum(len(e) > 2 for e in data)
