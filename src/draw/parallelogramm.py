@@ -157,101 +157,43 @@ def draw_parallelogramm(
     return phi, delta
 
 
-def _solve_parallelogram_stroke_vertical(
-    stroke_x, stroke_y, x1, y1, x2, y2, tol=1e-6, max_iter=100
-):
-    w = max(x2, x1) - min(x2, x1)
-    h = max(y2, y1) - min(y2, y1)
-
-    # Initial guess: angle of the bare diagonal
-    theta = atan2(w, h)
-
-    for _ in range(max_iter):
-        s = sqrt((stroke_y * sin(theta)) ** 2 + (stroke_x * cos(theta)) ** 2)
-
-        denom = w**2 - s**2
-        if abs(denom) < 1e-12:
-            break
-        inner = w**2 + h**2 - s**2
-        if inner < 0:
-            break
-
-        delta = (s * (w * sqrt(inner) - s * h)) / denom
-        new_theta = atan2(w, h - delta)
-
-        if abs(new_theta - theta) < tol:
-            theta = new_theta
-            break
-
-        theta = new_theta
-
-    s = sqrt((stroke_y * sin(theta)) ** 2 + (stroke_x * cos(theta)) ** 2)
-    denom = w**2 - s**2
-    delta = (s * (w * sqrt(w**2 + h**2 - s**2) - s * h)) / denom
-
-    return s, delta, theta
-
-
 def draw_parallelogramm_vertical(
     pen,
-    stroke_x,
-    stroke_y,
+    stroke,
     x1,
     y1,
     x2,
     y2,
     direction="top-right",
     no_draw=False,
-    delta=None,
+    overwrite_section=None,
 ):
-    """Parallelogram with vertical parallel sides and slanted top/bottom."""
-    if delta is None:
-        s, delta, theta = _solve_parallelogram_stroke_vertical(
-            stroke_x, stroke_y, x1, y1, x2, y2
-        )
+    """Slanted band with vertical ends, from (x1, y1) to (x2, y2): the
+    transpose of draw_parallelogramm, with the same perpendicular `stroke`.
+    Returns (phi, delta): the long edges' angle from horizontal and the
+    vertical height of the ends.
+
+    `overwrite_section` forces that vertical height instead, as in
+    draw_parallelogramm."""
+    if overwrite_section is None:
+        delta = parallelogramm_delta(stroke, y1, x1, y2, x2)
     else:
-        # Forced delta — derive theta from the slanted-edge geometry:
-        # the slanted edge has horizontal run w and vertical run h - delta,
-        # so theta (angle from vertical) = atan2(w, h - delta).
-        w = max(x2, x1) - min(x2, x1)
-        h = max(y2, y1) - min(y2, y1)
-        theta = atan2(w, h - delta)
+        delta = overwrite_section
+    phi = atan2(abs(y2 - y1) - delta, abs(x2 - x1))
     if no_draw:
-        return theta, delta
+        return phi, delta
     if direction == "top-right":
-        draw_polygon(
-            pen, points=[(x1, y1), (x2, y2 - delta), (x2, y2), (x1, y1 + delta)]
-        )
-        return theta, delta
+        points = [(x1, y1), (x2, y2 - delta), (x2, y2), (x1, y1 + delta)]
     elif direction == "bottom-right":
-        draw_polygon(
-            pen,
-            points=[
-                (x1, y1),
-                (x1, y1 - delta),
-                (x2, y2),
-                (x2, y2 + delta),
-            ],
-        )
-        return theta, delta
+        points = [(x1, y1), (x1, y1 - delta), (x2, y2), (x2, y2 + delta)]
     elif direction == "top-left":
-        draw_polygon(
-            pen,
-            points=[
-                (x1, y1),
-                (x1, y1 + delta),
-                (x2, y2),
-                (x2, y2 - delta),
-            ],
-        )
-        return theta, delta
+        points = [(x1, y1), (x1, y1 + delta), (x2, y2), (x2, y2 - delta)]
     elif direction == "bottom-left":
-        draw_polygon(
-            pen, points=[(x1, y1), (x2, y2 + delta), (x2, y2), (x1, y1 - delta)]
-        )
-        return theta, delta
+        points = [(x1, y1), (x2, y2 + delta), (x2, y2), (x1, y1 - delta)]
     else:
-        raise ValueError("Value should be either `top` or `bottom`")
+        raise ValueError(f"Unknown direction {direction}")
+    draw_polygon(pen, points=points)
+    return phi, delta
 
 
 def draw_smooth_parallelogramm_vertical(

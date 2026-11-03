@@ -11,12 +11,13 @@ class OneGlyph(NumberGlyph):
     branch_offset = 0.04
     width_ratio = 1.08
     rl_ratio = 0.51
+    diag_stroke_ratio = 0.95
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio, number=True
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx = dc.stroke_x * self.stroke_x_ratio
         xb = b.x1 + self.branch_offset * b.width
         xmid = b.x1 + self.rl_ratio * b.width
 
@@ -26,10 +27,9 @@ class OneGlyph(NumberGlyph):
         # Horizontal stem
         draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + dc.stroke_y)
 
-        theta, delta = draw_parallelogramm_vertical(
+        draw_parallelogramm_vertical(
             pen,
-            sx,
-            sy,
+            self.diag_stroke_ratio * dc.stroke_x,
             xb,
             b.y1 + b.height * (1 - self.branch_height),
             xmid - sx / 2,
