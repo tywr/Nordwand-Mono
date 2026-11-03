@@ -7,6 +7,9 @@ with ridged fractal noise over them for crests and valleys, seeded so it
 never changes between builds. Its contour lines are
 traced with contourpy and clipped to the glyph, every fifth one heavier like
 an index contour.
+
+Around it, blueprint dimensions measured on the font: the cell's width and
+the x-height.
 """
 
 import contourpy
@@ -53,6 +56,49 @@ def svg_path(path):
     pen = SVGPathPen(None, ntos=lambda v: f"{v:.1f}".rstrip("0").rstrip("."))
     path.draw(TransformPen(pen, Transform(SCALE, 0, 0, -SCALE, CENTER - 300 * SCALE, BASELINE)))
     return pen.getCommands()
+
+
+def line(x1, y1, x2, y2, cls="line"):
+    return f'<path class="{cls}" d="M{x1:.0f} {y1:.0f} L{x2:.0f} {y2:.0f}"/>'
+
+
+def hdim(x1, x2, y, value):
+    """Horizontal dimension at svg height `y`, its value below the line, on
+    the side away from the glyph."""
+    return (
+        line(x1, y, x2, y, "line dim")
+        + f'<text x="{(x1 + x2) / 2:.0f}" y="{y + 30:.0f}" text-anchor="middle">{value:.0f}</text>'
+    )
+
+
+def vdim(x, y1, y2, value):
+    """Vertical dimension at svg `x`, its value along the line, read upwards,
+    on its right, the side away from the glyph."""
+    tx, ty = x + 26, (y1 + y2) / 2
+    return (
+        line(x, y1, x, y2, "line dim")
+        + f'<text x="{tx:.0f}" y="{ty:.0f}" text-anchor="middle" transform="rotate(-90 {tx:.0f} {ty:.0f})">{value:.0f}</text>'
+    )
+
+
+def dimensions(font, a):
+    """Guides and dimensions around the glyph, as on a blueprint."""
+    advance = font.getGlyphSet()[font.getBestCmap()[ord("a")]].width
+    xh = font["OS/2"].sxHeight
+    (c1, base), (c2, top) = to_svg(0, 0), to_svg(advance, xh)
+    row = base + 55
+    right = c2 + 70
+    return [
+        # Guides: baseline, x-height and the cell's sides
+        line(c1 - 40, base, right + 20, base, "line dash"),
+        line(c1 - 40, top, right + 20, top, "line dash"),
+        line(c1, top - 60, c1, row + 12, "line dash"),
+        line(c2, top - 60, c2, row + 12, "line dash"),
+        # Below: the cell's width
+        hdim(c1, c2, row, advance),
+        # Right: the x-height
+        vdim(right, base, top, xh),
+    ]
 
 
 def value_noise(lattice, u, v):
@@ -120,7 +166,12 @@ def topo(font):
     lo, hi = heights.min(), heights.max()
 
     parts = [
-        f'<defs><clipPath id="glyph-clip"><path clip-rule="evenodd" d="{svg_path(a)}"/></clipPath></defs>',
+        "<defs>",
+        f'<clipPath id="glyph-clip"><path clip-rule="evenodd" d="{svg_path(a)}"/></clipPath>',
+        # Open arrowheads, drawn like with a pen
+        '<marker id="arrow" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" '
+        'markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1 L12 6 L0 11"/></marker>',
+        "</defs>",
         f'<path class="ice" fill-rule="evenodd" d="{svg_path(a)}"/>',
         '<g clip-path="url(#glyph-clip)">',
     ]
@@ -133,4 +184,5 @@ def topo(font):
             cls = "contour index" if k % INDEX == 0 else "contour"
             parts.append(f'<path class="{cls}" d="{d}"/>')
     parts += ["</g>", f'<path class="glyph" fill-rule="evenodd" d="{svg_path(a)}"/>']
+    parts += dimensions(font, a)
     return "\n        ".join(parts)
