@@ -1334,16 +1334,19 @@ class OgonekComposedGlyph(ComposedGlyph):
     accent_class = Ogonek
     accent_y = 0
     # Hang from the rightmost stem, the hook's right edge flush with the
-    # stem's. Otherwise the hook is placed by `ogonek_inset`.
+    # stem's. Otherwise the hook is placed by `ogonek_x`.
     from_stem = False
-    # Hook center, measured from the base's right edge as a fraction of its
-    # width (0 = flush with the right edge).
-    ogonek_inset = 0.0
+    # Hook apex between the base's left (0) and right (1) edges.
+    ogonek_x = 0.0
+    ogonek_xmid = False  # Center the hook in the cell, ignoring the above
     ogonek_width = Ogonek.stem_ratio  # Start width, relative to stroke_x
     ogonek_start = 0.0
     ogonek_x_offset = 0  # Manual horizontal nudge of the hook, in font units
     stem_probe = 0.25  # Height where the stem is measured, relative to x-height
     keep_dot = False  # Draw the full base (e.g. the dot of į) instead of draw_base
+    cut_ogonek_top = True  # Cut the pivoted hook flat above sy / 2
+    cut_ogonek_slant = False  # Cut the hook right of a 45° line through its apex
+    vertical_overshoot = False  # Drop the hook by the base's vertical overshoot
 
     def _base_path(self, base, dc):
         path = pathops.Path()
@@ -1375,19 +1378,27 @@ class OgonekComposedGlyph(ComposedGlyph):
         path = self._base_path(base, dc)
         start = self.ogonek_start * dc.x_height
         width = self.ogonek_width * dc.stroke_x
-        if self.from_stem:
+        if self.ogonek_xmid:
+            x = dc.window_width / 2 + dc.stroke_x / 2
+        elif self.from_stem:
             _, right = self._rightmost_stem(path, dc)
+            x = right - width / 2
         else:
             x1, _, x2, _ = path.bounds
-            right = x2 - self.ogonek_inset * (x2 - x1)
+            x = x1 + self.ogonek_x * (x2 - x1)
+        y = self.accent_y
+        if self.vertical_overshoot:
+            uppercase = self.name.startswith("uppercase")
+            y -= dc.v_overshoot_cap if uppercase else dc.v_overshoot
         Ogonek().draw_at(
             pen,
             dc,
-            x=right - width / 2 + self.ogonek_x_offset,
-            y=self.accent_y,
+            x=x + self.ogonek_x_offset,
+            y=y,
             width=width,
             start=start,
-            flush=self.from_stem,
+            cut_top=self.cut_ogonek_top,
+            cut_slant=self.cut_ogonek_slant,
         )
 
 
@@ -1395,29 +1406,61 @@ class LowercaseAOgonekGlyph(OgonekComposedGlyph):
     name = "lowercase_aogonek"
     unicode = "0x105"
     base_glyph_class = LowercaseAGlyph
-    from_stem = True
+    cut_ogonek_top = False
+    ogonek_x = 1
 
 
 class LowercaseEOgonekGlyph(OgonekComposedGlyph):
     name = "lowercase_eogonek"
     unicode = "0x119"
     base_glyph_class = LowercaseEGlyph
-    ogonek_inset = 0.3
+    ogonek_x = 0.68
 
 
 class UppercaseAOgonekGlyph(OgonekComposedGlyph):
     name = "uppercase_aogonek"
     unicode = "0x104"
     base_glyph_class = UppercaseAGlyph
-    ogonek_width = 0.85
-    ogonek_inset = 0.03
+    ogonek_x = 1
+    cut_ogonek_top = False
+    cut_ogonek_slant = True
 
 
 class UppercaseEOgonekGlyph(OgonekComposedGlyph):
     name = "uppercase_eogonek"
     unicode = "0x118"
     base_glyph_class = UppercaseEGlyph
-    ogonek_inset = 0.2
+    ogonek_x = 1
+
+
+class LowercaseIOgonekGlyph(OgonekComposedGlyph):
+    name = "lowercase_iogonek"
+    unicode = "0x12F"
+    base_glyph_class = LowercaseIGlyph
+    keep_dot = True
+    ogonek_xmid = True
+
+
+class UppercaseIOgonekGlyph(OgonekComposedGlyph):
+    name = "uppercase_iogonek"
+    unicode = "0x12E"
+    base_glyph_class = UppercaseIGlyph
+    ogonek_xmid = True
+
+
+class LowercaseUOgonekGlyph(OgonekComposedGlyph):
+    name = "lowercase_uogonek"
+    unicode = "0x173"
+    base_glyph_class = LowercaseUGlyph
+    ogonek_x = 0.58
+
+
+class UppercaseUOgonekGlyph(OgonekComposedGlyph):
+    name = "uppercase_uogonek"
+    unicode = "0x172"
+    base_glyph_class = UppercaseUGlyph
+    ogonek_x = 0.68
+    accent_y = 5
 
 
 # ── Polish: stroke ───────────────────────────────────────────────────
@@ -1651,35 +1694,6 @@ class UppercaseEDotGlyph(ComposedGlyph):
     base_glyph_class = UppercaseEGlyph
     accent_class = DotAbove
     accent_y = _uc_accent
-
-
-class LowercaseIOgonekGlyph(OgonekComposedGlyph):
-    name = "lowercase_iogonek"
-    unicode = "0x12F"
-    base_glyph_class = LowercaseIGlyph
-    keep_dot = True
-    from_stem = True
-
-
-class UppercaseIOgonekGlyph(OgonekComposedGlyph):
-    name = "uppercase_iogonek"
-    unicode = "0x12E"
-    base_glyph_class = UppercaseIGlyph
-    from_stem = True
-
-
-class LowercaseUOgonekGlyph(OgonekComposedGlyph):
-    name = "lowercase_uogonek"
-    unicode = "0x173"
-    base_glyph_class = LowercaseUGlyph
-    ogonek_inset = 0.32
-
-
-class UppercaseUOgonekGlyph(OgonekComposedGlyph):
-    name = "uppercase_uogonek"
-    unicode = "0x172"
-    base_glyph_class = UppercaseUGlyph
-    ogonek_inset = 0.3
 
 
 # ── Esperanto: circumflex and breve ──────────────────────────────────
