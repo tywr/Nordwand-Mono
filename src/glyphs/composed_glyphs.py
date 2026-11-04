@@ -1010,9 +1010,9 @@ class LowercaseHStrokeGlyph(LowercaseHGlyph):
         draw_rect(
             pen,
             b.x1 - self.bar_left * b.width,
-            y - dc.stroke_y / 2,
+            y - dc.stroke_alt / 2,
             b.x1 + dc.stroke_x + self.bar_right * b.width,
-            y + dc.stroke_y / 2,
+            y + dc.stroke_alt / 2,
         )
 
 
@@ -1030,10 +1030,10 @@ class UppercaseHStrokeGlyph(UppercaseHGlyph):
             width_ratio=self.width_ratio,
             uppercase=True,
         )
-        sy = dc.stroke_y * self.stroke_y_ratio
+        s = dc.stroke_alt
         y = self.bar_y * b.height
         o = self.bar_overhang * b.width
-        draw_rect(pen, b.x1 - o, y - sy / 2, b.x2 + o, y + sy / 2)
+        draw_rect(pen, b.x1 - o, y - s / 2, b.x2 + o, y + s / 2)
 
 
 # ── Czech and Slovak: caron and ring ─────────────────────────────────
@@ -1862,26 +1862,32 @@ class UppercaseEngGlyph(EngComposedGlyph):
 class TStrokeComposedGlyph(ComposedGlyph):
     """t/T with a horizontal bar crossing the stem."""
 
-    bar_y = 0.5  # Bar center, relative to the body height
-    bar_half = 0.4  # Reach on each side of the stem center, relative to body width
+    bar_y = 0.5
+    bar_width = 0.8
+    rl_ratio = 0.5
+    stroke = "stroke_y"
 
     def body(self, base, dc): ...
 
     def draw(self, pen, dc):
         base = self._resolve_base_class(dc)()
         base.draw(pen, dc)
-        b, sy = self.body(base, dc)
+        b, _ = self.body(base, dc)
+        s = getattr(dc, self.stroke)
         y = self.bar_y * b.height
-        h = self.bar_half * b.width
-        draw_rect(pen, b.xmid - h, y - sy / 2, b.xmid + h, y + sy / 2)
+        w = self.bar_width * b.width
+        rw = w * self.rl_ratio
+        lw = w * (1 - self.rl_ratio)
+        draw_rect(pen, b.xmid - lw, y - s / 2, b.xmid + rw, y + s / 2)
 
 
 class LowercaseTStrokeGlyph(TStrokeComposedGlyph):
     name = "lowercase_tbar"
     unicode = "0x167"
     base_glyph_class = LowercaseTGlyph
-    # Between the bottom curve (which starts at mid x-height) and the crossbar
     bar_y = 0.56
+    rl_ratio = 0.58
+    stroke = "stroke_alt"
 
     def body(self, base, dc):
         b = dc.body_bounds(
