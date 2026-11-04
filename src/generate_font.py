@@ -141,7 +141,8 @@ def italicize_path(path, width):
     x0, _, x1, _ = path.bounds
     lo, hi = min(0, x0), max(width, x1)
 
-    path = skew_path(path, fc.italic_angle, pivot=fc.italic_pivot)
+    # Pivot at the vertical middle of the cell, so glyphs lean out evenly
+    path = skew_path(path, fc.italic_angle, pivot=(fc.window_ascent + fc.window_descent) / 2)
     a, _, b, _ = path.bounds
     if b - a > hi - lo:
         f = (hi - lo) / (b - a)

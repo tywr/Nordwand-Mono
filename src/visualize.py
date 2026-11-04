@@ -23,7 +23,7 @@ def _italic_transform():
     """Horizontal shear matching generate_font.skew_path (without the fit
     into the cell of italicize_path)."""
     s = math.tan(math.radians(fc.italic_angle))
-    return Transform(1, 0, s, 1, -s * fc.italic_pivot, 0)
+    return Transform(1, 0, s, 1, -s * (fc.window_ascent + fc.window_descent) / 2, 0)
 
 
 def recording_to_mpl_path(recording):
