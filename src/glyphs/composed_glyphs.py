@@ -1514,7 +1514,7 @@ class LowercaseTCedillaGlyph(ComposedGlyph):
 
     def accent_x(self, dc, base, b):
         """Horizontal anchor of the accent; centered on the body by default."""
-        return b.xmid + 0.15 * b.width
+        return b.xmid + 0.17 * b.width
 
     def draw(self, pen, dc):
         base_class = self._resolve_base_class(dc)
@@ -1542,7 +1542,7 @@ class UppercaseTCedillaGlyph(ComposedGlyph):
             * self.accent_class.stroke_ratio_x
             * dc.stroke_x
         )
-        return stem_right - sl / 2
+        return stem_right - sl / 2 - self.accent_class.x_offset * dc.width
 
 
 # ── Latvian: comma below (Unicode names them "cedilla") ──────────────
