@@ -22,7 +22,7 @@ class Ogonek(Accent):
     width_ratio = 0.6
     stroke_x_ratio = 0.9
     stroke_y_dampening = 0.0
-    depth = 0.8
+    depth = 1.1
     angle = 12
     taper = 1.2
     stem_ratio = 1.0
