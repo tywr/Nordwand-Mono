@@ -21,14 +21,17 @@ class Ogonek(Accent):
     unicode = "0x2DB"
     width_ratio = 0.6
     stroke_x_ratio = 0.9
+    stroke_y_dampening = 0.0
     depth = 0.8
     angle = 12
-    taper = 2.0
+    taper = 1.2
     stem_ratio = 1.0
     hx_ratio = 0.9
     hy_ratio = 0.9
 
-    def draw_at(self, pen, dc, x, y, width=None, start=0, cut_top=False, cut_slant=False):
+    def draw_at(
+        self, pen, dc, x, y, width=None, start=0, cut_top=False, cut_slant=False
+    ):
         """`x`, `y + start` is where the loop's top apex lands; `width` is
         the thickness of the loop's side (by default a stem width). With
         `cut_top`, everything above sy / 2 is cut once pivoted. With
@@ -43,7 +46,7 @@ class Ogonek(Accent):
             width_ratio=self.width_ratio,
         )
         sx = self.stroke_x_ratio * dc.stroke_x
-        sy = dc.stroke_y
+        sy = min(dc.stroke_y, 70) + self.stroke_y_dampening * max(0, dc.stroke_y, 70)
         # ec = self.extra_cut(dc)
         ec = 0
         w = b.width

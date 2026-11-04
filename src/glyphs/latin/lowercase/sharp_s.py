@@ -10,7 +10,7 @@ class SharpSGlyph(Glyph):
     upper_ratio = 0.7
     mid_ratio = 0.52
     width_ratio = 1.06
-    offset_lower_bar = 0.3
+    offset_lower_bar = 0.10
     reach_upper_bar = 0.9
     tail_reach = 0.0
     stroke_x_ratio = 1.00
@@ -27,7 +27,7 @@ class SharpSGlyph(Glyph):
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx, b.hy
         ymid = b.y1 + self.mid_ratio * b.height
-        o = self.offset_lower_bar * b.width
+        o = self.offset_lower_bar * b.width + sx
         yt = -self.tail_reach * b.height
 
         lower_x1 = b.x1
@@ -41,18 +41,6 @@ class SharpSGlyph(Glyph):
         # Left stem
         draw_rect(pen, b.x1, yt, b.x1 + sx, (ymid - sy / 2 + b.y2) / 2)
 
-        # draw_corner(
-        #     pen,
-        #     sx,
-        #     sy,
-        #     b.x1,
-        #     (ymid - sy / 2 + b.y2) / 2,
-        #     (upper_x1 + upper_x2) / 2,
-        #     b.y2,
-        #     hx * (upper_x2 - upper_x1) / b.width,
-        #     hy * (1 - self.mid_ratio),
-        #     orientation="top-right",
-        # )
         draw_arch(
             pen,
             sx,
@@ -98,6 +86,7 @@ class SharpSGlyph(Glyph):
             side="top",
         )
 
+        # Extension
         draw_rect(
             pen,
             b.x1 + o,

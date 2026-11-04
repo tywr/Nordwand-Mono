@@ -19,7 +19,7 @@ class Circumflex(Accent):
         w = self.width * dc.width
         x1, x2, xmid = x - w / 2, x + w / 2, x
         y1, y2 = y - h / 2, y + h / 2
-        s = self.stroke_ratio * dc.stroke_x
+        s = self.stroke_ratio * dc.stroke_y
         ov = self.overlap * s
         ush = self.upper_section_height * dc.stroke_y
 
