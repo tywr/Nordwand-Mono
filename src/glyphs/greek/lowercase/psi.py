@@ -30,8 +30,8 @@ class GreekLowercasePsiGlyph(SquareLowercaseGlyph):
             b.y1,
             b.x2,
             yl,
-            self.hx_ratio * b.hx,
-            self.hy_ratio * b.hy,
+            b.hx,
+            self.loop_ratio * b.hy,
             cut="top",
         )
 

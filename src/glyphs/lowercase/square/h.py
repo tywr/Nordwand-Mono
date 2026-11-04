@@ -18,7 +18,7 @@ class LowercaseHGlyph(SquareLowercaseGlyph):
         yl = b.y2 - self.loop_ratio * b.height
 
         # Top arch, cut at the bottom (only upper half drawn)
-        arch_params = draw_arch(
+        draw_arch(
             pen,
             dc.stroke_x,
             dc.stroke_y,
@@ -26,8 +26,8 @@ class LowercaseHGlyph(SquareLowercaseGlyph):
             yl,
             b.x2,
             b.y2,
-            self.hx_ratio * b.hx,
-            self.hy_ratio * b.hy,
+            b.hx,
+            self.loop_ratio * b.hy,
             taper=self.taper * dc.taper,
             side="left",
             cut="bottom",

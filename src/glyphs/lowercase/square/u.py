@@ -14,7 +14,6 @@ class LowercaseUGlyph(SquareLowercaseGlyph):
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
         )
-        arch_top = b.y2
         yl = b.y1 + self.loop_ratio * b.height
 
         # Bottom arch, cut at top (only lower half drawn)
@@ -26,8 +25,8 @@ class LowercaseUGlyph(SquareLowercaseGlyph):
             b.y1,
             b.x2,
             yl,
-            self.hx_ratio * b.hx,
-            self.hy_ratio * b.hy,
+            b.hx,
+            self.loop_ratio * b.hy,
             taper=self.taper * dc.taper,
             side="right",
             cut="top",

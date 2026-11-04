@@ -1,9 +1,9 @@
-from glyphs import Glyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
+from glyphs.lowercase.square import SquareLowercaseGlyph
 
 
-class LowercaseMGlyph(Glyph):
+class LowercaseMGlyph(SquareLowercaseGlyph):
     name = "lowercase_m"
     unicode = "0x6D"
     offset = 0
@@ -15,7 +15,7 @@ class LowercaseMGlyph(Glyph):
     min_taper_2 = 0.15
     ending_thickness = 0.75
     min_width = 74
-    hx_ratio = 1.15
+    hx_ratio = 1
     stroke_x_ratio = 1
     stroke_y_ratio = 1
 
@@ -30,8 +30,10 @@ class LowercaseMGlyph(Glyph):
         taper2 = min(1, self.taper2 * dc.taper)
         mid_y = (1 - self.mid_len) * (b.height - b.y1)
         hx = b.hx * self.hx_ratio
+        hy = b.hy * self.loop_ratio
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        y1 = b.y1 + (1 - self.loop_ratio) * b.height
 
         xl2 = b.xmid + sx / 2
         draw_arch(
@@ -39,11 +41,11 @@ class LowercaseMGlyph(Glyph):
             sx,
             sy,
             b.x1,
-            b.y1,
+            y1,
             xl2,
             b.y2,
             hx * (xl2 - b.x1) / b.width,
-            b.hy,
+            hy,
             taper=taper1,
             side="left",
             cut="bottom",
@@ -56,11 +58,11 @@ class LowercaseMGlyph(Glyph):
             sx,
             sy,
             xr1,
-            b.y1,
+            y1,
             b.x2,
             b.y2,
             hx * (b.x2 - xr1) / b.width,
-            b.hy,
+            hy,
             taper=taper2,
             side="left",
             cut="bottom",
@@ -69,13 +71,13 @@ class LowercaseMGlyph(Glyph):
         # Left stem
         draw_rect(pen, b.x1, 0, b.x1 + sx, dc.x_height)
 
-        # Right foot — reaches up to the arch midpoint
-        draw_rect(pen, b.x2 - sx, 0, b.x2, b.ymid)
+        # Right stem
+        draw_rect(pen, b.x2 - sx, 0, b.x2, (y1 + b.y2) / 2)
 
         draw_rect(
             pen,
             b.xmid - sx / 2,
             mid_y,
             b.xmid + sx / 2,
-            b.ymid + 1,
+            (y1 + b.y2) / 2 + 1,
         )

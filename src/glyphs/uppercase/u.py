@@ -8,7 +8,7 @@ class UppercaseUGlyph(UppercaseGlyph):
     unicode = "0x55"
     offset = 0
     hx_ratio = 1.0
-    hy_ratio = 0.9
+    hy_ratio = 1.0
     width_ratio = 1.06
     loop_ratio = 0.66
 

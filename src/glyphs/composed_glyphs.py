@@ -1414,7 +1414,7 @@ class LowercaseEOgonekGlyph(OgonekComposedGlyph):
     name = "lowercase_eogonek"
     unicode = "0x119"
     base_glyph_class = LowercaseEGlyph
-    ogonek_x = 0.68
+    ogonek_x = 0.72
 
 
 class UppercaseAOgonekGlyph(OgonekComposedGlyph):
@@ -1452,15 +1452,16 @@ class LowercaseUOgonekGlyph(OgonekComposedGlyph):
     name = "lowercase_uogonek"
     unicode = "0x173"
     base_glyph_class = LowercaseUGlyph
-    ogonek_x = 0.58
+    ogonek_x = 1
+    cut_ogonek_top = False
 
 
 class UppercaseUOgonekGlyph(OgonekComposedGlyph):
     name = "uppercase_uogonek"
     unicode = "0x172"
     base_glyph_class = UppercaseUGlyph
-    ogonek_x = 0.68
-    accent_y = 5
+    ogonek_x = 0.75
+    accent_y = 0
 
 
 # ── Polish: stroke ───────────────────────────────────────────────────
