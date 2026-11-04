@@ -1,5 +1,4 @@
 from draw.loop import draw_loop
-from draw.corner import draw_corner
 from draw.rect import draw_rect
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
@@ -9,7 +8,7 @@ from glyphs.lowercase.round import RoundLowercaseGlyph
 class LowercaseEGlyph(RoundLowercaseGlyph):
     name = "lowercase_e"
     unicode = "0x65"
-    offset = 5
+    offset = 2
     width_ratio = 1
     mid_height = 0.52
     thinning = 1
@@ -29,7 +28,8 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
         yo = b.y1 + self.tail_height * b.height + ec
         ymid = b.y1 + self.mid_height * b.height
-        xt = b.x2 + self.tail_offset * b.width
+        yt1 = b.y2 - (1 - self.mid_height) * b.height * 2
+        yt2 = b.y1 + self.mid_height * b.height * 2
 
         # Half-left as the o-shape
         draw_loop(
@@ -44,33 +44,31 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             b.hy,
             cut="right",
         )
-
-        # Top-right corner
-        draw_corner(
+        draw_loop(
             pen,
             sx,
             sy,
-            b.x2 - dc.h_overshoot,
-            b.ymid,
-            b.xmid,
+            b.x1,
+            yt1,
+            b.x2,
             b.y2,
             b.hx,
-            b.hy,
-            orientation="top-left",
+            b.hy * (b.y2 - yt1) / b.height,
+            quarter="top-right",
         )
 
         loop_glyph = ufoLib2.objects.Glyph()
-        draw_corner(
+        draw_loop(
             loop_glyph.getPen(),
             sx * self.thinning,
             sy,
-            xt,
-            b.ymid,
-            b.xmid,
+            b.x1,
             b.y1,
+            b.x2,
+            yt2,
             b.hx,
-            b.hy,
-            orientation="bottom-left",
+            b.hy * (yt2 - b.y1) / b.height,
+            quarter="bottom-right",
         )
 
         cut_glyph = ufoLib2.objects.Glyph()
@@ -79,7 +77,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             b.xmid,
             yo,
             b.xmid + b.width,
-            b.ymid,
+            ymid,
         )
         result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
         result.draw(pen)
@@ -88,13 +86,13 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             pen,
             b.x1 + sx / 2,
             ymid,
-            b.x2 - dc.h_overshoot - sx / 2,
+            b.x2 - sx / 2,
             ymid + dc.stroke_alt / 2,
         )
         draw_rect(
             pen,
             b.x1 + sx / 2,
             ymid - dc.stroke_alt / 2,
-            b.x2 - dc.h_overshoot,
-            max(ymid, b.ymid),
+            b.x2,
+            ymid,
         )
