@@ -24,6 +24,8 @@ class LowercaseOeGlyph(LowercaseOGlyph, LowercaseEGlyph):
             overshoot_top=True,
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
+            # Round, can tolerate a bit less
+            min_margin=dc.min_margin_lowercase * 0.66,
         )
         sx = self.stroke_ratio * dc.stroke_x
         sx = max(0, self.stroke_smoothing * (sx - self.stroke_threshold)) + min(
