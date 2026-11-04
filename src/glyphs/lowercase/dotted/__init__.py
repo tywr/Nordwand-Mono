@@ -8,7 +8,7 @@ class DottedLowercaseGlyph(Glyph, ABC):
     """Define common class variables for single-story lowercase glyphs"""
 
     dot_position = "xmid"
-    dot_ratio = 1.2
+    dot_ratio = 1.3
     rl_ratio = 0.5
 
     @abstractmethod
