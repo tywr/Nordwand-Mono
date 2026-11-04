@@ -1146,19 +1146,23 @@ class LowercaseDCaronGlyph(ComposedGlyph):
     unicode = "0x10F"
     base_glyph_class = LowercaseDGlyph
     accent_class = CaronVertical
+    margin = 0
+    extra_gap = 0.08
 
     def draw(self, pen, dc):
         base = self._resolve_base_class(dc)()
         mark = self.accent_class()
-        margin = 0
         mark_width = mark.gap_width(dc) + mark.top_width(dc)
-        room = dc.window_width - 2 * margin - mark_width
+        gap = dc.window_width * self.extra_gap
+        room = dc.window_width - 2 * self.margin - mark_width - gap
         base.width_ratio = min(base.width_ratio, (room - dc.stroke_x) / dc.width)
         d_width = dc.width * base.width_ratio + dc.stroke_x
         x1 = (dc.window_width - d_width - mark_width) / 2
-        base.offset = x1 - (dc.window_width - d_width) / 2
+        base.offset = x1 - (dc.window_width - d_width) / 2 - gap / 2
         base.draw(pen, dc)
-        mark.draw_at(pen, dc, x=x1 + d_width + mark.gap_width(dc), y=dc.ascent)
+        mark.draw_at(
+            pen, dc, x=x1 + d_width + mark.gap_width(dc) + gap / 2, y=dc.ascent
+        )
 
 
 class LowercaseRAcuteGlyph(ComposedGlyph):
@@ -1196,7 +1200,7 @@ class LowercaseLAcuteGlyph(ComposedGlyph):
     base_glyph_class = LowercaseLGlyph
     accent_class = Acute
     # Above the ascent by most of the gap capitals leave below their accent
-    accent_y = fc.ascent + 0.8 * (fc.accent_cap - fc.cap)
+    accent_y = fc.ascent + 1.0 * (fc.accent_cap - fc.cap)
 
     def accent_x(self, dc, base, b):
         return base.stem_center(dc)
@@ -1219,24 +1223,6 @@ class UppercaseLCaronGlyph(ComposedGlyph):
         self.accent_class().draw_at(pen, dc, x=(b.x1 + b.x2) * 0.55, y=dc.cap)
 
 
-class LowercaseLCaronGlyph(ComposedGlyph):
-    """l with the vertical caron beside the top of its stem."""
-
-    name = "lowercase_lcaron"
-    unicode = "0x13E"
-    base_glyph_class = LowercaseLGlyph
-    accent_class = CaronVertical
-
-    def draw(self, pen, dc):
-        base = self._resolve_base_class(dc)()
-        b = dc.body_bounds(
-            offset=base.offset, height="cap", width_ratio=base.width_ratio
-        )
-        base.draw(pen, dc)
-        mark = self.accent_class()
-        mark.draw_at(pen, dc, x=(b.x2 + b.xmid) / 2, y=dc.ascent)
-
-
 class LowercaseTCaronGlyph(ComposedGlyph):
     """t with the vertical caron beside the top of its stem."""
 
@@ -1244,6 +1230,9 @@ class LowercaseTCaronGlyph(ComposedGlyph):
     unicode = "0x165"
     base_glyph_class = LowercaseTGlyph
     accent_class = CaronVertical
+    x_offset = 0.84
+    height = 0.4
+    up_ratio = 0.55
 
     def draw(self, pen, dc):
         base = self._resolve_base_class(dc)()
@@ -1251,10 +1240,22 @@ class LowercaseTCaronGlyph(ComposedGlyph):
         b = dc.body_bounds(
             offset=base.offset, height="x_height", width_ratio=base.width_ratio
         )
-        top = (1 + base.up_ratio) * dc.x_height
+        top = (1 + self.up_ratio) * dc.x_height
         accent = self.accent_class()
-        accent.height = 0.3
-        accent.draw_at(pen, dc, x=(b.xmid + b.x2) * 0.55, y=top)
+        accent.height = self.height
+        accent.draw_at(pen, dc, x=b.x1 + b.width * self.x_offset, y=top)
+
+
+class LowercaseLCaronGlyph(LowercaseTCaronGlyph):
+    """l with the vertical caron beside the top of its stem."""
+
+    name = "lowercase_lcaron"
+    unicode = "0x13E"
+    base_glyph_class = LowercaseLGlyph
+    accent_class = CaronVertical
+    x_offset = 0.8
+    up_ratio = 0.4
+    height = 0.4
 
 
 # ── Croatian, Bosnian, Serbian: D with stroke ────────────────────────
@@ -1273,19 +1274,21 @@ class LowercaseDStrokeGlyph(LowercaseDGlyph):
     name = "lowercase_dcroat"
     unicode = "0x111"
     # Bar reach past the stem, as fractions of the body width
-    bar_left = 0.45
-    bar_right = 0.15
+    bar_left = 0.25
+    bar_right = 0.2
 
     def draw(self, pen, dc):
         super().draw(pen, dc)
-        b = dc.body_bounds(width_ratio=self.width_ratio, offset=self.offset)
+        b = dc.body_bounds(
+            width_ratio=self.width_ratio, offset=self.offset, height="ascent"
+        )
         y = (dc.x_height + dc.ascent) / 2
         draw_rect(
             pen,
             b.x2 - dc.stroke_x - self.bar_left * b.width,
-            y - dc.stroke_y / 2,
+            y - dc.stroke_alt / 2,
             b.x2 + self.bar_right * b.width,
-            y + dc.stroke_y / 2,
+            y + dc.stroke_alt / 2,
         )
 
 

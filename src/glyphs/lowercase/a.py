@@ -30,8 +30,12 @@ class LowercaseAGlyph(Glyph):
             overshoot_bottom=True,
             overshoot_top=True,
         )
+        self.draw_a(pen, dc, b, dc.stroke_x, dc.stroke_y)
+
+    def draw_a(self, pen, dc, b, sx, sy, stem=True, right_taper=None):
+        """Bottom and top loops within `b`, without the stem; returns the
+        bottom of the top loop."""
         ec = self.extra_cut(dc)
-        sx, sy = dc.stroke_x, dc.stroke_y
         ymid = b.y1 + self.mid_height * b.height
         yl = ymid + dc.stroke_alt / 2
         ycut = b.y1 + self.cap_height * b.height - ec
@@ -46,7 +50,7 @@ class LowercaseAGlyph(Glyph):
         xt2 = 2 * b.xmid - xt1
         yt1 = b.y2 - self.top_loop_ratio * b.height
 
-        # Lower half half of the bottom loop
+        # Lower half of the bottom loop
         draw_arch(
             pen,
             sx,
@@ -57,7 +61,7 @@ class LowercaseAGlyph(Glyph):
             ybmid,
             b.hx,
             b.hy * (ybmid - b.y1) / b.height,
-            taper=self.taper * dc.taper,
+            taper=right_taper if right_taper else self.taper * dc.taper,
             side="right",
             cut="top",
         )
@@ -79,13 +83,13 @@ class LowercaseAGlyph(Glyph):
             pen,
             xbmid,
             yl - dc.stroke_alt,
-            b.x2 - sx / 2,
+            b.x2 - sx,
             yl,
         )
 
         # Top loop
         loop_glyph = ufoLib2.objects.Glyph()
-        draw_loop(
+        draw_arch(
             loop_glyph.getPen(),
             sx,
             sy,
@@ -96,6 +100,7 @@ class LowercaseAGlyph(Glyph):
             b.hx,
             b.hy * (b.y2 - yt1) / b.height,
             quarter="top-right",
+            taper=right_taper if right_taper else 1,
         )
         draw_loop(
             loop_glyph.getPen(),
@@ -114,11 +119,22 @@ class LowercaseAGlyph(Glyph):
         result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
         result.draw(pen)
 
-        # Stem
-        draw_rect(
-            pen,
-            b.x2 - sx,
-            0,
-            b.x2,
-            (yt1 + b.y2) / 2,
-        )
+        if stem:
+            # Lower stem
+            draw_rect(
+                pen,
+                b.x2 - sx,
+                0,
+                b.x2,
+                (yt1 + b.y2) / 2,
+            )
+        else:
+            draw_rect(
+                pen,
+                b.x2 - sx,
+                (b.y1 + ybmid) / 2,
+                b.x2 + sx * (right_taper - 1),
+                (yt1 + b.y2) / 2,
+            )
+
+        return yt1

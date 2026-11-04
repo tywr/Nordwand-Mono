@@ -1,27 +1,23 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
-from glyphs import Glyph
-from draw.arch import draw_arch
-from draw.corner import draw_corner
-from draw.rect import draw_rect
+from dataclasses import replace
+
+from glyphs.lowercase.a import LowercaseAGlyph
+from glyphs.lowercase.round.e import LowercaseEGlyph
 
 
-class LowercaseAeGlyph(Glyph):
-    # Placeholder: plots the same as lowercase 'a' for the moment.
+class LowercaseAeGlyph(LowercaseAGlyph, LowercaseEGlyph):
+    """An a and an e sharing the middle stroke, each drawn by its own glyph's
+    code within its half of the body."""
+
     name = "lowercase_ae"
     unicode = "0xE6"
     offset = 0
+    width_ratio = 1.3
     mid_height = 0.52
-    width_ratio = 1.2
-    taper = 1.5
     cap_height = 0.7
-    cap_offset = 0.02
-    thinning = 1
-    cap_stroke_x_ratio = 1.01
-    cap_stroke_y_ratio = 1.00
-    ending_thickness = 0.8
-    tail_offset = 0.00
     tail_height = 0.31
+    stroke_ratio = 1
+    stroke_smoothing = 0.6
+    stroke_threshold = 60
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -30,173 +26,17 @@ class LowercaseAeGlyph(Glyph):
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
         )
-        sx, sy = dc.stroke_x, dc.stroke_y
-        sx = max(0, 0.6 * (dc.stroke_x - dc.default_stroke)) + min(dc.default_stroke, dc.stroke_x)
-        csx, csy = (
-            self.cap_stroke_x_ratio * dc.stroke_x,
-            self.cap_stroke_y_ratio * dc.stroke_y,
+        sx = self.stroke_ratio * dc.stroke_x
+        sx = max(0, self.stroke_smoothing * (sx - self.stroke_threshold)) + min(
+            self.stroke_threshold, sx
         )
-        dx = csx - sx
-        ymid = b.y1 + self.mid_height * b.height
-        yl = ymid + dc.stroke_alt / 2
-        ec = self.extra_cut(dc)
-        ycut = b.y1 + self.cap_height * b.height - ec
-        xc = b.x1 + self.cap_offset * b.width
-        yo = b.y1 + self.tail_height * b.height + ec
+        sy = self.stroke_ratio * dc.stroke_y
 
-        ax2, axmid = b.xmid + sx / 2, (b.x1 + b.xmid + sx / 2) / 2
+        # Each half keeps the body's o shape once rescaled
+        def half(x1, x2):
+            return replace(b, x1=x1, x2=x2, hx=b.hx * (x2 - x1) / b.width)
 
-        # Handles rescaled from the body's to each quarter's size (a quarter
-        # spans half a full curve), so the curves keep the o's shape
-        def handles(x1, y1, x2, y2):
-            return (
-                b.hx * 2 * abs(x2 - x1) / b.width,
-                b.hy * 2 * abs(y2 - y1) / b.height,
-            )
-
-        exmid = (b.x2 + b.xmid - sx / 2) / 2
-
-        # Lower half half of the bowl
-        draw_arch(
-            pen,
-            csx,
-            csy,
-            b.x1,
-            b.y1,
-            ax2 + dx,
-            yl,
-            b.hx * (ax2 + dx - b.x1) / b.width,
-            b.hy * (yl - b.y1) / b.height,
-            # Above 1 the bowl's outer edge would pass x2 and poke out of the
-            # middle stem in thin weights, which raise dc.taper
-            taper=min(1, self.taper * dc.taper),
-            side="right",
-            cut="top",
+        self.draw_a(
+            pen, dc, half(b.x1, b.xmid + sx / 2), sx, sy, stem=False, right_taper=0.75
         )
-        draw_rect(pen, b.xmid - sx / 2, (yl + b.y1) / 2, b.xmid, b.ymid)
-
-        # Upper half of the bowl
-        draw_corner(
-            pen,
-            csx,
-            dc.stroke_alt,
-            b.x1,
-            (b.y1 + yl) / 2,
-            axmid,
-            yl,
-            *handles(b.x1, (b.y1 + yl) / 2, axmid, yl),
-            orientation="top-right",
-        )
-        draw_rect(
-            pen,
-            axmid,
-            yl - dc.stroke_alt,
-            ax2,
-            yl,
-        )
-
-        # Cap: symmetric around xmid, its right side on the stem's right edge
-        # with a full stroke so both shoulders share the same radius
-        xmid = (xc + ax2) / 2
-        draw_corner(
-            pen,
-            sx,
-            csy,
-            ax2,
-            b.ymid,
-            xmid,
-            b.y2,
-            *handles(ax2, b.ymid, xmid, b.y2),
-            orientation="top-left",
-        )
-
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_corner(
-            loop_glyph.getPen(),
-            sx * self.thinning,
-            csy,
-            xc,
-            b.ymid,
-            xmid,
-            b.y2,
-            *handles(xc, b.ymid, xmid, b.y2),
-            orientation="top-right",
-        )
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), b.x1, b.ymid, axmid, ycut)
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
-
-        # Top-right corner
-        draw_corner(
-            pen,
-            sx,
-            sy,
-            b.x2 - dc.h_overshoot,
-            b.ymid,
-            exmid,
-            b.y2,
-            *handles(b.x2 - dc.h_overshoot, b.ymid, exmid, b.y2),
-            orientation="top-left",
-        )
-        draw_corner(
-            pen,
-            sx,
-            sy,
-            b.xmid - sx / 2,
-            b.ymid,
-            exmid,
-            b.y2,
-            *handles(b.xmid - sx / 2, b.ymid, exmid, b.y2),
-            orientation="top-right",
-        )
-        draw_corner(
-            pen,
-            sx,
-            sy,
-            b.xmid - sx / 2,
-            b.ymid,
-            exmid,
-            b.y1,
-            *handles(b.xmid - sx / 2, b.ymid, exmid, b.y1),
-            orientation="bottom-right",
-        )
-
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_corner(
-            loop_glyph.getPen(),
-            sx * self.thinning,
-            sy,
-            b.x2 - dc.h_overshoot,
-            b.ymid,
-            exmid,
-            b.y1,
-            *handles(b.x2 - dc.h_overshoot, b.ymid, exmid, b.y1),
-            orientation="bottom-left",
-        )
-
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(
-            cut_glyph.getPen(),
-            b.xmid,
-            yo,
-            b.xmid + b.width,
-            b.ymid,
-        )
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
-
-        draw_rect(
-            pen,
-            b.xmid,
-            ymid,
-            b.x2 - dc.h_overshoot - sx / 2,
-            ymid + dc.stroke_alt / 2,
-        )
-        draw_rect(
-            pen,
-            b.xmid,
-            ymid - dc.stroke_alt / 2,
-            b.x2 - dc.h_overshoot,
-            max(ymid, b.ymid),
-        )
+        self.draw_e(pen, dc, half(b.xmid - sx / 2, b.x2), sx, sy, left_taper=0.75)

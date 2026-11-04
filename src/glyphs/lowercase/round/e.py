@@ -1,3 +1,4 @@
+from draw.arch import draw_arch
 from draw.loop import draw_loop
 from draw.rect import draw_rect
 import ufoLib2
@@ -11,7 +12,6 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
     offset = 2
     width_ratio = 1
     mid_height = 0.52
-    thinning = 1
     tail_offset = 0.00
     tail_height = 0.268
 
@@ -24,27 +24,21 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
         )
-        ec = self.extra_cut(dc)
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
+        self.draw_e(pen, dc, b, sx, sy)
+
+    def draw_e(self, pen, dc, b, sx, sy, left_taper=None):
+        """The whole e within `b`. With `left_taper`, the left side is
+        thinned to that ratio of `sx` from the outside, so it can share a
+        stroke with a glyph on its left."""
+        ec = self.extra_cut(dc)
         yo = b.y1 + self.tail_height * b.height + ec
         ymid = b.y1 + self.mid_height * b.height
         yt1 = b.y2 - (1 - self.mid_height) * b.height * 2
         yt2 = b.y1 + self.mid_height * b.height * 2
 
         # Half-left as the o-shape
-        draw_loop(
-            pen,
-            sx,
-            sy,
-            b.x1,
-            b.y1,
-            b.x2,
-            b.y2,
-            b.hx,
-            b.hy,
-            cut="right",
-        )
-        draw_loop(
+        draw_arch(
             pen,
             sx,
             sy,
@@ -54,13 +48,15 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             b.y2,
             b.hx,
             b.hy * (b.y2 - yt1) / b.height,
-            quarter="top-right",
+            taper=left_taper if left_taper else 1,
+            side="left",
+            cut="bottom",
         )
 
         loop_glyph = ufoLib2.objects.Glyph()
-        draw_loop(
+        draw_arch(
             loop_glyph.getPen(),
-            sx * self.thinning,
+            sx,
             sy,
             b.x1,
             b.y1,
@@ -68,7 +64,9 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             yt2,
             b.hx,
             b.hy * (yt2 - b.y1) / b.height,
-            quarter="bottom-right",
+            taper=left_taper if left_taper else 1,
+            side="left",
+            cut="top",
         )
 
         cut_glyph = ufoLib2.objects.Glyph()
