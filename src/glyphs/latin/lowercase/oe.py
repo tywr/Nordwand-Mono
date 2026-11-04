@@ -34,7 +34,7 @@ class LowercaseOeGlyph(Glyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
-        sx = max(0, 0.7 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
+        sx = max(0, 0.6 * (dc.stroke_x - dc.default_stroke)) + min(dc.default_stroke, dc.stroke_x)
         ymid = b.y1 + self.mid_height * b.height
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         yo = b.y1 + self.tail_height * b.height + self.extra_cut(dc)

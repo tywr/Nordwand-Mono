@@ -31,7 +31,7 @@ class LowercaseAeGlyph(Glyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
-        sx = max(0, 0.7 * (dc.stroke_x - dc.default_stroke)) + min(dc.default_stroke, dc.stroke_x)
+        sx = max(0, 0.6 * (dc.stroke_x - dc.default_stroke)) + min(dc.default_stroke, dc.stroke_x)
         csx, csy = (
             self.cap_stroke_x_ratio * dc.stroke_x,
             self.cap_stroke_y_ratio * dc.stroke_y,
