@@ -6,8 +6,8 @@ from draw.rect import draw_rect
 from draw.arch import draw_arch
 
 
-class OeGlyph(Glyph):
-    name = "oe"
+class LowercaseOeGlyph(Glyph):
+    name = "lowercase_oe"
     unicode = "0x153"
     offset = 0
     mid_height = 0.52
@@ -37,7 +37,7 @@ class OeGlyph(Glyph):
         sx = max(0, 0.7 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
         ymid = b.y1 + self.mid_height * b.height
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
-        yo = b.y1 + self.tail_height * b.height
+        yo = b.y1 + self.tail_height * b.height + self.extra_cut(dc)
 
         ov = sx * 0.5
         ex1, exmid = b.xmid - sx / 2, (b.x2 + b.xmid - sx / 2) / 2

@@ -39,9 +39,10 @@ class LowercaseAeGlyph(Glyph):
         dx = csx - sx
         ymid = b.y1 + self.mid_height * b.height
         yl = ymid + dc.stroke_alt / 2
-        ycut = b.y1 + self.cap_height * b.height
+        ec = self.extra_cut(dc)
+        ycut = b.y1 + self.cap_height * b.height - ec
         xc = b.x1 + self.cap_offset * b.width
-        yo = b.y1 + self.tail_height * b.height
+        yo = b.y1 + self.tail_height * b.height + ec
 
         ax2, axmid = b.xmid + sx / 2, (b.x1 + b.xmid + sx / 2) / 2
 
