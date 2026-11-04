@@ -11,23 +11,20 @@ class GreekLowercaseGammaGlyph(Glyph):
     unicode = "0x3B3"
     offset = 0
     width_ratio = 1.15
-    stroke_ratio = 0.895  # Perpendicular thickness of the branches
+    stroke_ratio = 0.9
     overlap = 0.536  # Former 0.5 of the 0.96 stroke, in the new stroke
-    lower_section_height = 1.2
+    lower_section_height = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
         s = self.stroke_ratio * dc.stroke_x
         ov = self.overlap * s
-        sx = 0.96 * dc.stroke_x  # Descender stem width
         lsh = self.lower_section_height * dc.stroke_y
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()
         _, delta = draw_parallelogramm(gpen, s, b.xmid - ov, 0, b.x2, b.y2)
-        draw_parallelogramm(
-            gpen, s, b.xmid + ov, 0, b.x1, b.y2, direction="top-left"
-        )
+        draw_parallelogramm(gpen, s, b.xmid + ov, 0, b.x1, b.y2, direction="top-left")
         cut_glyph = ufoLib2.objects.Glyph()
         draw_polygon(
             cut_glyph.getPen(),
@@ -38,8 +35,8 @@ class GreekLowercaseGammaGlyph(Glyph):
 
         draw_rect(
             pen,
-            b.xmid - sx / 2,
+            b.xmid - delta / 2,
             dc.descent,
-            b.xmid + sx / 2,
+            b.xmid + delta / 2,
             0,
         )
