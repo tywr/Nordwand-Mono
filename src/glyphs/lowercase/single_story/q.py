@@ -25,7 +25,7 @@ class LowercaseQGlyph(SingleStoryLowercaseGlyph):
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
 
         # Bowl (open on the right, same as d)
-        arch_params = draw_arch(
+        draw_arch(
             pen,
             bsx,
             bsy,
@@ -33,7 +33,7 @@ class LowercaseQGlyph(SingleStoryLowercaseGlyph):
             b.y1,
             b.x2 + dx,
             b.y2,
-            hx,
+            hx * (b.x2 + dx - b.x1) / b.width,
             hy,
             taper=dc.taper * self.taper,
             side="right",

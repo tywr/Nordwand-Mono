@@ -30,7 +30,7 @@ class LowercaseDGlyph(SingleStoryLowercaseGlyph):
             b.y1,
             b.x2 + dx,
             b.y2,
-            hx,
+            hx * (b.x2 + dx - b.x1) / b.width,
             hy,
             taper=dc.taper * self.taper,
             side="right",

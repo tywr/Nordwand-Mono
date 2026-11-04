@@ -8,8 +8,6 @@ class LowercaseGGlyph(TailedLowercaseGlyph, SingleStoryLowercaseGlyph):
     unicode = "0x67"
     offset = -10
 
-    hy_ratio = 1.0
-
     def draw(self, pen, dc):
         b = dc.body_bounds(
             width_ratio=self.width_ratio,
@@ -18,7 +16,7 @@ class LowercaseGGlyph(TailedLowercaseGlyph, SingleStoryLowercaseGlyph):
             overshoot_top=True,
             overshoot_left=True,
         )
-        hy = self.hy_ratio * b.hy
+        hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         bsx, bsy = (
             self.bowl_stroke_x_ratio * dc.stroke_x,
             self.bowl_stroke_y_ratio * dc.stroke_y,
@@ -26,16 +24,17 @@ class LowercaseGGlyph(TailedLowercaseGlyph, SingleStoryLowercaseGlyph):
         y1 = b.y1 + self.y1_offset * b.height
 
         # Bowl (open on the right, mirrored from b)
+        dx = bsx - dc.stroke_x
         draw_arch(
             pen,
             bsx,
             bsy,
             b.x1,
             y1,
-            b.x2,
+            b.x2 + dx,
             b.y2,
-            b.hx,
-            hy,
+            hx * (b.x2 + dx - b.x1) / b.width,
+            hy * (b.y2 - y1) / b.height,
             taper=dc.taper * self.taper,
             side="right",
         )

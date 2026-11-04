@@ -8,10 +8,10 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
     default_italic = True
     unicode = "0x61"
     offset = -10
-    tail_offset = 0.03
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
+            width_ratio=self.width_ratio,
             offset=self.offset,
             overshoot_bottom=True,
             overshoot_top=True,
@@ -23,7 +23,6 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
             self.bowl_stroke_y_ratio * dc.stroke_y,
         )
         dx = bsx - dc.stroke_x
-        # ot = self.tail_offset * b.width
 
         draw_arch(
             pen,
@@ -33,20 +32,10 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
             b.y1,
             b.x2 + dx,
             b.y2,
-            hx,
+            hx * (b.x2 + dx - b.x1) / b.width,
             hy,
             taper=dc.taper * self.taper,
             side="right",
         )
 
         draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, dc.x_height)
-        # draw_square_corner(
-        #     pen,
-        #     dc.stroke_x,
-        #     dc.stroke_y,
-        #     b.x2 - dc.stroke_x,
-        #     b.y2,
-        #     dc.window_width - ot,
-        #     b.y1,
-        #     orientation="bottom-right",
-        # )
