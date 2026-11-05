@@ -29,6 +29,12 @@ from glyphs.uppercase.l import UppercaseLGlyph
 from glyphs.uppercase.z import UppercaseZGlyph
 from glyphs.uppercase.r import UppercaseRGlyph
 from glyphs.accents.acute import Acute
+from glyphs.uppercase.g import UppercaseGGlyph
+from glyphs.lowercase.single_story.g import LowercaseGGlyph
+from glyphs.latin.lowercase.ae import LowercaseAeGlyph
+from glyphs.latin.uppercase.ae import UppercaseAeGlyph
+from glyphs.latin.lowercase.oslash import OSlashGlyph
+from glyphs.latin.uppercase.oslash import UppercaseOSlashGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap
@@ -249,3 +255,63 @@ class LowercaseLAcuteGlyph(ComposedGlyph):
 
     def accent_x(self, dc, base, b):
         return base.stem_center(dc)
+
+
+class LowercaseGAcuteGlyph(ComposedGlyph):
+    name = "lowercase_gacute"
+    unicode = "0x1F5"
+    base_glyph_class = LowercaseGGlyph
+    accent_class = Acute
+    accent_y = _lc_accent
+
+
+class UppercaseGAcuteGlyph(ComposedGlyph):
+    name = "uppercase_gacute"
+    unicode = "0x1F4"
+    base_glyph_class = UppercaseGGlyph
+    accent_class = Acute
+    accent_y = _uc_accent
+
+
+class LowercaseAeAcuteGlyph(ComposedGlyph):
+    name = "lowercase_aeacute"
+    unicode = "0x1FD"
+    base_glyph_class = LowercaseAeGlyph
+    accent_class = Acute
+    accent_y = _lc_accent
+
+
+class UppercaseAeAcuteGlyph(ComposedGlyph):
+    name = "uppercase_aeacute"
+    unicode = "0x1FC"
+    base_glyph_class = UppercaseAeGlyph
+    accent_class = Acute
+    accent_y = _uc_accent
+
+
+class LowercaseOSlashAcuteGlyph(ComposedGlyph):
+    """Acute shifted left so it clears the top of the slash."""
+
+    name = "lowercase_oslashacute"
+    unicode = "0x1FF"
+    base_glyph_class = OSlashGlyph
+    accent_class = Acute
+    accent_y = _lc_accent
+    slash_clearance = 0.15  # Leftward shift of the acute, relative to the body width
+
+    def accent_x(self, dc, base, b):
+        return b.xmid - self.slash_clearance * b.width
+
+
+class UppercaseOSlashAcuteGlyph(ComposedGlyph):
+    """Acute shifted left so it clears the top of the slash."""
+
+    name = "uppercase_oslashacute"
+    unicode = "0x1FE"
+    base_glyph_class = UppercaseOSlashGlyph
+    accent_class = Acute
+    accent_y = _uc_accent
+    slash_clearance = 0.15  # Leftward shift of the acute, relative to the body width
+
+    def accent_x(self, dc, base, b):
+        return b.xmid - self.slash_clearance * b.width

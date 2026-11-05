@@ -12,6 +12,8 @@ from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.accents.ogonek import Ogonek
 import pathops
 from draw.rect import draw_rect
+from glyphs.lowercase.round.o import LowercaseOGlyph
+from glyphs.uppercase.o import UppercaseOGlyph
 
 
 class OgonekComposedGlyph(ComposedGlyph):
@@ -149,3 +151,17 @@ class UppercaseUOgonekGlyph(OgonekComposedGlyph):
     base_glyph_class = UppercaseUGlyph
     ogonek_x = 0.75
     accent_y = 0
+
+
+class LowercaseOOgonekGlyph(OgonekComposedGlyph):
+    name = "lowercase_oogonek"
+    unicode = "0x1EB"
+    base_glyph_class = LowercaseOGlyph
+    ogonek_x = 0.72
+
+
+class UppercaseOOgonekGlyph(OgonekComposedGlyph):
+    name = "uppercase_oogonek"
+    unicode = "0x1EA"
+    base_glyph_class = UppercaseOGlyph
+    ogonek_x = 0.75
