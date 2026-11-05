@@ -1,14 +1,10 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
-
-from fontTools.pens.recordingPen import RecordingPen
-
 from glyphs.accents import Accent
 from draw.loop import draw_loop
 
 
 class Horn(Accent):
-    """Spur rising off the right shoulder of o and u (Vietnamese ơ, ư).
+    """Spur growing out of the right shoulder of o and u (Vietnamese ơ, ư):
+    a stroke going right, then curving up.
 
     Unlike most accents, `draw_at` anchors the mark by the left end of its
     bottom edge, which callers place inside the base outline so the two
@@ -18,41 +14,33 @@ class Horn(Accent):
     name = "horn"
     unicode = None
     generated_only = True  # Only used inside composed glyphs
-    width = 0.66
-    height = 0.4
-    stroke_ratio = 0.9
-    shear = 0.75
+    width = 0.1
+    height = 0.2
+    stroke_y_ratio = 1.0
+    taper = 2.5
 
-    def draw_at(self, pen, dc, x, y):
-        w = self.width * dc.width
-        h = self.height * dc.x_height
-        sx = self.stroke_ratio * dc.stroke_x
-        sy = self.stroke_ratio * dc.stroke_y
+    def draw_at(self, pen, dc, x, y, width_ratio=None):
+        """`sx` and `sy` are the base glyph's strokes, `dc`'s by default."""
+        taper = min(1, self.taper * dc.taper)
+        sx = dc.stroke_x
+        sy = dc.stroke_y * taper
+        w = self.width * dc.width + sx
+        h = self.height * dc.x_height + sy
 
-        # Bottom-right quarter of a loop: right from the anchor, then up
         b = dc.body_bounds(offset=0)
-        rec = RecordingPen()
         draw_loop(
-            rec,
+            pen,
             sx,
             sy,
             x - w,
-            y - 2 * h,
+            y - sy,
             x + w,
-            y,
+            y + 2 * h - sy,
             b.hx * 2 * w / b.width,
             b.hy * 2 * h / b.height,
-            quarter="top-right",
+            quarter="bottom-right",
         )
-
-        y0 = y - sy
-
-        def lean(px, py):
-            return px - self.shear * max(0, y0 - py), py
-
-        for op, args in rec.value:
-            getattr(pen, op)(*(lean(*p) for p in args))
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset)
-        self.draw_at(pen, dc, x=b.xmid, y=b.ymid)
+        self.draw_at(pen, dc, x=b.xmid, y=0.8 * dc.x_height)
