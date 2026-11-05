@@ -14,7 +14,7 @@ class LowercaseKGlyph(Glyph):
     lower_stroke_ratio = 1.0
     branch_overlap = 0.8
 
-    def draw(self, pen, dc):
+    def draw(self, pen, dc, draw_stem=True):
         b = dc.body_bounds(
             offset=self.offset,
             width_ratio=self.width_ratio,
@@ -26,7 +26,8 @@ class LowercaseKGlyph(Glyph):
         ymid = b.y1 + self.mid_ratio * b.height
 
         # Left ascender stem
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
+        if draw_stem:
+            draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
 
         # Lower branch
         _, d = draw_parallelogramm(

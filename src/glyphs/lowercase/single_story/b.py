@@ -8,11 +8,7 @@ class LowercaseBGlyph(SingleStoryLowercaseGlyph):
     unicode = "0x62"
     offset = 10
 
-    def draw(
-        self,
-        pen,
-        dc,
-    ):
+    def draw(self, pen, dc, draw_stem=True):
         b = dc.body_bounds(
             width_ratio=self.width_ratio,
             offset=self.offset,
@@ -40,4 +36,5 @@ class LowercaseBGlyph(SingleStoryLowercaseGlyph):
             side="left",
         )
 
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
+        if draw_stem:
+            draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)

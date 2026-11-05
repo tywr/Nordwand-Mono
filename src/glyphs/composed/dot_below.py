@@ -1,5 +1,7 @@
 """Composed glyphs with the dot below."""
 
+import math
+
 import pathops
 
 from draw.dot import dot_size
@@ -95,8 +97,15 @@ class LowercaseYDotBelowGlyph(ComposedGlyph):
         band = pathops.Path()
         draw_rect(pathops.PathPen(band), -1000, top - h, 2000, top)
         _, _, x2, _ = pathops.op(path, band, pathops.PathOp.INTERSECTION).bounds
-        gap = self.italic_gap if getattr(dc, "italic", False) else self.gap
-        return x2 + gap * dc.stroke_x + w / 2
+        if not getattr(dc, "italic", False):
+            return x2 + self.gap * dc.stroke_x + w / 2
+
+        # Italic: further out, but kept in the cell once slanted. The slant
+        # (see generate_font.skew_path) shifts the top of the dot by `shift`.
+        pivot = (dc.window_ascent + dc.window_descent) / 2
+        shift = (top - pivot) * math.tan(math.radians(dc.italic_angle))
+        limit = dc.window_width - dc.min_margin_lowercase - shift - w / 2
+        return min(x2 + self.italic_gap * dc.stroke_x + w / 2, limit)
 
 
 class UppercaseEDotBelowGlyph(ComposedGlyph):
