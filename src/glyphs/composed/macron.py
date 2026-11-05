@@ -15,6 +15,8 @@ from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.accents.macron import Macron
 from glyphs.lowercase.y import LowercaseYGlyph
 from glyphs.uppercase.y import UppercaseYGlyph
+from glyphs.lowercase.single_story.g import LowercaseGGlyph
+from glyphs.uppercase.g import UppercaseGGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap
@@ -114,3 +116,19 @@ class LowercaseYMacronGlyph(ComposedGlyph):
     base_glyph_class = LowercaseYGlyph
     accent_class = Macron
     accent_y = _lc_accent
+
+
+class LowercaseGMacronGlyph(ComposedGlyph):
+    name = "lowercase_gmacron"
+    unicode = "0x1E21"
+    base_glyph_class = LowercaseGGlyph
+    accent_class = Macron
+    accent_y = _lc_accent
+
+
+class UppercaseGMacronGlyph(ComposedGlyph):
+    name = "uppercase_gmacron"
+    unicode = "0x1E20"
+    base_glyph_class = UppercaseGGlyph
+    accent_class = Macron
+    accent_y = _uc_accent

@@ -17,6 +17,11 @@ from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.uppercase.y import UppercaseYGlyph
 from glyphs.uppercase.w import UppercaseWGlyph
 from glyphs.accents.dieresis import Dieresis
+from glyphs.lowercase.square.h import LowercaseHGlyph
+from glyphs.composed.acute import LowercaseLAcuteGlyph
+from glyphs.lowercase.x import LowercaseXGlyph
+from glyphs.uppercase.h import UppercaseHGlyph
+from glyphs.uppercase.x import UppercaseXGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap
@@ -130,5 +135,39 @@ class UppercaseWDieresisGlyph(ComposedGlyph):
     name = "uppercase_wdieresis"
     unicode = "0x1E84"
     base_glyph_class = UppercaseWGlyph
+    accent_class = Dieresis
+    accent_y = _uc_accent
+
+
+class LowercaseHDieresisGlyph(ComposedGlyph):
+    """h with the dieresis above its ascender, as high as on ĥ."""
+
+    name = "lowercase_hdieresis"
+    unicode = "0x1E27"
+    base_glyph_class = LowercaseHGlyph
+    accent_class = Dieresis
+    accent_y = LowercaseLAcuteGlyph.accent_y
+
+
+class LowercaseXDieresisGlyph(ComposedGlyph):
+    name = "lowercase_xdieresis"
+    unicode = "0x1E8D"
+    base_glyph_class = LowercaseXGlyph
+    accent_class = Dieresis
+    accent_y = _lc_accent
+
+
+class UppercaseHDieresisGlyph(ComposedGlyph):
+    name = "uppercase_hdieresis"
+    unicode = "0x1E26"
+    base_glyph_class = UppercaseHGlyph
+    accent_class = Dieresis
+    accent_y = _uc_accent
+
+
+class UppercaseXDieresisGlyph(ComposedGlyph):
+    name = "uppercase_xdieresis"
+    unicode = "0x1E8C"
+    base_glyph_class = UppercaseXGlyph
     accent_class = Dieresis
     accent_y = _uc_accent

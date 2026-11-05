@@ -20,6 +20,12 @@ from glyphs.accents.caron import Caron
 from glyphs.uppercase.a import UppercaseAGlyph
 from glyphs.uppercase.g import UppercaseGGlyph
 from glyphs.lowercase.single_story.g import LowercaseGGlyph
+from glyphs.lowercase.dotted.i import LowercaseIGlyph
+from glyphs.lowercase.round.o import LowercaseOGlyph
+from glyphs.lowercase.square.u import LowercaseUGlyph
+from glyphs.uppercase.i import UppercaseIGlyph
+from glyphs.uppercase.o import UppercaseOGlyph
+from glyphs.uppercase.u import UppercaseUGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap
@@ -157,5 +163,53 @@ class UppercaseGCaronGlyph(ComposedGlyph):
     name = "uppercase_gcaron"
     unicode = "0x1E6"
     base_glyph_class = UppercaseGGlyph
+    accent_class = Caron
+    accent_y = _uc_accent
+
+
+class LowercaseICaronGlyph(ComposedGlyph):
+    name = "lowercase_icaron"
+    unicode = "0x1D0"
+    base_glyph_class = LowercaseIGlyph
+    accent_class = Caron
+    accent_y = _lc_accent
+
+
+class LowercaseOCaronGlyph(ComposedGlyph):
+    name = "lowercase_ocaron"
+    unicode = "0x1D2"
+    base_glyph_class = LowercaseOGlyph
+    accent_class = Caron
+    accent_y = _lc_accent
+
+
+class LowercaseUCaronGlyph(ComposedGlyph):
+    name = "lowercase_ucaron"
+    unicode = "0x1D4"
+    base_glyph_class = LowercaseUGlyph
+    accent_class = Caron
+    accent_y = _lc_accent
+
+
+class UppercaseICaronGlyph(ComposedGlyph):
+    name = "uppercase_icaron"
+    unicode = "0x1CF"
+    base_glyph_class = UppercaseIGlyph
+    accent_class = Caron
+    accent_y = _uc_accent
+
+
+class UppercaseOCaronGlyph(ComposedGlyph):
+    name = "uppercase_ocaron"
+    unicode = "0x1D1"
+    base_glyph_class = UppercaseOGlyph
+    accent_class = Caron
+    accent_y = _uc_accent
+
+
+class UppercaseUCaronGlyph(ComposedGlyph):
+    name = "uppercase_ucaron"
+    unicode = "0x1D3"
+    base_glyph_class = UppercaseUGlyph
     accent_class = Caron
     accent_y = _uc_accent

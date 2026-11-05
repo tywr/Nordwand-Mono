@@ -12,6 +12,10 @@ from glyphs.uppercase.c import UppercaseCGlyph
 from glyphs.uppercase.g import UppercaseGGlyph
 from glyphs.uppercase.z import UppercaseZGlyph
 from glyphs.accents.dot import DotAbove
+from glyphs.lowercase.square.n import LowercaseNGlyph
+from glyphs.lowercase.single_story.p import LowercasePGlyph
+from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.p import UppercasePGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap
@@ -85,5 +89,37 @@ class UppercaseEDotGlyph(ComposedGlyph):
     name = "uppercase_edotaccent"
     unicode = "0x116"
     base_glyph_class = UppercaseEGlyph
+    accent_class = DotAbove
+    accent_y = _uc_accent
+
+
+class LowercaseNDotGlyph(ComposedGlyph):
+    name = "lowercase_ndotaccent"
+    unicode = "0x1E45"
+    base_glyph_class = LowercaseNGlyph
+    accent_class = DotAbove
+    accent_y = _lc_accent
+
+
+class LowercasePDotGlyph(ComposedGlyph):
+    name = "lowercase_pdotaccent"
+    unicode = "0x1E57"
+    base_glyph_class = LowercasePGlyph
+    accent_class = DotAbove
+    accent_y = _lc_accent
+
+
+class UppercaseNDotGlyph(ComposedGlyph):
+    name = "uppercase_ndotaccent"
+    unicode = "0x1E44"
+    base_glyph_class = UppercaseNGlyph
+    accent_class = DotAbove
+    accent_y = _uc_accent
+
+
+class UppercasePDotGlyph(ComposedGlyph):
+    name = "uppercase_pdotaccent"
+    unicode = "0x1E56"
+    base_glyph_class = UppercasePGlyph
     accent_class = DotAbove
     accent_y = _uc_accent

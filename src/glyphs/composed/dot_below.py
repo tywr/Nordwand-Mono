@@ -18,6 +18,18 @@ from glyphs.uppercase.i import UppercaseIGlyph
 from glyphs.uppercase.o import UppercaseOGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.uppercase.y import UppercaseYGlyph
+from glyphs.lowercase.single_story.b import LowercaseBGlyph
+from glyphs.lowercase.single_story.d import LowercaseDGlyph
+from glyphs.lowercase.square.h import LowercaseHGlyph
+from glyphs.lowercase.square.n import LowercaseNGlyph
+from glyphs.lowercase.s import LowercaseSGlyph
+from glyphs.lowercase.z import LowercaseZGlyph
+from glyphs.uppercase.b import UppercaseBGlyph
+from glyphs.uppercase.d import UppercaseDGlyph
+from glyphs.uppercase.h import UppercaseHGlyph
+from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.s import UppercaseSGlyph
+from glyphs.uppercase.z import UppercaseZGlyph
 
 
 class LowercaseADotBelowGlyph(ComposedGlyph):
@@ -145,5 +157,101 @@ class UppercaseYDotBelowGlyph(ComposedGlyph):
     name = "uppercase_ydotbelow"
     unicode = "0x1EF4"
     base_glyph_class = UppercaseYGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class LowercaseBDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_bdotbelow"
+    unicode = "0x1E05"
+    base_glyph_class = LowercaseBGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class LowercaseDDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_ddotbelow"
+    unicode = "0x1E0D"
+    base_glyph_class = LowercaseDGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class LowercaseHDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_hdotbelow"
+    unicode = "0x1E25"
+    base_glyph_class = LowercaseHGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class LowercaseNDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_ndotbelow"
+    unicode = "0x1E47"
+    base_glyph_class = LowercaseNGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class LowercaseSDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_sdotbelow"
+    unicode = "0x1E63"
+    base_glyph_class = LowercaseSGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class LowercaseZDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_zdotbelow"
+    unicode = "0x1E93"
+    base_glyph_class = LowercaseZGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseBDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_bdotbelow"
+    unicode = "0x1E04"
+    base_glyph_class = UppercaseBGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseDDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_ddotbelow"
+    unicode = "0x1E0C"
+    base_glyph_class = UppercaseDGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseHDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_hdotbelow"
+    unicode = "0x1E24"
+    base_glyph_class = UppercaseHGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseNDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_ndotbelow"
+    unicode = "0x1E46"
+    base_glyph_class = UppercaseNGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseSDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_sdotbelow"
+    unicode = "0x1E62"
+    base_glyph_class = UppercaseSGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseZDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_zdotbelow"
+    unicode = "0x1E92"
+    base_glyph_class = UppercaseZGlyph
     accent_class = DotBelow
     accent_y = 0
