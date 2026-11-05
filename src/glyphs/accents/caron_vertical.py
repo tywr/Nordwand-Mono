@@ -41,4 +41,6 @@ class CaronVertical(Accent):
         )
 
     def draw(self, pen, dc):
-        self.draw_at(pen, dc, x=dc.window_width / 2 - self.top_width(dc) / 2, y=dc.ascent)
+        self.draw_at(
+            pen, dc, x=dc.window_width / 2 - self.top_width(dc) / 2, y=dc.ascent
+        )

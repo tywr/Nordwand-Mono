@@ -11,7 +11,7 @@ class DotBelow(DotAbove):
     name = "dotbelow"
     unicode = None
     generated_only = True  # Only used inside composed glyphs
-    gap = 0.08
+    gap = 0.12
 
     def draw_at(self, pen, dc, x, y):
         _, h = dot_size(dc, self.dot_ratio)

@@ -8,7 +8,6 @@ from draw.polygon import draw_polygon
 class Circumflex(Accent):
     name = "circumflex"
     unicode = "0x5E"
-    height = 0.35
     width = 1
     stroke_ratio = 1
     overlap = 0.5

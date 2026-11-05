@@ -8,6 +8,15 @@ from glyphs.lowercase.square.u import LowercaseUGlyph
 from glyphs.uppercase.o import UppercaseOGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.accents.horn import Horn
+from config import FontConfig as fc
+from glyphs.accents.acute import Acute
+from glyphs.accents.dot_below import DotBelow
+from glyphs.accents.grave import Grave
+from glyphs.accents.hook_above import HookAbove
+from glyphs.accents.tilde import Tilde
+
+_lc_accent = fc.accent
+_uc_accent = fc.accent_cap
 
 
 class HornComposedGlyph(ComposedGlyph):
@@ -68,3 +77,163 @@ class UppercaseUHornGlyph(HornComposedGlyph):
     unicode = "0x1AF"
     base_glyph_class = UppercaseUGlyph
     x_offset = 0.47
+
+
+class LowercaseOHornAcuteGlyph(ComposedGlyph):
+    name = "lowercase_ohornacute"
+    unicode = "0x1EDB"
+    base_glyph_class = LowercaseOHornGlyph
+    accent_class = Acute
+    accent_y = _lc_accent
+
+
+class LowercaseOHornGraveGlyph(ComposedGlyph):
+    name = "lowercase_ohorngrave"
+    unicode = "0x1EDD"
+    base_glyph_class = LowercaseOHornGlyph
+    accent_class = Grave
+    accent_y = _lc_accent
+
+
+class LowercaseOHornHookAboveGlyph(ComposedGlyph):
+    name = "lowercase_ohornhookabove"
+    unicode = "0x1EDF"
+    base_glyph_class = LowercaseOHornGlyph
+    accent_class = HookAbove
+    accent_y = _lc_accent
+
+
+class LowercaseOHornTildeGlyph(ComposedGlyph):
+    name = "lowercase_ohorntilde"
+    unicode = "0x1EE1"
+    base_glyph_class = LowercaseOHornGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class LowercaseOHornDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_ohorndotbelow"
+    unicode = "0x1EE3"
+    base_glyph_class = LowercaseOHornGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class LowercaseUHornAcuteGlyph(ComposedGlyph):
+    name = "lowercase_uhornacute"
+    unicode = "0x1EE9"
+    base_glyph_class = LowercaseUHornGlyph
+    accent_class = Acute
+    accent_y = _lc_accent
+
+
+class LowercaseUHornGraveGlyph(ComposedGlyph):
+    name = "lowercase_uhorngrave"
+    unicode = "0x1EEB"
+    base_glyph_class = LowercaseUHornGlyph
+    accent_class = Grave
+    accent_y = _lc_accent
+
+
+class LowercaseUHornHookAboveGlyph(ComposedGlyph):
+    name = "lowercase_uhornhookabove"
+    unicode = "0x1EED"
+    base_glyph_class = LowercaseUHornGlyph
+    accent_class = HookAbove
+    accent_y = _lc_accent
+
+
+class LowercaseUHornTildeGlyph(ComposedGlyph):
+    name = "lowercase_uhorntilde"
+    unicode = "0x1EEF"
+    base_glyph_class = LowercaseUHornGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class LowercaseUHornDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_uhorndotbelow"
+    unicode = "0x1EF1"
+    base_glyph_class = LowercaseUHornGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseOHornAcuteGlyph(ComposedGlyph):
+    name = "uppercase_ohornacute"
+    unicode = "0x1EDA"
+    base_glyph_class = UppercaseOHornGlyph
+    accent_class = Acute
+    accent_y = _uc_accent
+
+
+class UppercaseOHornGraveGlyph(ComposedGlyph):
+    name = "uppercase_ohorngrave"
+    unicode = "0x1EDC"
+    base_glyph_class = UppercaseOHornGlyph
+    accent_class = Grave
+    accent_y = _uc_accent
+
+
+class UppercaseOHornHookAboveGlyph(ComposedGlyph):
+    name = "uppercase_ohornhookabove"
+    unicode = "0x1EDE"
+    base_glyph_class = UppercaseOHornGlyph
+    accent_class = HookAbove
+    accent_y = _uc_accent
+
+
+class UppercaseOHornTildeGlyph(ComposedGlyph):
+    name = "uppercase_ohorntilde"
+    unicode = "0x1EE0"
+    base_glyph_class = UppercaseOHornGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class UppercaseOHornDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_ohorndotbelow"
+    unicode = "0x1EE2"
+    base_glyph_class = UppercaseOHornGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseUHornAcuteGlyph(ComposedGlyph):
+    name = "uppercase_uhornacute"
+    unicode = "0x1EE8"
+    base_glyph_class = UppercaseUHornGlyph
+    accent_class = Acute
+    accent_y = _uc_accent
+
+
+class UppercaseUHornGraveGlyph(ComposedGlyph):
+    name = "uppercase_uhorngrave"
+    unicode = "0x1EEA"
+    base_glyph_class = UppercaseUHornGlyph
+    accent_class = Grave
+    accent_y = _uc_accent
+
+
+class UppercaseUHornHookAboveGlyph(ComposedGlyph):
+    name = "uppercase_uhornhookabove"
+    unicode = "0x1EEC"
+    base_glyph_class = UppercaseUHornGlyph
+    accent_class = HookAbove
+    accent_y = _uc_accent
+
+
+class UppercaseUHornTildeGlyph(ComposedGlyph):
+    name = "uppercase_uhorntilde"
+    unicode = "0x1EEE"
+    base_glyph_class = UppercaseUHornGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class UppercaseUHornDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_uhorndotbelow"
+    unicode = "0x1EF0"
+    base_glyph_class = UppercaseUHornGlyph
+    accent_class = DotBelow
+    accent_y = 0

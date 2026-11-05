@@ -14,7 +14,9 @@ class CircumflexAcute(StackedAccent):
     first = Circumflex
     second = Acute
     second_dx = 0.5
-    second_dy = 0.3
+    second_width = 0.55
+    second_dy = 0.15
+    second_height = 0.25
 
 
 class CircumflexGrave(StackedAccent):
@@ -23,8 +25,10 @@ class CircumflexGrave(StackedAccent):
     name = "circumflex_grave"
     first = Circumflex
     second = Grave
-    second_dx = 0.5
-    second_dy = 0.3
+    second_dx = 0.55
+    second_width = 0.55
+    second_dy = 0.15
+    second_height = 0.25
 
 
 class CircumflexHookAbove(StackedAccent):
@@ -33,8 +37,9 @@ class CircumflexHookAbove(StackedAccent):
     name = "circumflex_hookabove"
     first = Circumflex
     second = HookAbove
-    second_dx = 0.5
-    second_dy = 0.3
+    second_dx = 0.55
+    second_dy = 0.12
+    second_height = 0.3
 
 
 class CircumflexTilde(StackedAccent):
@@ -43,9 +48,14 @@ class CircumflexTilde(StackedAccent):
     name = "circumflex_tilde"
     first = Circumflex
     second = Tilde
-    second_dy = 0.36
-    # Smaller and thinner, to stay below the window ascent
-    second_attrs = {"rescale": 0.55, "stroke_ratio": 0.75}
+    first_height = 0.25
+    first_width = 0.9
+    first_dy = -0.08
+    first_stroke_ratio = 0.8
+    second_dy = 0.2
+    second_height = 0.22
+    second_dy = 0.18
+    second_width = 1.0
 
 
 class CircumflexDotBelow(StackedAccent):
@@ -55,3 +65,4 @@ class CircumflexDotBelow(StackedAccent):
     first = Circumflex
     second = DotBelow
     second_y = 0
+    first_stroke_ratio = 1

@@ -3,6 +3,7 @@
 from config import FontConfig as fc
 from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.a import LowercaseAGlyph
+from glyphs.uppercase.a import UppercaseAGlyph
 from glyphs.accents.breve_stacked import (
     BreveAcute,
     BreveGrave,
@@ -12,43 +13,114 @@ from glyphs.accents.breve_stacked import (
 )
 
 _lc_accent = fc.accent
+_uc_accent = fc.accent_cap
 
 
-class LowercaseABreveAcuteGlyph(ComposedGlyph):
-    name = "lowercase_abreveacute"
-    unicode = "0x1EAF"
-    base_glyph_class = LowercaseAGlyph
+class LowercaseBreveAcuteGlyph(ComposedGlyph):
     accent_class = BreveAcute
     accent_y = _lc_accent
 
 
-class LowercaseABreveGraveGlyph(ComposedGlyph):
-    name = "lowercase_abrevegrave"
-    unicode = "0x1EB1"
+class LowercaseABreveAcuteGlyph(LowercaseBreveAcuteGlyph):
+    name = "lowercase_abreveacute"
+    unicode = "0x1EAF"
     base_glyph_class = LowercaseAGlyph
+
+
+class UppercaseBreveAcuteGlyph(ComposedGlyph):
+    accent_class = BreveAcute
+    accent_y = _uc_accent
+
+
+class UppercaseABreveAcuteGlyph(UppercaseBreveAcuteGlyph):
+    name = "uppercase_abreveacute"
+    unicode = "0x1EAE"
+    base_glyph_class = UppercaseAGlyph
+
+
+class LowercaseBreveGraveGlyph(ComposedGlyph):
     accent_class = BreveGrave
     accent_y = _lc_accent
 
 
-class LowercaseABreveHookAboveGlyph(ComposedGlyph):
-    name = "lowercase_abrevehookabove"
-    unicode = "0x1EB3"
+class LowercaseABreveGraveGlyph(LowercaseBreveGraveGlyph):
+    name = "lowercase_abrevegrave"
+    unicode = "0x1EB1"
     base_glyph_class = LowercaseAGlyph
+
+
+class UppercaseBreveGraveGlyph(ComposedGlyph):
+    accent_class = BreveGrave
+    accent_y = _uc_accent
+
+
+class UppercaseABreveGraveGlyph(UppercaseBreveGraveGlyph):
+    name = "uppercase_abrevegrave"
+    unicode = "0x1EB0"
+    base_glyph_class = UppercaseAGlyph
+
+
+class LowercaseBreveHookAboveGlyph(ComposedGlyph):
     accent_class = BreveHookAbove
     accent_y = _lc_accent
 
 
-class LowercaseABreveTildeGlyph(ComposedGlyph):
-    name = "lowercase_abrevetilde"
-    unicode = "0x1EB5"
+class LowercaseABreveHookAboveGlyph(LowercaseBreveHookAboveGlyph):
+    name = "lowercase_abrevehookabove"
+    unicode = "0x1EB3"
     base_glyph_class = LowercaseAGlyph
+
+
+class UppercaseBreveHookAboveGlyph(ComposedGlyph):
+    accent_class = BreveHookAbove
+    accent_y = _uc_accent
+
+
+class UppercaseABreveHookAboveGlyph(UppercaseBreveHookAboveGlyph):
+    name = "uppercase_abrevehookabove"
+    unicode = "0x1EB2"
+    base_glyph_class = UppercaseAGlyph
+
+
+class LowercaseBreveTildeGlyph(ComposedGlyph):
     accent_class = BreveTilde
     accent_y = _lc_accent
 
 
-class LowercaseABreveDotBelowGlyph(ComposedGlyph):
+class LowercaseABreveTildeGlyph(LowercaseBreveTildeGlyph):
+    name = "lowercase_abrevetilde"
+    unicode = "0x1EB5"
+    base_glyph_class = LowercaseAGlyph
+
+
+class UppercaseBreveTildeGlyph(ComposedGlyph):
+    accent_class = BreveTilde
+    accent_y = _uc_accent
+
+
+class UppercaseABreveTildeGlyph(UppercaseBreveTildeGlyph):
+    name = "uppercase_abrevetilde"
+    unicode = "0x1EB4"
+    base_glyph_class = UppercaseAGlyph
+
+
+class LowercaseBreveDotBelowGlyph(ComposedGlyph):
+    accent_class = BreveDotBelow
+    accent_y = _lc_accent
+
+
+class LowercaseABreveDotBelowGlyph(LowercaseBreveDotBelowGlyph):
     name = "lowercase_abrevedotbelow"
     unicode = "0x1EB7"
     base_glyph_class = LowercaseAGlyph
+
+
+class UppercaseBreveDotBelowGlyph(ComposedGlyph):
     accent_class = BreveDotBelow
-    accent_y = _lc_accent
+    accent_y = _uc_accent
+
+
+class UppercaseABreveDotBelowGlyph(UppercaseBreveDotBelowGlyph):
+    name = "uppercase_abrevedotbelow"
+    unicode = "0x1EB6"
+    base_glyph_class = UppercaseAGlyph

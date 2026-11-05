@@ -13,6 +13,10 @@ from glyphs.uppercase.o import UppercaseOGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.uppercase.n import UppercaseNGlyph
 from glyphs.accents.tilde import Tilde
+from glyphs.lowercase.round.e import LowercaseEGlyph
+from glyphs.lowercase.y import LowercaseYGlyph
+from glyphs.uppercase.e import UppercaseEGlyph
+from glyphs.uppercase.y import UppercaseYGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap
@@ -94,5 +98,37 @@ class UppercaseUTildeGlyph(ComposedGlyph):
     name = "uppercase_utilde"
     unicode = "0x168"
     base_glyph_class = UppercaseUGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class LowercaseETildeGlyph(ComposedGlyph):
+    name = "lowercase_etilde"
+    unicode = "0x1EBD"
+    base_glyph_class = LowercaseEGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class LowercaseYTildeGlyph(ComposedGlyph):
+    name = "lowercase_ytilde"
+    unicode = "0x1EF9"
+    base_glyph_class = LowercaseYGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class UppercaseETildeGlyph(ComposedGlyph):
+    name = "uppercase_etilde"
+    unicode = "0x1EBC"
+    base_glyph_class = UppercaseEGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class UppercaseYTildeGlyph(ComposedGlyph):
+    name = "uppercase_ytilde"
+    unicode = "0x1EF8"
+    base_glyph_class = UppercaseYGlyph
     accent_class = Tilde
     accent_y = _uc_accent

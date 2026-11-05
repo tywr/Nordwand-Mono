@@ -23,19 +23,21 @@ class TildeGlyph(Glyph):
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         self.draw_shape(pen, dc, b, b.xmid, dc.math, sx, sy)
 
-    def draw_shape(self, pen, dc, b, x, y, sx, sy, scale=1, width=None):
+    def draw_shape(self, pen, dc, b, x, y, sx, sy, scale=1, width=None, height=None):
         """Tilde sized after the body `b`, centered on (x, y). `scale` shrinks
         its outline around that center, while the strokes stay `sx` and `sy`,
         so that the accent can be drawn smaller without getting thinner.
-        `width`, when set, overrides the scaled width."""
+        `width` and `height`, when set, override the scaled outer size."""
         w = width or scale * b.width
         x1, x2 = x - w / 2, x + w / 2
-        h = scale * self.height_ratio * b.height
-        y1 = y - h / 2 - sy / 2
-        y2 = y + h / 2 + sy / 2
-
         # The round parts overshoot the flat ends, so they align optically
         o = scale * self.overshoot_ratio * dc.v_overshoot
+
+        h = scale * self.height_ratio * b.height
+        if height:
+            h = height - sy - 2 * o
+        y1 = y - h / 2 - sy / 2
+        y2 = y + h / 2 + sy / 2
 
         # Each end is a quarter of a loop spanning the whole height: going up
         # from y1 then right on the left, going right then up to y2 on the right

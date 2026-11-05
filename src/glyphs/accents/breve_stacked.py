@@ -7,40 +7,60 @@ from glyphs.accents.tilde import Tilde
 from glyphs.accents.dot_below import DotBelow
 
 
-class BreveAcute(StackedAccent):
+class BreveStackedAccent(StackedAccent):
+    first_stroke_ratio = 0.85
+
+
+class BreveAcute(BreveStackedAccent):
     """Acute on top of the breve."""
 
     name = "breve_acute"
     first = Breve
     second = Acute
-    second_dy = 0.18
+    first_dy = -0.1
+    second_dy = 0.15
+    second_dx = -0.05
+    second_height = 0.3
+    second_width = 0.5
 
 
-class BreveGrave(StackedAccent):
+class BreveGrave(BreveStackedAccent):
     """Grave on top of the breve."""
 
     name = "breve_grave"
     first = Breve
     second = Grave
-    second_dy = 0.18
+    first_dy = -0.1
+    second_dy = 0.15
+    second_dx = 0.05
+    second_height = 0.3
+    second_width = 0.5
 
 
-class BreveHookAbove(StackedAccent):
+class BreveHookAbove(BreveStackedAccent):
     """Hook above on top of the breve."""
 
     name = "breve_hookabove"
     first = Breve
     second = HookAbove
-    second_dy = 0.18
+    first_dy = -0.1
+    second_dy = 0.1
+    second_dx = -0.1
+    second_height = 0.3
 
 
-class BreveTilde(StackedAccent):
+class BreveTilde(BreveStackedAccent):
     """Tilde on top of the breve."""
 
     name = "breve_tilde"
     first = Breve
     second = Tilde
-    second_dy = 0.28
+    first_height = 0.2
+    first_dy = -0.12
+    second_dy = 0.2
+    second_height = 0.22
+    second_dy = 0.18
+    second_width = 1.0
 
 
 class BreveDotBelow(StackedAccent):
@@ -50,3 +70,4 @@ class BreveDotBelow(StackedAccent):
     first = Breve
     second = DotBelow
     second_y = 0
+    first_stroke_ratio = 1

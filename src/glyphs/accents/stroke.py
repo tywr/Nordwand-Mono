@@ -23,7 +23,12 @@ class Stroke(Accent):
         t = self.stroke_ratio * dc.stroke_y / cos(atan2(h, x2 - x1))
         draw_polygon(
             pen,
-            points=[(x1, y1 - t / 2), (x2, y2 - t / 2), (x2, y2 + t / 2), (x1, y1 + t / 2)],
+            points=[
+                (x1, y1 - t / 2),
+                (x2, y2 - t / 2),
+                (x2, y2 + t / 2),
+                (x1, y1 + t / 2),
+            ],
         )
 
 
