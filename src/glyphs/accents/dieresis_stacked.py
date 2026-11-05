@@ -8,9 +8,9 @@ from glyphs.accents.macron import Macron
 
 class DieresisStackedAccent(StackedAccent):
     first = Dieresis
-    first_dy = -0.2
-    first_stroke_ratio = 0.9
-    second_dy = 0.05
+    first_dy = -0.15
+    first_stroke_ratio = 0.8
+    second_dy = 0.1
 
 
 class DieresisMacron(DieresisStackedAccent):
@@ -18,7 +18,7 @@ class DieresisMacron(DieresisStackedAccent):
 
     name = "dieresis_macron"
     second = Macron
-    second_stroke_ratio = 0.8
+    second_stroke_ratio = 0.7
     second_width = 0.8
 
 
