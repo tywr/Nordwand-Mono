@@ -1,9 +1,11 @@
-"""Composed glyphs with a horizontal stroke or bar (ħ Ħ đ Đ ŧ Ŧ)."""
+"""Composed glyphs with a horizontal stroke or bar (ħ Ħ đ Đ ŧ Ŧ ɨ Ɨ)."""
 
 from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.t import LowercaseTGlyph
 from glyphs.uppercase.t import UppercaseTGlyph
 from glyphs.uppercase.h import UppercaseHGlyph
+from glyphs.uppercase.i import UppercaseIGlyph
+from glyphs.lowercase.dotted.i import LowercaseIGlyph
 from glyphs.lowercase.square.h import LowercaseHGlyph
 from glyphs.lowercase.single_story.d import LowercaseDGlyph
 from glyphs.latin.uppercase.eth import UppercaseEthGlyph
@@ -131,3 +133,31 @@ class UppercaseTStrokeGlyph(TStrokeComposedGlyph):
             min_margin=dc.min_margin_uppercase,
         )
         return b, dc.stroke_y * base.stroke_y_ratio
+
+
+class LowercaseIStrokeGlyph(TStrokeComposedGlyph):
+    name = "lowercase_istroke"
+    unicode = "0x268"
+    base_glyph_class = LowercaseIGlyph
+    bar_y = 0.5
+    bar_width = 0.7
+    stroke = "stroke_alt"
+
+    def body(self, base, dc):
+        b = dc.body_bounds(
+            offset=base.offset, height="x_height", width_ratio=base.width_ratio
+        )
+        return b, dc.stroke_y
+
+
+class UppercaseIStrokeGlyph(TStrokeComposedGlyph):
+    name = "uppercase_istroke"
+    unicode = "0x197"
+    base_glyph_class = UppercaseIGlyph
+    stroke = "stroke_alt"
+
+    def body(self, base, dc):
+        b = dc.body_bounds(
+            offset=base.offset, height="cap", width_ratio=base.width_ratio
+        )
+        return b, dc.stroke_y
