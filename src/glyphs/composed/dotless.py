@@ -2,6 +2,7 @@
 
 from glyphs.lowercase.dotted.i import LowercaseIGlyph
 from glyphs.lowercase.dotted.i_2 import LowercaseI2Glyph
+from glyphs.lowercase.dotted.j import LowercaseJGlyph
 
 
 class LowercaseDotlessIGlyph(LowercaseIGlyph):
@@ -15,6 +16,14 @@ class LowercaseDotlessIGlyph(LowercaseIGlyph):
 class LowercaseDotlessI2Glyph(LowercaseI2Glyph):
     name = "lowercase_dotlessi_2"
     unicode = "0x131"
+
+    def draw(self, pen, dc):
+        self.draw_base(pen, dc)
+
+
+class LowercaseDotlessJGlyph(LowercaseJGlyph):
+    name = "lowercase_dotlessj"
+    unicode = "0x237"
 
     def draw(self, pen, dc):
         self.draw_base(pen, dc)
