@@ -18,6 +18,7 @@ from glyphs.uppercase.r import UppercaseRGlyph
 from glyphs.uppercase.d import UppercaseDGlyph
 from glyphs.accents.caron import Caron
 from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.lowercase.a import LowercaseAGlyph
 from glyphs.uppercase.g import UppercaseGGlyph
 from glyphs.lowercase.single_story.g import LowercaseGGlyph
 from glyphs.lowercase.dotted.i import LowercaseIGlyph
@@ -149,6 +150,14 @@ class UppercaseACaronGlyph(ComposedGlyph):
     base_glyph_class = UppercaseAGlyph
     accent_class = Caron
     accent_y = _uc_accent
+
+
+class LowercaseACaronGlyph(ComposedGlyph):
+    name = "lowercase_acaron"
+    unicode = "0x1CE"
+    base_glyph_class = LowercaseAGlyph
+    accent_class = Caron
+    accent_y = _lc_accent
 
 
 class LowercaseGCaronGlyph(ComposedGlyph):
