@@ -17,6 +17,8 @@ from glyphs.uppercase.t import UppercaseTGlyph
 from glyphs.uppercase.r import UppercaseRGlyph
 from glyphs.uppercase.d import UppercaseDGlyph
 from glyphs.accents.caron import Caron
+from glyphs.composed.circumflex import LowercaseHCircumflexGlyph
+from glyphs.uppercase.h import UppercaseHGlyph
 from glyphs.uppercase.a import UppercaseAGlyph
 from glyphs.lowercase.a import LowercaseAGlyph
 from glyphs.uppercase.g import UppercaseGGlyph
@@ -220,5 +222,21 @@ class UppercaseUCaronGlyph(ComposedGlyph):
     name = "uppercase_ucaron"
     unicode = "0x1D3"
     base_glyph_class = UppercaseUGlyph
+    accent_class = Caron
+    accent_y = _uc_accent
+
+
+class LowercaseHCaronGlyph(LowercaseHCircumflexGlyph):
+    """h with the caron above its ascender, placed like the circumflex of ĥ."""
+
+    name = "lowercase_hcaron"
+    unicode = "0x21F"
+    accent_class = Caron
+
+
+class UppercaseHCaronGlyph(ComposedGlyph):
+    name = "uppercase_hcaron"
+    unicode = "0x21E"
+    base_glyph_class = UppercaseHGlyph
     accent_class = Caron
     accent_y = _uc_accent
