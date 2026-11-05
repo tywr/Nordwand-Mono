@@ -1,4 +1,4 @@
-"""Composed glyphs with a horizontal stroke or bar (ħ Ħ đ Đ ŧ Ŧ ɨ Ɨ)."""
+"""Composed glyphs with a horizontal stroke or bar (ħ Ħ đ Đ Ɖ ŧ Ŧ ɨ Ɨ)."""
 
 from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.t import LowercaseTGlyph
@@ -57,6 +57,13 @@ class UppercaseDStrokeGlyph(UppercaseEthGlyph):
 
     name = "uppercase_dcroat"
     unicode = "0x110"
+
+
+class UppercaseDAfricanGlyph(UppercaseEthGlyph):
+    """Drawn exactly like the Icelandic eth `Ð`."""
+
+    name = "uppercase_dafrican"
+    unicode = "0x189"
 
 
 class LowercaseDStrokeGlyph(LowercaseDGlyph):
