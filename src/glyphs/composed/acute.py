@@ -297,10 +297,6 @@ class LowercaseOSlashAcuteGlyph(ComposedGlyph):
     base_glyph_class = OSlashGlyph
     accent_class = Acute
     accent_y = _lc_accent
-    slash_clearance = 0.15  # Leftward shift of the acute, relative to the body width
-
-    def accent_x(self, dc, base, b):
-        return b.xmid - self.slash_clearance * b.width
 
 
 class UppercaseOSlashAcuteGlyph(ComposedGlyph):
@@ -311,7 +307,27 @@ class UppercaseOSlashAcuteGlyph(ComposedGlyph):
     base_glyph_class = UppercaseOSlashGlyph
     accent_class = Acute
     accent_y = _uc_accent
-    slash_clearance = 0.15  # Leftward shift of the acute, relative to the body width
 
-    def accent_x(self, dc, base, b):
-        return b.xmid - self.slash_clearance * b.width
+
+class LowercaseNApostropheGlyph(ComposedGlyph):
+    """n preceded by an apostrophe, drawn with the acute (ŉ).
+
+    The mark tops at ascent, x_offset (relative to the body width) from the
+    left edge of the n.
+    """
+
+    name = "lowercase_napostrophe"
+    unicode = "0x149"
+    base_glyph_class = LowercaseNGlyph
+    accent_class = Acute
+    x_offset = -0.1
+
+    def draw(self, pen, dc):
+        base = self._resolve_base_class(dc)()
+        base.draw(pen, dc)
+        b = dc.body_bounds(offset=base.offset, width_ratio=base.width_ratio)
+        accent = self.accent_class()
+        h = accent.height * dc.x_height
+        accent.draw_at(
+            pen, dc, x=b.x1 + self.x_offset * b.width, y=dc.ascent - h / 2
+        )
