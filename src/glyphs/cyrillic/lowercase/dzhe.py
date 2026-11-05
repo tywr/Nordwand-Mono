@@ -10,7 +10,7 @@ class CyrillicLowercaseDzheGlyph(CyrillicLowercaseGlyph):
     middle_stroke_ratio = 0.84
     overlap = 0.3
 
-    def draw(self, pen, dc):
+    def draw(self, pen, dc, draw_descender=True):
         b = dc.body_bounds(
             offset=self.offset,
             width_ratio=self.width_ratio,
@@ -23,4 +23,5 @@ class CyrillicLowercaseDzheGlyph(CyrillicLowercaseGlyph):
         draw_rect(pen, b.x1, b.y1, b.x1 + sx, b.y2)
         draw_rect(pen, b.x2 - sx, b.y1, b.x2, b.y2)
         draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + sy)
-        draw_rect(pen, b.xmid - sx / 2, descent, b.xmid + sx / 2, b.y1)
+        if draw_descender:
+            draw_rect(pen, b.xmid - sx / 2, descent, b.xmid + sx / 2, b.y1)
