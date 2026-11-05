@@ -1,10 +1,11 @@
-"""Letters with a hook (Ɓ Ɗ Ƙ Ƴ Ɲ ɓ ɗ ƙ ƴ ɲ)."""
+"""Letters with a hook (Ɓ Ɗ Ƒ Ƙ Ƴ Ɲ ɓ ɗ ƙ ƴ ɲ)."""
 
 from draw.parallelogramm import parallelogramm_delta
 from draw.rect import draw_rect
 from draw.square_corner import draw_square_corner
 from glyphs.uppercase.b import UppercaseBGlyph
 from glyphs.uppercase.d import UppercaseDGlyph
+from glyphs.uppercase.f import UppercaseFGlyph
 from glyphs.uppercase.k import UppercaseKGlyph
 from glyphs.uppercase.n import UppercaseNGlyph
 from glyphs.uppercase.y import UppercaseYGlyph
@@ -185,6 +186,16 @@ class UppercaseNLeftHookGlyph(BottomLeftHookedGlyph, UppercaseNGlyph):
 
     def hook_bounds(self, dc):
         return self.bounds(dc)
+
+
+class UppercaseFHookGlyph(BottomLeftHookedGlyph, UppercaseFGlyph):
+    """The stem goes below the baseline and curls to the left (Ƒ)."""
+
+    name = "uppercase_fhook"
+    unicode = "0x191"
+    hook_scale = 0.2
+    offset = 0
+    width_ratio = 1.1
 
 
 class UppercaseKHookGlyph(FlagHookedGlyph, UppercaseKGlyph):
