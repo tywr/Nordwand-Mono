@@ -13,6 +13,7 @@ from glyphs.uppercase.m import UppercaseMGlyph
 from glyphs.uppercase.h import UppercaseHGlyph
 from glyphs.uppercase.c import UppercaseCGlyph
 
+from glyphs.latin.uppercase.schwa import UppercaseSchwaGlyph
 
 class CyrillicUppercaseAGlyph(UppercaseAGlyph):
     name = "cyrillic_uppercase_a"
@@ -81,3 +82,8 @@ class CyrillicUppercaseByelorussianUkrainianIGlyph(UppercaseIGlyph):
 class CyrillicUppercaseDzeGlyph(UppercaseSGlyph):
     name = "cyrillic_uppercase_dze"
     unicode = "0x0405"
+
+
+class CyrillicUppercaseSchwaGlyph(UppercaseSchwaGlyph):
+    name = "cyrillic_uppercase_schwa"
+    unicode = "0x04D8"

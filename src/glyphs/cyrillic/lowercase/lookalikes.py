@@ -13,6 +13,7 @@ from glyphs.lowercase.x import LowercaseXGlyph
 from glyphs.lowercase.x_2 import LowercaseX2Glyph
 from glyphs.lowercase.round.c import LowercaseCGlyph
 
+from glyphs.latin.lowercase.schwa import LowercaseSchwaGlyph
 
 class CyrillicLowercaseAGlyph(LowercaseAGlyph):
     name = "cyrillic_lowercase_a"
@@ -82,3 +83,8 @@ class CyrillicLowercaseDzeGlyph(LowercaseSGlyph):
 class CyrillicLowercaseUGlyph(LowercaseYGlyph):
     name = "cyrillic_lowercase_u"
     unicode = "0x0443"
+
+
+class CyrillicLowercaseSchwaGlyph(LowercaseSchwaGlyph):
+    name = "cyrillic_lowercase_schwa"
+    unicode = "0x04D9"
