@@ -15,12 +15,14 @@ class HookAbove(Accent):
     height = 0.4
     stroke_ratio = 0.9
     shear = 0.75
+    optical_offset = 0.1
 
     def draw_at(self, pen, dc, x, y):
         w = self.width * dc.width
         h = self.height * dc.x_height
         sx = self.stroke_ratio * dc.stroke_x
         sy = self.stroke_ratio * dc.stroke_y
+        dx = self.optical_offset * w
 
         # The mark spans [x0, x0 + w] x [y0 - h, y0]; center it on (x, y)
         x0, y0 = x - w / 2, y + h / 2
@@ -41,11 +43,13 @@ class HookAbove(Accent):
             quarter="top-right",
         )
 
-        # Shear left what hangs below the horizontal stroke, which stays put
+        # Shear left what hangs below the horizontal stroke, which stays put,
+        # then shift the whole mark right by dx: the shear leaves it
+        # weighing on the left
         y_stroke = y0 - sy
 
         def lean(px, py):
-            return px - self.shear * max(0, y_stroke - py), py
+            return px - self.shear * max(0, y_stroke - py) + dx, py
 
         for op, args in rec.value:
             getattr(pen, op)(*(lean(*p) for p in args))

@@ -9,7 +9,7 @@ class Caron(Accent):
     name = "caron"
     unicode = "0x2C7"
     height = 0.35
-    width = 1.1
+    width = 1
     stroke_ratio = 1
     overlap = 0.5
     lower_section_height = 1
