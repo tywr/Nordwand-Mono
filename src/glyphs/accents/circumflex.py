@@ -39,3 +39,23 @@ class Circumflex(Accent):
 class ModifierCircumflex(Circumflex):
     name = "modifier_circumflex"
     unicode = "0x2C6"
+
+
+class CircumflexBelow(Circumflex):
+    """Circumflex hanging below the baseline (Venda ḓ ḽ ṋ ṱ).
+
+    `draw_at` takes the baseline as y and hangs the accent `gap` below it.
+    """
+
+    name = "circumflexbelow"
+    unicode = None
+    generated_only = True  # Only used inside composed glyphs
+    gap = 0.12  # Relative to the x-height, as on the dot below
+
+    def draw_at(self, pen, dc, x, y):
+        h = self.height * dc.x_height
+        super().draw_at(pen, dc, x, y - self.gap * dc.x_height - h / 2)
+
+    def draw(self, pen, dc):
+        b = dc.body_bounds(offset=self.offset)
+        self.draw_at(pen, dc, x=b.xmid, y=0)

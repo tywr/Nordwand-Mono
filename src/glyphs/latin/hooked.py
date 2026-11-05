@@ -1,4 +1,4 @@
-"""Letters with a hook (Ɓ Ɗ Ƒ Ƙ Ƴ Ɲ ɓ ɖ ɗ ƙ ƴ ɲ)."""
+"""Letters with a hook (Ɓ Ɗ Ƒ Ƙ Ʋ Ƴ Ɲ ɓ ɖ ɗ ƙ ʋ ƴ ɲ)."""
 
 from draw.parallelogramm import parallelogramm_delta
 from draw.rect import draw_rect
@@ -8,12 +8,14 @@ from glyphs.uppercase.d import UppercaseDGlyph
 from glyphs.uppercase.f import UppercaseFGlyph
 from glyphs.uppercase.k import UppercaseKGlyph
 from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.uppercase.y import UppercaseYGlyph
 from glyphs.lowercase.k import LowercaseKGlyph
 from glyphs.lowercase.single_story.b import LowercaseBGlyph
 from glyphs.lowercase.single_story.d import LowercaseDGlyph
 from glyphs.lowercase.square.n import LowercaseNGlyph
 from glyphs.lowercase.y import LowercaseYGlyph
+from glyphs.greek.lowercase.upsilon import GreekLowercaseUpsilonGlyph
 
 
 class OuterHookedGlyph:
@@ -341,3 +343,49 @@ class LowercaseYHookGlyph(FlagHookedGlyph, LowercaseYGlyph):
         s = self.stroke_ratio * dc.stroke_x
         d = parallelogramm_delta(s, b.xmid - self.overlap * s, b.y1, b.x2, b.y2)
         return b.x2, d, b.y2, b.width
+
+
+class UppercaseVHookGlyph(UppercaseUGlyph):
+    """U whose right side curls in to the middle at the top (Ʋ)."""
+
+    name = "uppercase_vhook"
+    unicode = "0x1B2"
+
+    def draw(self, pen, dc):
+        super().draw(pen, dc, draw_right_side=False)
+        b = dc.body_bounds(
+            offset=self.offset,
+            height="cap",
+            overshoot_bottom=True,
+            width_ratio=self.width_ratio,
+            uppercase=True,
+        )
+        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        ym = (b.y1 + self.loop_ratio * b.height) / 2
+        draw_square_corner(pen, sx, sy, b.x2, ym, b.xmid, b.y2, orientation="top-left")
+
+
+class LowercaseVHookGlyph(GreekLowercaseUpsilonGlyph):
+    """υ whose right side curls in to the middle at the top (ʋ)."""
+
+    name = "lowercase_vhook"
+    unicode = "0x28B"
+
+    def draw(self, pen, dc):
+        super().draw(pen, dc, draw_right_side=False)
+        b = dc.body_bounds(
+            offset=self.offset,
+            overshoot_bottom=True,
+            width_ratio=self.width_ratio,
+        )
+        ym = (b.y1 + self.loop_ratio * b.height + b.y1) / 2
+        draw_square_corner(
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x2,
+            ym,
+            b.xmid,
+            dc.x_height,
+            orientation="top-left",
+        )
