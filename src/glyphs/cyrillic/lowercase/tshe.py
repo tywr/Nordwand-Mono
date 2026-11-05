@@ -2,7 +2,7 @@ from draw.arch import draw_arch
 from draw.rect import draw_rect
 
 from glyphs import Glyph
-from glyphs.composed_glyphs import LowercaseHStrokeGlyph
+from glyphs.composed.horizontal_stroke import LowercaseHStrokeGlyph
 
 
 class CyrillicLowercaseTsheGlyph(Glyph):

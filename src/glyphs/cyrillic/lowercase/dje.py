@@ -3,7 +3,7 @@ from draw.rect import draw_rect
 from draw.square_corner import draw_square_corner
 
 from glyphs import Glyph
-from glyphs.composed_glyphs import LowercaseHStrokeGlyph
+from glyphs.composed.horizontal_stroke import LowercaseHStrokeGlyph
 
 
 class CyrillicLowercaseDjeGlyph(Glyph):
