@@ -75,7 +75,7 @@ class LowercaseUDotBelowGlyph(ComposedGlyph):
 
 class LowercaseYDotBelowGlyph(ComposedGlyph):
     """The descender fills the space below y: the dot sits right of the
-    upright tail, and inside the italic hook, between it and the bowl."""
+    tail, further out on the italic y."""
 
     name = "lowercase_ydotbelow"
     unicode = "0x1EF5"
@@ -83,6 +83,7 @@ class LowercaseYDotBelowGlyph(ComposedGlyph):
     accent_class = DotBelow
     accent_y = 0
     gap = 0.5  # Space between the descender and the dot, relative to stroke_x
+    italic_gap = 1.0  # Same, on the italic y
 
     def accent_x(self, dc, base, b):
         # Rightmost point of the descender, within the height of the dot
@@ -94,23 +95,8 @@ class LowercaseYDotBelowGlyph(ComposedGlyph):
         band = pathops.Path()
         draw_rect(pathops.PathPen(band), -1000, top - h, 2000, top)
         _, _, x2, _ = pathops.op(path, band, pathops.PathOp.INTERSECTION).bounds
-        return x2 + self.gap * dc.stroke_x + w / 2
-
-    def draw(self, pen, dc):
-        base_class = self._resolve_base_class(dc)
-        if base_class is self.base_glyph_class:
-            super().draw(pen, dc)
-            return
-
-        # Italic y, whose hook runs under the whole bowl: center the dot
-        # between the baseline and the inside of the hook
-        base = base_class()
-        base.draw(pen, dc)
-        dot = self.accent_class()
-        _, h = dot_size(dc, dot.dot_ratio)
-        center = (dc.descent + dc.stroke_y) / 2
-        b = dc.body_bounds(offset=base.offset)
-        dot.draw_at(pen, dc, b.xmid, center + dot.gap * dc.x_height + h / 2)
+        gap = self.italic_gap if getattr(dc, "italic", False) else self.gap
+        return x2 + gap * dc.stroke_x + w / 2
 
 
 class UppercaseEDotBelowGlyph(ComposedGlyph):
