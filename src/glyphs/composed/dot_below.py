@@ -32,6 +32,10 @@ from glyphs.uppercase.h import UppercaseHGlyph
 from glyphs.uppercase.n import UppercaseNGlyph
 from glyphs.uppercase.s import UppercaseSGlyph
 from glyphs.uppercase.z import UppercaseZGlyph
+from glyphs.lowercase.r import LowercaseRGlyph
+from glyphs.lowercase.t import LowercaseTGlyph
+from glyphs.uppercase.r import UppercaseRGlyph
+from glyphs.uppercase.t import UppercaseTGlyph
 
 
 class LowercaseADotBelowGlyph(ComposedGlyph):
@@ -248,5 +252,37 @@ class UppercaseZDotBelowGlyph(ComposedGlyph):
     name = "uppercase_zdotbelow"
     unicode = "0x1E92"
     base_glyph_class = UppercaseZGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class LowercaseRDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_rdotbelow"
+    unicode = "0x1E5B"
+    base_glyph_class = LowercaseRGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class LowercaseTDotBelowGlyph(ComposedGlyph):
+    name = "lowercase_tdotbelow"
+    unicode = "0x1E6D"
+    base_glyph_class = LowercaseTGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseRDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_rdotbelow"
+    unicode = "0x1E5A"
+    base_glyph_class = UppercaseRGlyph
+    accent_class = DotBelow
+    accent_y = 0
+
+
+class UppercaseTDotBelowGlyph(ComposedGlyph):
+    name = "uppercase_tdotbelow"
+    unicode = "0x1E6C"
+    base_glyph_class = UppercaseTGlyph
     accent_class = DotBelow
     accent_y = 0
