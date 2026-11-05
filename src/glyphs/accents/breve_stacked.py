@@ -71,3 +71,4 @@ class BreveDotBelow(StackedAccent):
     second = DotBelow
     second_y = 0
     first_stroke_ratio = 1
+    second_stroke_ratio = 1
