@@ -1,4 +1,4 @@
-"""Letters with a hook (Ɓ Ɗ Ƒ Ƙ Ƴ Ɲ ɓ ɗ ƙ ƴ ɲ)."""
+"""Letters with a hook (Ɓ Ɗ Ƒ Ƙ Ƴ Ɲ ɓ ɖ ɗ ƙ ƴ ɲ)."""
 
 from draw.parallelogramm import parallelogramm_delta
 from draw.rect import draw_rect
@@ -296,6 +296,26 @@ class LowercaseDHookGlyph(EdgeHookedGlyph, LowercaseDGlyph):
             edge,
             dc.ascent,
             orientation="top-right",
+        )
+
+
+class LowercaseDTailGlyph(LowercaseDHookGlyph):
+    """The stem goes below the baseline and curls to the right (ɖ)."""
+
+    name = "lowercase_dtail"
+    unicode = "0x256"
+
+    def draw_hook(self, pen, dc, edge):
+        b = self.hook_bounds(dc)
+        draw_square_corner(
+            pen,
+            dc.stroke_x,
+            dc.stroke_y,
+            b.x2 - dc.stroke_x,
+            dc.ascent,
+            edge,
+            dc.descent,
+            orientation="bottom-right",
         )
 
 
