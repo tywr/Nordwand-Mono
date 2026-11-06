@@ -10,7 +10,7 @@ class LatinUppercaseGammaGlyph(UppercaseGlyph):
     offset = 0
     width_ratio = 1.2
     branch_stroke_ratio = 1
-    loop_width = 0.5  # Relative to the body width
+    loop_width = 0.75  # Relative to the body width
     loop_depth = 1  # Relative to the descent
 
     def draw(self, pen, dc):

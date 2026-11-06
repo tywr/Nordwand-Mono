@@ -24,7 +24,7 @@ class LatinLowercaseGammaGlyph(Glyph):
     offset = 0
     width_ratio = 1.15
     stroke_ratio = 1.0
-    loop_width = 0.6  # Relative to the body width
+    loop_width = 0.75
     loop_depth = 1  # Relative to the descent
 
     def draw(self, pen, dc):
@@ -37,5 +37,5 @@ class LatinLowercaseGammaGlyph(Glyph):
             dc.stroke_x,
             dc.stroke_y,
             self.loop_width,
-            self.loop_depth * dc.descent,
+            self.loop_depth * dc.descent - dc.v_overshoot,
         )
