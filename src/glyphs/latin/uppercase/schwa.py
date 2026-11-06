@@ -86,12 +86,12 @@ class UppercaseSchwaGlyph(UppercaseGlyph):
             b.x1,
             ymid,
             b.x2 - sx / 2,
-            ymid + dc.stroke_alt / 2,
+            ymid + sy / 2,
         )
         draw_rect(
             pen,
             b.x1 + sx / 2,
-            ymid - dc.stroke_alt / 2,
+            ymid - sy / 2,
             b.x2 - sx / 2,
             ymid,
         )

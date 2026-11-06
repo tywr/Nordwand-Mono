@@ -7,3 +7,4 @@ class LowercaseOpenEGlyph(OpenEGlyph):
     name = "lowercase_open_e"
     unicode = "0x25B"
     mirrored = True
+    mid_stroke_alt = True

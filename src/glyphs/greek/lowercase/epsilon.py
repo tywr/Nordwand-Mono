@@ -7,3 +7,4 @@ class GreekLowercaseEpsilonGlyph(OpenEGlyph):
     name = "greek_lowercase_epsilon"
     unicode = "0x3B5"
     mirrored = True
+    mid_stroke_alt = True

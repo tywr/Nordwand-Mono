@@ -81,7 +81,7 @@ class CyrillicLowercaseUaIeGlyph(RoundLowercaseGlyph):
         draw_rect(
             pen,
             b.x1 + sx / 2,
-            yb - sy / 2,
+            yb - dc.stroke_alt / 2,
             xb,
-            yb + sy / 2,
+            yb + dc.stroke_alt / 2,
         )

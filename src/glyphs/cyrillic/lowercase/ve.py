@@ -22,6 +22,7 @@ class CyrillicLowercaseVeGlyph(Glyph):
         sx, sy = dc.stroke_x, dc.stroke_y
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + self.mid_ratio * b.height
+        sm = dc.stroke_alt
 
         lower_x1 = b.x1
         lower_x2 = b.x2
@@ -40,7 +41,7 @@ class CyrillicLowercaseVeGlyph(Glyph):
             sx,
             sy,
             upper_x1,
-            ymid - sy / 2,
+            ymid + sm / 2 - sy,
             upper_x2,
             b.y2,
             hx * (upper_x2 - upper_x1) / b.width,
@@ -57,7 +58,7 @@ class CyrillicLowercaseVeGlyph(Glyph):
             lower_x1,
             0,
             lower_x2,
-            ymid + sy / 2,
+            ymid - sm / 2 + sy,
             hx,
             hy * self.mid_ratio,
             taper=0.75,
@@ -71,7 +72,7 @@ class CyrillicLowercaseVeGlyph(Glyph):
         draw_rect(
             pen,
             b.x1,
-            ymid - sy / 2,
+            ymid - sm / 2,
             b.xmid,
-            ymid + sy / 2,
+            ymid + sm / 2,
         )

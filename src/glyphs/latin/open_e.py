@@ -34,6 +34,7 @@ class OpenEGlyph(Glyph, ABC):
     mirrored = False
     cap = False
     number = False
+    mid_stroke_alt = False  # Thinner middle bar, like the bar of the e
 
     def body(self, dc):
         return dc.body_bounds(
@@ -47,6 +48,9 @@ class OpenEGlyph(Glyph, ABC):
             uppercase=self.cap,
         )
 
+    def mid_stroke(self, dc):
+        return dc.stroke_alt if self.mid_stroke_alt else dc.stroke_y * self.stroke_y_ratio
+
     def top_loop(self, dc) -> Superellipse:
         """Superellipse of the top loop, also used to shape similar loops."""
         b = self.body(dc)
@@ -55,7 +59,8 @@ class OpenEGlyph(Glyph, ABC):
         ry = (b.y2 - b.ymid + sy / 2) / b.height
         return Superellipse(
             x1=b.x1 + (1 - self.loop_width_ratio) * b.width / 2,
-            y1=ymid - sy / 2,
+            # The bottom of the loop sits on the top of the middle bar
+            y1=ymid + self.mid_stroke(dc) / 2 - sy,
             x2=b.x2 - (1 - self.loop_width_ratio) * b.width / 2,
             y2=b.y2,
             hx=b.hx * self.hx_ratio,
@@ -79,6 +84,7 @@ class OpenEGlyph(Glyph, ABC):
         yc1 = b.y1 + self.opening1 * b.height + ec
         yc2 = b.y1 + self.opening2 * b.height - ec
         ymid = b.y1 + self.mid_ratio * b.height
+        sm = self.mid_stroke(dc)
         ry = (b.y2 - b.ymid + sy / 2) / b.height
         base_glyph = ufoLib2.objects.Glyph()
 
@@ -107,7 +113,7 @@ class OpenEGlyph(Glyph, ABC):
             b.x1,
             b.y1,
             b.x2,
-            ymid + sy / 2,
+            ymid - sm / 2 + sy,
             hx,
             hy * ry * 2 * self.mid_ratio,
             taper=taper,
@@ -131,7 +137,7 @@ class OpenEGlyph(Glyph, ABC):
         draw_rect(
             pen,
             xc,
-            ymid - sy / 2,
+            ymid - sm / 2,
             b.xmid,
-            ymid + sy / 2,
+            ymid + sm / 2,
         )
