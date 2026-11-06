@@ -11,7 +11,6 @@ class LowercaseV2Glyph(Glyph):
     width_ratio = 0.98
     stroke_ratio = 0.96
     overlap = 0.33
-    lower_section_height = 1.2
     tail_ratio = 0.15
     loop_ratio = 0.66
     hx_ratio = 0.75

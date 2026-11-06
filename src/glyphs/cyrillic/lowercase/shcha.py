@@ -1,29 +1,10 @@
-from glyphs.cyrillic.lowercase import CyrillicLowercaseGlyph
-from draw.rect import draw_rect
+from glyphs.cyrillic import RightDescenderGlyph
+from glyphs.cyrillic.lowercase.sha import CyrillicLowercaseShaGlyph
 
 
-class CyrillicLowercaseShchaGlyph(CyrillicLowercaseGlyph):
+class CyrillicLowercaseShchaGlyph(RightDescenderGlyph, CyrillicLowercaseShaGlyph):
     name = "cyrillic_lowercase_shcha"
     unicode = "0x0449"
     offset = 10
-    right_offset = 0.12
     width_ratio = 1.26
-
-    def draw(self, pen, dc):
-        b = dc.body_bounds(
-            offset=self.offset,
-            width_ratio=self.width_ratio,
-        )
-        sx, sy = dc.stroke_x, dc.stroke_y
-        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
-        six = max(0, 0.5 * (sx - 90)) + min(90, sx)
-        descent = self.descent_ratio * dc.descent
-        rx = b.x2 - self.right_offset * b.width
-        xmid = (b.x1 + rx) / 2
-
-        # Upper stems
-        draw_rect(pen, b.x1, 0, b.x1 + sx, b.y2)
-        draw_rect(pen, rx - sx, 0, rx, b.y2)
-        draw_rect(pen, xmid - six / 2, 0, xmid + six / 2, b.y2)
-        draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + sy)
-        draw_rect(pen, b.x2 - sx, descent, b.x2, sy)
+    damp_descender = True

@@ -8,8 +8,7 @@ from draw.polygon import draw_polygon
 class Caron(Accent):
     name = "caron"
     unicode = "0x2C7"
-    height = 0.35
-    width = 1.1
+    width = 1
     stroke_ratio = 1
     overlap = 0.5
     lower_section_height = 1
@@ -19,7 +18,7 @@ class Caron(Accent):
         w = self.width * dc.width
         x1, x2, xmid = x - w / 2, x + w / 2, x
         y1, y2 = y - h / 2, y + h / 2
-        s = self.stroke_ratio * dc.stroke_x
+        s = self.stroke_ratio * dc.stroke_y
         ov = self.overlap * s
         lsh = self.lower_section_height * dc.stroke_y
 

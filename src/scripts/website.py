@@ -16,7 +16,7 @@ from pathlib import Path
 from fontTools.pens.recordingPen import RecordingPen
 from fontTools.ttLib import TTFont
 
-from scripts.topo import topo
+from scripts.topo import favicon, topo
 
 FONTS = Path("fonts/woff2")
 DOCS = Path("docs")
@@ -137,6 +137,7 @@ def main():
     if n != 1:
         raise SystemExit(f'Expected one <svg class="topo-drawing"> in {PAGE}')
     PAGE.write_text(page)
+    (DOCS / "favicon.svg").write_text(favicon(bold))
 
     alternates = sum(len(e) > 2 for e in data)
     print(f"{len(fonts)} fonts copied, {len(data) - alternates} characters "

@@ -1,5 +1,6 @@
 from glyphs.uppercase import UppercaseGlyph
 from draw.corner import draw_corner
+from draw.loop import draw_loop
 from draw.rect import draw_rect
 
 
@@ -8,10 +9,9 @@ class UppercaseDGlyph(UppercaseGlyph):
     unicode = "0x44"
     offset = 20
     arch_start = 0.4
-    hx_ratio = 1.1
+    hx_ratio = 1
     hy_ratio = 1
     width_ratio = 1.02
-
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -21,38 +21,26 @@ class UppercaseDGlyph(UppercaseGlyph):
             uppercase=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        cut_x = b.x1 + self.arch_start * b.width
+        xc = b.x1 + self.arch_start * b.width
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
+        w = 2 * (b.x2 - xc)
 
         # Left stem
         draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
 
         # Connecting bars
-        draw_rect(pen, b.x1, b.y2 - sy, cut_x, b.y2)
-        draw_rect(pen, b.x1, 0, cut_x, sy)
+        draw_rect(pen, b.x1, b.y2 - sy, xc, b.y2)
+        draw_rect(pen, b.x1, 0, xc, sy)
 
-        # Corner
-        draw_corner(
+        draw_loop(
             pen,
             sx,
             sy,
-            b.x2,
-            b.ymid,
-            cut_x,
-            b.y2,
-            hx,
-            hy,
-            orientation="top-left",
-        )
-        draw_corner(
-            pen,
-            sx,
-            sy,
-            b.x2,
-            b.ymid,
-            cut_x,
+            xc - w / 2,
             b.y1,
-            hx,
+            xc + w / 2,
+            b.y2,
+            hx * w / b.width,
             hy,
-            orientation="bottom-left",
+            cut="left",
         )

@@ -12,6 +12,7 @@ class CyrillicLowercaseShaGlyph(Glyph):
         b = dc.body_bounds(
             offset=self.offset,
             width_ratio=self.width_ratio,
+            min_margin=dc.min_margin_lowercase,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
         sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)

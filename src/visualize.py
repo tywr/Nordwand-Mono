@@ -15,7 +15,7 @@ from fontTools.misc.transform import Transform
 sys.path.insert(0, "src")
 from config import FontConfig as fc
 from config import DrawConfig, WEIGHT_NAMES, weight_name
-from glyphs import InfiniteLigatureForm, JoinedLigatureForm, LigatureGlyph
+from glyphs import Glyph, InfiniteLigatureForm, JoinedLigatureForm, LigatureGlyph
 from generate_font import discover_glyphs, select_style_glyphs, italicize_path
 
 
@@ -23,7 +23,7 @@ def _italic_transform():
     """Horizontal shear matching generate_font.skew_path (without the fit
     into the cell of italicize_path)."""
     s = math.tan(math.radians(fc.italic_angle))
-    return Transform(1, 0, s, 1, -s * fc.italic_pivot, 0)
+    return Transform(1, 0, s, 1, -s * (fc.window_ascent + fc.window_descent) / 2, 0)
 
 
 def recording_to_mpl_path(recording):
@@ -229,10 +229,31 @@ def compute_optical_center(recording):
     return cx_sum / total_area, cy_sum / total_area
 
 
+def _generated_only_glyph(slug_name):
+    """The `generated_only` glyph named `slug_name` (e.g. an accent only used
+    inside composed glyphs), which discover_glyphs leaves out."""
+
+    def walk(cls):
+        for sub in cls.__subclasses__():
+            yield sub
+            yield from walk(sub)
+
+    for cls in walk(Glyph):
+        if (
+            getattr(cls, "generated_only", False)
+            and getattr(cls, "name", None) == slug_name
+        ):
+            return cls()
+    return None
+
+
 def find_glyph(slug_name, all_glyphs):
     for g in all_glyphs:
         if g.name == slug_name:
             return g
+    g = _generated_only_glyph(slug_name)
+    if g is not None:
+        return g
     raise SystemExit(f"No glyph found with name '{slug_name}'")
 
 

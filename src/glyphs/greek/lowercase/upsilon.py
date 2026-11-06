@@ -10,7 +10,7 @@ class GreekLowercaseUpsilonGlyph(SquareLowercaseGlyph):
     unicode = "0x3C5"
     offset = 0
 
-    def draw(self, pen, dc):
+    def draw(self, pen, dc, draw_right_side=True):
         b = dc.body_bounds(
             offset=self.offset,
             overshoot_bottom=True,
@@ -28,11 +28,12 @@ class GreekLowercaseUpsilonGlyph(SquareLowercaseGlyph):
             b.y1,
             b.x2,
             yl,
-            self.hx_ratio * b.hx,
-            self.hy_ratio * b.hy,
+            b.hx,
+            self.loop_ratio * b.hy,
             cut="top",
         )
 
         # Sides — start from arch midpoint
         draw_rect(pen, b.x1, ym, b.x1 + dc.stroke_x, dc.x_height)
-        draw_rect(pen, b.x2 - dc.stroke_x, ym, b.x2, dc.x_height)
+        if draw_right_side:
+            draw_rect(pen, b.x2 - dc.stroke_x, ym, b.x2, dc.x_height)

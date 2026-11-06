@@ -10,7 +10,7 @@ class GreekLowercaseBetaGlyph(SingleStoryLowercaseGlyph):
     upper_ratio = 0.88
     mid_ratio = 0.515
     width_ratio = 1.06
-    offset_lower_bar = 0.3
+    offset_lower_bar = 0.1
     reach_upper_bar = 0.9
     stroke_x_ratio = 1.00
     stroke_y_ratio = 1.00
@@ -28,7 +28,7 @@ class GreekLowercaseBetaGlyph(SingleStoryLowercaseGlyph):
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx, b.hy
         ymid = b.y1 + self.mid_ratio * b.height
-        o = self.offset_lower_bar * b.width
+        o = self.offset_lower_bar * b.width + sx
         yt = dc.descent
 
         lower_x1 = b.x1

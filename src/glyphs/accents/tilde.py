@@ -1,29 +1,31 @@
 from glyphs.accents import Accent
+from glyphs.special.tilde import TildeGlyph
 
 
 class Tilde(Accent):
+    """The tilde glyph's shape, at the same width and height as the breve and
+    circumflex, drawn with the breve's stroke (`stroke_alt`) so that it stays
+    light in bold."""
+
     name = "accent_tilde"
     unicode = "0x2DC"
-    rescale = 0.7
+    width = 1  # Relative to the body width, like the breve and circumflex
+    stroke_ratio = 1.0  # Relative to stroke_alt
 
     def draw_at(self, pen, dc, x, y):
-        from glyphs.special.tilde import TildeGlyph
-        from fontTools.pens.recordingPen import RecordingPen
-        from fontTools.pens.transformPen import TransformPen
-        from fontTools.misc.transform import Transform
-
-        r = self.rescale
-
-        rec = RecordingPen()
-        TildeGlyph().draw(rec, dc)
-
-        # The base TildeGlyph is drawn centered at (dc.window_width/2, dc.math).
-        # Scale around that point, then translate so it lands at (x, y).
-        cx = dc.window_width / 2
-        cy = dc.math
-        t = Transform()
-        t = t.translate(x, y)
-        t = t.scale(r)
-        t = t.translate(-cx, -cy)
-
-        rec.replay(TransformPen(pen, t))
+        tilde = TildeGlyph()
+        b = dc.body_bounds(
+            offset=tilde.offset, height="x_height", width_ratio=tilde.width_ratio
+        )
+        s = dc.stroke_alt * self.stroke_ratio
+        tilde.draw_shape(
+            pen,
+            dc,
+            b,
+            x,
+            y,
+            s,
+            s,
+            width=self.width * dc.width,
+            height=self.height * dc.x_height,
+        )

@@ -17,6 +17,7 @@ class CyrillicUppercaseYuGlyph(CyrillicUppercaseGlyph):
             height="cap",
             uppercase=True,
             width_ratio=self.width_ratio,
+            min_margin=dc.min_margin_uppercase,
             overshoot_bottom=True,
             overshoot_top=True,
         )

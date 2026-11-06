@@ -1,30 +1,22 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
-from glyphs import Glyph
-from draw.corner import draw_corner
-from draw.rect import draw_rect
-from draw.arch import draw_arch
+from dataclasses import replace
+
+from glyphs.lowercase.round.e import LowercaseEGlyph
+from glyphs.lowercase.round.o import LowercaseOGlyph
 
 
-class OeGlyph(Glyph):
-    name = "oe"
+class LowercaseOeGlyph(LowercaseOGlyph, LowercaseEGlyph):
+    """An o and an e sharing the middle stroke, each drawn by its own glyph's
+    code within its half of the body."""
+
+    name = "lowercase_oe"
     unicode = "0x153"
     offset = 0
+    width_ratio = 1.3
     mid_height = 0.52
-    width_ratio = 1.25
-    taper = 1.5
-    hx_ratio = 0.5
-    hy_ratio = 1
-    cap_hx_ratio = 0.7
-    cap_hy_ratio = 1
-    cap_height = 0.7
-    cap_offset = 0.02
-    thinning = 1
-    cap_stroke_x_ratio = 1.01
-    cap_stroke_y_ratio = 1.00
-    ending_thickness = 0.8
-    tail_offset = 0.00
     tail_height = 0.31
+    stroke_ratio = 1
+    stroke_smoothing = 0.6
+    stroke_threshold = 60
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -32,103 +24,18 @@ class OeGlyph(Glyph):
             overshoot_top=True,
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
+            # Round, can tolerate a bit less
+            min_margin=dc.min_margin_lowercase * 0.66,
         )
-        sx, sy = dc.stroke_x, dc.stroke_y
-        sx = max(0, 0.7 * (dc.stroke_x - 90)) + min(90, dc.stroke_x)
-        ymid = b.y1 + self.mid_height * b.height
-        hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
-        yo = b.y1 + self.tail_height * b.height
+        sx = self.stroke_ratio * dc.stroke_x
+        sx = max(0, self.stroke_smoothing * (sx - self.stroke_threshold)) + min(
+            self.stroke_threshold, sx
+        )
+        sy = self.stroke_ratio * dc.stroke_y
 
-        ov = sx * 0.5
-        ex1, exmid = b.xmid - sx / 2, (b.x2 + b.xmid - sx / 2) / 2
+        # Each half keeps the body's o shape once rescaled
+        def half(x1, x2):
+            return replace(b, x1=x1, x2=x2, hx=b.hx * (x2 - x1) / b.width)
 
-        draw_arch(
-            pen,
-            sx,
-            sy,
-            b.x1,
-            b.y1,
-            b.xmid + ov,
-            b.y2,
-            hx,
-            hy,
-            side="right",
-            taper=1,
-        )
-        # Top-right corner
-        draw_corner(
-            pen,
-            sx,
-            sy,
-            b.x2 - dc.h_overshoot,
-            b.ymid,
-            exmid,
-            b.y2,
-            hx,
-            hy,
-            orientation="top-left",
-        )
-        draw_corner(
-            pen,
-            sx,
-            sy,
-            ex1,
-            b.ymid,
-            exmid,
-            b.y2,
-            hx,
-            hy,
-            orientation="top-right",
-        )
-        draw_corner(
-            pen,
-            sx,
-            sy,
-            ex1,
-            b.ymid,
-            exmid,
-            b.y1,
-            hx,
-            hy,
-            orientation="bottom-right",
-        )
-
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_corner(
-            loop_glyph.getPen(),
-            sx * self.thinning,
-            sy,
-            b.x2 - dc.h_overshoot,
-            b.ymid,
-            exmid,
-            b.y1,
-            hx,
-            hy,
-            orientation="bottom-left",
-        )
-
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(
-            cut_glyph.getPen(),
-            b.xmid,
-            yo,
-            b.xmid + b.width,
-            b.ymid,
-        )
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
-
-        draw_rect(
-            pen,
-            b.xmid,
-            ymid,
-            b.x2 - dc.h_overshoot - sx / 2,
-            ymid + dc.stroke_alt / 2,
-        )
-        draw_rect(
-            pen,
-            b.xmid,
-            ymid - dc.stroke_alt / 2,
-            b.x2 - dc.h_overshoot,
-            max(ymid, b.ymid),
-        )
+        self.draw_o(pen, dc, half(b.x1, b.xmid + sx / 2), sx, sy, right_taper=0.75)
+        self.draw_e(pen, dc, half(b.xmid - sx / 2, b.x2), sx, sy, left_taper=0.75)

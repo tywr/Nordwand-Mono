@@ -1,4 +1,4 @@
-from glyphs.lowercase.m import LowercaseMGlyph
+from glyphs.lowercase.square.m import LowercaseMGlyph
 
 
 class LowercaseM2Glyph(LowercaseMGlyph):

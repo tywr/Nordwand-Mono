@@ -11,8 +11,8 @@ class FontConfig:
     font_revision: float = 1.0
 
     units_per_em: int = 1000
-    window_ascent: int = 1025
-    window_descent: int = -300
+    window_ascent: int = 1000
+    window_descent: int = -290
     window_width: int = 600
 
     ascent: int = 750
@@ -30,6 +30,7 @@ class FontConfig:
 
     min_margin_lowercase: int = 26
     min_margin_uppercase: int = 38
+
     # Dots grow with stroke ** dot_exponent, and are flattened by dot_squash
     # of the x/y stroke contrast (see draw.dot.dot_size)
     dot_exponent: float = 0.6
@@ -41,8 +42,6 @@ class FontConfig:
     ligature_junction_width: float = 1
 
     italic_angle: float = 9
-    # Height the italic slant pivots around, so glyphs lean out on both sides
-    italic_pivot: int = 300
 
     width: int = 360
 

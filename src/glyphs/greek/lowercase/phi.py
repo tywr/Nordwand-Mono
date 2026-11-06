@@ -27,7 +27,7 @@ class GreekLowercasePhiGlyph(Glyph):
         ec = self.extra_cut(dc)
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
         sx = max(0, 0.7 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
-        xo = b.x1 + self.left_opening * b.width
+        xo = b.x1 + self.left_opening * b.width - ec
 
         glyph = ufoLib2.objects.Glyph()
         draw_loop(glyph.getPen(), sx, sy, b.x1, b.y1, b.x2, b.y2, b.hx, b.hy)

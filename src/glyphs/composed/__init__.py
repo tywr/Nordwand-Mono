@@ -42,6 +42,8 @@ class ComposedGlyph(Glyph, ABC):
     accent_class = None
     accent_y = None  # vertical position for the accent anchor
     accent_x_offset = 0  # horizontal adjustment if needed
+    keep_dot = False  # Draw the full base (e.g. the dot of ị) instead of draw_base
+    accent_attrs = {}  # Overrides attributes of the accent, e.g. second_dy
 
     def _resolve_base_class(self, dc):
         if getattr(dc, "italic", False):
@@ -59,8 +61,14 @@ class ComposedGlyph(Glyph, ABC):
     def draw(self, pen, dc):
         base_class = self._resolve_base_class(dc)
         base = base_class()
-        base.draw_base(pen, dc) if hasattr(base, "draw_base") else base.draw(pen, dc)
+        if self.keep_dot or not hasattr(base, "draw_base"):
+            base.draw(pen, dc)
+        else:
+            base.draw_base(pen, dc)
 
-        b = dc.body_bounds(offset=base_class.offset)
+        b = dc.body_bounds(offset=base.offset)
         accent_y = self.accent_y if self.accent_y is not None else dc.accent
-        self.accent_class().draw_at(pen, dc, x=self.accent_x(dc, base, b), y=accent_y)
+        accent = self.accent_class()
+        for attr, value in self.accent_attrs.items():
+            setattr(accent, attr, value)
+        accent.draw_at(pen, dc, x=self.accent_x(dc, base, b), y=accent_y)

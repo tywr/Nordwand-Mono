@@ -42,7 +42,7 @@ class UppercaseGGlyph(UppercaseGlyph):
         rhx, rhy = self.right_hx_ratio * b.hx, self.right_hy_ratio * b.hy
         rbhx, rbhy = self.right_bot_hx_ratio * b.hx, self.right_bot_hy_ratio * b.hy
         yc1 = b.y1 + b.height * self.opening1
-        yc2 = b.y1 + b.height * self.opening2
+        yc2 = b.y1 + b.height * self.opening2 - self.extra_cut(dc)
         ymid = b.y1 + self.opening1 * b.height
         xb = b.x2 - self.bot_offset * b.width
 

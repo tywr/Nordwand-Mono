@@ -34,7 +34,8 @@ textarea + textarea { border-left: 1px solid var(--border); }
 <aside>
   <form>
     <h2>Sample</h2>
-    <select name="sample"></select>
+    <label>Set <select name="set"></select></label>
+    <label>Sample <select name="sample"></select></label>
 
     <h2>Style</h2>
     <label>Weight
@@ -88,27 +89,89 @@ textarea + textarea { border-left: 1px solid var(--border); }
 
   // [tag, highest value]; ponytail: kept by hand, update with doc/alternative_characters.md and doc/stylistic_sets.md
   const FEATURES = [
-    ['cv01', 2], ['cv02', 1], ['cv03', 2], ['cv04', 2], ['cv11', 1], ['cv12', 1], ['cv19', 1], ['cv20', 1],
+    ['cv01', 2], ['cv02', 1], ['cv03', 2], ['cv04', 2], ['cv11', 1], ['cv12', 1], ['cv18', 1], ['cv19', 1], ['cv20', 1],
     ['ss01', 1], ['ss02', 1], ['ss03', 1], ['dlig', 1],
   ];
 
-  const SAMPLES = {
-    'Alphabet': `abcdefghijklmnopqrstuvwxyz
+  // Script -> sample name -> text
+  const SETS = {
+    'Latin': {
+      'Alphabet': `abcdefghijklmnopqrstuvwxyz
 ABCDEFGHIJKLMNOPQRSTUVWXYZ
 0123456789
 !"#$%&'()*+,-./:;<=>?@[\\]^_\`{|}~
 ‘single’ “double” ‚low‛ „low‟ «guillemets» ‹single›`,
-    'Spacing': `nnnonnnmnnnlnnninnnrnnn
+      'Spacing': `nnnonnnmnnnlnnninnnrnnn
 oooaooobooocooodoooeooo
 HHHOHHHAHHHBHHHCHHHDHHH
 hamburgefonstiv HAMBURGEFONSTIV`,
-    'Confusables': `Il1| O0oQ rn m vv w cl d
-\`'"‘’“” ,.;: -–—_ ~^
-{[()]} <> /\\ ß B 8 3 5 S 2 Z`,
-    'Ligatures': `-> => <- <= >= != == === !== :: ... ||
----- ==== ____ #### <!-- --> |> <|
-x->y; f => g; a >= b && c <= d`,
-    'Python': `from dataclasses import dataclass
+      'Pangrams': `English     The quick brown fox jumps over the lazy dog.
+French      Portez ce vieux whisky au juge blond qui fume.
+German      Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich.
+Spanish     El veloz murciélago hindú comía feliz cardillo y kiwi.
+Portuguese  Luís argüia à Júlia que «brações, fé, chá, óxido, pôr, zângão» eram palavras do português.
+Italian     Quel vituperabile xenofobo zelante assaggia il whisky ed esclama: alleluja!
+Catalan     Jove xef, porti whisky amb quinze glaçons d'hidrogen, coi!
+Dutch       Pa's wijze lynx bezag vroom het fikse aquaduct.
+Polish      Pchnąć w tę łódź jeża lub ośm skrzyń fig.
+Czech       Příliš žluťoučký kůň úpěl ďábelské ódy.
+Slovak      Kŕdeľ šťastných ďatľov učí pri ústí Váhu mĺkveho koňa obhrýzať kôru a žrať čerstvé mäso.
+Hungarian   Árvíztűrő tükörfúrógép.
+Romanian    Muzicologă în bej vând whisky și tequila, preț fix.
+Turkish     Pijamalı hasta yağız şoföre çabucak güvendi.
+Croatian    Gojazni đačić s biciklom drži hmelj i finu vatu u džepu nošnje.
+Slovenian   Šerif bo za vajo spet kuhal domače žgance.
+Swedish     Flygande bäckasiner söka hwila på mjuka tuvor.
+Norwegian   Vår sære Zulu fra badeøya spilte jo whist og quickstep i min taxi.
+Danish      Høj bly gom vandt fræk sexquiz på wc.
+Finnish     Törkylempijävongahdus.
+Icelandic   Kæmi ný öxi hér, ykist þjófum nú bæði víl og ádrepa.
+Estonian    Põdur Zagrebi tšellomängija-följetonist Ciqo külmetas kehvas garaažis.
+Latvian     Glāžšķūņa rūķīši dzērumā čiepj Baha koncertflīģeļu vākus.
+Lithuanian  Įlinkdama fechtuotojo špaga sublykčiojusi pragręžė apvalų arbūzą.
+Esperanto   Eĥoŝanĝo ĉiuĵaŭde.
+Welsh       Parciais fy jac codi baw hud llawn dŵr ger tŷ Mabon.`,
+      'Extended': `àáâãäåāăą çćĉċč ďđ èéêëēĕėęě ĝğġģ ĥħ ìíîïĩīĭįı ĵ ķĸ ĺļľŀł
+ñńņňŋ òóôõöøōŏő ŕŗř śŝşšșſ ţťŧț ùúûüũūŭůűų ŵẁẃẅ ýÿŷỳ źżž
+ÀÁÂÃÄÅĀĂĄ ÇĆĈĊČ ĎĐ ÈÉÊËĒĔĖĘĚ ĜĞĠĢ ĤĦ ÌÍÎÏĨĪĬĮİ Ĵ Ķ ĹĻĽĿŁ
+ÑŃŅŇŊ ÒÓÔÕÖØŌŎŐ ŔŖŘ ŚŜŞŠȘ ŢŤŦȚ ÙÚÛÜŨŪŬŮŰŲ ŴẀẂẄ ÝŸŶỲ ŹŻŽ
+æœ ÆŒ ðþ ÐÞ ß ẞ ƒ Ƒ
+ŉ ǖǘǚǜ ǝ ɨ ɓɗƙƴɲ ɖ ɔ ə ɛ ɣ ɩ ʊ ʋ ʌ
+ǕǗǙǛ Ǝ Ɨ ƁƊƘƳƝ Ɖ Ɔ Ə Ɛ Ɣ Ɩ Ʊ Ʋ Ʌ
+ǎǐǒǔ ǧǵḡ ȟḧ ǫ ǽǿ ȳ ẍ ṅṗ ȷ ḅḍḥṇṛṣṭẓ ḓḽṋṱ
+ǍǏǑǓ ǦǴḠ ȞḦ Ǫ ǼǾ Ȳ Ẍ ṄṖ ḄḌḤṆṚṢṬẒ ḒḼṊṰ
+ʻʼ ˆˇ˘˙˚˛˜˝
+ảạắằẳẵặấầẩẫậ ẻẽẹếềểễệ ỉị ỏọốồổỗộơớờởỡợ ủụưứừửữự ỷỹỵ
+ẢẠẮẰẲẴẶẤẦẨẪẬ ẺẼẸẾỀỂỄỆ ỈỊ ỎỌỐỒỔỖỘƠỚỜỞỠỢ ỦỤƯỨỪỬỮỰ ỶỸỴ`,
+    },
+    'Cyrillic': {
+      'Alphabet': `абвгдеёжзийклмнопрстуфхцчшщъыьэюя
+АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ
+ђѓєѕіїјљњћќўџґ ѐѝӂӑӗ ғҗқңүұһәө
+ЂЃЄЅІЇЈЉЊЋЌЎЏҐ ЀЍӁӐӖ ҒҖҚҢҮҰҺӘӨ`,
+      'Spacing': `нннонннбнннвнннгнннднннжнннзнннлнннфннн
+оооаоооеоооюоооэоооцоооящооо
+НННОНННБНННДНННЖНННЛНННФНННЮННН
+съешь же ещё СЪЕШЬ ЖЕ ЕЩЁ`,
+      'Pangrams': `Russian      Съешь же ещё этих мягких французских булок, да выпей чаю.
+Ukrainian    Чуєш їх, доцю, га? Кумедна ж ти, прощайся без ґольфів!
+Belarusian   У Іўі худы жвавы чорт у зялёнай камізэльцы пабег пад’есці фаршу з юшкай.
+Bulgarian    Ах, чудна българска земьо, полюшвай цъфтящи жита.
+Serbian      Фијуче ветар у шибљу, леди пасаже и куће иза њих и гунђа у оџацима.
+Macedonian   Ѕидарски пејзаж: шугав билмез со чудење џвака ќофте и кељ на туѓ цех.`,
+    },
+    'Greek': {
+      'Alphabet': `αβγδεζηθικλμνξοπρσςτυφχψω
+ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ
+άέήίόύώ ϊϋΐΰ Ά Έ Ή Ί Ό Ύ ΏΪΫ ; ·`,
+      'Spacing': `ηηηοηηηαηηηβηηηγηηηδηηηληηηξηηη
+οοοεοοοθοοοσοοοςοοοωοοο
+ΗΗΗΟΗΗΗΑΗΗΗΓΗΗΗΔΗΗΗΛΗΗΗΞΗΗΗ`,
+      'Pangrams': `Ξεσκεπάζω την ψυχοφθόρα βδελυγμία.
+Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός.`,
+    },
+    'Other': {
+      'Python': `from dataclasses import dataclass
 
 @dataclass
 class Summit:
@@ -121,7 +184,7 @@ def taller(peaks: list[Summit], limit: int = 4000) -> list[str]:
     return [p.name for p in sorted(peaks, key=lambda p: -p.height_m) if p.height_m > limit]
 
 print(taller([Summit("Eiger", 3967, 1858), Summit("Matterhorn", 4478, 1865)]))`,
-    'Rust': `#[derive(Debug, Clone, Copy)]
+      'Rust': `#[derive(Debug, Clone, Copy)]
 struct Point { lat: f64, lon: f64, ele: f64 }
 
 fn gain(track: &[Point]) -> f64 {
@@ -132,20 +195,21 @@ fn main() {
     let track = vec![Point { lat: 46.58, lon: 8.00, ele: 2061.0 }];
     println!("D+ {:.0} m", gain(&track));
 }`,
-    'Box drawing': `╭─ nordwand ──────────────╮
+      'Confusables': `Il1| O0oQ rn m vv w cl d
+\`'"‘’“” ,.;: -–—_ ~^
+{[()]} <> /\\ ß B 8 3 5 S 2 Z`,
+      'Ligatures': `-> => <- <= >= != == === !== :: ... ||
+---- ==== ____ #### <!-- --> |> <|
+x->y; f => g; a >= b && c <= d`,
+      'Symbols': `¡¿ §¶ ©® ° ± ×÷ µ ¬ ¦ ¤ ¢£¥€ ƒ ª º
+¹²³ ¼½¾ ‰ † • … № ™ ✓`,
+      'Box drawing': `╭─ nordwand ──────────────╮
 │ ▓▓▓▓▓▓▓▓▒▒▒▒░░░░  58%   │
 ├─────────┬───────────────┤
 │ eiger   │ ████████▌     │
 │ jungfrau│ ██████▏       │
 ╰─────────┴───────────────╯`,
-    'Latin extended': `àáâãäåāăą çćĉċč ďđ èéêëēĕėęě ĝğġģ ĥħ ìíîïĩīĭįı ĵ ķ ĺļľŀł
-ñńņňŉ òóôõöøōŏő ŕŗř śŝşšș ţťŧț ùúûüũūŭůűų ŵ ýÿŷ źżž
-ÀÁÂÃÄÅĀĂĄ ÇĆĈĊČ ĎĐ ÈÉÊËĒĔĖĘĚ ÑŃŅŇ ÒÓÔÕÖØŌŎŐ ŚŜŞŠ ÙÚÛÜŨŪŬŮŰŲ ÝŸŶ ŹŻŽ
-æœ ÆŒ ðþ ÐÞ ß ẞ`,
-    'Pangrams': `The quick brown fox jumps over the lazy dog.
-Sphinx of black quartz, judge my vow.
-Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich.
-Portez ce vieux whisky au juge blond qui fume.`,
+    },
   };
 
   const form = document.querySelector('form');
@@ -164,7 +228,11 @@ Portez ce vieux whisky au juge blond qui fume.`,
     }
     featureBox.append(label);
   }
-  for (const name of Object.keys(SAMPLES)) form.sample.add(new Option(name));
+  for (const name of Object.keys(SETS)) form.set.add(new Option(name));
+  const fillSamples = () => {
+    form.sample.length = 0;
+    for (const name of Object.keys(SETS[form.set.value])) form.sample.add(new Option(name));
+  };
 
   // Settings live in the URL, so a reload keeps them and a link shares them
   const read = el => el.type === 'checkbox' ? (el.checked ? '1' : '') : el.value;
@@ -174,6 +242,10 @@ Portez ce vieux whisky au juge blond qui fume.`,
     if (el.type === 'checkbox') el.checked = params.get(el.name) === '1';
     else el.value = params.get(el.name);
   }
+  // The sample list depends on the set, so it can only be restored once filled
+  fillSamples();
+  form.sample.value = params.get('sample');
+  if (form.sample.selectedIndex < 0) form.sample.selectedIndex = 0;
 
   function apply() {
     const features = FEATURES.map(([tag]) => [tag, +read(form[tag])]).filter(([, v]) => v);
@@ -195,8 +267,9 @@ Portez ce vieux whisky au juge blond qui fume.`,
     history.replaceState(null, '', `?${state}`);
   }
 
-  const loadSample = () => { text.value = other.value = SAMPLES[form.sample.value]; };
+  const loadSample = () => { text.value = other.value = SETS[form.set.value][form.sample.value]; };
   form.sample.addEventListener('change', loadSample);
+  form.set.addEventListener('change', () => { fillSamples(); loadSample(); apply(); });
   form.addEventListener('input', apply);
   form.addEventListener('submit', e => e.preventDefault());
   // Both panes hold the same editable text

@@ -16,11 +16,12 @@ class GreekUppercaseOmegaGlyph(UppercaseGlyph):
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.00
     width_ratio = 1.14
     loop_ratio = 0.92
+    body_height = "cap"
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
-            height="cap",
+            height=self.body_height,
             overshoot_top=True,
             width_ratio=self.width_ratio,
             uppercase=True,

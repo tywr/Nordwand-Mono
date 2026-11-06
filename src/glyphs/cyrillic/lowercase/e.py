@@ -81,7 +81,7 @@ class CyrillicLowercaseEGlyph(RoundLowercaseGlyph):
         draw_rect(
             pen,
             xb,
-            yb - sy / 2,
+            yb - dc.stroke_alt / 2,
             b.x2 - sx / 2,
-            yb + sy / 2,
+            yb + dc.stroke_alt / 2,
         )

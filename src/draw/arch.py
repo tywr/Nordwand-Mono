@@ -18,7 +18,11 @@ def draw_arch(
     side="right",
     cut=None,
     taper=0.5,
+    quarter=None,
 ):
+    """Stroked superellipse thinned to `taper` on `side`. `cut` removes parts
+    of it, while `quarter` ("top-right", "top-left", "bottom-left" or
+    "bottom-right") only keeps that quarter."""
     w, h = (x2 - x1) / 2, (y2 - y1) / 2
     y_mid = y1 + h
 
@@ -40,6 +44,16 @@ def draw_arch(
         top=stroke_y if side != "top" else offset_y,
         bottom=stroke_y if side != "bottom" else offset_y,
     )
+
+    if quarter is not None:
+        o0, o1, o2, o3 = outer_se.quarter(quarter)
+        i0, i1, i2, i3 = inner_se.quarter(quarter)
+        pen.moveTo(o0)
+        pen.curveTo(o1, o2, o3)
+        pen.lineTo(i3)
+        pen.curveTo(i2, i1, i0)
+        pen.closePath()
+        return
 
     loop_glyph = ufoLib2.objects.Glyph()
     outer_se.draw(loop_glyph.getPen(), clockwise=False)

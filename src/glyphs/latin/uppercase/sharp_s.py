@@ -12,7 +12,7 @@ class CapitalSharpSGlyph(Glyph):
     upper_ratio = 0.9  # Upper loop width as a fraction of the lower loop width
     mid_ratio = 0.52
     width_ratio = 1.06
-    offset_lower_bar = 0.3
+    offset_lower_bar = 0.10
     reach_upper_bar = 0.9
     tail_reach = 0.0
     diag_stroke_ratio = 1.0
@@ -31,7 +31,7 @@ class CapitalSharpSGlyph(Glyph):
         hx, hy = b.hx, b.hy
         ymid = b.y1 + self.mid_ratio * b.height
         xu = b.x1 + self.reach_upper_bar * b.width
-        o = self.offset_lower_bar * b.width
+        o = self.offset_lower_bar * b.width + sx
         yt = -self.tail_reach * b.height
 
         lower_x1 = b.x1

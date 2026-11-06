@@ -32,8 +32,9 @@ class UppercaseCGlyph(UppercaseGlyph):
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
         rhx, rhy = self.right_hx_ratio * b.hx, self.right_hy_ratio * b.hy
-        yc1 = b.y1 + b.height * self.opening1
-        yc2 = b.y1 + b.height * self.opening2
+        ec = self.extra_cut(dc)
+        yc1 = b.y1 + b.height * self.opening1 + ec
+        yc2 = b.y1 + b.height * self.opening2 - ec
         xt = b.x2 - self.top_offset * b.width
 
         draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, b.hx, b.hy, cut="right")

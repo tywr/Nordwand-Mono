@@ -22,7 +22,6 @@ class LowercaseEthGlyph(Glyph):
     hx_ratio = 1
     hy_ratio = 1
     stroke_ratio = 1.5
-    diag_stroke_ratio = 0.866  # Perpendicular thickness of the bar
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -100,7 +99,7 @@ class LowercaseEthGlyph(Glyph):
 
         draw_parallelogramm_vertical(
             pen,
-            self.diag_stroke_ratio * dc.stroke_x,
+            dc.stroke_alt,
             tx1,
             ysmid,
             tx2,
