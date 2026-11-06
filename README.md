@@ -4,6 +4,8 @@ Nordwand Mono is a compact neo-grotesk monospaced typeface designed for programm
 
 See the [specimen (PDF)](specimens/specimen.pdf) for an overview of the character set and weights.
 
+To contribute, please read the [contribution guide](CONTRIBUTING.md).
+
 ## Design
 
 Nordwand Mono combines elements of Adrian Frutiger's Univers with the proportions of JetBrains Mono. The name refers to the north faces (*Nordwände*) of the Swiss Alps, and to the Swiss typographic tradition the design draws on.
