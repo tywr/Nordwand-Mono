@@ -20,7 +20,7 @@ class CyrillicLowercaseBarredOGlyph(LowercaseOGlyph):
         draw_rect(
             pen,
             b.x1 + dc.stroke_x / 2,
-            b.ymid - dc.stroke_y / 2,
+            b.ymid - dc.stroke_alt / 2,
             b.x2 - dc.stroke_x / 2,
-            b.ymid + dc.stroke_y / 2,
+            b.ymid + dc.stroke_alt / 2,
         )
