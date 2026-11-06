@@ -25,6 +25,7 @@ CENTER = 950  # svg x of the middle of the a's cell
 RESOLUTION = 3  # Font units between the height map's samples
 LEVELS = 22  # Contour lines from the lowest to the highest point
 INDEX = 5  # Every fifth contour is an index contour, drawn heavier
+FAVICON_LEVELS = 9  # Contour lines of the favicon, fewer to read at 16 px
 SEED = 4478
 SUMMITS = 5  # Broad peaks placed on the glyph
 RIDGES = 0.35  # Weight of the ridged noise against the summits
@@ -145,9 +146,9 @@ def terrain(a, xs, ys):
     return height
 
 
-def topo(font):
-    """The figure's drawing, everything inside its <svg>."""
-    a = outline(font, "a")
+def contours(a, levels):
+    """Contour lines of the terrain over the glyph `a`, as [(level, path
+    data)] from the lowest to the highest line."""
     x1, y1, x2, y2 = a.bounds
     xs = np.arange(x1 - 12, x2 + 12, RESOLUTION)
     ys = np.arange(y1 - 12, y2 + 12, RESOLUTION)
@@ -165,6 +166,20 @@ def topo(font):
     lines = contourpy.contour_generator(xs, ys, heights, line_type="Separate")
     lo, hi = heights.min(), heights.max()
 
+    result = []
+    for k in range(1, levels):
+        d = " ".join(
+            "M" + " L".join(f"{sx:.0f} {sy:.0f}" for sx, sy in (to_svg(x, y) for x, y in line))
+            for line in lines.lines(lo + (hi - lo) * k / levels)
+        )
+        if d:
+            result.append((k, d))
+    return result
+
+
+def topo(font):
+    """The figure's drawing, everything inside its <svg>."""
+    a = outline(font, "a")
     parts = [
         "<defs>",
         f'<clipPath id="glyph-clip"><path clip-rule="evenodd" d="{svg_path(a)}"/></clipPath>',
@@ -175,14 +190,32 @@ def topo(font):
         f'<path class="ice" fill-rule="evenodd" d="{svg_path(a)}"/>',
         '<g clip-path="url(#glyph-clip)">',
     ]
-    for k in range(1, LEVELS):
-        d = " ".join(
-            "M" + " L".join(f"{sx:.0f} {sy:.0f}" for sx, sy in (to_svg(x, y) for x, y in line))
-            for line in lines.lines(lo + (hi - lo) * k / LEVELS)
-        )
-        if d:
-            cls = "contour index" if k % INDEX == 0 else "contour"
-            parts.append(f'<path class="{cls}" d="{d}"/>')
+    for k, d in contours(a, LEVELS):
+        cls = "contour index" if k % INDEX == 0 else "contour"
+        parts.append(f'<path class="{cls}" d="{d}"/>')
     parts += ["</g>", f'<path class="glyph" fill-rule="evenodd" d="{svg_path(a)}"/>']
     parts += dimensions(font, a)
     return "\n        ".join(parts)
+
+
+def favicon(font, bg="#121212", accent="#abeaff"):
+    """A standalone svg of the topo a for the browser tab: fewer, heavier
+    contour lines than the figure, so they still read at 16 px, on a dark
+    rounded square."""
+    a = outline(font, "a")
+    (x1, y1), (x2, y2) = to_svg(*a.bounds[:2]), to_svg(*a.bounds[2:])
+    side = 1.45 * max(x2 - x1, y1 - y2)
+    cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
+    vx, vy = cx - side / 2, cy - side / 2
+    lines = "".join(f'<path d="{d}"/>' for _, d in contours(a, FAVICON_LEVELS))
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vx:.0f} {vy:.0f} {side:.0f} {side:.0f}">'
+        f'<rect x="{vx:.0f}" y="{vy:.0f}" width="{side:.0f}" height="{side:.0f}" rx="{side * 0.18:.0f}" fill="{bg}"/>'
+        f'<defs><clipPath id="a"><path clip-rule="evenodd" d="{svg_path(a)}"/></clipPath></defs>'
+        f'<path fill="{accent}" fill-opacity=".15" fill-rule="evenodd" d="{svg_path(a)}"/>'
+        f'<g clip-path="url(#a)" fill="none" stroke="{accent}" stroke-width="{side / 60:.0f}" '
+        f'stroke-linejoin="round" stroke-opacity=".75">{lines}</g>'
+        f'<path fill="none" stroke="{accent}" stroke-width="{side / 32:.0f}" stroke-linejoin="round" '
+        f'fill-rule="evenodd" d="{svg_path(a)}"/>'
+        "</svg>\n"
+    )

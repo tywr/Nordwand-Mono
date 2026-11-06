@@ -26,7 +26,7 @@
   "author": { "@type": "Person", "name": "Tanguy VIVIER" }
 }
 </script>
-<link rel="icon" type="image/svg+xml" href="https://tywr.github.io/icon.svg">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preload" href="fonts/NordwandMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
@@ -202,11 +202,11 @@ section[data-legend]::before {
   z-index: -1;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   margin: 0;
-  /* Starts after the text column, or from 45% on narrower screens where its
-     faded edge tucks under the text; reaches nearly to the edge */
-  padding: var(--pad) 1rem var(--pad) min(calc(var(--pad) + 38rem), 45%);
+  /* The space right of the text column, the drawing centered in it (its
+     viewBox is centered on the glyph and its dimensions) */
+  padding: var(--pad) var(--pad) var(--pad) calc(var(--pad) + 38rem);
   opacity: .22;
   mask-image: linear-gradient(to right, transparent 30rem, #000 50rem);
   pointer-events: none;
@@ -497,7 +497,7 @@ footer { padding: 2rem var(--pad); font-size: .85rem; color: var(--fg-muted); bo
       <p>It is free and <a href="https://github.com/tywr/Nordwand-Mono">open source</a>.</p>
     </div>
     <figure class="topo-figure" aria-hidden="true">
-      <svg class="topo-drawing" viewBox="-50 30 1600 980" role="img" aria-label="The bold lowercase a filled with the contour lines of mountain terrain">
+      <svg class="topo-drawing" viewBox="186 30 1600 980" role="img" aria-label="The bold lowercase a filled with the contour lines of mountain terrain">
         <defs>
         <clipPath id="glyph-clip"><path clip-rule="evenodd" d="M933.2 433.4Q794.6 433.4 720.4 453.7Q646.2 474 618.2 523.7Q590.2 573.4 590.2 663Q590.2 752.6 611.9 802.3Q633.6 852 690.3 872.3Q747 892.6 854.8 892.6Q951.4 892.6 1007.4 876.5Q1063.4 860.4 1088.6 818.4V880H1276.2V369Q1276.2 269.6 1248.2 212.9Q1220.2 156.2 1146 133.8Q1071.8 111.4 933.2 111.4Q807.2 111.4 739.3 133.1Q671.4 154.8 644.8 209.4Q618.2 264 616.8 360.6H804.4Q804.4 301.8 829.6 280.1Q854.8 258.4 933.2 258.4Q996.2 258.4 1029.8 268.2Q1063.4 278 1076 301.8Q1088.6 325.6 1088.6 369V433.4ZM777.8 663Q777.8 615.4 790.4 588.1Q803 560.8 836.6 549.6Q870.2 538.4 933.2 538.4H1088.6V663Q1088.6 710.6 1057.8 728.1Q1027 745.6 933.2 745.6Q839.4 745.6 808.6 728.1Q777.8 710.6 777.8 663Z"/></clipPath>
         <marker id="arrow" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1 L12 6 L0 11"/></marker>
