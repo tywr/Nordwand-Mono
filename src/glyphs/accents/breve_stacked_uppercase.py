@@ -8,12 +8,12 @@ from glyphs.accents.dot_below import DotBelow
 
 
 class UppercaseBreveStackedAccent(StackedAccent):
-    first_stroke_ratio = 0.85
+    first_stroke_ratio = 0.8
     first_height = 0.2
     first_dy = -0.15
     second_stroke_ratio = 0.8
-    second_height = 0.32
-    second_dy = 0.1
+    second_height = 0.25
+    second_dy = 0.075
 
 
 class UppercaseBreveAcute(UppercaseBreveStackedAccent):
@@ -38,6 +38,7 @@ class UppercaseBreveHookAbove(UppercaseBreveStackedAccent):
     name = "uppercase_breve_hookabove"
     first = Breve
     second = HookAbove
+    second_dx = -0.13
 
 
 class UppercaseBreveTilde(UppercaseBreveStackedAccent):
@@ -47,7 +48,8 @@ class UppercaseBreveTilde(UppercaseBreveStackedAccent):
     first = Breve
     second = Tilde
     second_height = 0.23
-    second_dy = 0.12
+    second_width = 1
+    second_dy = 0.085
 
 class UppercaseBreveDotBelow(StackedAccent):
     """Breve above and a dot below the baseline."""

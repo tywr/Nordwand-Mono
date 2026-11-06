@@ -9,12 +9,13 @@ from glyphs.accents.dot_below import DotBelow
 
 class UppercaseCicumflexStackedAccent(StackedAccent):
     first_stroke_ratio = 0.8
-    first_height = 0.25
-    first_width = 0.9
-    first_dy = -0.1
+    first_height = 0.2
+    first_width = 0.8
+    first_dy = -0.16
     second_stroke_ratio = 0.8
-    second_dy = 0.1
+    second_dy = 0.0
     second_dx = 0.5
+    second_height = 0.25
 
 
 class UppercaseCircumflexAcute(UppercaseCicumflexStackedAccent):
@@ -39,7 +40,7 @@ class UppercaseCircumflexHookAbove(UppercaseCicumflexStackedAccent):
     name = "uppercase_circumflex_hookabove"
     first = Circumflex
     second = HookAbove
-
+    second_height = 0.3
 
 class UppercaseCircumflexTilde(UppercaseCicumflexStackedAccent):
     """Tilde on top of the circumflex."""
@@ -48,7 +49,7 @@ class UppercaseCircumflexTilde(UppercaseCicumflexStackedAccent):
     first = Circumflex
     second = Tilde
     second_height = 0.23
-    second_dy = 0.18
+    second_dy = 0.085
     second_dx = 0
 
 

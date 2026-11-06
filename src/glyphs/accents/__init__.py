@@ -43,8 +43,8 @@ class StackedAccent(Accent):
     first_dy = 0
     first_width = None  # Relative to the body width
     first_height = None  # Relative to the x-height
-    first_stroke_ratio = 0.8
-    second_stroke_ratio = 0.7
+    first_stroke_ratio = 1
+    second_stroke_ratio = 1
     second = None
     second_dx = 0
     second_dy = 0
