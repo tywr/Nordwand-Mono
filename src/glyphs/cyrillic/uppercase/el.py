@@ -19,6 +19,7 @@ class CyrillicUppercaseElGlyph(CyrillicUppercaseGlyph):
             height="cap",
             uppercase=True,
             width_ratio=self.width_ratio,
+            min_margin=dc.min_margin_uppercase,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
 
