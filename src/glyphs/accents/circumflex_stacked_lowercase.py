@@ -54,3 +54,4 @@ class LowercaseCircumflexDotBelow(LowercaseCircumflexStackedAccent):
     first = Circumflex
     second = DotBelow
     second_y = 0
+    second_dx = 0
