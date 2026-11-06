@@ -4,12 +4,19 @@ from config import FontConfig as fc
 from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.a import LowercaseAGlyph
 from glyphs.uppercase.a import UppercaseAGlyph
-from glyphs.accents.breve_stacked import (
-    BreveAcute,
-    BreveGrave,
-    BreveHookAbove,
-    BreveTilde,
-    BreveDotBelow,
+from glyphs.accents.breve_stacked_lowercase import (
+    LowercaseBreveAcute,
+    LowercaseBreveGrave,
+    LowercaseBreveHookAbove,
+    LowercaseBreveTilde,
+    LowercaseBreveDotBelow,
+)
+from glyphs.accents.breve_stacked_uppercase import (
+    UppercaseBreveAcute,
+    UppercaseBreveGrave,
+    UppercaseBreveHookAbove,
+    UppercaseBreveTilde,
+    UppercaseBreveDotBelow,
 )
 
 _lc_accent = fc.accent
@@ -17,7 +24,7 @@ _uc_accent = fc.accent_cap
 
 
 class LowercaseBreveAcuteGlyph(ComposedGlyph):
-    accent_class = BreveAcute
+    accent_class = LowercaseBreveAcute
     accent_y = _lc_accent
 
 
@@ -28,7 +35,7 @@ class LowercaseABreveAcuteGlyph(LowercaseBreveAcuteGlyph):
 
 
 class UppercaseBreveAcuteGlyph(ComposedGlyph):
-    accent_class = BreveAcute
+    accent_class = UppercaseBreveAcute
     accent_y = _uc_accent
 
 
@@ -39,7 +46,7 @@ class UppercaseABreveAcuteGlyph(UppercaseBreveAcuteGlyph):
 
 
 class LowercaseBreveGraveGlyph(ComposedGlyph):
-    accent_class = BreveGrave
+    accent_class = LowercaseBreveGrave
     accent_y = _lc_accent
 
 
@@ -50,7 +57,7 @@ class LowercaseABreveGraveGlyph(LowercaseBreveGraveGlyph):
 
 
 class UppercaseBreveGraveGlyph(ComposedGlyph):
-    accent_class = BreveGrave
+    accent_class = UppercaseBreveGrave
     accent_y = _uc_accent
 
 
@@ -61,7 +68,7 @@ class UppercaseABreveGraveGlyph(UppercaseBreveGraveGlyph):
 
 
 class LowercaseBreveHookAboveGlyph(ComposedGlyph):
-    accent_class = BreveHookAbove
+    accent_class = LowercaseBreveHookAbove
     accent_y = _lc_accent
 
 
@@ -72,7 +79,7 @@ class LowercaseABreveHookAboveGlyph(LowercaseBreveHookAboveGlyph):
 
 
 class UppercaseBreveHookAboveGlyph(ComposedGlyph):
-    accent_class = BreveHookAbove
+    accent_class = UppercaseBreveHookAbove
     accent_y = _uc_accent
 
 
@@ -83,7 +90,7 @@ class UppercaseABreveHookAboveGlyph(UppercaseBreveHookAboveGlyph):
 
 
 class LowercaseBreveTildeGlyph(ComposedGlyph):
-    accent_class = BreveTilde
+    accent_class = LowercaseBreveTilde
     accent_y = _lc_accent
 
 
@@ -94,7 +101,7 @@ class LowercaseABreveTildeGlyph(LowercaseBreveTildeGlyph):
 
 
 class UppercaseBreveTildeGlyph(ComposedGlyph):
-    accent_class = BreveTilde
+    accent_class = UppercaseBreveTilde
     accent_y = _uc_accent
 
 
@@ -105,7 +112,7 @@ class UppercaseABreveTildeGlyph(UppercaseBreveTildeGlyph):
 
 
 class LowercaseBreveDotBelowGlyph(ComposedGlyph):
-    accent_class = BreveDotBelow
+    accent_class = LowercaseBreveDotBelow
     accent_y = _lc_accent
 
 
@@ -116,7 +123,7 @@ class LowercaseABreveDotBelowGlyph(LowercaseBreveDotBelowGlyph):
 
 
 class UppercaseBreveDotBelowGlyph(ComposedGlyph):
-    accent_class = BreveDotBelow
+    accent_class = UppercaseBreveDotBelow
     accent_y = _uc_accent
 
 

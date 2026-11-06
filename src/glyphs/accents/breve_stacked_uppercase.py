@@ -7,66 +7,52 @@ from glyphs.accents.tilde import Tilde
 from glyphs.accents.dot_below import DotBelow
 
 
-class BreveStackedAccent(StackedAccent):
+class UppercaseBreveStackedAccent(StackedAccent):
     first_stroke_ratio = 0.85
+    first_height = 0.2
+    first_dy = -0.15
+    second_stroke_ratio = 0.8
+    second_height = 0.32
+    second_dy = 0.1
 
 
-class BreveAcute(BreveStackedAccent):
+class UppercaseBreveAcute(UppercaseBreveStackedAccent):
     """Acute on top of the breve."""
 
-    name = "breve_acute"
+    name = "uppercase_breve_acute"
     first = Breve
     second = Acute
-    first_dy = -0.1
-    second_dy = 0.15
-    second_dx = -0.05
-    second_height = 0.3
-    second_width = 0.5
 
 
-class BreveGrave(BreveStackedAccent):
+class UppercaseBreveGrave(UppercaseBreveStackedAccent):
     """Grave on top of the breve."""
 
-    name = "breve_grave"
+    name = "uppercase_breve_grave"
     first = Breve
     second = Grave
-    first_dy = -0.1
-    second_dy = 0.15
-    second_dx = 0.05
-    second_height = 0.3
-    second_width = 0.5
 
 
-class BreveHookAbove(BreveStackedAccent):
+class UppercaseBreveHookAbove(UppercaseBreveStackedAccent):
     """Hook above on top of the breve."""
 
-    name = "breve_hookabove"
+    name = "uppercase_breve_hookabove"
     first = Breve
     second = HookAbove
-    first_dy = -0.1
-    second_dy = 0.1
-    second_dx = -0.1
-    second_height = 0.3
 
 
-class BreveTilde(BreveStackedAccent):
+class UppercaseBreveTilde(UppercaseBreveStackedAccent):
     """Tilde on top of the breve."""
 
-    name = "breve_tilde"
+    name = "uppercase_breve_tilde"
     first = Breve
     second = Tilde
-    first_height = 0.2
-    first_dy = -0.12
-    second_dy = 0.2
-    second_height = 0.22
-    second_dy = 0.18
-    second_width = 1.0
+    second_height = 0.23
+    second_dy = 0.12
 
-
-class BreveDotBelow(StackedAccent):
+class UppercaseBreveDotBelow(StackedAccent):
     """Breve above and a dot below the baseline."""
 
-    name = "breve_dotbelow"
+    name = "uppercase_breve_dotbelow"
     first = Breve
     second = DotBelow
     second_y = 0

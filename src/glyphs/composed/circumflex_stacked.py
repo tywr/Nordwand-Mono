@@ -3,12 +3,19 @@
 from config import FontConfig as fc
 from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.a import LowercaseAGlyph
-from glyphs.accents.circumflex_stacked import (
-    CircumflexAcute,
-    CircumflexGrave,
-    CircumflexHookAbove,
-    CircumflexTilde,
-    CircumflexDotBelow,
+from glyphs.accents.circumflex_stacked_lowercase import (
+    LowercaseCircumflexAcute,
+    LowercaseCircumflexGrave,
+    LowercaseCircumflexHookAbove,
+    LowercaseCircumflexTilde,
+    LowercaseCircumflexDotBelow,
+)
+from glyphs.accents.circumflex_stacked_uppercase import (
+    UppercaseCircumflexAcute,
+    UppercaseCircumflexGrave,
+    UppercaseCircumflexHookAbove,
+    UppercaseCircumflexTilde,
+    UppercaseCircumflexDotBelow,
 )
 from glyphs.lowercase.round.e import LowercaseEGlyph
 from glyphs.lowercase.round.o import LowercaseOGlyph
@@ -21,7 +28,7 @@ _uc_accent = fc.accent_cap
 
 
 class LowercaseCircumflexAcuteGlyph(ComposedGlyph):
-    accent_class = CircumflexAcute
+    accent_class = LowercaseCircumflexAcute
     accent_y = _lc_accent
 
 
@@ -44,7 +51,7 @@ class LowercaseOCircumflexAcuteGlyph(LowercaseCircumflexAcuteGlyph):
 
 
 class UppercaseCircumflexAcuteGlyph(ComposedGlyph):
-    accent_class = CircumflexAcute
+    accent_class = UppercaseCircumflexAcute
     accent_y = _uc_accent
 
 
@@ -67,7 +74,7 @@ class UppercaseOCircumflexAcuteGlyph(UppercaseCircumflexAcuteGlyph):
 
 
 class LowercaseCircumflexGraveGlyph(ComposedGlyph):
-    accent_class = CircumflexGrave
+    accent_class = LowercaseCircumflexGrave
     accent_y = _lc_accent
 
 
@@ -90,7 +97,7 @@ class LowercaseOCircumflexGraveGlyph(LowercaseCircumflexGraveGlyph):
 
 
 class UppercaseCircumflexGraveGlyph(ComposedGlyph):
-    accent_class = CircumflexGrave
+    accent_class = UppercaseCircumflexGrave
     accent_y = _uc_accent
 
 
@@ -113,7 +120,7 @@ class UppercaseOCircumflexGraveGlyph(UppercaseCircumflexGraveGlyph):
 
 
 class LowercaseCircumflexHookAboveGlyph(ComposedGlyph):
-    accent_class = CircumflexHookAbove
+    accent_class = LowercaseCircumflexHookAbove
     accent_y = _lc_accent
 
 
@@ -136,7 +143,7 @@ class LowercaseOCircumflexHookAboveGlyph(LowercaseCircumflexHookAboveGlyph):
 
 
 class UppercaseCircumflexHookAboveGlyph(ComposedGlyph):
-    accent_class = CircumflexHookAbove
+    accent_class = UppercaseCircumflexHookAbove
     accent_y = _uc_accent
 
 
@@ -159,7 +166,7 @@ class UppercaseOCircumflexHookAboveGlyph(UppercaseCircumflexHookAboveGlyph):
 
 
 class LowercaseCircumflexTildeGlyph(ComposedGlyph):
-    accent_class = CircumflexTilde
+    accent_class = LowercaseCircumflexTilde
     accent_y = _lc_accent
 
 
@@ -182,7 +189,7 @@ class LowercaseOCircumflexTildeGlyph(LowercaseCircumflexTildeGlyph):
 
 
 class UppercaseCircumflexTildeGlyph(ComposedGlyph):
-    accent_class = CircumflexTilde
+    accent_class = UppercaseCircumflexTilde
     accent_y = _uc_accent
 
 
@@ -205,7 +212,7 @@ class UppercaseOCircumflexTildeGlyph(UppercaseCircumflexTildeGlyph):
 
 
 class LowercaseCircumflexDotBelowGlyph(ComposedGlyph):
-    accent_class = CircumflexDotBelow
+    accent_class = LowercaseCircumflexDotBelow
     accent_y = _lc_accent
 
 
@@ -228,7 +235,7 @@ class LowercaseOCircumflexDotBelowGlyph(LowercaseCircumflexDotBelowGlyph):
 
 
 class UppercaseCircumflexDotBelowGlyph(ComposedGlyph):
-    accent_class = CircumflexDotBelow
+    accent_class = UppercaseCircumflexDotBelow
     accent_y = _uc_accent
 
 
