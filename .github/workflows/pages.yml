@@ -1,9 +1,7 @@
 name: Deploy website
 
-# Only a new font version redeploys the site; it can still be run by hand
+# Run by hand after a release to redeploy the site
 on:
-  release:
-    types: [published]
   workflow_dispatch:
 
 permissions:
