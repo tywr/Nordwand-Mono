@@ -1,8 +1,10 @@
+from utils.pens import NullPen
 from math import sin, cos, atan
 from glyphs.numbers import NumberGlyph
 from draw.loop import draw_loop
 from draw.arch import draw_arch
 from draw.polygon import draw_polygon
+from draw.parallelogramm import draw_parallelogramm
 
 
 class NineGlyph(NumberGlyph):
@@ -16,7 +18,7 @@ class NineGlyph(NumberGlyph):
     joint_x = 1.4
     hx_ratio = 0.9
     hy_ratio = 0.9
-    stroke_ratio = 1.2
+    stroke_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -55,7 +57,7 @@ class NineGlyph(NumberGlyph):
         (_, y1), (_, y2) = params["outer"].intersection_x(x=xj)
         yj = min(y1, y2)
 
-        delta = self.diag_stroke_dampening(self.stroke_ratio, dc.stroke_x, coef=0.15)
+        _, delta = draw_parallelogramm(NullPen(), sx, xf, b.y1, b.x2, (b.y2 + ymid) / 2, direction="top-right")
         theta = atan((yj - b.y1) / (xj - xf))
 
         ihy = params["inner"].hy
