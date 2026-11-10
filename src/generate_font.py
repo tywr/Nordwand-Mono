@@ -654,6 +654,7 @@ def build_font(
     woff=False,
     woff2=False,
     out_root="fonts",
+    ligatures=True,
 ):
     style_name, ps_style_name, name_table, fs_selection, mac_style = _style_metadata(
         weight, italic
@@ -670,6 +671,14 @@ def build_font(
     dc = DrawConfig.for_weight(w=weight, italic=italic)
 
     all_glyphs = discover_glyphs()
+    if not ligatures:
+        all_glyphs = [
+            g
+            for g in all_glyphs
+            if not isinstance(
+                g, (LigatureGlyph, InfiniteLigatureForm, JoinedLigatureForm)
+            )
+        ]
 
     active_glyphs, promoted = select_style_glyphs(all_glyphs, italic)
 
@@ -961,7 +970,15 @@ if __name__ == "__main__":
         metavar="MAJOR.MINOR.PATCH",
         help="Release version written to the name and head tables",
     )
+    parser.add_argument(
+        "--no-ligatures",
+        action="store_true",
+        help="Build the ligature-free, strictly monospaced NL family",
+    )
     args = parser.parse_args()
+
+    if args.no_ligatures:
+        fc.family_name = f"{fc.family_name} NL"
 
     out_root = "fonts"
     if args.config:
@@ -989,6 +1006,7 @@ if __name__ == "__main__":
             woff=args.web_font,
             woff2=args.web_font,
             out_root=out_root,
+            ligatures=not args.no_ligatures,
         )
         build_font(
             weight=w,
@@ -998,4 +1016,5 @@ if __name__ == "__main__":
             woff=args.web_font,
             woff2=args.web_font,
             out_root=out_root,
+            ligatures=not args.no_ligatures,
         )

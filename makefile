@@ -1,4 +1,4 @@
-.PHONY: install build build-font build-otf build-nerd-font install-mac visualize website lab
+.PHONY: install build build-font build-otf build-nl-font build-nerd-font install-mac visualize website lab
 
 FONT_VERSION ?= $(shell git describe --tags --abbrev=0 2>/dev/null || echo 1.0.0)
 
@@ -18,6 +18,9 @@ build-font:
 
 build-otf:
 	uv run python -m generate_font --font-version $(FONT_VERSION) --otf
+
+build-nl-font:
+	uv run python -m generate_font --font-version $(FONT_VERSION) --no-ligatures
 
 build-nerd-font:
 	uv run python -m scripts.nerd_font
