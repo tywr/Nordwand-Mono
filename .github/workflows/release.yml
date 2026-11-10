@@ -33,12 +33,16 @@ jobs:
       - name: Build fonts
         env:
           FONT_VERSION: ${{ github.event.release.tag_name }}
-        run: make build-font FONT_VERSION="$FONT_VERSION"
+        run: |
+          make build-font FONT_VERSION="$FONT_VERSION"
+          make build-nl-font FONT_VERSION="$FONT_VERSION"
 
       - name: Package fonts
         run: |
-          zip -j NordwandMono-OTF.zip fonts/otf/*.otf
-          zip -j NordwandMono-TTF.zip fonts/ttf/*.ttf
+          zip -j NordwandMono-OTF.zip fonts/otf/NordwandMono-*.otf
+          zip -j NordwandMono-TTF.zip fonts/ttf/NordwandMono-*.ttf
+          zip -j NordwandMonoNL-OTF.zip fonts/otf/NordwandMonoNL-*.otf
+          zip -j NordwandMonoNL-TTF.zip fonts/ttf/NordwandMonoNL-*.ttf
           zip -j NordwandMono-WOFF.zip fonts/woff/*.woff
           zip -j NordwandMono-WOFF2.zip fonts/woff2/*.woff2
 
@@ -49,6 +53,8 @@ jobs:
           gh release upload "${{ github.event.release.tag_name }}" \
             NordwandMono-OTF.zip \
             NordwandMono-TTF.zip \
+            NordwandMonoNL-OTF.zip \
+            NordwandMonoNL-TTF.zip \
             NordwandMono-WOFF.zip \
             NordwandMono-WOFF2.zip \
             --clobber
