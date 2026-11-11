@@ -7,14 +7,14 @@ class LowercaseR2Glyph(Glyph):
     name = "lowercase_r_2"
     unicode = "0x72"
     font_feature = {"cv06": 1}
-    offset = 45
+    offset = 50
     loop_y_ratio = 0.75
-    loop_x_ratio = 1.0
+    loop_x_ratio = 1
     stroke_y_ratio = 1.12
     hx_ratio = 1.00
     hy_ratio = 1.00
     taper = 0.65
-    width_ratio = 0.84
+    width_ratio = 0.78
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

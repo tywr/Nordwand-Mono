@@ -14,7 +14,7 @@ from glyphs.lowercase.w import LowercaseWGlyph
 from glyphs.lowercase.s import LowercaseSGlyph
 from glyphs.lowercase.l import LowercaseLGlyph
 from glyphs.lowercase.z import LowercaseZGlyph
-from glyphs.lowercase.r import LowercaseRGlyph
+from glyphs.lowercase.square.r import LowercaseRGlyph
 from glyphs.uppercase.a import UppercaseAGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
 from glyphs.uppercase.i import UppercaseIGlyph

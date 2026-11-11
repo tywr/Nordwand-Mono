@@ -8,7 +8,7 @@ from glyphs.lowercase.single_story.g import LowercaseGGlyph
 from glyphs.lowercase.l import LowercaseLGlyph
 from glyphs.lowercase.t import LowercaseTGlyph
 from glyphs.lowercase.k import LowercaseKGlyph
-from glyphs.lowercase.r import LowercaseRGlyph
+from glyphs.lowercase.square.r import LowercaseRGlyph
 from glyphs.uppercase.n import UppercaseNGlyph
 from glyphs.uppercase.s import UppercaseSGlyph
 from glyphs.uppercase.g import UppercaseGGlyph

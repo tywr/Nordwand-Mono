@@ -7,7 +7,7 @@ from glyphs.lowercase.round.c import LowercaseCGlyph
 from glyphs.lowercase.square.n import LowercaseNGlyph
 from glyphs.lowercase.s import LowercaseSGlyph
 from glyphs.lowercase.z import LowercaseZGlyph
-from glyphs.lowercase.r import LowercaseRGlyph
+from glyphs.lowercase.square.r import LowercaseRGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
 from glyphs.uppercase.n import UppercaseNGlyph
 from glyphs.uppercase.c import UppercaseCGlyph

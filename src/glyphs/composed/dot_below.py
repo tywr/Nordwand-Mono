@@ -32,7 +32,7 @@ from glyphs.uppercase.h import UppercaseHGlyph
 from glyphs.uppercase.n import UppercaseNGlyph
 from glyphs.uppercase.s import UppercaseSGlyph
 from glyphs.uppercase.z import UppercaseZGlyph
-from glyphs.lowercase.r import LowercaseRGlyph
+from glyphs.lowercase.square.r import LowercaseRGlyph
 from glyphs.lowercase.t import LowercaseTGlyph
 from glyphs.uppercase.r import UppercaseRGlyph
 from glyphs.uppercase.t import UppercaseTGlyph

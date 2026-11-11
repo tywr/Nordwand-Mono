@@ -12,6 +12,7 @@
 | `cv04=1` | `g` | `U+0067` | ![lowercase_g](alternative_characters/lowercase_g.png) | ![lowercase_g_2](alternative_characters/lowercase_g_2.png) | `lowercase_g_2` | Only applies in regular font |
 | `cv04=2` | `g` | `U+0067` | ![lowercase_g](alternative_characters/lowercase_g.png) | ![lowercase_g_3](alternative_characters/lowercase_g_3.png) | `lowercase_g_3` | Applies to both regular and italic fonts |
 | `cv05=1` | `R` | `U+0052` | ![uppercase_r](alternative_characters/uppercase_r.png) | ![uppercase_r_2](alternative_characters/uppercase_r_2.png) | `uppercase_r_2` |  |
+| `cv06=1` | `r` | `U+0072` | ![lowercase_r](alternative_characters/lowercase_r.png) | ![lowercase_r_2](alternative_characters/lowercase_r_2.png) | `lowercase_r_2` |  |
 | `cv11=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_3](alternative_characters/lowercase_f_3.png) | `lowercase_f_3` |  |
 | `cv11=1` | `f` | `U+0066` | ![lowercase_f_2](alternative_characters/lowercase_f_2.png) | ![lowercase_f_4](alternative_characters/lowercase_f_4.png) | `lowercase_f_4` |  |
 | `cv12=1` | `m` | `U+006D` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) | `lowercase_m_2` |  |

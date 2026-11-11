@@ -8,12 +8,15 @@ class LowercaseNGlyph(SquareLowercaseGlyph):
     unicode = "0x6E"
     offset = 0
 
-    def draw(self, pen, dc):
-        b = dc.body_bounds(
+    def body(self, dc):
+        return dc.body_bounds(
             offset=self.offset,
             overshoot_top=True,
             width_ratio=self.width_ratio,
         )
+
+    def draw(self, pen, dc):
+        b = self.body(dc)
         yl = b.y2 - self.loop_ratio * b.height
 
         # Top arch, cut at the bottom (only upper half drawn)
