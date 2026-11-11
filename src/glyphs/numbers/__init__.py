@@ -8,3 +8,5 @@ class NumberGlyph(Glyph, ABC):
     width_ratio = 1.06
     stroke_x_ratio = 1.00
     stroke_y_ratio = 1.00
+    hx_ratio = 0.9
+    hy_ratio = 0.9

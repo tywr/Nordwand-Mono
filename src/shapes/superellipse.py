@@ -21,6 +21,10 @@ class Superellipse:
     def xmid(self):
         return (self.x1 + self.x2) / 2
 
+    @property
+    def ymid(self):
+        return (self.y1 + self.y2) / 2
+
     def translate(self, dx=0, dy=0):
         return Superellipse(
             self.x1 + dx,
