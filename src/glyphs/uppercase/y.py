@@ -10,10 +10,11 @@ class UppercaseYGlyph(UppercaseGlyph):
     width_ratio = 1.22
     junction_ratio = 0.4
     branch_stroke_ratio = 0.9
+    height = "cap"
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, width_ratio=self.width_ratio, height="cap"
+            offset=self.offset, width_ratio=self.width_ratio, height=self.height
         )
         sx = dc.stroke_x * self.stroke_x_ratio
 

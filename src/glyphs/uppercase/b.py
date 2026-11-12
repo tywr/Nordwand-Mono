@@ -12,11 +12,12 @@ class UppercaseBGlyph(UppercaseGlyph):
     width_ratio = 1.0
     hx_ratio = 1
     hy_ratio = 1
+    height = "cap"
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
-            height="cap",
+            height=self.height,
             uppercase=True,
             width_ratio=self.width_ratio,
         )
@@ -33,7 +34,7 @@ class UppercaseBGlyph(UppercaseGlyph):
         upper_x2 = lower_x2 - delta / 2
 
         # Left stem
-        draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
+        draw_rect(pen, b.x1, b.y1, b.x1 + sx, b.y2)
 
         # Upper loop (narrower, displaced left)
         draw_arch(

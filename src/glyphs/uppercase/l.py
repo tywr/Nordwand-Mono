@@ -8,16 +8,17 @@ class UppercaseLGlyph(UppercaseGlyph):
     offset = 30
     width_ratio = 0.96
     stroke_x_ratio = 1.00
+    height = "cap"
 
     def stem_center(self, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="cap", width_ratio=self.width_ratio
+            offset=self.offset, height=self.height, width_ratio=self.width_ratio
         )
         return b.x1 + dc.stroke_x * self.stroke_x_ratio / 2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="cap", width_ratio=self.width_ratio
+            offset=self.offset, height=self.height, width_ratio=self.width_ratio
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
 

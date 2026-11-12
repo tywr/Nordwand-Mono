@@ -8,10 +8,11 @@ class UppercaseHGlyph(UppercaseGlyph):
     offset = 0
     bar_height = 0.518
     width_ratio = 1.02
+    height = "cap"
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="cap", width_ratio=self.width_ratio, uppercase=True
+            offset=self.offset, height=self.height, width_ratio=self.width_ratio, uppercase=True
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         yb = self.bar_height * b.height

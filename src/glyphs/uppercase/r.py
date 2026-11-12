@@ -13,11 +13,12 @@ class UppercaseRGlyph(UppercaseGlyph):
     branch_start = 0.63
     width_ratio = 1.05
     leg_stroke_ratio = 1.0
+    height = "cap"
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
-            height="cap",
+            height=self.height,
             overshoot_right=True,
             width_ratio=self.width_ratio,
             uppercase=True,
@@ -29,7 +30,7 @@ class UppercaseRGlyph(UppercaseGlyph):
         w = self.loop_width * b.width
 
         # Left stem
-        draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
+        draw_rect(pen, b.x1, b.y1, b.x1 + sx, b.y2)
 
         # Upper loop (narrower, displaced left)
         draw_loop(
