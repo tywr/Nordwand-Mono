@@ -66,10 +66,6 @@ jobs:
           zip -r ../../NerdwandMono-OTF.zip licenses
           zip -j ../../NerdwandMono-TTF.zip ttf/NerdwandMono-*.ttf LICENSE-FONT.txt
           zip -r ../../NerdwandMono-TTF.zip licenses
-          zip -j ../../NerdwandMonoNL-OTF.zip otf/NerdwandMonoNL-*.otf LICENSE-FONT.txt
-          zip -r ../../NerdwandMonoNL-OTF.zip licenses
-          zip -j ../../NerdwandMonoNL-TTF.zip ttf/NerdwandMonoNL-*.ttf LICENSE-FONT.txt
-          zip -r ../../NerdwandMonoNL-TTF.zip licenses
 
       - name: Upload release assets
         env:
@@ -84,6 +80,4 @@ jobs:
             NordwandMono-WOFF2.zip \
             NerdwandMono-OTF.zip \
             NerdwandMono-TTF.zip \
-            NerdwandMonoNL-OTF.zip \
-            NerdwandMonoNL-TTF.zip \
             --clobber

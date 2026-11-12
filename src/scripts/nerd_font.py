@@ -2,13 +2,12 @@
 """Generate Nerdwand Mono, the Nerd Font patched version of Nordwand Mono.
 
 Patches every OTF and TTF in fonts/ with the complete Nerd Fonts icon set
-using the official font-patcher (downloaded on first run), for the regular
-and the no-ligatures (NL) families. Icons are kept to a single cell, and the
+using the official font-patcher (downloaded on first run). The no-ligatures
+(NL) family is not patched. Icons are kept to a single cell, and the
 original glyphs keep their source advances, so the results stay as
 monospaced as the base fonts.
 
-Requires fontforge on the PATH. Run `make build-font` and
-`make build-nl-font` first.
+Requires fontforge on the PATH. Run `make build-font` first.
 
 Output: fonts/nerd-font/{otf,ttf}/ plus the font license and the licenses of
 every patched-in icon set.
@@ -34,7 +33,6 @@ from fontTools.ttLib import TTFont
 
 FAMILY_NAMES = (
     ("Nerdwand Mono", "NordwandMono"),
-    ("Nerdwand Mono NL", "NordwandMonoNL"),
 )
 FLAVORS = ("otf", "ttf")
 PATCHER_VERSION = "3.5.1"
@@ -178,7 +176,7 @@ def generate(output_dir=OUTPUT_DIR):
             if not paths:
                 raise SystemExit(
                     f"No {flavor} fonts found for {prefix!r}, run "
-                    "`make build-font` and `make build-nl-font` first"
+                    "`make build-font` first"
                 )
             tasks.extend((path, flavor_dir, family_name) for path in paths)
 
