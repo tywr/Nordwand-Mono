@@ -30,12 +30,28 @@ jobs:
       - name: Install dependencies
         run: make install
 
+      - name: Install fontforge
+        run: |
+          if ! command -v fontforge >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y fontforge
+          fi
+
       - name: Build fonts
         env:
           FONT_VERSION: ${{ github.event.release.tag_name }}
         run: |
           make build-font FONT_VERSION="$FONT_VERSION"
           make build-nl-font FONT_VERSION="$FONT_VERSION"
+
+      - name: Cache Nerd Fonts patcher
+        uses: actions/cache@v4
+        with:
+          path: .nerd-fonts/3.5.1
+          key: nerd-fonts-patcher-v3.5.1
+
+      - name: Build Nerd fonts
+        run: make build-nerd-font
 
       - name: Package fonts
         run: |
@@ -45,6 +61,15 @@ jobs:
           zip -j NordwandMonoNL-TTF.zip fonts/ttf/NordwandMonoNL-*.ttf
           zip -j NordwandMono-WOFF.zip fonts/woff/*.woff
           zip -j NordwandMono-WOFF2.zip fonts/woff2/*.woff2
+          cd fonts/nerd-font
+          zip -j ../../NerdwandMono-OTF.zip otf/NerdwandMono-*.otf LICENSE-FONT.txt
+          zip -r ../../NerdwandMono-OTF.zip licenses
+          zip -j ../../NerdwandMono-TTF.zip ttf/NerdwandMono-*.ttf LICENSE-FONT.txt
+          zip -r ../../NerdwandMono-TTF.zip licenses
+          zip -j ../../NerdwandMonoNL-OTF.zip otf/NerdwandMonoNL-*.otf LICENSE-FONT.txt
+          zip -r ../../NerdwandMonoNL-OTF.zip licenses
+          zip -j ../../NerdwandMonoNL-TTF.zip ttf/NerdwandMonoNL-*.ttf LICENSE-FONT.txt
+          zip -r ../../NerdwandMonoNL-TTF.zip licenses
 
       - name: Upload release assets
         env:
@@ -57,4 +82,8 @@ jobs:
             NordwandMonoNL-TTF.zip \
             NordwandMono-WOFF.zip \
             NordwandMono-WOFF2.zip \
+            NerdwandMono-OTF.zip \
+            NerdwandMono-TTF.zip \
+            NerdwandMonoNL-OTF.zip \
+            NerdwandMonoNL-TTF.zip \
             --clobber
