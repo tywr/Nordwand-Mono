@@ -4,6 +4,7 @@ from dataclasses import replace
 import ufoLib2
 from fontTools.pens.transformPen import TransformPen
 
+from draw.rect import draw_rect
 from glyphs import Glyph
 from glyphs.composed import _italic_base
 
@@ -63,5 +64,32 @@ class JointGlyph(Glyph, ABC):
 
         for (glyph, x1, _), scale, (s1, _) in zip(parts, scales, self._spans(b)):
             glyph.draw(TransformPen(pen, (scale, 0, 0, 1, s1 - scale * x1, 0)))
+
+        self.extra_draw(pen, dc)
+
+
+class LeftBarJointGlyph(JointGlyph):
+    """A solid vertical bar of the stroke width on the left of the body
+    bounds, from the baseline to the ascent, joined to `right_class` squeezed
+    into the remaining space (digraphs such as ɮ). `overlap` extends the
+    right glyph leftwards by that fraction of the body width."""
+
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            width_ratio=self.width_ratio,
+            min_margin=dc.min_margin_lowercase,
+        )
+        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.ascent)
+
+        s1 = b.x1 + dc.stroke_x - self.overlap * b.width
+        _, x1, x2 = self._outline(self.right_class, dc)
+        scale = (b.x2 - s1) / (x2 - x1)
+        # Redraw with the stems thickened by the inverse of the squeeze
+        glyph, x1, x2 = self._outline(
+            self.right_class, replace(dc, stroke_x=dc.stroke_x / scale)
+        )
+        scale = (b.x2 - s1) / (x2 - x1)
+        glyph.draw(TransformPen(pen, (scale, 0, 0, 1, s1 - scale * x1, 0)))
 
         self.extra_draw(pen, dc)

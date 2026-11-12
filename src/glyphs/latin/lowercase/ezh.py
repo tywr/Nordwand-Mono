@@ -23,17 +23,28 @@ class LatinLowercaseEzhGlyph(Glyph):
     hy_ratio = 1.0
     width_ratio = 1.0
     diag_stroke_ratio = 1.0
+    stroke_y_ratio = 1.0
+    height = "x_height"
+    uppercase = False
+    # Bottom loop down to the descent, or sitting on the baseline
+    descender = True
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, overshoot_right=True, width_ratio=self.width_ratio
+            offset=self.offset,
+            overshoot_right=True,
+            width_ratio=self.width_ratio,
+            height=self.height,
+            uppercase=self.uppercase,
         )
         ec = self.extra_cut(dc)
-        sx, sy = dc.stroke_x, dc.stroke_y
-        y1, y2 = dc.descent - dc.v_overshoot, b.y2
+        sx, sy = dc.stroke_x, dc.stroke_y * self.stroke_y_ratio
+        v_ov = dc.v_overshoot_cap if self.uppercase else dc.v_overshoot
+        y1 = (dc.descent if self.descender else b.y1) - v_ov
+        y2 = b.y2
         height = y2 - y1
         hx = b.hx * self.hx_ratio
-        # b.hy is sized for the x-height, the ezh is taller
+        # b.hy is sized for the body, the ezh is taller with its descender
         hy = b.hy * self.hy_ratio * height / b.height
 
         ymid = y1 + self.mid_ratio * height

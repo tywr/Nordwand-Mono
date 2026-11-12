@@ -11,7 +11,7 @@ class LowercaseSGlyph(Glyph):
     offset = 0
     width_ratio = 0.95
     stroke_x_ratio = 1.01
-    stroke_y_ratio = 1.03
+    stroke_y_ratio = 1.00
     hx_ratio = 1.1
     hy_ratio = 1
     mid_height = 0.508
@@ -79,6 +79,7 @@ class LowercaseSGlyph(Glyph):
         pen.curveTo(
             (b.x2, ym2 + r * bhy - th), (x1 + sx, ym1 - r * tihy - th), (x1 + sx, ym1)
         )
+        pen.closePath()
 
         glyph = ufoLib2.objects.Glyph()
         draw_corner(
