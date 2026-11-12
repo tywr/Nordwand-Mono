@@ -13,13 +13,18 @@
 | `cv04=2` | `g` | `U+0067` | ![lowercase_g](alternative_characters/lowercase_g.png) | ![lowercase_g_3](alternative_characters/lowercase_g_3.png) | `lowercase_g_3` | Applies to both regular and italic fonts |
 | `cv05=1` | `R` | `U+0052` | ![uppercase_r](alternative_characters/uppercase_r.png) | ![uppercase_r_2](alternative_characters/uppercase_r_2.png) | `uppercase_r_2` |  |
 | `cv06=1` | `r` | `U+0072` | ![lowercase_r](alternative_characters/lowercase_r.png) | ![lowercase_r_2](alternative_characters/lowercase_r_2.png) | `lowercase_r_2` |  |
-| `cv11=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_3](alternative_characters/lowercase_f_3.png) | `lowercase_f_3` |  |
-| `cv11=1` | `f` | `U+0066` | ![lowercase_f_2](alternative_characters/lowercase_f_2.png) | ![lowercase_f_4](alternative_characters/lowercase_f_4.png) | `lowercase_f_4` |  |
+| `cv06=2` | `r` | `U+0072` | ![lowercase_r](alternative_characters/lowercase_r.png) | ![lowercase_r_3](alternative_characters/lowercase_r_3.png) | `lowercase_r_3` |  |
+| `cv11=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_5](alternative_characters/lowercase_f_5.png) | `lowercase_f_5` | Only applies in regular font |
 | `cv12=1` | `m` | `U+006D` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) | `lowercase_m_2` |  |
 | `cv18=1` | `7` | `U+0037` | ![seven](alternative_characters/seven.png) | ![seven_barred](alternative_characters/seven_barred.png) | `seven_barred` | Continental seven with a crossbar |
 | `cv19=1` | `3` | `U+0033` | ![three](alternative_characters/three.png) | ![three_2](alternative_characters/three_2.png) | `three_2` |  |
 | `cv20=1` | `ß` | `U+00DF` | ![lowercase_sharp_s](alternative_characters/lowercase_sharp_s.png) | ![sharp_s_2](alternative_characters/sharp_s_2.png) | `sharp_s_2` |  |
+| `ss01=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_5](alternative_characters/lowercase_f_5.png) | `lowercase_f_5` | Only applies in regular font |
 | `ss01=1` | `l` | `U+006C` | ![lowercase_l](alternative_characters/lowercase_l.png) | ![lowercase_l_2](alternative_characters/lowercase_l_2.png) | `lowercase_l_2` | Only applies in regular font |
 | `ss01=1` | `m` | `U+006D` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) | `lowercase_m_2` |  |
+| `ss01=1` | `r` | `U+0072` | ![lowercase_r](alternative_characters/lowercase_r.png) | ![lowercase_r_2](alternative_characters/lowercase_r_2.png) | `lowercase_r_2` |  |
 | `ss03=1` | `>` | `U+003E` | ![greater_than_sign](alternative_characters/greater_than_sign.png) | ![greater_than_sign_2](alternative_characters/greater_than_sign_2.png) | `greater_than_sign_2` | Also changes the `->` and `=>` arrows |
 | `ss03=1` | `<` | `U+003C` | ![less_than_sign](alternative_characters/less_than_sign.png) | ![less_than_sign_2](alternative_characters/less_than_sign_2.png) | `less_than_sign_2` |  |
+| `ss20=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_3](alternative_characters/lowercase_f_3.png) | `lowercase_f_3` |  |
+| `ss20=1` | `f` | `U+0066` | ![lowercase_f_2](alternative_characters/lowercase_f_2.png) | ![lowercase_f_4](alternative_characters/lowercase_f_4.png) | `lowercase_f_4` |  |
+| `ss20=1` | `f` | `U+0066` | ![lowercase_f_5](alternative_characters/lowercase_f_5.png) | ![lowercase_f_6](alternative_characters/lowercase_f_6.png) | `lowercase_f_6` | Only applies in regular font |

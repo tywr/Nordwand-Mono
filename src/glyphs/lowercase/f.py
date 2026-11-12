@@ -118,6 +118,7 @@ class LowercaseF5Glyph(LowercaseFGlyph):
     name = "lowercase_f_5"
     font_feature = {"cv11": 1, "ss01": 1}
     regular_only = True
+    alternative_character_comment = "Only applies in regular font"
     bottom = "serif"
 
 
