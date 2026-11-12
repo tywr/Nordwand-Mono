@@ -383,13 +383,17 @@ def visualize_text(
         if g.unicode and not g.font_feature:
             char = chr(int(g.unicode, 16))
             glyph_map[char] = g
-    for g in active_glyphs:
+    # Any of its features activates an alternate, like in the font. Alternates
+    # of an alternate last, applying only over that alternate
+    for g in sorted(active_glyphs, key=lambda g: g.alternate_of is not None):
         if (
             g.unicode
             and g.font_feature
-            and all(variants.get(k) == v for k, v in g.font_feature.items())
+            and any(variants.get(k) == v for k, v in g.font_feature.items())
         ):
-            glyph_map[chr(int(g.unicode, 16))] = g
+            char = chr(int(g.unicode, 16))
+            if g.alternate_of is None or glyph_map[char].name == g.alternate_of:
+                glyph_map[char] = g
 
     ligature_map = {}
     for g in active_glyphs:

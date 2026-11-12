@@ -43,7 +43,10 @@ def collect_alternatives():
 
         codepoint = int(glyph.unicode, 16)
         defaults = italic_defaults if glyph.italic_only else regular_defaults
-        default = defaults.get(codepoint)
+        if glyph.alternate_of:
+            default = next(g for g in glyphs if g.name == glyph.alternate_of)
+        else:
+            default = defaults.get(codepoint)
         if default is None:
             raise ValueError(f"No default glyph found for U+{codepoint:04X}")
         for feature, index in glyph.font_feature.items():
