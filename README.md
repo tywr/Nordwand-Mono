@@ -56,14 +56,15 @@ make build       # build the fonts, banner, specimen, samples and docs
 
 ### Nerd Font variant
 
-Nerdwand Mono is the [Nerd Font](https://www.nerdfonts.com) variant of Nordwand Mono, patched with the complete icon set. Icons occupy a single cell, so the font remains strictly monospaced. It is not attached to releases and must be built locally:
+Nerdwand Mono is the [Nerd Font](https://www.nerdfonts.com) variant of Nordwand Mono, patched with the complete icon set. Icons occupy a single cell, so the font remains strictly monospaced. OTF and TTF of both the regular and the no-ligatures family are attached to each [release](../../releases). To build it locally:
 
 ```sh
-make build
-make build-nerd-font
+make build-font      # build the regular family into ./fonts
+make build-nl-font   # build the no-ligatures family into ./fonts
+make build-nerd-font # patch all of them into ./fonts/nerd-font
 ```
 
-This additionally requires [FontForge](https://fontforge.org) (`brew install fontforge` on macOS, `apt install fontforge python3-fontforge` on Debian and Ubuntu), and network access on the first run to download the Nerd Fonts patcher. The patched fonts, the font license and the licenses of the bundled icon sets are written to `./fonts/nerd-font`.
+This additionally requires [FontForge](https://fontforge.org) (`brew install fontforge` on macOS, `apt install fontforge` on Debian and Ubuntu), and network access on the first run to download the Nerd Fonts patcher. The patched fonts are written to `./fonts/nerd-font/{otf,ttf}`, alongside the font license and the licenses of the bundled icon sets.
 
 ## Custom builds
 
