@@ -18,6 +18,7 @@ class LowercaseFBase(Glyph):
     low_bar_height = 0.88
     bottom_right_reach = 0.9
     bottom = None
+    cross_bar = True
 
     def bar_width(self, b, dc):
         """Width shared by the cross bar and the serif, kept the same across
@@ -42,13 +43,14 @@ class LowercaseFBase(Glyph):
         )
 
         # Cross-bar
-        draw_rect(
-            pen,
-            b.xmid - left_len - dc.stroke_x / 2,
-            yc - dc.stroke_y,
-            b.xmid + right_len + dc.stroke_x / 2,
-            yc,
-        )
+        if self.cross_bar:
+            draw_rect(
+                pen,
+                b.xmid - left_len - dc.stroke_x / 2,
+                yc - dc.stroke_y,
+                b.xmid + right_len + dc.stroke_x / 2,
+                yc,
+            )
 
         # Corner
         draw_square_corner(
