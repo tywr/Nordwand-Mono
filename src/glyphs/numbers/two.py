@@ -1,4 +1,8 @@
 from math import cos, sin, hypot
+
+import ufoLib2
+from booleanOperations.booleanGlyph import BooleanGlyph
+
 from glyphs.numbers import NumberGlyph
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
@@ -22,12 +26,13 @@ class TwoGlyph(NumberGlyph):
     offset = 0
     diag_stroke_ratio = 1.0
     width_ratio = 1.02
-    loop_y_left_ratio = 0.62
+    loop_y_left_ratio = 0.7
     loop_y_right_ratio = 0.53
     diag_x_ratio = 0.55
     diag_y_ratio = 0.36
     hy_curve_ratio = 0.85
     hd_curve_ratio = 1
+    opening = 0.69
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -44,9 +49,10 @@ class TwoGlyph(NumberGlyph):
         yc_offset = 0.25 * (dc.stroke_x - dc.default_stroke)
         yc = b.y1 + self.diag_y_ratio * b.height + yc_offset
 
-        # Upper loop
+        # Upper loop, cut at the opening as in the 3
+        loop_glyph = ufoLib2.objects.Glyph()
         draw_loop(
-            pen,
+            loop_glyph.getPen(),
             sx,
             sy,
             b.x1,
@@ -57,6 +63,15 @@ class TwoGlyph(NumberGlyph):
             hy * self.loop_y_left_ratio,
             quarter="top-left",
         )
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(
+            cut_glyph.getPen(),
+            b.x1 - 10,
+            b.y1,
+            b.xmid,
+            b.y1 + self.opening * b.height - self.extra_cut(dc),
+        )
+        BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph)).draw(pen)
 
         # Right part
         params = draw_loop(
