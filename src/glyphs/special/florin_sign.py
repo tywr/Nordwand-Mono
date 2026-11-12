@@ -1,4 +1,4 @@
-from glyphs.lowercase.f_2 import LowercaseF2Glyph
+from glyphs.lowercase.f import LowercaseF2Glyph
 
 
 class FlorinSignGlyph(LowercaseF2Glyph):

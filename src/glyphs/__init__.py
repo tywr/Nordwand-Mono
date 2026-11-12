@@ -23,6 +23,9 @@ class Glyph(ABC):
     italic_only: bool = False
     # Alternate left out of the italic, which keeps the default design
     regular_only: bool = False
+    # Name of the alternate this one replaces when its feature is on, instead
+    # of the default glyph: it then applies on top of that alternate's feature
+    alternate_of: str = None
     italic_skew: bool = True
 
     @abstractmethod

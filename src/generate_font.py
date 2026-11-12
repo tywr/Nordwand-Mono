@@ -279,7 +279,12 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
     for g in alternate_glyphs:
         if g.name not in glyph_names or not g.unicode:
             continue
-        base_name = base_by_unicode.get(int(g.unicode, 16))
+        # Alternates of an alternate rely on the lookups being applied in
+        # the order of their sorted feature tags (e.g. cv11 before ss20)
+        if g.alternate_of:
+            base_name = g.alternate_of if g.alternate_of in glyph_names else None
+        else:
+            base_name = base_by_unicode.get(int(g.unicode, 16))
         if not base_name:
             continue
         for tag, alternate_index in g.font_feature.items():
