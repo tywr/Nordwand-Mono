@@ -7,7 +7,9 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
     name = "lowercase_a_2"
     default_italic = True
     unicode = "0x61"
-    offset = -10
+    offset = -13
+    tail_length = 0.15
+    width_ratio = 0.99
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -39,3 +41,10 @@ class LowercaseA2Glyph(SingleStoryLowercaseGlyph):
         )
 
         draw_rect(pen, b.x2 - dc.stroke_x, 0, b.x2, dc.x_height)
+        draw_rect(
+            pen,
+            b.x2,
+            0,
+            b.x2 + self.tail_length * b.width,
+            dc.stroke_y,
+        )

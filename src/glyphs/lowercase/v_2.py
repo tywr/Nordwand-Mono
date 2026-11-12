@@ -7,8 +7,8 @@ class LowercaseV2Glyph(Glyph):
     name = "lowercase_v_2"
     default_italic = True
     unicode = "0x76"
-    offset = 14
-    width_ratio = 0.98
+    offset = 13
+    width_ratio = 0.99
     stroke_ratio = 0.96
     overlap = 0.33
     tail_ratio = 0.15
@@ -16,7 +16,7 @@ class LowercaseV2Glyph(Glyph):
     hx_ratio = 0.75
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
+        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio, overshoot_right=True)
         xt = b.x1 - self.tail_ratio * b.width
         w = b.x2 - b.x1 - dc.stroke_x
 
