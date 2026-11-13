@@ -18,7 +18,7 @@ class EuroSignGlyph(Glyph):
     gap = 0.16  # Space between the bars, relative to the cap height
 
     def draw(self, pen, dc):
-        from glyphs.uppercase.c import UppercaseCGlyph
+        from glyphs.uppercase.round.c import UppercaseCGlyph
 
         c = UppercaseCGlyph()
         c.width_ratio = self.c_width_ratio

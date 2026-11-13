@@ -4,7 +4,7 @@ from config import FontConfig as fc
 from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.a import LowercaseAGlyph
 from glyphs.lowercase.square.u import LowercaseUGlyph
-from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.accents.ring import Ring
 

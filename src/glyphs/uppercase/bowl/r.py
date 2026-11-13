@@ -1,28 +1,19 @@
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.bowl import BowlUppercaseGlyph
 from draw.loop import draw_loop
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
 
 
-class UppercaseRGlyph(UppercaseGlyph):
+class UppercaseRGlyph(BowlUppercaseGlyph):
     name = "uppercase_r"
     unicode = "0x52"
-    offset = 20
     loop_ratio = 0.605
     loop_width = 0.96
     branch_start = 0.63
-    width_ratio = 1.05
     leg_stroke_ratio = 1.0
-    height = "cap"
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(
-            offset=self.offset,
-            height=self.height,
-            overshoot_right=True,
-            width_ratio=self.width_ratio,
-            uppercase=True,
-        )
+        b = self.body(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx * self.loop_width, b.hy * self.loop_ratio
         xo = -1.4 * (sx - dc.default_stroke)

@@ -1,7 +1,7 @@
 from fontTools.misc.transform import Transform
 from fontTools.pens.reverseContourPen import ReverseContourPen
 from fontTools.pens.transformPen import TransformPen
-from glyphs.uppercase.c import UppercaseCGlyph
+from glyphs.uppercase.round.c import UppercaseCGlyph
 
 
 class UppercaseOpenOGlyph(UppercaseCGlyph):

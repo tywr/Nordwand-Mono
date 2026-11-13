@@ -1,4 +1,4 @@
-from glyphs.uppercase.m import UppercaseMGlyph
+from glyphs.uppercase.stem_diagonal.m import UppercaseMGlyph
 
 
 class GreekUppercaseMuGlyph(UppercaseMGlyph):

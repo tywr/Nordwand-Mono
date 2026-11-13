@@ -1,26 +1,20 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.diagonal import DiagonalUppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
 from draw.polygon import draw_polygon
 
 
-class UppercaseVGlyph(UppercaseGlyph):
+class UppercaseVGlyph(DiagonalUppercaseGlyph):
     name = "uppercase_v"
     unicode = "0x56"
     offset = 0
-    overlap = 0.25
-    width_ratio = 1.2
-    lower_section_height = 1
-    branch_stroke_ratio = 1
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(
-            offset=self.offset, width_ratio=self.width_ratio, height="cap"
-        )
+        b = self.body(dc)
         s = self.branch_stroke_ratio * dc.stroke_x
         ov = self.overlap * s
-        lsh = self.lower_section_height * dc.stroke_y
+        lsh = self.section_height * dc.stroke_y
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()

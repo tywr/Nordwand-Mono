@@ -9,13 +9,13 @@ from glyphs.lowercase.l import LowercaseLGlyph
 from glyphs.lowercase.t import LowercaseTGlyph
 from glyphs.lowercase.k import LowercaseKGlyph
 from glyphs.lowercase.square.r import LowercaseRGlyph
-from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
 from glyphs.uppercase.s import UppercaseSGlyph
-from glyphs.uppercase.g import UppercaseGGlyph
+from glyphs.uppercase.round.g import UppercaseGGlyph
 from glyphs.uppercase.l import UppercaseLGlyph
 from glyphs.uppercase.t import UppercaseTGlyph
 from glyphs.uppercase.k import UppercaseKGlyph
-from glyphs.uppercase.r import UppercaseRGlyph
+from glyphs.uppercase.bowl.r import UppercaseRGlyph
 from glyphs.accents.acute import Acute
 from glyphs.accents.comma_below import CommaBelow
 

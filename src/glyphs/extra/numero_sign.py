@@ -1,7 +1,7 @@
 import dataclasses
 
 from glyphs.uppercase import UppercaseGlyph
-from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
 from draw.loop import draw_loop
 from draw.rect import draw_rect
 

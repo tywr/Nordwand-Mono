@@ -8,14 +8,14 @@ from glyphs.lowercase.single_story.g import LowercaseGGlyph
 from glyphs.lowercase.z import LowercaseZGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
 from glyphs.uppercase.i import UppercaseIGlyph
-from glyphs.uppercase.c import UppercaseCGlyph
-from glyphs.uppercase.g import UppercaseGGlyph
+from glyphs.uppercase.round.c import UppercaseCGlyph
+from glyphs.uppercase.round.g import UppercaseGGlyph
 from glyphs.uppercase.z import UppercaseZGlyph
 from glyphs.accents.dot import DotAbove
 from glyphs.lowercase.square.n import LowercaseNGlyph
 from glyphs.lowercase.single_story.p import LowercasePGlyph
-from glyphs.uppercase.n import UppercaseNGlyph
-from glyphs.uppercase.p import UppercasePGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
+from glyphs.uppercase.bowl.p import UppercasePGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap

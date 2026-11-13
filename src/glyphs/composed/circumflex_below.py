@@ -3,11 +3,11 @@
 from glyphs.composed import ComposedGlyph
 from glyphs.accents.circumflex import CircumflexBelow
 from glyphs.lowercase.single_story.d import LowercaseDGlyph
-from glyphs.uppercase.d import UppercaseDGlyph
+from glyphs.uppercase.bowl.d import UppercaseDGlyph
 from glyphs.lowercase.l import LowercaseLGlyph
 from glyphs.uppercase.l import UppercaseLGlyph
 from glyphs.lowercase.square.n import LowercaseNGlyph
-from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
 from glyphs.lowercase.t import LowercaseTGlyph
 from glyphs.uppercase.t import UppercaseTGlyph
 

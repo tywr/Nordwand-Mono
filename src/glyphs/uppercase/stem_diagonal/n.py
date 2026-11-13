@@ -1,35 +1,21 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.stem_diagonal import StemDiagonalUppercaseGlyph
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
 from draw.polygon import draw_polygon
 
 
-class UppercaseNGlyph(UppercaseGlyph):
+class UppercaseNGlyph(StemDiagonalUppercaseGlyph):
     name = "uppercase_n"
     unicode = "0x4E"
     offset = 0
-    overlap = 0.25
     width_ratio = 1.04
-    section_height = 1
-    middle_stroke_ratio = 0.95
-    height = "cap"
-
-    def bounds(self, dc):
-        return dc.body_bounds(
-            offset=self.offset,
-            height=self.height,
-            width_ratio=self.width_ratio,
-            uppercase=True,
-            min_margin=dc.min_margin_uppercase,
-        )
 
     def draw(self, pen, dc):
-        b = self.bounds(dc)
+        b = self.body(dc)
         sx = dc.stroke_x * self.stroke_x_ratio
-        si = dc.stroke_x * self.middle_stroke_ratio
-        si = max(0, 0.7 * (si - dc.default_stroke)) + min(dc.default_stroke, si)
+        si = self.inner_stroke(dc.stroke_x, dc)
         ov = sx * self.overlap
         sh = self.section_height * dc.stroke_y
 

@@ -1,31 +1,18 @@
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.round import RoundUppercaseGlyph
 from draw.loop import draw_loop
 from draw.rect import draw_rect
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 
 
-class UppercaseCGlyph(UppercaseGlyph):
+class UppercaseCGlyph(RoundUppercaseGlyph):
     name = "uppercase_c"
     unicode = "0x43"
     offset = 12
-    stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.00
-    stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.00
     opening1 = 0.29
-    opening2 = 0.69
-    right_hx_ratio = 1.2
-    width_ratio = 1.08
 
     def draw(self, pen, dc):
-
-        b = dc.body_bounds(
-            offset=self.offset,
-            overshoot_bottom=True,
-            overshoot_top=True,
-            height="cap",
-            width_ratio=self.width_ratio,
-            uppercase=True,
-        )
+        b = self.body(dc)
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
         ec = self.extra_cut(dc)
         yc1 = b.y1 + b.height * self.opening1 + ec

@@ -1,24 +1,19 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.diagonal import DiagonalUppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
 from draw.polygon import draw_polygon
 
 
-class UppercaseXGlyph(UppercaseGlyph):
+class UppercaseXGlyph(DiagonalUppercaseGlyph):
     name = "uppercase_x"
     unicode = "0x58"
     offset = 0
-    width_ratio = 1.22
-    stroke_ratio = 1.0
-    inner_section_height = 1
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(
-            offset=self.offset, width_ratio=self.width_ratio, height="cap"
-        )
-        s = self.stroke_ratio * dc.stroke_x
-        ish = self.inner_section_height * dc.stroke_y
+        b = self.body(dc)
+        s = self.branch_stroke_ratio * dc.stroke_x
+        ish = self.section_height * dc.stroke_y
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()

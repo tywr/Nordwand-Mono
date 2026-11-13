@@ -1,4 +1,4 @@
-from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
 
 
 class GreekUppercaseLamdaGlyph(UppercaseAGlyph):

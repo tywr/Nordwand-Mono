@@ -1,4 +1,4 @@
-from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
 
 
 class GreekUppercaseNuGlyph(UppercaseNGlyph):

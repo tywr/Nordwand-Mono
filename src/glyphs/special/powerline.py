@@ -10,9 +10,9 @@ from draw.polygon import draw_polygon
 from draw.rect import draw_rect
 from glyphs import Glyph
 from glyphs.extra.ordinal_indicator import draw_scaled
-from glyphs.uppercase.c import UppercaseCGlyph
+from glyphs.uppercase.round.c import UppercaseCGlyph
 from glyphs.uppercase.l import UppercaseLGlyph
-from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
 
 K = 0.5523  # Bezier handle length of a quarter ellipse, relative to its radius
 

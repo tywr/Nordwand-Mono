@@ -1,27 +1,14 @@
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.bowl.r import UppercaseRGlyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
 
 
-class UppercaseR2Glyph(UppercaseGlyph):
+class UppercaseR2Glyph(UppercaseRGlyph):
     name = "uppercase_r_2"
     font_feature = {"cv05": 1}
-    unicode = "0x52"
-    offset = 20
-    loop_ratio = 0.605
-    loop_width = 0.96
-    branch_start = 0.63
-    width_ratio = 1.05
-    leg_stroke_ratio = 1.0
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(
-            offset=self.offset,
-            height="cap",
-            overshoot_right=True,
-            width_ratio=self.width_ratio,
-            uppercase=True,
-        )
+        b = self.body(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         w = self.loop_width * b.width
         ymid = b.y1 + (1 - self.loop_ratio) * b.height

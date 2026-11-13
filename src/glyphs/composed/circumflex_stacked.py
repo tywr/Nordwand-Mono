@@ -20,8 +20,8 @@ from glyphs.accents.circumflex_stacked_uppercase import (
 from glyphs.lowercase.round.e import LowercaseEGlyph
 from glyphs.lowercase.round.o import LowercaseOGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
-from glyphs.uppercase.a import UppercaseAGlyph
-from glyphs.uppercase.o import UppercaseOGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
+from glyphs.uppercase.round.o import UppercaseOGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap

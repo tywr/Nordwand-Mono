@@ -6,7 +6,7 @@ from fontTools.pens.recordingPen import RecordingPen
 from fontTools.pens.transformPen import TransformPen
 
 from glyphs import Glyph
-from glyphs.uppercase.m import UppercaseMGlyph
+from glyphs.uppercase.stem_diagonal.m import UppercaseMGlyph
 from glyphs.uppercase.t import UppercaseTGlyph
 
 

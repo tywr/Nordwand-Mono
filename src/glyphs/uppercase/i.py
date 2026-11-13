@@ -6,7 +6,7 @@ class UppercaseIGlyph(UppercaseGlyph):
     name = "uppercase_i"
     unicode = "0x49"
     offset = 0
-    width_ratio = 0.82
+    width_ratio = 0.95
     height = "cap"
 
     def draw(self, pen, dc):

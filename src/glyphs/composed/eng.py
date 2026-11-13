@@ -2,7 +2,7 @@
 
 from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.square.n import LowercaseNGlyph
-from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
 from draw.square_corner import draw_square_corner
 
 

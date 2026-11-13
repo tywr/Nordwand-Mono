@@ -1,4 +1,4 @@
-from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
 from draw.rect import draw_rect
 
 

@@ -4,7 +4,7 @@ from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.round.c import LowercaseCGlyph
 from glyphs.lowercase.s import LowercaseSGlyph
 from glyphs.lowercase.t import LowercaseTGlyph
-from glyphs.uppercase.c import UppercaseCGlyph
+from glyphs.uppercase.round.c import UppercaseCGlyph
 from glyphs.uppercase.s import UppercaseSGlyph
 from glyphs.uppercase.t import UppercaseTGlyph
 from glyphs.accents.cedilla import Cedilla

@@ -12,7 +12,7 @@ class YenSignGlyph(Glyph):
     bar_height = 0.2
 
     def draw(self, pen, dc):
-        from glyphs.uppercase.y import UppercaseYGlyph
+        from glyphs.uppercase.diagonal.y import UppercaseYGlyph
 
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio

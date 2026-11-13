@@ -9,19 +9,19 @@ from glyphs.lowercase.square.u import LowercaseUGlyph
 from glyphs.lowercase.dotted.i import LowercaseIGlyph
 from glyphs.lowercase.y import LowercaseYGlyph
 from glyphs.lowercase.w import LowercaseWGlyph
-from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
 from glyphs.uppercase.i import UppercaseIGlyph
-from glyphs.uppercase.o import UppercaseOGlyph
+from glyphs.uppercase.round.o import UppercaseOGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
-from glyphs.uppercase.y import UppercaseYGlyph
-from glyphs.uppercase.w import UppercaseWGlyph
+from glyphs.uppercase.diagonal.y import UppercaseYGlyph
+from glyphs.uppercase.diagonal.w import UppercaseWGlyph
 from glyphs.accents.dieresis import Dieresis
 from glyphs.lowercase.square.h import LowercaseHGlyph
 from glyphs.composed.acute import LowercaseLAcuteGlyph
 from glyphs.lowercase.x import LowercaseXGlyph
 from glyphs.uppercase.h import UppercaseHGlyph
-from glyphs.uppercase.x import UppercaseXGlyph
+from glyphs.uppercase.diagonal.x import UppercaseXGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap

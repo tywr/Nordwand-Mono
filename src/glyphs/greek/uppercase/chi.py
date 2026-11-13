@@ -1,4 +1,4 @@
-from glyphs.uppercase.x import UppercaseXGlyph
+from glyphs.uppercase.diagonal.x import UppercaseXGlyph
 
 
 class GreekUppercaseChiGlyph(UppercaseXGlyph):

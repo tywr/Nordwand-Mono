@@ -7,16 +7,16 @@ from glyphs.lowercase.round.e import LowercaseEGlyph
 from glyphs.lowercase.round.o import LowercaseOGlyph
 from glyphs.lowercase.square.u import LowercaseUGlyph
 from glyphs.lowercase.dotted.i import LowercaseIGlyph
-from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
 from glyphs.uppercase.i import UppercaseIGlyph
-from glyphs.uppercase.o import UppercaseOGlyph
+from glyphs.uppercase.round.o import UppercaseOGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.accents.macron import Macron
 from glyphs.lowercase.y import LowercaseYGlyph
-from glyphs.uppercase.y import UppercaseYGlyph
+from glyphs.uppercase.diagonal.y import UppercaseYGlyph
 from glyphs.lowercase.single_story.g import LowercaseGGlyph
-from glyphs.uppercase.g import UppercaseGGlyph
+from glyphs.uppercase.round.g import UppercaseGGlyph
 
 _lc_accent = fc.accent
 _uc_accent = fc.accent_cap

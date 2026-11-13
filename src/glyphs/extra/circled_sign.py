@@ -6,8 +6,8 @@ from fontTools.pens.recordingPen import RecordingPen
 from fontTools.pens.transformPen import TransformPen
 
 from glyphs import Glyph
-from glyphs.uppercase.c import UppercaseCGlyph
-from glyphs.uppercase.r import UppercaseRGlyph
+from glyphs.uppercase.round.c import UppercaseCGlyph
+from glyphs.uppercase.bowl.r import UppercaseRGlyph
 from draw.loop import draw_loop
 
 

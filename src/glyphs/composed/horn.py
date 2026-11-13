@@ -5,7 +5,7 @@ import pathops
 from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.round.o import LowercaseOGlyph
 from glyphs.lowercase.square.u import LowercaseUGlyph
-from glyphs.uppercase.o import UppercaseOGlyph
+from glyphs.uppercase.round.o import UppercaseOGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
 from glyphs.accents.horn import Horn
 from config import FontConfig as fc

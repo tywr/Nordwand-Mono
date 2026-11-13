@@ -1,4 +1,4 @@
-from glyphs.uppercase.y import UppercaseYGlyph
+from glyphs.uppercase.diagonal.y import UppercaseYGlyph
 
 
 class GreekUppercaseUpsilonGlyph(UppercaseYGlyph):

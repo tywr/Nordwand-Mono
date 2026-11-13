@@ -21,7 +21,7 @@ class UppercaseSGlyph(UppercaseGlyph):
     right_offset = 0.02
     curve_thinning = 0.008
     curve_ratio = 2.0
-    width_ratio = 1.13
+    width_ratio = 1.05
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

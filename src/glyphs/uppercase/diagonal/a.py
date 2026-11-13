@@ -1,32 +1,23 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.diagonal import DiagonalUppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
 from draw.polygon import draw_polygon
 
 
-class UppercaseAGlyph(UppercaseGlyph):
+class UppercaseAGlyph(DiagonalUppercaseGlyph):
     name = "uppercase_a"
     unicode = "0x41"
     offset = 0
     bar_height = 0.38
-    overlap = 0.25
     stroke_x_ratio = 1.02
-    width_ratio = 1.2
-    branch_stroke_ratio = 1
-    upper_section_height = 1
-
-    def body(self, dc):
-        return dc.body_bounds(
-            offset=self.offset, height="cap", width_ratio=self.width_ratio
-        )
 
     def draw_branches(self, pen, dc, b):
         """Both branches meeting at the apex, with the crotch cut below it.
         Returns the overlap at the apex and the branches' horizontal width."""
         s = self.branch_stroke_ratio * dc.stroke_x
         ov = self.overlap * s
-        ush = self.upper_section_height * dc.stroke_y
+        ush = self.section_height * dc.stroke_y
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()

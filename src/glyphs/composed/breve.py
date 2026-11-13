@@ -8,12 +8,12 @@ from glyphs.lowercase.round.o import LowercaseOGlyph
 from glyphs.lowercase.square.u import LowercaseUGlyph
 from glyphs.lowercase.dotted.i import LowercaseIGlyph
 from glyphs.lowercase.single_story.g import LowercaseGGlyph
-from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
 from glyphs.uppercase.i import UppercaseIGlyph
-from glyphs.uppercase.o import UppercaseOGlyph
+from glyphs.uppercase.round.o import UppercaseOGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
-from glyphs.uppercase.g import UppercaseGGlyph
+from glyphs.uppercase.round.g import UppercaseGGlyph
 from glyphs.accents.breve import Breve
 
 _lc_accent = fc.accent

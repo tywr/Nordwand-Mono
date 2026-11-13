@@ -1,14 +1,14 @@
 """Small capitals of the IPA: the capitals drawn at the x-height, with the
 horizontal strokes of the lowercase."""
 
-from glyphs.uppercase.b import UppercaseBGlyph
-from glyphs.uppercase.g import UppercaseGGlyph
+from glyphs.uppercase.bowl.b import UppercaseBGlyph
+from glyphs.uppercase.round.g import UppercaseGGlyph
 from glyphs.uppercase.h import UppercaseHGlyph
 from glyphs.uppercase.i import UppercaseIGlyph
 from glyphs.uppercase.l import UppercaseLGlyph
-from glyphs.uppercase.n import UppercaseNGlyph
-from glyphs.uppercase.r import UppercaseRGlyph
-from glyphs.uppercase.y import UppercaseYGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
+from glyphs.uppercase.bowl.r import UppercaseRGlyph
+from glyphs.uppercase.diagonal.y import UppercaseYGlyph
 
 
 class LatinSmallCapitalBGlyph(UppercaseBGlyph):

@@ -5,7 +5,7 @@ from glyphs.lowercase.a import LowercaseAGlyph
 from glyphs.lowercase.round.e import LowercaseEGlyph
 from glyphs.lowercase.square.u import LowercaseUGlyph
 from glyphs.lowercase.dotted.i import LowercaseIGlyph
-from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
 from glyphs.uppercase.i import UppercaseIGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
@@ -13,7 +13,7 @@ from glyphs.accents.ogonek import Ogonek
 import pathops
 from draw.rect import draw_rect
 from glyphs.lowercase.round.o import LowercaseOGlyph
-from glyphs.uppercase.o import UppercaseOGlyph
+from glyphs.uppercase.round.o import UppercaseOGlyph
 
 
 class OgonekComposedGlyph(ComposedGlyph):

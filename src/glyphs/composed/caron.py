@@ -9,27 +9,27 @@ from glyphs.lowercase.s import LowercaseSGlyph
 from glyphs.lowercase.z import LowercaseZGlyph
 from glyphs.lowercase.square.r import LowercaseRGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
-from glyphs.uppercase.n import UppercaseNGlyph
-from glyphs.uppercase.c import UppercaseCGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
+from glyphs.uppercase.round.c import UppercaseCGlyph
 from glyphs.uppercase.s import UppercaseSGlyph
 from glyphs.uppercase.z import UppercaseZGlyph
 from glyphs.uppercase.t import UppercaseTGlyph
-from glyphs.uppercase.r import UppercaseRGlyph
-from glyphs.uppercase.d import UppercaseDGlyph
+from glyphs.uppercase.bowl.r import UppercaseRGlyph
+from glyphs.uppercase.bowl.d import UppercaseDGlyph
 from glyphs.accents.caron import Caron
 from glyphs.latin.lowercase.ezh import LatinLowercaseEzhGlyph
 from glyphs.latin.uppercase.ezh import LatinUppercaseEzhGlyph
 from glyphs.composed.circumflex import LowercaseHCircumflexGlyph
 from glyphs.uppercase.h import UppercaseHGlyph
-from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
 from glyphs.lowercase.a import LowercaseAGlyph
-from glyphs.uppercase.g import UppercaseGGlyph
+from glyphs.uppercase.round.g import UppercaseGGlyph
 from glyphs.lowercase.single_story.g import LowercaseGGlyph
 from glyphs.lowercase.dotted.i import LowercaseIGlyph
 from glyphs.lowercase.round.o import LowercaseOGlyph
 from glyphs.lowercase.square.u import LowercaseUGlyph
 from glyphs.uppercase.i import UppercaseIGlyph
-from glyphs.uppercase.o import UppercaseOGlyph
+from glyphs.uppercase.round.o import UppercaseOGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
 
 _lc_accent = fc.accent

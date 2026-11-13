@@ -3,13 +3,13 @@
 from draw.parallelogramm import parallelogramm_delta
 from draw.rect import draw_rect
 from draw.square_corner import draw_square_corner
-from glyphs.uppercase.b import UppercaseBGlyph
-from glyphs.uppercase.d import UppercaseDGlyph
+from glyphs.uppercase.bowl.b import UppercaseBGlyph
+from glyphs.uppercase.bowl.d import UppercaseDGlyph
 from glyphs.uppercase.f import UppercaseFGlyph
 from glyphs.uppercase.k import UppercaseKGlyph
-from glyphs.uppercase.n import UppercaseNGlyph
+from glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
 from glyphs.uppercase.u import UppercaseUGlyph
-from glyphs.uppercase.y import UppercaseYGlyph
+from glyphs.uppercase.diagonal.y import UppercaseYGlyph
 from glyphs.lowercase.k import LowercaseKGlyph
 from glyphs.lowercase.single_story.b import LowercaseBGlyph
 from glyphs.lowercase.single_story.d import LowercaseDGlyph
@@ -187,7 +187,7 @@ class UppercaseNLeftHookGlyph(BottomLeftHookedGlyph, UppercaseNGlyph):
     width_ratio = 1.2
 
     def hook_bounds(self, dc):
-        return self.bounds(dc)
+        return self.body(dc)
 
 
 class UppercaseFHookGlyph(BottomLeftHookedGlyph, UppercaseFGlyph):

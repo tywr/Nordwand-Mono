@@ -1,4 +1,4 @@
-from glyphs.uppercase.o import UppercaseOGlyph
+from glyphs.uppercase.round.o import UppercaseOGlyph
 
 
 class GreekUppercaseOmicronGlyph(UppercaseOGlyph):

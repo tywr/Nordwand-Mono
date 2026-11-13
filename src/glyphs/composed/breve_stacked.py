@@ -3,7 +3,7 @@
 from config import FontConfig as fc
 from glyphs.composed import ComposedGlyph
 from glyphs.lowercase.a import LowercaseAGlyph
-from glyphs.uppercase.a import UppercaseAGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
 from glyphs.accents.breve_stacked_lowercase import (
     LowercaseBreveAcute,
     LowercaseBreveGrave,

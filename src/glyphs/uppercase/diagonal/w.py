@@ -1,12 +1,12 @@
 from math import cos, radians, tan
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.diagonal import DiagonalUppercaseGlyph
 from draw.parallelogramm import draw_parallelogramm
 from draw.polygon import draw_polygon
 
 
-class UppercaseWGlyph(UppercaseGlyph):
+class UppercaseWGlyph(DiagonalUppercaseGlyph):
     name = "uppercase_w"
     unicode = "0x57"
     offset = 0
@@ -14,23 +14,17 @@ class UppercaseWGlyph(UppercaseGlyph):
     outer_angle = 5.2  # Outer branches' edges, in degrees from vertical
     inner_height = 1
     width_ratio = 1.27
-    stroke_ratio = 1
     inner_stroke_ratio = 0.9
     thin_boost = 0.1
-    lower_section_height = 1
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(
-            height="cap",
-            offset=self.offset,
-            width_ratio=self.width_ratio,
-        )
-        lsh = self.lower_section_height * dc.stroke_y
+        b = self.body(dc)
+        lsh = self.section_height * dc.stroke_y
         boost = self.thin_boost * max(0, dc.default_stroke - dc.stroke_x)
         sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
             dc.default_stroke, dc.stroke_x
         )
-        so = self.stroke_ratio * sx
+        so = self.branch_stroke_ratio * sx
         si = self.inner_stroke_ratio * sx + boost
         # Outer feet placed so the branches' edges keep outer_angle in every
         # weight: their run is the slant over the height plus the horizontal

@@ -1,20 +1,20 @@
-from glyphs.uppercase.a import UppercaseAGlyph
-from glyphs.uppercase.b import UppercaseBGlyph
+from glyphs.uppercase.diagonal.a import UppercaseAGlyph
+from glyphs.uppercase.bowl.b import UppercaseBGlyph
 from glyphs.uppercase.e import UppercaseEGlyph
 from glyphs.uppercase.i import UppercaseIGlyph
 from glyphs.uppercase.j import UppercaseJGlyph
-from glyphs.uppercase.o import UppercaseOGlyph
-from glyphs.uppercase.p import UppercasePGlyph
+from glyphs.uppercase.round.o import UppercaseOGlyph
+from glyphs.uppercase.bowl.p import UppercasePGlyph
 from glyphs.uppercase.s import UppercaseSGlyph
 from glyphs.uppercase.t import UppercaseTGlyph
-from glyphs.uppercase.x import UppercaseXGlyph
+from glyphs.uppercase.diagonal.x import UppercaseXGlyph
 from glyphs.uppercase.k import UppercaseKGlyph
-from glyphs.uppercase.m import UppercaseMGlyph
+from glyphs.uppercase.stem_diagonal.m import UppercaseMGlyph
 from glyphs.uppercase.h import UppercaseHGlyph
-from glyphs.uppercase.c import UppercaseCGlyph
+from glyphs.uppercase.round.c import UppercaseCGlyph
 
 from glyphs.latin.uppercase.schwa import UppercaseSchwaGlyph
-from glyphs.uppercase.y import UppercaseYGlyph
+from glyphs.uppercase.diagonal.y import UppercaseYGlyph
 
 class CyrillicUppercaseAGlyph(UppercaseAGlyph):
     name = "cyrillic_uppercase_a"

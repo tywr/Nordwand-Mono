@@ -1,4 +1,4 @@
-from glyphs.uppercase.p import UppercasePGlyph
+from glyphs.uppercase.bowl.p import UppercasePGlyph
 
 
 class GreekUppercaseRhoGlyph(UppercasePGlyph):

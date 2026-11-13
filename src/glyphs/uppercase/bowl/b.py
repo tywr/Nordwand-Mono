@@ -1,26 +1,16 @@
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.bowl import BowlUppercaseGlyph
 from draw.arch import draw_arch
 from draw.rect import draw_rect
 
 
-class UppercaseBGlyph(UppercaseGlyph):
+class UppercaseBGlyph(BowlUppercaseGlyph):
     name = "uppercase_b"
     unicode = "0x42"
-    offset = 20
     upper_ratio = 0.88  # Upper loop width as a fraction of the lower loop width
     mid_ratio = 0.515
-    width_ratio = 1.0
-    hx_ratio = 1
-    hy_ratio = 1
-    height = "cap"
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(
-            offset=self.offset,
-            height=self.height,
-            uppercase=True,
-            width_ratio=self.width_ratio,
-        )
+        b = self.body(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + self.mid_ratio * b.height

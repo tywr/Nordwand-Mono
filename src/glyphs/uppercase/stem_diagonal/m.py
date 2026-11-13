@@ -1,44 +1,32 @@
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
-from glyphs.uppercase import UppercaseGlyph
+from glyphs.uppercase.stem_diagonal import StemDiagonalUppercaseGlyph
 from draw.rect import draw_rect
 from draw.parallelogramm import draw_parallelogramm
 from draw.polygon import draw_polygon
 
 
-class UppercaseMGlyph(UppercaseGlyph):
+class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
     name = "uppercase_m"
     unicode = "0x4D"
     offset = 0
-    overlap = 0.25
     mid_overlap = 0.6
     depth = 0.6
     inner_thickness_ratio = 2.4
     inner_height = 0.2
     width_ratio = 1.16
-    inner_stroke_ratio = 0.95
-    upper_section_height = 1
-
-    def body(self, dc):
-        return dc.body_bounds(
-            offset=self.offset,
-            height="cap",
-            width_ratio=self.width_ratio,
-            min_margin=dc.min_margin_uppercase,
-        )
 
     def draw(self, pen, dc):
         b = self.body(dc)
         sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
             dc.default_stroke, dc.stroke_x
         )
-        si = sx * self.inner_stroke_ratio
-        si = max(0, 0.7 * (si - dc.default_stroke)) + min(dc.default_stroke, si)
+        si = self.inner_stroke(sx, dc)
         ov = sx * self.overlap
         delta = self.inner_thickness_ratio * sx
         yi = b.y1 + self.inner_height * b.height
-        # Ink trap tips, upper_section_height below the top
-        ush = self.upper_section_height * dc.stroke_y
+        # Ink trap tips, section_height below the top
+        ush = self.section_height * dc.stroke_y
         yik = b.y2 - ush
 
         # Vertical stems

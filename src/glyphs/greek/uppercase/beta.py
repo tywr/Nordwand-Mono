@@ -1,4 +1,4 @@
-from glyphs.uppercase.b import UppercaseBGlyph
+from glyphs.uppercase.bowl.b import UppercaseBGlyph
 
 
 class GreekUppercaseBetaGlyph(UppercaseBGlyph):

@@ -1,7 +1,7 @@
 from fontTools.misc.transform import Transform
 from fontTools.pens.reverseContourPen import ReverseContourPen
 from fontTools.pens.transformPen import TransformPen
-from glyphs.uppercase.v import UppercaseVGlyph
+from glyphs.uppercase.diagonal.v import UppercaseVGlyph
 
 
 class UppercaseTurnedVGlyph(UppercaseVGlyph):
