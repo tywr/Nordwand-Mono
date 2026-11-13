@@ -12,7 +12,7 @@ class LowercaseYGlyph(Glyph):
     width_ratio = 1.15
     stroke_ratio = 1.0
     overlap = 0.536
-    lower_section_height = 1.5
+    lower_section_height = 1
 
     def tail_end(self, dc):
         """Height the tail runs down to"""
