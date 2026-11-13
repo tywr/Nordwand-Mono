@@ -31,9 +31,10 @@ class SixGlyph(NumberGlyph):
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
+        xo = 0.45 * (sx - dc.default_stroke)
 
         ymid = b.y1 + self.loop_ratio * b.height
-        xc = b.x1 + self.cap_x * b.width
+        xc = b.x1 + self.cap_x * b.width + xo
         xj = b.x1 + self.joint_x * sx
 
         # Bottom loop
