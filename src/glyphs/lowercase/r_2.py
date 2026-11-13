@@ -22,6 +22,7 @@ class LowercaseR2Glyph(Glyph):
         b = dc.body_bounds(
             offset=self.offset,
             width_ratio=self.width_ratio,
+            overshoot_top=True,
         )
         sx, sy = dc.stroke_x, dc.stroke_y * self.stroke_y_ratio
         stx = sx * min(1, dc.taper * self.taper)
@@ -53,9 +54,9 @@ class LowercaseR2Glyph(Glyph):
         draw_rect(
             pen,
             b.x1,
-            b.y2 - sy,
+            dc.x_height - sy,
             xmid,
-            b.y2,
+            dc.x_height,
         )
 
         # Bottom serif
