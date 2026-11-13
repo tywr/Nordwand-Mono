@@ -11,7 +11,7 @@ class UppercaseXGlyph(UppercaseGlyph):
     offset = 0
     width_ratio = 1.22
     stroke_ratio = 1.0
-    inner_section_height = 0.75
+    inner_section_height = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

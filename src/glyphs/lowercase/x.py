@@ -11,7 +11,7 @@ class LowercaseXGlyph(Glyph):
     offset = 0
     width_ratio = 1.1
     stroke_ratio = 1
-    inner_section_height = 0.75
+    inner_section_height = 0.85
 
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)

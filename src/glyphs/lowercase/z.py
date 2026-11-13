@@ -7,7 +7,7 @@ class LowercaseZGlyph(Glyph):
     name = "lowercase_z"
     unicode = "0x7A"
     offset = 0
-    diag_stroke_ratio = 1.0
+    diag_stroke_ratio = 0.9
     width_ratio = 1
     right_offset = 0.04
     left_offset = 0.025
