@@ -644,6 +644,12 @@ abcdefghijklmnopqrstuvwxyz
         <button class="switch" type="button" role="switch" aria-checked="false" data-feature="cv03"><span class="track"></span><span style="font-feature-settings: 'cv03'">l</span></button>
         <button class="switch" type="button" role="switch" aria-checked="false" data-feature="cv04"><span class="track"></span><span style="font-feature-settings: 'cv04'">g</span></button>
         <button class="switch" type="button" role="switch" aria-checked="false" data-feature="cv11"><span class="track"></span><span style="font-feature-settings: 'cv11'">f</span></button>
+        <button class="switch" type="button" role="switch" aria-checked="false" data-feature="cv06" data-value="1"><span class="track"></span><span style="font-feature-settings: 'cv06' 1">r</span></button>
+        <button class="switch" type="button" role="switch" aria-checked="false" data-feature="cv06" data-value="2"><span class="track"></span><span style="font-feature-settings: 'cv06' 2">r</span></button>
+        <button class="switch" type="button" role="switch" aria-checked="false" data-feature="ss20"><span class="track"></span><span style="font-feature-settings: 'ss20'">f</span></button>
+        <button class="switch" type="button" role="switch" aria-checked="false" data-feature="ss01" title="Classic l, m, r and f"><span class="track"></span><span>Standard construction</span></button>
+        <button class="switch" type="button" role="switch" aria-checked="true" data-feature="ss02" title="Arrow ligatures"><span class="track"></span><span style="font-feature-settings: 'ss02'">-&gt;</span></button>
+        <button class="switch" type="button" role="switch" aria-checked="false" data-feature="ss03" title="Wide angle brackets"><span class="track"></span><span style="font-feature-settings: 'ss03'">&lt;&gt;</span></button>
       </div>
       <select aria-label="Weight">
         <option value="100">Thin</option>
@@ -893,12 +899,23 @@ $ xxd -g 1 track.gpx | head -n 3
   });
 
   const options = code.querySelector('.code-options');
-  // Each switch toggles its letter's first cvXX variant, which its label shows
+  // Each switch toggles its feature (at data-value), which its label shows;
+  // switches of the same feature exclude each other
   const switches = options.querySelectorAll('[data-feature]');
-  for (const toggle of switches) toggle.addEventListener('click', () => {
-    toggle.setAttribute('aria-checked', toggle.getAttribute('aria-checked') !== 'true');
+  const applyFeatures = () => {
     const active = [...switches].filter(s => s.getAttribute('aria-checked') === 'true');
-    code.style.setProperty('--code-features', active.map(s => `"${s.dataset.feature}"`).join(', ') || 'normal');
+    const features = active.map(s => `"${s.dataset.feature}" ${s.dataset.value || 1}`);
+    // Browsers turn liga on, which already joins the arrows: off unless ss02 is
+    if (!active.some(s => s.dataset.feature === 'ss02')) features.push('"liga" 0');
+    code.style.setProperty('--code-features', features.join(', '));
+  };
+  for (const toggle of switches) toggle.addEventListener('click', () => {
+    const on = toggle.getAttribute('aria-checked') !== 'true';
+    for (const s of switches) {
+      if (s.dataset.feature === toggle.dataset.feature) s.setAttribute('aria-checked', false);
+    }
+    toggle.setAttribute('aria-checked', on);
+    applyFeatures();
   });
   options.querySelector('select').addEventListener('change', e => {
     code.style.setProperty('--code-wght', e.target.value);
