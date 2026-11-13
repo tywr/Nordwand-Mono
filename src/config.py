@@ -49,7 +49,7 @@ class FontConfig:
     hy: int = 240
 
     cap_hx: int = 180
-    cap_hy: int = 250
+    cap_hy: int = 255
 
     taper: float = 0.35
 

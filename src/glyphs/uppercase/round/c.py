@@ -8,8 +8,9 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 class UppercaseCGlyph(RoundUppercaseGlyph):
     name = "uppercase_c"
     unicode = "0x43"
-    offset = 12
+    offset = 6
     opening1 = 0.29
+    width_ratio = 0.99
 
     def draw(self, pen, dc):
         b = self.body(dc)

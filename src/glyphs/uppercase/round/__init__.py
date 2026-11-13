@@ -5,7 +5,7 @@ from glyphs.uppercase import UppercaseGlyph
 class RoundUppercaseGlyph(UppercaseGlyph, ABC):
     """C, G, O, Q: a bowl overshooting the cap height and the baseline"""
 
-    width_ratio = 1.01
+    width_ratio = 1.02
     height = "cap"
     opening2 = 0.69
     right_hx_ratio = 1.2

@@ -5,8 +5,8 @@ from glyphs.uppercase import UppercaseGlyph
 class BowlUppercaseGlyph(UppercaseGlyph, ABC):
     """B, D, P, R: a stem on the left, closed by bowls on its right"""
 
-    offset = 20
-    width_ratio = 1.0
+    offset = 10
+    width_ratio = 1.01
     height = "cap"
     hx_ratio = 1
     hy_ratio = 1
