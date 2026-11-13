@@ -7,16 +7,16 @@ class LowercaseR2Glyph(Glyph):
     name = "lowercase_r_2"
     unicode = "0x72"
     font_feature = {"cv06": 1, "ss01": 1}
-    offset = 20
+    stroke_y_ratio = 1.12
+    offset = 8
     loop_y_ratio = 0.75
     loop_x_ratio = 1
-    stroke_y_ratio = 1.12
     hx_ratio = 1.00
     hy_ratio = 1.00
     taper = 0.65
-    width_ratio = 1.1
+    width_ratio = 1.05
     rl_ratio = 0.38
-    serif_length = 0.88
+    serif_length = 0.9
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -54,7 +54,7 @@ class LowercaseR2Glyph(Glyph):
         draw_rect(
             pen,
             b.x1,
-            dc.x_height - sy,
+            dc.x_height - dc.stroke_y,
             xmid,
             dc.x_height,
         )
@@ -65,5 +65,5 @@ class LowercaseR2Glyph(Glyph):
             b.x1,
             b.y1,
             xl2,
-            b.y1 + sy,
+            b.y1 + dc.stroke_y,
         )
