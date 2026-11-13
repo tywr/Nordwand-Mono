@@ -25,8 +25,9 @@ class UppercaseRGlyph(UppercaseGlyph):
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx * self.loop_width, b.hy * self.loop_ratio
+        xo = -1.4 * (sx - dc.default_stroke)
         ymid = b.y1 + (1 - self.loop_ratio) * b.height
-        xb = self.branch_start * b.width
+        xb = self.branch_start * b.width + xo
         w = self.loop_width * b.width
 
         # Left stem
