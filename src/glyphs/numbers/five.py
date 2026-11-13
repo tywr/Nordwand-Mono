@@ -19,7 +19,7 @@ class FiveGlyph(NumberGlyph):
     loop_ratio = 0.67
     junction_ratio = 0.45
     cap_offset = 0.07
-    tilt = 0.24
+    tilt = 0.22
     taper = 0.8
     ending_offset = 0.00
     thinning = 0.9
@@ -42,8 +42,8 @@ class FiveGlyph(NumberGlyph):
         sd = self.stroke_ratio * dc.stroke_x
         yc = b.y1 + self.opening * b.height + ec
         yj = b.y1 + b.height * self.junction_ratio
-        ew = 0.3 * max(dc.stroke_x - dc.default_stroke, 0)
-        oj = self.tilt * b.width + ew
+        xo = 0.75 * (sx - dc.default_stroke)
+        oj = self.tilt * b.width + xo
         xc = b.x2 - self.cap_offset * b.width
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         taper = min(1, self.taper * dc.taper)
