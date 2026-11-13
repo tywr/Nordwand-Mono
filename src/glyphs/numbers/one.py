@@ -20,6 +20,7 @@ class OneGlyph(NumberGlyph):
         sx = dc.stroke_x * self.stroke_x_ratio
         xb = b.x1 + self.branch_offset * b.width
         xmid = b.x1 + self.rl_ratio * b.width
+        yo = -0.75 * (sx - dc.default_stroke)
 
         # Vertical stem (centered)
         draw_rect(pen, xmid - sx / 2, b.y1, xmid + sx / 2, b.y2)
@@ -31,7 +32,7 @@ class OneGlyph(NumberGlyph):
             pen,
             self.diag_stroke_ratio * dc.stroke_x,
             xb,
-            b.y1 + b.height * (1 - self.branch_height),
+            b.y1 + b.height * (1 - self.branch_height) + yo,
             xmid - sx / 2,
             b.y2,
         )
