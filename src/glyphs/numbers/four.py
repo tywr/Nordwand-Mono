@@ -24,10 +24,12 @@ class FourGlyph(NumberGlyph):
         xtop = b.x1 + self.slant_ratio * b.width
         ymid = b.y1 + self.vertical_ratio * b.height
         ybar = b.y1 + self.mid_bar_ratio * b.height
+        xo = 0.75 * (sx - dc.default_stroke)
 
         s = self.stroke_ratio * dc.stroke_x
 
-        draw_parallelogramm(pen, s, b.x1, ymid, xtop - sx / 2, b.y2)
+        # Diagonal bar
+        draw_parallelogramm(pen, s, b.x1, ymid, xtop - sx / 2 + xo, b.y2)
 
         # Horizontal line
         draw_rect(pen, b.x1, ymid - sy, b.x2, ymid)
