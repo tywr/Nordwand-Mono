@@ -230,6 +230,19 @@ def _chain_subtable(input_seq, backtrack, lookahead, subst_records):
     return st
 
 
+def ligature_feature_tags(glyph):
+    tags = glyph.feature_tags
+    if isinstance(tags, str):
+        tags = (tags,)
+    tags = tuple(dict.fromkeys(tags))
+    if not tags:
+        raise ValueError(f"Ligature {glyph.name!r} must have a feature tag")
+    for tag in tags:
+        if not isinstance(tag, str) or len(tag) != 4:
+            raise ValueError(f"Invalid OpenType feature tag {tag!r} on {glyph.name!r}")
+    return tags
+
+
 def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
     """Build a GSUB table with ligature and alternate substitutions."""
     gsub_table = newTable("GSUB")
@@ -256,20 +269,6 @@ def build_gsub(glyph_names, ligature_glyphs, alternate_glyphs, cmap):
         record.FeatureTag = tag
         record.Feature = feature
         feature_records.append(record)
-
-    def ligature_feature_tags(glyph):
-        tags = glyph.feature_tags
-        if isinstance(tags, str):
-            tags = (tags,)
-        tags = tuple(dict.fromkeys(tags))
-        if not tags:
-            raise ValueError(f"Ligature {glyph.name!r} must have a feature tag")
-        for tag in tags:
-            if not isinstance(tag, str) or len(tag) != 4:
-                raise ValueError(
-                    f"Invalid OpenType feature tag {tag!r} on {glyph.name!r}"
-                )
-        return tags
 
     # Reverse cmap: unicode int -> base glyph name
     base_by_unicode = {unicode_val: name for unicode_val, name in cmap.items()}
@@ -677,12 +676,14 @@ def build_font(
 
     all_glyphs = discover_glyphs()
     if not ligatures:
+        # `ccmp` composites stay: they compose a letter with a combining mark
         all_glyphs = [
             g
             for g in all_glyphs
             if not isinstance(
                 g, (LigatureGlyph, InfiniteLigatureForm, JoinedLigatureForm)
             )
+            or ligature_feature_tags(g) == ("ccmp",)
         ]
 
     active_glyphs, promoted = select_style_glyphs(all_glyphs, italic)
