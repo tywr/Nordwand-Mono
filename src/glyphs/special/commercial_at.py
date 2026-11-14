@@ -16,11 +16,9 @@ class CommercialAtGlyph(Glyph):
     inner_ratio_x = 0.66
     inner_ratio_y = 0.55
     ending_thickness = 0.8
-    hx_ratio = 1.15
-    hy_ratio = 1.15
-    taper = 0.3
-    inner_hx_ratio = 0.6
-    inner_hy_ratio = 0.65
+    hx_ratio = 1
+    hy_ratio = 1
+    taper = 0.65
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -39,7 +37,7 @@ class CommercialAtGlyph(Glyph):
         xi1, xi2 = b.x2 - wi, b.x2
         yi1, yi2 = ymid - hi / 2, ymid + hi / 2
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
-        ihx, ihy = self.inner_hx_ratio * b.hx, self.inner_hy_ratio * b.hy
+        ihx, ihy = self.inner_ratio_x * b.hx, self.inner_ratio_y * b.hy
 
         draw_arch(
             pen,
@@ -52,7 +50,7 @@ class CommercialAtGlyph(Glyph):
             ihx,
             ihy,
             side="right",
-            taper=self.taper * dc.taper,
+            taper=min(1, self.taper * dc.taper),
         )
 
         draw_corner(
