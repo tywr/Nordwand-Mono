@@ -15,6 +15,7 @@ from matplotlib.path import Path as MatplotlibPath
 
 from config import DrawConfig, FontConfig
 from generate_font import discover_glyphs
+from glyphs.composed import ComposedGlyph
 
 
 DEFAULT_OUTPUT = Path("doc/alternative_characters.md")
@@ -39,6 +40,9 @@ def collect_alternatives():
     alternatives = []
     for glyph in glyphs:
         if not glyph.font_feature or not glyph.unicode:
+            continue
+        # Accented alternates follow their base letter, documented on its own
+        if isinstance(glyph, ComposedGlyph):
             continue
 
         codepoint = int(glyph.unicode, 16)

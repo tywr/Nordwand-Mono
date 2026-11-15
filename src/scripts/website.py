@@ -16,6 +16,8 @@ from pathlib import Path
 from fontTools.pens.recordingPen import RecordingPen
 from fontTools.ttLib import TTFont
 
+from generate_font import discover_glyphs
+from glyphs.composed import ComposedGlyph
 from scripts.topo import favicon, topo
 
 FONTS = Path("fonts/woff2")
@@ -84,6 +86,13 @@ def glyph_data(upright, italic):
         if visible(cp)
     ]
     up, it = variants(upright), variants(italic)
+    # Accented letters follow the variants of their base letter, which
+    # already shows them
+    composed = {
+        int(g.unicode, 16)
+        for g in discover_glyphs()
+        if isinstance(g, ComposedGlyph) and g.unicode
+    }
 
     def covers(b, a):
         """Variant b draws a's character the same in every style a exists in."""
@@ -93,7 +102,7 @@ def glyph_data(upright, italic):
 
     # Drop variants another one already shows (e.g. an upright-only cv04=1
     # drawn like cv04=2), keeping the first of two identical ones
-    keys = up.keys() | it.keys()
+    keys = [v for v in up.keys() | it.keys() if v[0] not in composed]
     keys = [
         v for v in keys
         if not any(covers(w, v) and not (covers(v, w) and v < w) for w in keys)

@@ -13,6 +13,11 @@ class LowercaseL2Glyph(Glyph):
     cap = 0.49
     rl_ratio = 0.5
 
+    def stem_center(self, dc):
+        return dc.body_bounds(
+            offset=self.offset, height="ascent", width_ratio=self.width_ratio
+        ).xmid
+
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="ascent", width_ratio=self.width_ratio

@@ -49,6 +49,7 @@ from glyphs import (
 )
 
 import glyphs
+from glyphs.composed import ComposedGlyph
 
 
 def discover_glyphs():
@@ -83,7 +84,13 @@ def discover_glyphs():
         if isinstance(glyph, (InfiniteLigatureGlyph, LigatureGlyph))
         for form in glyph.ligature_forms()
     ]
-    return discovered + joining_forms
+    composed_forms = [
+        form
+        for glyph in discovered
+        if isinstance(glyph, ComposedGlyph)
+        for form in glyph.alternate_forms()
+    ]
+    return discovered + joining_forms + composed_forms
 
 
 def draw_notdef(pen):
