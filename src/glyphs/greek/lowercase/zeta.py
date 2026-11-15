@@ -8,7 +8,7 @@ class GreekLowercaseZetaGlyph(TailedGreekLowercaseGlyph):
     offset = 0
     width_ratio = 0.99
     top_offset = 0.15
-    diagonal_ratio = 1.2
+    diagonal_ratio = 1.35
     bow_height = 0.3
     bow_start = 0.15
     bow_end = 0.66
