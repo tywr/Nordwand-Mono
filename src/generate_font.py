@@ -996,6 +996,16 @@ if __name__ == "__main__":
         action="store_true",
         help="Build the ligature-free, strictly monospaced NL family",
     )
+    parser.add_argument(
+        "-j",
+        "--jobs",
+        type=int,
+        nargs="?",
+        const=None,
+        default=1,
+        metavar="N",
+        help="Build the styles in N parallel processes (all cores if N is omitted)",
+    )
     args = parser.parse_args()
 
     if args.no_ligatures:
@@ -1033,9 +1043,13 @@ if __name__ == "__main__":
         for w in fc.weights
         for italic in (False, True)
     ]
-    # Styles are independent: build them in parallel. Fork so workers inherit
-    # the FontConfig overrides applied above.
-    ctx = multiprocessing.get_context("fork")
-    with ProcessPoolExecutor(mp_context=ctx) as pool:
-        for future in [pool.submit(build_font, **style) for style in styles]:
-            future.result()
+    if args.jobs == 1:
+        for style in styles:
+            build_font(**style)
+    else:
+        # Styles are independent: build them in parallel. Fork so workers
+        # inherit the FontConfig overrides applied above.
+        ctx = multiprocessing.get_context("fork")
+        with ProcessPoolExecutor(max_workers=args.jobs, mp_context=ctx) as pool:
+            for future in [pool.submit(build_font, **style) for style in styles]:
+                future.result()

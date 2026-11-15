@@ -6,7 +6,7 @@ install:
 	uv sync
 
 build:
-	uv run python -m generate_font --font-version $(FONT_VERSION) --web-font
+	uv run python -m generate_font -j --font-version $(FONT_VERSION) --web-font
 	uv run python -m scripts.banner
 	uv run python -m scripts.specimen_pdf
 	uv run python -m scripts.samples
@@ -14,13 +14,13 @@ build:
 	uv run python -m scripts.website
 
 build-font:
-	uv run python -m generate_font --font-version $(FONT_VERSION) --web-font
+	uv run python -m generate_font -j --font-version $(FONT_VERSION) --web-font
 
 build-otf:
-	uv run python -m generate_font --font-version $(FONT_VERSION) --otf
+	uv run python -m generate_font -j --font-version $(FONT_VERSION) --otf
 
 build-nl-font:
-	uv run python -m generate_font --font-version $(FONT_VERSION) --no-ligatures
+	uv run python -m generate_font -j --font-version $(FONT_VERSION) --no-ligatures
 
 build-nerd-font:
 	uv run python -m scripts.nerd_font
