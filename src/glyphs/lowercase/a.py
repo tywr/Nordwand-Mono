@@ -18,7 +18,7 @@ class LowercaseAGlyph(Glyph):
 
     top_loop_ratio = 0.66
     cap_height = 0.74
-    cap_offset = 0.04
+    cap_offset = 0.045
     thinning = 1
     bottom_loop_xmid = 0.5
 
