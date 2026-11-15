@@ -7,6 +7,8 @@ class LowercaseR2Glyph(Glyph):
     name = "lowercase_r_2"
     unicode = "0x72"
     font_feature = {"cv06": 1, "ss01": 1}
+    regular_only = True
+    alternative_character_comment = "Only applies in regular font"
     stroke_y_ratio = 1.12
     offset = 8
     loop_y_ratio = 0.75

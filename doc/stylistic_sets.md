@@ -15,7 +15,7 @@ by default and can be turned on independently.
 For those who prefer more conventional letterforms, `ss01` switches the `l`
 and the `m` to their standard constructions, and the `r` and the `f` to their
 serifed designs, in one go. It is equivalent to `cv03=1`, `cv06=1`, `cv11=1`
-and `cv12=1`. In the italic, only the `m` and the `r` change; the `l` and the
+and `cv12=1`. In the italic, only the `m` changes; the `l`, the `r` and the
 `f` keep their italic designs so the two styles stay easy to tell apart.
 
 | Character | Default | `ss01` |

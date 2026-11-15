@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 TEXT = "NORDWAND MONO"
-TAGLINE = "A monospace font for coders and adventurers"
+TAGLINE = "A monospace font for coders (and adventurers)"
 FG = "#ffffff"
 FONT_SIZE = 260
 TAGLINE_SIZE = 64
