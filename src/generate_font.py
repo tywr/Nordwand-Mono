@@ -4,8 +4,10 @@ import os
 import importlib
 import inspect
 import math
+import multiprocessing
 import pkgutil
 import re
+from concurrent.futures import ProcessPoolExecutor
 
 import pathops
 from fontTools.fontBuilder import FontBuilder
@@ -104,6 +106,14 @@ def record_glyph(glyph, **kwargs):
     pen = T2CharStringPen(fc.window_width, None)
     path.draw(pen)
     return pen.getCharString()
+
+
+def glyph_outline(glyph, dc, italic):
+    """Simplified (and italicized) outline of `glyph`, shared by OTF and TTF."""
+    path = simplify_glyph(glyph, dc=dc)
+    if italic and glyph.italic_skew:
+        path = italicize_path(path, fc.window_width * glyph.number_characters)
+    return path
 
 
 def map_path(path, fn):
@@ -702,6 +712,8 @@ def build_font(
     cmap[0xA0] = "space"
     cmap[0xAD] = cmap[0x2D]
 
+    outlines = {g.name: glyph_outline(g, dc, italic) for g in active_glyphs}
+
     if otf:
         _build_otf(
             output_path,
@@ -710,6 +722,7 @@ def build_font(
             active_glyphs,
             cmap,
             dc,
+            outlines,
             ligature_glyphs,
             alternate_glyphs,
             style_name,
@@ -726,7 +739,7 @@ def build_font(
             italic,
             active_glyphs,
             cmap,
-            dc,
+            outlines,
             ligature_glyphs,
             alternate_glyphs,
         )
@@ -745,6 +758,7 @@ def _build_otf(
     active_glyphs,
     cmap,
     dc,
+    outlines,
     ligature_glyphs,
     alternate_glyphs,
     style_name,
@@ -763,11 +777,8 @@ def _build_otf(
         "space": space_pen.getCharString(),
     }
     for g in active_glyphs:
-        path = simplify_glyph(g, dc=dc)
-        if italic and g.italic_skew:
-            path = italicize_path(path, fc.window_width * g.number_characters)
         pen = T2CharStringPen(fc.window_width, None)
-        path.draw(pen)
+        outlines[g.name].draw(pen)
         charstrings[g.name] = pen.getCharString()
 
     glyph_names = list(charstrings.keys())
@@ -863,7 +874,14 @@ def _build_otf(
 
 
 def build_ttf(
-    output_path, weight, italic, all_glyphs, cmap, dc, ligature_glyphs, alternate_glyphs
+    output_path,
+    weight,
+    italic,
+    all_glyphs,
+    cmap,
+    outlines,
+    ligature_glyphs,
+    alternate_glyphs,
 ):
     """Build a TTF font with quadratic outlines from scratch."""
     from fontTools.pens.cu2quPen import Cu2QuPen
@@ -872,12 +890,9 @@ def build_ttf(
     _, _, name_table, fs_selection, mac_style = _style_metadata(weight, italic)
 
     def record_ttf_glyph(glyph):
-        path = simplify_glyph(glyph, dc=dc)
-        if italic and glyph.italic_skew:
-            path = italicize_path(path, fc.window_width * glyph.number_characters)
         ttf_pen = TTGlyphPen(None)
         cu2qu_pen = Cu2QuPen(ttf_pen, max_err=1.0, reverse_direction=True)
-        path.draw(cu2qu_pen)
+        outlines[glyph.name].draw(cu2qu_pen)
         return ttf_pen.glyph()
 
     # .notdef
@@ -1004,9 +1019,10 @@ if __name__ == "__main__":
     build_otf = not args.ttf
     build_ttf_flag = not args.otf
 
-    for w in fc.weights:
-        build_font(
+    styles = [
+        dict(
             weight=w,
+            italic=italic,
             otf=build_otf,
             ttf=build_ttf_flag,
             woff=args.web_font,
@@ -1014,13 +1030,12 @@ if __name__ == "__main__":
             out_root=out_root,
             ligatures=not args.no_ligatures,
         )
-        build_font(
-            weight=w,
-            italic=True,
-            otf=build_otf,
-            ttf=build_ttf_flag,
-            woff=args.web_font,
-            woff2=args.web_font,
-            out_root=out_root,
-            ligatures=not args.no_ligatures,
-        )
+        for w in fc.weights
+        for italic in (False, True)
+    ]
+    # Styles are independent: build them in parallel. Fork so workers inherit
+    # the FontConfig overrides applied above.
+    ctx = multiprocessing.get_context("fork")
+    with ProcessPoolExecutor(mp_context=ctx) as pool:
+        for future in [pool.submit(build_font, **style) for style in styles]:
+            future.result()
