@@ -14,6 +14,8 @@
 | `cv05=1` | `R` | `U+0052` | ![uppercase_r](alternative_characters/uppercase_r.png) | ![uppercase_r_2](alternative_characters/uppercase_r_2.png) | `uppercase_r_2` |  |
 | `cv06=1` | `r` | `U+0072` | ![lowercase_r](alternative_characters/lowercase_r.png) | ![lowercase_r_2](alternative_characters/lowercase_r_2.png) | `lowercase_r_2` |  |
 | `cv06=2` | `r` | `U+0072` | ![lowercase_r](alternative_characters/lowercase_r.png) | ![lowercase_r_3](alternative_characters/lowercase_r_3.png) | `lowercase_r_3` |  |
+| `cv07=1` | `w` | `U+0077` | ![lowercase_w](alternative_characters/lowercase_w.png) | ![lowercase_w_3](alternative_characters/lowercase_w_3.png) | `lowercase_w_3` |  |
+| `cv07=1` | `W` | `U+0057` | ![uppercase_w](alternative_characters/uppercase_w.png) | ![uppercase_w_2](alternative_characters/uppercase_w_2.png) | `uppercase_w_2` |  |
 | `cv11=1` | `f` | `U+0066` | ![lowercase_f](alternative_characters/lowercase_f.png) | ![lowercase_f_5](alternative_characters/lowercase_f_5.png) | `lowercase_f_5` | Only applies in regular font |
 | `cv12=1` | `m` | `U+006D` | ![lowercase_m](alternative_characters/lowercase_m.png) | ![lowercase_m_2](alternative_characters/lowercase_m_2.png) | `lowercase_m_2` |  |
 | `cv18=1` | `7` | `U+0037` | ![seven](alternative_characters/seven.png) | ![seven_barred](alternative_characters/seven_barred.png) | `seven_barred` | Continental seven with a crossbar |
