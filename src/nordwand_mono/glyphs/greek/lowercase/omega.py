@@ -12,6 +12,7 @@ class GreekLowercaseOmegaGlyph(Glyph):
     tail_ratio = 0.2
     mid_ratio = 0.5
     mid_y_ratio = 0.66
+    stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -23,7 +24,9 @@ class GreekLowercaseOmegaGlyph(Glyph):
         xmid = b.x1 + self.mid_ratio * b.width
         ymid = b.y1 + self.mid_y_ratio * b.height
         sy = dc.stroke_y
-        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(dc.default_stroke, dc.stroke_x)
+        sx = max(0, self.stroke_dampening * (dc.stroke_x - dc.default_stroke)) + min(
+            dc.default_stroke, dc.stroke_x
+        )
         xtr = b.x2 - self.tail_ratio * b.width - sx / 2 - ec
         xtl = b.x1 + self.tail_ratio * b.width + sx / 2 + ec
 

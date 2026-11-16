@@ -10,6 +10,7 @@ class CyrillicUppercaseYuGlyph(CyrillicUppercaseGlyph):
     width_ratio = 1.24
     mid_ratio = 0.33
     ymid_ratio = 0.518
+    stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -22,7 +23,9 @@ class CyrillicUppercaseYuGlyph(CyrillicUppercaseGlyph):
             overshoot_top=True,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        sx = max(0, self.stroke_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
         lx1 = b.x1 + self.mid_ratio * b.width
         hx = (1 - self.mid_ratio) * b.hx
         ymid = b.y1 + self.ymid_ratio * b.height

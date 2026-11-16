@@ -14,6 +14,7 @@ class RightDescenderGlyph:
     base_kwargs = {}  # Passed to the base draw, e.g. {"draw_descender": False}
     # Thin the descender at heavy weights, like the stems of Ш and Ж
     damp_descender = False
+    descender_stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         width_ratio, offset = self.width_ratio, self.offset
@@ -27,7 +28,9 @@ class RightDescenderGlyph:
             self.width_ratio, self.offset = width_ratio, offset
         sx = dc.stroke_x * getattr(self, "stroke_x_ratio", 1)
         if self.damp_descender:
-            sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+            sx = max(0, self.descender_stroke_dampening * (sx - dc.default_stroke)) + min(
+                dc.default_stroke, sx
+            )
         sy = dc.stroke_y * getattr(self, "stroke_y_ratio", 1)
         draw_right_descender(
             pen, sx, sy, rx - sx, b.x2, self.descent_ratio * dc.descent

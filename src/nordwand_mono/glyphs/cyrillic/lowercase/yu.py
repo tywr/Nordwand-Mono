@@ -10,6 +10,7 @@ class CyrillicLowercaseYuGlyph(Glyph):
     width_ratio = 1.18
     mid_ratio = 0.33
     ymid_ratio = 0.518
+    stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -19,7 +20,9 @@ class CyrillicLowercaseYuGlyph(Glyph):
             overshoot_top=True,
         )
         sx, sy = dc.stroke_x, dc.stroke_y
-        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        sx = max(0, self.stroke_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
         lx1 = b.x1 + self.mid_ratio * b.width
         hx = (1 - self.mid_ratio) * b.hx
         ymid = b.y1 + self.ymid_ratio * b.height

@@ -16,12 +16,13 @@ class UppercaseWGlyph(DiagonalUppercaseGlyph):
     width_ratio = 1.27
     inner_stroke_ratio = 0.9
     thin_boost = 0.1
+    stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = self.body(dc)
         lsh = self.section_height * dc.stroke_y
         boost = self.thin_boost * max(0, dc.default_stroke - dc.stroke_x)
-        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
+        sx = max(0, self.stroke_dampening * (dc.stroke_x - dc.default_stroke)) + min(
             dc.default_stroke, dc.stroke_x
         )
         so = self.branch_stroke_ratio * sx

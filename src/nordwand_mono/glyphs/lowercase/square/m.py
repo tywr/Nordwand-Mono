@@ -18,6 +18,7 @@ class LowercaseMGlyph(SquareLowercaseGlyph):
     hx_ratio = 1
     stroke_x_ratio = 1
     stroke_y_ratio = 1
+    stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -32,7 +33,9 @@ class LowercaseMGlyph(SquareLowercaseGlyph):
         hx = b.hx * self.hx_ratio
         hy = b.hy * self.loop_ratio
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        sx = max(0, self.stroke_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
         y1 = b.y1 + (1 - self.loop_ratio) * b.height
 
         xl2 = b.xmid + sx / 2

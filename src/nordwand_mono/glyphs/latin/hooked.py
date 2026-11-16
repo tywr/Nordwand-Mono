@@ -86,12 +86,15 @@ class TopHookedGlyph(EdgeHookedGlyph):
     """The top of the stem runs out to the edge and curls down (Ɓ Ɗ ɗ)."""
 
     hook_drop = 0.33  # Height of the hook, relative to the body height
+    stroke_dampening = 0.3
 
     def draw_hook(self, pen, dc, edge):
         b = self.hook_bounds(dc)
         sx = dc.stroke_x * getattr(self, "stroke_x_ratio", 1)
         sy = dc.stroke_y * getattr(self, "stroke_y_ratio", 1)
-        sx = max(0, 0.3 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        sx = max(0, self.stroke_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
         y1 = b.y2 - self.hook_drop * b.height
         if self.hook_side == "left":
             x2, orientation = b.x1 + sx, "top-right"

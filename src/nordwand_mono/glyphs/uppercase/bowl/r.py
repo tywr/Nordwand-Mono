@@ -9,7 +9,7 @@ class UppercaseRGlyph(BowlUppercaseGlyph):
     unicode = "0x52"
     loop_ratio = 0.605
     loop_width = 0.96
-    branch_start = 0.63
+    branch_start = 0.45
     leg_stroke_ratio = 1.0
 
     def draw(self, pen, dc):
@@ -18,7 +18,7 @@ class UppercaseRGlyph(BowlUppercaseGlyph):
         hx, hy = b.hx * self.loop_width, b.hy * self.loop_ratio
         xo = -1.4 * (sx - dc.default_stroke)
         ymid = b.y1 + (1 - self.loop_ratio) * b.height
-        xb = self.branch_start * b.width + xo
+        xb = b.x1 + self.branch_start * b.width + xo
         w = self.loop_width * b.width
 
         # Left stem

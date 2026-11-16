@@ -14,6 +14,7 @@ class GreekLowercasePhiGlyph(Glyph):
     stroke_x_ratio = 1.01
     stroke_y_ratio = 1.0
     left_opening = 0.28
+    stroke_dampening = 0.7
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -26,7 +27,9 @@ class GreekLowercasePhiGlyph(Glyph):
         )
         ec = self.extra_cut(dc)
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
-        sx = max(0, 0.7 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        sx = max(0, self.stroke_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
         xo = b.x1 + self.left_opening * b.width - ec
 
         glyph = ufoLib2.objects.Glyph()

@@ -8,6 +8,7 @@ class GreekLowercasePsiGlyph(SquareLowercaseGlyph):
     unicode = "0x3C8"
     offset = 0
     width_ratio = 1.1
+    stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -15,7 +16,7 @@ class GreekLowercasePsiGlyph(SquareLowercaseGlyph):
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
         )
-        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
+        sx = max(0, self.stroke_dampening * (dc.stroke_x - dc.default_stroke)) + min(
             dc.default_stroke, dc.stroke_x
         )
         yl = b.y1 + self.loop_ratio * b.height

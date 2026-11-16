@@ -13,6 +13,7 @@ class CyrillicUppercaseYeruGlyph(UppercaseGlyph):
     width_ratio = 1.16
     hx_ratio = 1
     hy_ratio = 1
+    stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -23,7 +24,9 @@ class CyrillicUppercaseYeruGlyph(UppercaseGlyph):
             min_margin=dc.min_margin_uppercase,
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        sx = max(0, self.stroke_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
         hx, hy = b.hx * self.hx_ratio * self.xmid_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + self.mid_ratio * b.height
 

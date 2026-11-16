@@ -12,6 +12,7 @@ class CyrillicUppercaseZheGlyph(CyrillicUppercaseGlyph):
     width_ratio = 1.35
     branch_stroke_ratio = 1
     inner_stroke_ratio = 1.25
+    stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -22,7 +23,9 @@ class CyrillicUppercaseZheGlyph(CyrillicUppercaseGlyph):
         )
         sy = dc.stroke_y * self.stroke_y_ratio
         sx = self.branch_stroke_ratio * dc.stroke_x
-        sx = max(0, 0.8 * (sx - dc.default_stroke)) + min(dc.default_stroke, sx)
+        sx = max(0, self.stroke_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
         ymid = dc.cap / 2
         dn = self.neck_ratio * b.width
         tx1 = b.x1 + (1 - self.top_ratio) * b.width / 2
