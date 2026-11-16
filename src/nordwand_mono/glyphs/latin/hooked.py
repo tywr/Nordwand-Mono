@@ -242,7 +242,7 @@ class UppercaseYHookGlyph(FlagHookedGlyph, UppercaseYGlyph):
             offset=self.offset, width_ratio=self.width_ratio, height="cap"
         )
         sx = dc.stroke_x * self.stroke_x_ratio
-        yj = b.x1 + self.junction_ratio * b.height
+        yj = b.y1 + self.junction_ratio * b.height
         s = self.branch_stroke_ratio * sx
         d = parallelogramm_delta(s, b.xmid - sx / 2, yj, b.x2, b.y2)
         return b.x2, d, b.y2, b.width
