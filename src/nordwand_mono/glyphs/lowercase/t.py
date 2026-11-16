@@ -1,3 +1,5 @@
+import math
+
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from nordwand_mono.glyphs import Glyph
@@ -12,7 +14,9 @@ class LowercaseTGlyph(Glyph):
     offset = -50
     width_ratio = 1.00
     rl_ratio = 0.58
-    up_ratio = 0.4
+    up_ratio = 0.39
+    # Angle of the cut at the top of the stem, in degrees from the horizontal
+    cut_angle = 35
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -61,18 +65,15 @@ class LowercaseTGlyph(Glyph):
         )
         cut_glyph = ufoLib2.objects.Glyph()
 
+        # From the top right of the stem, going down left at cut_angle
+        x2, top = b.xmid + dc.stroke_x / 2, (1 + self.up_ratio) * dc.x_height
+        x1 = b.xmid - left_len - dc.stroke_x / 2
         draw_polygon(
             cut_glyph.getPen(),
             points=[
-                (b.xmid + dc.stroke_x / 2, (1 + self.up_ratio) * dc.x_height),
-                (
-                    b.xmid - left_len - dc.stroke_x / 2,
-                    dc.x_height,
-                ),
-                (
-                    b.xmid - left_len - dc.stroke_x / 2,
-                    (1 + self.up_ratio) * dc.x_height,
-                ),
+                (x2, top),
+                (x1, top - (x2 - x1) * math.tan(math.radians(self.cut_angle))),
+                (x1, top),
             ],
         )
         res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
