@@ -11,14 +11,14 @@ class UppercaseYGlyph(DiagonalUppercaseGlyph):
     unicode = "0x59"
     offset = 0
     width_ratio = 1.18
-    junction_ratio = 0.4
+    junction_ratio = 0.46
     branch_stroke_ratio = 0.9
 
     def draw(self, pen, dc):
         b = self.body(dc)
         sx = dc.stroke_x * self.stroke_x_ratio
 
-        yj = b.x1 + self.junction_ratio * b.height
+        yj = b.y1 + self.junction_ratio * b.height
 
         # Both feet centered on the stem, which they cover within a unit
         s = self.branch_stroke_ratio * sx
