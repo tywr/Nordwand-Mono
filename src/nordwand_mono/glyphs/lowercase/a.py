@@ -1,5 +1,4 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
+import pathops
 from nordwand_mono.glyphs import Glyph
 from nordwand_mono.draw.arch import draw_arch
 from nordwand_mono.draw.loop import draw_loop
@@ -87,10 +86,11 @@ class LowercaseAGlyph(Glyph):
             yl,
         )
 
-        # Top loop
-        loop_glyph = ufoLib2.objects.Glyph()
+        # Top loop. Skia rather than booleanOperations, which drops the curve
+        # of the arch in some heavier weights of the æ
+        arch = pathops.Path()
         draw_arch(
-            loop_glyph.getPen(),
+            pathops.PathPen(arch),
             sx,
             sy,
             b.x1,
@@ -102,8 +102,9 @@ class LowercaseAGlyph(Glyph):
             quarter="top-right",
             taper=right_taper if right_taper else 1,
         )
+        loop = pathops.Path()
         draw_loop(
-            loop_glyph.getPen(),
+            pathops.PathPen(loop),
             sx * self.thinning,
             sy,
             xt1,
@@ -114,10 +115,10 @@ class LowercaseAGlyph(Glyph):
             b.hy * (b.y2 - yt1) / b.height,
             quarter="top-left",
         )
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), b.x1, b.ymid, b.xmid, ycut)
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
+        cut = pathops.Path()
+        draw_rect(pathops.PathPen(cut), b.x1, b.ymid, b.xmid, ycut)
+        top = pathops.op(arch, loop, pathops.PathOp.UNION)
+        pathops.op(top, cut, pathops.PathOp.DIFFERENCE).draw(pen)
 
         if stem:
             # Lower stem
