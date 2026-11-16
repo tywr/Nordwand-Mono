@@ -12,7 +12,7 @@ class LowercaseFBase(Glyph):
     unicode = "0x66"
     offset = -36
     rl_ratio = 0.59
-    width_ratio = 1.04
+    width_ratio = 1.00
     low_bar = False
     # Top of the low cross bar, relative to the x-height
     low_bar_height = 0.88
@@ -21,9 +21,8 @@ class LowercaseFBase(Glyph):
     cross_bar = True
 
     def bar_width(self, b, dc):
-        """Width shared by the cross bar and the serif, kept the same across
-        weights."""
-        return dc.width + dc.default_stroke
+        """Width shared by the cross bar and the serif: the body, b.x1 to b.x2."""
+        return b.width
 
     def cross_bar_top(self, dc):
         return (self.low_bar_height if self.low_bar else 1) * dc.x_height
@@ -97,9 +96,6 @@ class LowercaseF2Glyph(LowercaseFBase):
     rl_ratio = 0.55
     width_ratio = 1.05
     bottom = "hook"
-
-    def bar_width(self, b, dc):
-        return b.width
 
 
 class LowercaseF3Glyph(LowercaseFGlyph):
