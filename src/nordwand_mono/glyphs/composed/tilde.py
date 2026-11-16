@@ -1,0 +1,134 @@
+"""Composed glyphs with the tilde."""
+
+from nordwand_mono.config import FontConfig as fc
+from nordwand_mono.glyphs.composed import ComposedGlyph
+from nordwand_mono.glyphs.lowercase.a import LowercaseAGlyph
+from nordwand_mono.glyphs.lowercase.round.o import LowercaseOGlyph
+from nordwand_mono.glyphs.lowercase.square.u import LowercaseUGlyph
+from nordwand_mono.glyphs.lowercase.square.n import LowercaseNGlyph
+from nordwand_mono.glyphs.lowercase.dotted.i import LowercaseIGlyph
+from nordwand_mono.glyphs.uppercase.diagonal.a import UppercaseAGlyph
+from nordwand_mono.glyphs.uppercase.i import UppercaseIGlyph
+from nordwand_mono.glyphs.uppercase.round.o import UppercaseOGlyph
+from nordwand_mono.glyphs.uppercase.u import UppercaseUGlyph
+from nordwand_mono.glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
+from nordwand_mono.glyphs.accents.tilde import Tilde
+from nordwand_mono.glyphs.lowercase.round.e import LowercaseEGlyph
+from nordwand_mono.glyphs.lowercase.y import LowercaseYGlyph
+from nordwand_mono.glyphs.uppercase.e import UppercaseEGlyph
+from nordwand_mono.glyphs.uppercase.diagonal.y import UppercaseYGlyph
+
+_lc_accent = fc.accent
+_uc_accent = fc.accent_cap
+
+
+class LowercaseATildeGlyph(ComposedGlyph):
+    name = "lowercase_atilde"
+    unicode = "0xE3"
+    base_glyph_class = LowercaseAGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class LowercaseNTildeGlyph(ComposedGlyph):
+    name = "lowercase_ntilde"
+    unicode = "0xF1"
+    base_glyph_class = LowercaseNGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class LowercaseOTildeGlyph(ComposedGlyph):
+    name = "lowercase_otilde"
+    unicode = "0xF5"
+    base_glyph_class = LowercaseOGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class UppercaseATildeGlyph(ComposedGlyph):
+    name = "uppercase_atilde"
+    unicode = "0xC3"
+    base_glyph_class = UppercaseAGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class UppercaseNTildeGlyph(ComposedGlyph):
+    name = "uppercase_ntilde"
+    unicode = "0xD1"
+    base_glyph_class = UppercaseNGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class UppercaseOTildeGlyph(ComposedGlyph):
+    name = "uppercase_otilde"
+    unicode = "0xD5"
+    base_glyph_class = UppercaseOGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class LowercaseITildeGlyph(ComposedGlyph):
+    name = "lowercase_itilde"
+    unicode = "0x129"
+    base_glyph_class = LowercaseIGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class UppercaseITildeGlyph(ComposedGlyph):
+    name = "uppercase_itilde"
+    unicode = "0x128"
+    base_glyph_class = UppercaseIGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class LowercaseUTildeGlyph(ComposedGlyph):
+    name = "lowercase_utilde"
+    unicode = "0x169"
+    base_glyph_class = LowercaseUGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class UppercaseUTildeGlyph(ComposedGlyph):
+    name = "uppercase_utilde"
+    unicode = "0x168"
+    base_glyph_class = UppercaseUGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class LowercaseETildeGlyph(ComposedGlyph):
+    name = "lowercase_etilde"
+    unicode = "0x1EBD"
+    base_glyph_class = LowercaseEGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class LowercaseYTildeGlyph(ComposedGlyph):
+    name = "lowercase_ytilde"
+    unicode = "0x1EF9"
+    base_glyph_class = LowercaseYGlyph
+    accent_class = Tilde
+    accent_y = _lc_accent
+
+
+class UppercaseETildeGlyph(ComposedGlyph):
+    name = "uppercase_etilde"
+    unicode = "0x1EBC"
+    base_glyph_class = UppercaseEGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent
+
+
+class UppercaseYTildeGlyph(ComposedGlyph):
+    name = "uppercase_ytilde"
+    unicode = "0x1EF8"
+    base_glyph_class = UppercaseYGlyph
+    accent_class = Tilde
+    accent_y = _uc_accent

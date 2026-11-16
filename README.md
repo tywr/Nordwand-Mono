@@ -73,13 +73,13 @@ Each glyph is a Python class drawn from a drawing context that holds the font me
 2. Preview individual glyphs:
 
    ```sh
-   uv run python -m visualize --config config.yml lowercase_a
+   uv run python -m nordwand_mono.visualize --config config.yml lowercase_a
    ```
 
 3. Build the fonts:
 
    ```sh
-   uv run python -m generate_font --config config.yml
+   uv run python -m nordwand_mono.generate_font --config config.yml
    ```
 
    The files are written to `./custom-fonts/<FamilyName>`, so they do not overwrite the default build.
@@ -92,7 +92,7 @@ Each glyph is a Python class drawn from a drawing context that holds the font me
 The [`configs`](configs) folder contains alternative configurations, each with a `config.yml` and a `sample.png` rendered from it. To add one, create `configs/<name>/config.yml` and run:
 
 ```sh
-uv run python -m scripts.config_sample <name>
+uv run python -m nordwand_mono.scripts.config_sample <name>
 ```
 
 This builds the Regular weight (or another weight with `--weight`) and writes `configs/<name>/sample.png`.

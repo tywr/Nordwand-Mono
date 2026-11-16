@@ -1,0 +1,27 @@
+from nordwand_mono.glyphs import Glyph
+from nordwand_mono.draw.parallelogramm import draw_parallelogramm
+
+
+class ReverseSolidusGlyph(Glyph):
+    name = "reverse_solidus"
+    unicode = "0x5C"
+    offset = 0
+    width_ratio = 1
+    height_ratio = 0.85
+    stroke_ratio = 1
+
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset, height="ascent", width_ratio=self.width_ratio
+        )
+        ymid = dc.parenthesis
+        h = self.height_ratio * dc.parenthesis_length
+        draw_parallelogramm(
+            pen,
+            self.stroke_ratio * dc.stroke_x,
+            b.x2,
+            ymid - h / 2,
+            b.x1,
+            ymid + h / 2,
+            direction="top-left",
+        )

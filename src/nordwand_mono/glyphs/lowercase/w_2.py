@@ -1,0 +1,78 @@
+from nordwand_mono.glyphs import Glyph
+from nordwand_mono.draw.rect import draw_rect
+from nordwand_mono.draw.arch import draw_arch
+from nordwand_mono.draw.square_corner import draw_square_corner
+
+
+class LowercaseW2Glyph(Glyph):
+    name = "lowercase_w_2"
+    default_italic = True
+    width_ratio = 1.2
+    unicode = "0x77"
+    offset = 0
+    tail_ratio = 0.2
+    mid_ratio = 0.47
+
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            width_ratio=self.width_ratio,
+            overshoot_bottom=True,
+        )
+        xmid = b.x1 + self.mid_ratio * b.width
+        sy = dc.stroke_y
+        sx = max(0, 0.8 * (dc.stroke_x - dc.default_stroke)) + min(
+            dc.default_stroke, dc.stroke_x
+        )
+        xt = b.x2 - self.tail_ratio * b.width - sx / 2
+
+        draw_rect(
+            pen,
+            b.x1,
+            b.ymid,
+            b.x1 + sx,
+            b.y2,
+        )
+        draw_rect(
+            pen,
+            xmid - sx / 2,
+            b.ymid,
+            xmid + sx / 2,
+            b.y2,
+        )
+        draw_rect(
+            pen,
+            xmid - sx / 2,
+            b.ymid,
+            xmid + sx / 2,
+            b.y2,
+        )
+        draw_arch(
+            pen,
+            sx,
+            sy,
+            b.x1,
+            b.y1,
+            xmid + sx / 2,
+            b.y2,
+            # Handles rescaled to the arch's width
+            b.hx * (xmid + sx / 2 - b.x1) / b.width,
+            b.hy,
+            cut="top",
+            taper=0.6,
+        )
+        draw_arch(
+            pen,
+            sx,
+            sy,
+            xmid - sx / 2,
+            b.y1,
+            b.x2,
+            b.y2,
+            b.hx * (b.x2 - xmid + sx / 2) / b.width,
+            b.hy,
+            side="left",
+            cut="top",
+            taper=0.6,
+        )
+        draw_square_corner(pen, sx, sy, b.x2, b.ymid, xt, b.y2, orientation="top-left")

@@ -7,7 +7,7 @@
 # strokes are slightly thicker. All other metrics are the defaults.
 #
 # Usage:
-#   python -m generate_font --config configs/LoDPI/config.yml
+#   python -m nordwand_mono.generate_font --config configs/LoDPI/config.yml
 
 # --- Identity ---------------------------------------------------------------
 family_name: Nordwand Mono LoDPI

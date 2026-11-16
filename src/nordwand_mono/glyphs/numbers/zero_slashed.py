@@ -1,0 +1,22 @@
+from nordwand_mono.draw.parallelogramm import draw_parallelogramm
+from nordwand_mono.glyphs.numbers.zero import ZeroGlyph
+
+
+class ZeroSlashedGlyph(ZeroGlyph):
+    name = "zero_slashed"
+    font_feature = {"cv01": 1}
+    slash_stroke_ratio = 0.75
+    slash_vertical_inset = 0.12
+    slash_horizontal_inset = 0.1
+
+    def draw_mark(self, pen, dc, b):
+        x_inset = b.width * self.slash_horizontal_inset
+        y_inset = self.slash_vertical_inset * b.height
+        draw_parallelogramm(
+            pen,
+            dc.stroke_x * self.slash_stroke_ratio,
+            b.x1 + x_inset,
+            b.y1 + y_inset,
+            b.x2 - x_inset,
+            b.y2 - y_inset,
+        )

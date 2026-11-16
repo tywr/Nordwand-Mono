@@ -45,7 +45,7 @@ jobs:
         run: make build-font
 
       - name: Copy fonts into the site and refresh its glyph list
-        run: uv run python -m scripts.website
+        run: uv run python -m nordwand_mono.scripts.website
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3

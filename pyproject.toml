@@ -21,5 +21,9 @@ dependencies = [
     "PyYAML",
 ]
 
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["nordwand_mono*"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
