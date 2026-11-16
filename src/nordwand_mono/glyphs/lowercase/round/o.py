@@ -7,6 +7,7 @@ class LowercaseOGlyph(RoundLowercaseGlyph):
     name = "lowercase_o"
     unicode = "0x6F"
     offset = 0
+    width_ratio = 1
 
     def draw(
         self,
@@ -19,6 +20,7 @@ class LowercaseOGlyph(RoundLowercaseGlyph):
             overshoot_top=True,
             overshoot_left=True,
             overshoot_right=True,
+            width_ratio=self.width_ratio,
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
         self.draw_o(pen, dc, b, sx, sy)
