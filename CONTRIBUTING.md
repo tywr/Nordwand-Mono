@@ -15,38 +15,38 @@ make build-font  # build TTF, WOFF and WOFF2 into ./fonts
 
 | Path | Contents |
 | --- | --- |
-| `src/config.py` | Font metrics (`FontConfig`) and the per-weight drawing context (`DrawConfig`) |
-| `src/glyphs/` | One Python class per glyph, grouped by script and case |
-| `src/glyphs/accents/` | Accent marks, also usable as standalone glyphs |
-| `src/glyphs/composed/` | Accented letters built from a base glyph and an accent, one file per accent |
-| `src/draw/` | Reusable drawing primitives (arches, corners, rectangles, parallelograms, etc.) |
-| `src/generate_font.py` | Font builder: discovers the glyphs and writes the font files |
-| `src/visualize.py` | Glyph and text previewer |
-| `src/scripts/` | Banner, specimen, samples, documentation and website generators |
+| `src/nordwand_mono/config.py` | Font metrics (`FontConfig`) and the per-weight drawing context (`DrawConfig`) |
+| `src/nordwand_mono/glyphs/` | One Python class per glyph, grouped by script and case |
+| `src/nordwand_mono/glyphs/accents/` | Accent marks, also usable as standalone glyphs |
+| `src/nordwand_mono/glyphs/composed/` | Accented letters built from a base glyph and an accent, one file per accent |
+| `src/nordwand_mono/draw/` | Reusable drawing primitives (arches, corners, rectangles, parallelograms, etc.) |
+| `src/nordwand_mono/generate_font.py` | Font builder: discovers the glyphs and writes the font files |
+| `src/nordwand_mono/visualize.py` | Glyph and text previewer |
+| `src/nordwand_mono/scripts/` | Banner, specimen, samples, documentation and website generators |
 | `lab/` | Browser page to test the built fonts on sample texts |
 
 ## How glyphs work
 
-Each glyph is a subclass of `Glyph` (`src/glyphs/__init__.py`) that defines:
+Each glyph is a subclass of `Glyph` (`src/nordwand_mono/glyphs/__init__.py`) that defines:
 
 - `name`: a unique slug, e.g. `lowercase_turned_v`, used by the previewer and as the glyph name in the font;
 - `unicode`: the code point as a hex string, e.g. `"0x28C"`;
 - `draw(self, pen, dc)`: draws the outlines with `pen`, using the metrics and stroke widths of the drawing context `dc`.
 
-Glyphs are discovered automatically: any non-abstract `Glyph` subclass in a module under `src/glyphs/` is included in the font, and no registration is needed. Classes that only serve as building blocks set `generated_only = True`.
+Glyphs are discovered automatically: any non-abstract `Glyph` subclass in a module under `src/nordwand_mono/glyphs/` is included in the font, and no registration is needed. Classes that only serve as building blocks set `generated_only = True`.
 
 Some guidelines:
 
 - **Use the drawing context.** Derive every coordinate from `dc` (`dc.x_height`, `dc.cap`, `dc.stroke_x`, `dc.body_bounds()`, etc.) rather than from fixed values, so the glyph adapts to all weights and to custom configurations.
 - **Reuse existing glyphs.** Subclass or transform a related glyph rather than redrawing it. For example, the turned v (`ʌ`) draws the `v` through a flipping pen.
-- **Reuse the primitives** in `src/draw/` before writing new curve code.
+- **Reuse the primitives** in `src/nordwand_mono/draw/` before writing new curve code.
 - **Check every weight and the italic.** The font is built from Thin to Bold, upright and italic, and a shape that works at Regular may break at the extremes.
 
 ### Accented letters
 
-Accented letters are `ComposedGlyph` subclasses (`src/glyphs/composed/`) that combine a `base_glyph_class`, an `accent_class` and an `accent_y` anchor height. Add a new letter to the file of its accent, next to the letters that already use it.
+Accented letters are `ComposedGlyph` subclasses (`src/nordwand_mono/glyphs/composed/`) that combine a `base_glyph_class`, an `accent_class` and an `accent_y` anchor height. Add a new letter to the file of its accent, next to the letters that already use it.
 
-Lowercase and uppercase letters use separate accent classes where the sizing differs, e.g. `LowercaseBreveAcute` and `UppercaseBreveAcute`, so each case can be tuned independently. Stacked accents (Vietnamese `ấ`, Pinyin `ǘ`, etc.) are `StackedAccent` subclasses. Their positions and sizes are set by class attributes documented in `src/glyphs/accents/__init__.py`.
+Lowercase and uppercase letters use separate accent classes where the sizing differs, e.g. `LowercaseBreveAcute` and `UppercaseBreveAcute`, so each case can be tuned independently. Stacked accents (Vietnamese `ấ`, Pinyin `ǘ`, etc.) are `StackedAccent` subclasses. Their positions and sizes are set by class attributes documented in `src/nordwand_mono/glyphs/accents/__init__.py`.
 
 Accents on capitals must stay below the top of the cell (`window_ascent`), as terminals clip whatever is drawn above it.
 
@@ -59,7 +59,7 @@ Alternate designs set `font_feature`, e.g. `{"cv01": 1}`, and share the `unicode
 Preview a glyph by its slug:
 
 ```sh
-uv run python -m visualize lowercase_a
+uv run python -m nordwand_mono.visualize lowercase_a
 ```
 
 Useful options:
@@ -71,7 +71,7 @@ Useful options:
 | `-t "text"` | Render a text string instead of a single glyph |
 | `--ref FONT` | Overlay the same character from a reference font |
 
-Run `uv run python -m visualize --help` for the full list.
+Run `uv run python -m nordwand_mono.visualize --help` for the full list.
 
 To test the built fonts in context, build them and open the lab:
 

@@ -30,7 +30,7 @@ Stylistic sets switch groups of related glyphs at once:
 
 | Tag | Effect |
 | --- | --- |
-| `ss01` | Classic `l` and `m` (upright `l` only) |
+| `ss01` | Classic `l` and `m`, serifed `r` and `f` (upright `l` and `f` only) |
 | `ss02` | Arrow ligatures |
 | `ss03` | Wide-angled `<`, `>` and arrow heads |
 
@@ -56,14 +56,14 @@ make build       # build the fonts, banner, specimen, samples and docs
 
 ### Nerd Font variant
 
-Nerdwand Mono is the [Nerd Font](https://www.nerdfonts.com) variant of Nordwand Mono, patched with the complete icon set. Icons occupy a single cell, so the font remains strictly monospaced. It is not attached to releases and must be built locally:
+Nerdwand Mono is the [Nerd Font](https://www.nerdfonts.com) variant of Nordwand Mono, patched with the complete icon set. Icons occupy a single cell, so the font remains strictly monospaced. OTF and TTF files are attached to each [release](../../releases). To build it locally:
 
 ```sh
-make build
-make build-nerd-font
+make build-font      # build the regular family into ./fonts
+make build-nerd-font # patch it into ./fonts/nerd-font
 ```
 
-This additionally requires [FontForge](https://fontforge.org) (`brew install fontforge` on macOS, `apt install fontforge python3-fontforge` on Debian and Ubuntu), and network access on the first run to download the Nerd Fonts patcher. The patched fonts, the font license and the licenses of the bundled icon sets are written to `./fonts/nerd-font`.
+This additionally requires [FontForge](https://fontforge.org) (`brew install fontforge` on macOS, `apt install fontforge` on Debian and Ubuntu), and network access on the first run to download the Nerd Fonts patcher. The patched fonts are written to `./fonts/nerd-font/{otf,ttf}`, alongside the font license and the licenses of the bundled icon sets.
 
 ## Custom builds
 
@@ -73,13 +73,13 @@ Each glyph is a Python class drawn from a drawing context that holds the font me
 2. Preview individual glyphs:
 
    ```sh
-   uv run python -m visualize --config config.yml lowercase_a
+   uv run python -m nordwand_mono.visualize --config config.yml lowercase_a
    ```
 
 3. Build the fonts:
 
    ```sh
-   uv run python -m generate_font --config config.yml
+   uv run python -m nordwand_mono.generate_font --config config.yml
    ```
 
    The files are written to `./custom-fonts/<FamilyName>`, so they do not overwrite the default build.
@@ -92,7 +92,7 @@ Each glyph is a Python class drawn from a drawing context that holds the font me
 The [`configs`](configs) folder contains alternative configurations, each with a `config.yml` and a `sample.png` rendered from it. To add one, create `configs/<name>/config.yml` and run:
 
 ```sh
-uv run python -m scripts.config_sample <name>
+uv run python -m nordwand_mono.scripts.config_sample <name>
 ```
 
 This builds the Regular weight (or another weight with `--weight`) and writes `configs/<name>/sample.png`.

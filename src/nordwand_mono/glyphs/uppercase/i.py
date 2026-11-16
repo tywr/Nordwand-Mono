@@ -1,0 +1,23 @@
+from nordwand_mono.glyphs.uppercase import UppercaseGlyph
+from nordwand_mono.draw.rect import draw_rect
+
+
+class UppercaseIGlyph(UppercaseGlyph):
+    name = "uppercase_i"
+    unicode = "0x49"
+    offset = 0
+    width_ratio = 0.95
+    height = "cap"
+
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            width_ratio=self.width_ratio, offset=self.offset, height=self.height
+        )
+        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+
+        # Vertical stem (centered)
+        draw_rect(pen, b.xmid - sx / 2, b.y1, b.xmid + sx / 2, b.y2)
+        # Top bar
+        draw_rect(pen, b.x1, b.y2 - sy, b.x2, b.y2)
+        # Bottom bar
+        draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + sy)

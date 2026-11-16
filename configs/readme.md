@@ -1,6 +1,6 @@
 # Custom configurations
 
-Each folder holds a `config.yml` overriding the default metrics, and a `sample.png` rendered with it. Regenerate a sample with `python -m scripts.config_sample <name>`.
+Each folder holds a `config.yml` overriding the default metrics, and a `sample.png` rendered with it. Regenerate a sample with `python -m nordwand_mono.scripts.config_sample <name>`.
 
 | Build | Folder | x-height | Cap height | Ascender | Descender |
 | --- | --- | --- | --- | --- | --- |
@@ -23,6 +23,6 @@ Each folder holds a `config.yml` overriding the default metrics, and a `sample.p
 
 ## Nordwand Mono LoDPI
 
-Same metrics as the reference, exporting Regular, Bold and a heavier Book (425) weight for non-Retina (1x) screens, where macOS ignores hinting and the regular horizontals (70 units, about 0.9 px at 13 px) render faint. Book's horizontals match the Regular verticals (`stroke_y` 84) and its other strokes are slightly thicker (`stroke_x` 90, `stroke_alt` 72). The sample shows Book (`python -m scripts.config_sample LoDPI --weight 425`).
+Same metrics as the reference, exporting Regular, Bold and a heavier Book (425) weight for non-Retina (1x) screens, where macOS ignores hinting and the regular horizontals (70 units, about 0.9 px at 13 px) render faint. Book's horizontals match the Regular verticals (`stroke_y` 84) and its other strokes are slightly thicker (`stroke_x` 90, `stroke_alt` 72). The sample shows Book (`python -m nordwand_mono.scripts.config_sample LoDPI --weight 425`).
 
 ![Nordwand Mono LoDPI Book](LoDPI/sample.png)

@@ -1,0 +1,28 @@
+from nordwand_mono.glyphs import Glyph
+from nordwand_mono.draw.rect import draw_rect
+
+
+class CyrillicLowercaseShaGlyph(Glyph):
+    name = "cyrillic_lowercase_sha"
+    unicode = "0x0448"
+    offset = 0
+    width_ratio = 1.16
+    stroke_dampening = 0.8
+
+    def draw(self, pen, dc):
+        b = dc.body_bounds(
+            offset=self.offset,
+            width_ratio=self.width_ratio,
+            min_margin=dc.min_margin_lowercase,
+        )
+        sx, sy = dc.stroke_x, dc.stroke_y
+        sx = max(0, self.stroke_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
+        six = max(0, 0.5 * (sx - 90)) + min(90, sx)
+
+        # Upper stems
+        draw_rect(pen, b.x1, 0, b.x1 + sx, b.y2)
+        draw_rect(pen, b.x2 - sx, 0, b.x2, b.y2)
+        draw_rect(pen, b.xmid - six / 2, 0, b.xmid + six / 2, b.y2)
+        draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + sy)
