@@ -100,6 +100,7 @@ class LowercaseAGlyph(Glyph):
             b.y2,
             b.hx,
             b.hy * (b.y2 - yt1) / b.height,
+            handle_shift=self.cap_handle_shift,
             quarter="top-right",
             taper=right_taper if right_taper else 1,
         )
