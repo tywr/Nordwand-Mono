@@ -36,6 +36,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
         ymid = b.y1 + self.mid_height * b.height
         yt1 = b.y2 - (1 - self.mid_height) * b.height * 2
         yt2 = b.y1 + self.mid_height * b.height * 2
+        xt = b.x2 + self.tail_offset * b.width
 
         # Half-left as the o-shape
         draw_arch(
@@ -53,21 +54,26 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             cut="bottom",
         )
 
+        # Bottom-left quarter, then bottom-right quarter widened to `xt`
         loop_glyph = ufoLib2.objects.Glyph()
-        draw_arch(
-            loop_glyph.getPen(),
-            sx,
-            sy,
-            b.x1,
-            b.y1,
-            b.x2,
-            yt2,
-            b.hx,
-            b.hy * (yt2 - b.y1) / b.height,
-            taper=left_taper if left_taper else 1,
-            side="left",
-            cut="top",
-        )
+        for x1, x2, quarter in (
+            (b.x1, b.x2, "bottom-left"),
+            (2 * b.xmid - xt, xt, "bottom-right"),
+        ):
+            draw_arch(
+                loop_glyph.getPen(),
+                sx,
+                sy,
+                x1,
+                b.y1,
+                x2,
+                yt2,
+                b.hx,
+                b.hy * (yt2 - b.y1) / b.height,
+                taper=left_taper if left_taper else 1,
+                side="left",
+                quarter=quarter,
+            )
 
         cut_glyph = ufoLib2.objects.Glyph()
         draw_rect(
