@@ -166,12 +166,14 @@ class Superellipse:
             )
         return abs(total)
 
-    def quarter(self, quadrant):
+    def quarter(self, quadrant, hx=None, hy=None):
         """Bézier points of one quadrant, counter-clockwise, `quadrant` being
-        "top-right", "top-left", "bottom-left" or "bottom-right"."""
+        "top-right", "top-left", "bottom-left" or "bottom-right". `hx` and
+        `hy` replace the handles of the superellipse for this quadrant."""
         x1, y1, x2, y2 = self.x1, self.y1, self.x2, self.y2
         mx, my = self.xmid, (y1 + y2) / 2
-        hx, hy = self.hx, self.hy
+        hx = self.hx if hx is None else hx
+        hy = self.hy if hy is None else hy
         return {
             "top-right": ((x2, my), (x2, my + hy), (mx + hx, y2), (mx, y2)),
             "top-left": ((mx, y2), (mx - hx, y2), (x1, my + hy), (x1, my)),

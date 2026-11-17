@@ -49,6 +49,7 @@ class LowercaseMGlyph(SquareLowercaseGlyph):
             b.y2,
             hx * (xl2 - b.x1) / b.width,
             hy,
+            handle_shift=self.handle_shift,
             taper=taper1,
             side="left",
             cut="bottom",
@@ -67,6 +68,7 @@ class LowercaseMGlyph(SquareLowercaseGlyph):
             hx * (b.x2 - xr1) / b.width,
             hy,
             taper=taper2,
+            handle_shift=self.handle_shift,
             side="left",
             cut="bottom",
         )

@@ -31,6 +31,7 @@ class LowercaseY2Glyph(TailedLowercaseGlyph, SquareLowercaseGlyph):
             b.hx,
             self.loop_ratio * b.hy,
             taper=self.taper * dc.taper,
+            handle_shift=self.handle_shift,
             side="right",
             cut="top",
         )

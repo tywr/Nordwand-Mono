@@ -20,10 +20,16 @@ def draw_arch(
     cut=None,
     taper=0.5,
     quarter=None,
+    handle_shift=0,
 ):
     """Stroked superellipse thinned to `taper` on `side`. `cut` removes parts
     of it, while `quarter` ("top-right", "top-left", "bottom-left" or
-    "bottom-right") only keeps that quarter."""
+    "bottom-right") only keeps that quarter.
+
+    `handle_shift`, from 0 to 1, adds that share of hx and hy to the handles
+    of the full side, and removes that share of the handle at the tapered
+    side (hy on a left or right taper, hx on a top or bottom one). The
+    returned superellipses keep their plain handles."""
     w, h = (x2 - x1) / 2, (y2 - y1) / 2
     y_mid = y1 + h
 
@@ -50,8 +56,8 @@ def draw_arch(
         # The taper moves the middle of one side of the outer and inner
         # curves apart: align both on the middle lines of the box
         mids = (x1 + w, y_mid)
-        outer = _align_quarter(outer_se.quarter(quarter), mids)
-        inner = _align_quarter(inner_se.quarter(quarter), mids)
+        outer = _align_quarter(_quarter(outer_se, quarter, side, handle_shift), mids)
+        inner = _align_quarter(_quarter(inner_se, quarter, side, handle_shift), mids)
         inner = [seg[::-1] for seg in reversed(inner)]
         pen.moveTo(outer[0][0])
         for seg in outer + [(outer[-1][-1], inner[0][0])] + inner:
@@ -63,8 +69,12 @@ def draw_arch(
         return
 
     loop_glyph = ufoLib2.objects.Glyph()
-    outer_se.draw(loop_glyph.getPen(), clockwise=False)
-    inner_se.draw(loop_glyph.getPen(), clockwise=True)
+    if handle_shift:
+        _draw_loop(loop_glyph.getPen(), outer_se, side, handle_shift)
+        _draw_loop(loop_glyph.getPen(), inner_se, side, handle_shift, True)
+    else:
+        outer_se.draw(loop_glyph.getPen(), clockwise=False)
+        inner_se.draw(loop_glyph.getPen(), clockwise=True)
 
     cuts = str(cut).split(",")
     cut_glyph = ufoLib2.objects.Glyph()
@@ -106,6 +116,38 @@ def draw_arch(
         "outer": outer_se,
         "inner": inner_se,
     }
+
+
+QUARTERS = ("top-right", "top-left", "bottom-left", "bottom-right")
+
+
+def _quarter(se, quadrant, side, handle_shift):
+    """Quarter of `se`, its handles shifted from the tapered `side` to the
+    full one by `handle_shift`."""
+    if not handle_shift:
+        return se.quarter(quadrant)
+    hx, hy = se.hx, se.hy
+    if side in quadrant:
+        # Tapered side: only its own handle shrinks
+        if side in ("left", "right"):
+            hy *= 1 - handle_shift
+        else:
+            hx *= 1 - handle_shift
+    else:
+        hx *= 1 + handle_shift
+        hy *= 1 + handle_shift
+    return se.quarter(quadrant, hx, hy)
+
+
+def _draw_loop(pen, se, side, handle_shift, clockwise=False):
+    """The whole of `se` from its quarters, counter-clockwise from the right."""
+    segs = [_quarter(se, q, side, handle_shift) for q in QUARTERS]
+    if clockwise:
+        segs = [seg[::-1] for seg in reversed(segs)]
+    pen.moveTo(segs[0][0])
+    for seg in segs:
+        pen.curveTo(*seg[1:])
+    pen.closePath()
 
 
 def _align_quarter(seg, mids):

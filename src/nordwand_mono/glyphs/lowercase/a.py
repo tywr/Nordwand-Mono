@@ -12,6 +12,7 @@ class LowercaseAGlyph(Glyph):
     accent_x_offset = 16
     mid_height = 0.52
     width_ratio = 0.99
+    cap_handle_shift = -0.025
 
     taper = 0.65
 
