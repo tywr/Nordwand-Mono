@@ -1,5 +1,4 @@
 from nordwand_mono.draw.arch import draw_arch
-from nordwand_mono.draw.loop import draw_loop
 from nordwand_mono.draw.rect import draw_rect
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
@@ -12,8 +11,10 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
     offset = 2
     width_ratio = 1
     mid_height = 0.52
-    tail_offset = 0.00
+    tail_offset = 0.01
     tail_height = 0.268
+    bottom_right_hx_ratio = 1.1
+    bottom_right_hy_ratio = 0.95
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -37,6 +38,10 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
         yt1 = b.y2 - (1 - self.mid_height) * b.height * 2
         yt2 = b.y1 + self.mid_height * b.height * 2
         xt = b.x2 + self.tail_offset * b.width
+        brhx, brhy = (
+            self.bottom_right_hx_ratio * b.hx,
+            self.bottom_right_hy_ratio * b.hy,
+        )
 
         # Half-left as the o-shape
         draw_arch(
@@ -56,24 +61,34 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
 
         # Bottom-left quarter, then bottom-right quarter widened to `xt`
         loop_glyph = ufoLib2.objects.Glyph()
-        for x1, x2, quarter in (
-            (b.x1, b.x2, "bottom-left"),
-            (2 * b.xmid - xt, xt, "bottom-right"),
-        ):
-            draw_arch(
-                loop_glyph.getPen(),
-                sx,
-                sy,
-                x1,
-                b.y1,
-                x2,
-                yt2,
-                b.hx,
-                b.hy * (yt2 - b.y1) / b.height,
-                taper=left_taper if left_taper else 1,
-                side="left",
-                quarter=quarter,
-            )
+        draw_arch(
+            loop_glyph.getPen(),
+            sx,
+            sy,
+            b.x1,
+            b.y1,
+            b.x2,
+            yt2,
+            b.hx,
+            b.hy * (yt2 - b.y1) / b.height,
+            taper=left_taper if left_taper else 1,
+            side="left",
+            quarter="bottom-left",
+        )
+        draw_arch(
+            loop_glyph.getPen(),
+            sx,
+            sy,
+            2 * b.xmid - xt,
+            b.y1,
+            xt,
+            yt2,
+            brhx,
+            brhy * (yt2 - b.y1) / b.height,
+            taper=left_taper if left_taper else 1,
+            side="left",
+            quarter="bottom-right",
+        )
 
         cut_glyph = ufoLib2.objects.Glyph()
         draw_rect(
