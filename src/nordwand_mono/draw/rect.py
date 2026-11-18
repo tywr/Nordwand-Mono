@@ -1,5 +1,8 @@
 def draw_rect(pen, x1, y1, x2, y2, clockwise=False, rotate=0):
     """Draw a simple rectangle between two corner points."""
+    if x1 == x2 or y1 == y2:
+        # Empty: a zero-area contour breaks the boolean operations
+        return
     corners = [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
 
     if rotate:

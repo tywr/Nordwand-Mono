@@ -26,6 +26,11 @@ class Circumflex(Accent):
         gpen = glyph.getPen()
         _, delta = draw_parallelogramm(gpen, s, x1, y1, xmid + ov, y2)
         draw_parallelogramm(gpen, s, x2, y1, xmid - ov, y2, direction="top-left")
+        if y2 - ush <= y1:
+            # The stroke fills the whole height (a small stacked accent in
+            # bold): no counter to cut
+            BooleanGlyph(glyph).removeOverlap().draw(pen)
+            return
         # Upside-down v: the branches meet ush below the apex
         cut_glyph = ufoLib2.objects.Glyph()
         draw_polygon(
