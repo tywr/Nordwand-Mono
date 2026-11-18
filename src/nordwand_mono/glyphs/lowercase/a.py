@@ -1,6 +1,7 @@
 import pathops
 from nordwand_mono.glyphs import Glyph
 from nordwand_mono.draw.arch import draw_arch
+from nordwand_mono.draw.asymetric_arch import draw_asymetric_arch
 from nordwand_mono.draw.loop import draw_loop
 from nordwand_mono.draw.rect import draw_rect
 
@@ -21,6 +22,8 @@ class LowercaseAGlyph(Glyph):
     cap_offset = 0.045
     thinning = 1
     bottom_loop_xmid = 0.5
+    # Height where the bottom of the bowl joins the stem, ratio of the body
+    bowl_join_height = 0.4
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -50,20 +53,23 @@ class LowercaseAGlyph(Glyph):
         xt2 = 2 * b.xmid - xt1
         yt1 = b.y2 - self.top_loop_ratio * b.height
 
-        # Lower half of the bottom loop
-        draw_arch(
+        # Lower half of the bottom loop: from the left side, where the upper
+        # half starts, down to the bottom and up to the stem, joined higher
+        ybl = (b.y1 + ybmid) / 2
+        ytmid = b.y1 + self.top_loop_ratio * b.height / 2
+        draw_asymetric_arch(
             pen,
             sx,
             sy,
             b.x1,
             b.y1,
             b.x2,
-            ybmid,
+            ytmid,
+            b.xmid,
+            ybl,
             b.hx,
-            b.hy * (ybmid - b.y1) / b.height,
+            b.hy * (ytmid - b.y1) / (b.height / 2),
             taper=right_taper if right_taper else self.taper * dc.taper,
-            side="right",
-            cut="top",
         )
 
         # Upper half of the bottom loop
