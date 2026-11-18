@@ -16,7 +16,7 @@ class UppercaseGGlyph(RoundUppercaseGlyph):
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
         rhx, rhy = self.right_hx_ratio * b.hx, b.hy
         yc1 = b.y1 + b.height * self.opening1
-        yc2 = b.y1 + b.height * self.opening2 - self.extra_cut(dc)
+        yc2 = b.y1 + b.height * self.opening2
         ymid = b.y1 + self.opening1 * b.height
 
         glyph = ufoLib2.objects.Glyph()
@@ -39,7 +39,7 @@ class UppercaseGGlyph(RoundUppercaseGlyph):
         draw_rect(
             cut_glyph.getPen(),
             b.xmid,
-            yc1 - sy,
+            yc1,
             b.x2 + 10,
             yc2,
         )
@@ -49,7 +49,7 @@ class UppercaseGGlyph(RoundUppercaseGlyph):
         draw_rect(
             pen,
             b.xmid,
-            ymid - sy,
-            b.x2,
-            ymid,
+            yc1 - sy,
+            b.x2 - sx / 2,
+            yc1,
         )
