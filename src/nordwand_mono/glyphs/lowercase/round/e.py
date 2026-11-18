@@ -1,7 +1,6 @@
 from nordwand_mono.draw.arch import draw_arch
 from nordwand_mono.draw.rect import draw_rect
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
+import pathops
 from nordwand_mono.glyphs.lowercase.round import RoundLowercaseGlyph
 
 
@@ -60,9 +59,11 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
         )
 
         # Bottom-left quarter, then bottom-right quarter widened to `xt`
-        loop_glyph = ufoLib2.objects.Glyph()
+        # Skia rather than booleanOperations, which drops the curve of the
+        # bottom-left quarter in heavier weights of the æ
+        loop = pathops.Path()
         draw_arch(
-            loop_glyph.getPen(),
+            pathops.PathPen(loop),
             sx,
             sy,
             b.x1,
@@ -76,7 +77,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             quarter="bottom-left",
         )
         draw_arch(
-            loop_glyph.getPen(),
+            pathops.PathPen(loop),
             sx,
             sy,
             2 * b.xmid - xt,
@@ -90,16 +91,15 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             quarter="bottom-right",
         )
 
-        cut_glyph = ufoLib2.objects.Glyph()
+        cut = pathops.Path()
         draw_rect(
-            cut_glyph.getPen(),
+            pathops.PathPen(cut),
             b.xmid,
             yo,
             b.xmid + b.width,
             ymid,
         )
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
+        pathops.op(loop, cut, pathops.PathOp.DIFFERENCE).draw(pen)
 
         draw_rect(
             pen,
