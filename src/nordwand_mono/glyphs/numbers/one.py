@@ -12,6 +12,7 @@ class OneGlyph(NumberGlyph):
     width_ratio = 1.08
     rl_ratio = 0.51
     diag_stroke_ratio = 0.95
+    serif = True
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -26,7 +27,8 @@ class OneGlyph(NumberGlyph):
         draw_rect(pen, xmid - sx / 2, b.y1, xmid + sx / 2, b.y2)
 
         # Horizontal stem
-        draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + dc.stroke_y)
+        if self.serif:
+            draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + dc.stroke_y)
 
         draw_parallelogramm_vertical(
             pen,

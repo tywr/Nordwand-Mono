@@ -15,6 +15,7 @@ class ZeroGlyph(NumberGlyph):
     hm_ratio = 0.05
     x_offset = 0.1
     y_offset = 0.4
+    dot = True
 
     def draw_mark(self, pen, dc, b):
         draw_dot(pen, dc, b.xmid, b.ymid, self.dot_ratio)
@@ -44,4 +45,5 @@ class ZeroGlyph(NumberGlyph):
             hx,
             hy,
         )
-        self.draw_mark(pen, dc, b)
+        if self.dot:
+            self.draw_mark(pen, dc, b)
