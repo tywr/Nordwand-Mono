@@ -42,6 +42,6 @@ class UppercaseJGlyph(UppercaseGlyph):
             b.x2,
             yl,
             b.hx,
-            self.hy_ratio * b.hy,
+            b.hy * (yl - b.y1) / b.height,
             cut="top",
         )
