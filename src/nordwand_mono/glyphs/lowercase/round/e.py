@@ -12,8 +12,8 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
     mid_height = 0.52
     tail_offset = 0.01
     tail_height = 0.268
-    bottom_right_hx_ratio = 1.1
-    bottom_right_hy_ratio = 0.95
+    bottom_left_hx_ratio = 1
+    bottom_right_hx_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -37,10 +37,8 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
         yt1 = b.y2 - (1 - self.mid_height) * b.height * 2
         yt2 = b.y1 + self.mid_height * b.height * 2
         xt = b.x2 + self.tail_offset * b.width
-        brhx, brhy = (
-            self.bottom_right_hx_ratio * b.hx,
-            self.bottom_right_hy_ratio * b.hy,
-        )
+        blhx = self.bottom_left_hx_ratio * b.hx
+        brhx = self.bottom_right_hx_ratio * b.hx
 
         # Half-left as the o-shape
         draw_arch(
@@ -70,7 +68,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             b.y1,
             b.x2,
             yt2,
-            b.hx,
+            blhx,
             b.hy * (yt2 - b.y1) / b.height,
             taper=left_taper if left_taper else 1,
             side="left",
@@ -85,7 +83,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             xt,
             yt2,
             brhx,
-            brhy * (yt2 - b.y1) / b.height,
+            b.hy * (yt2 - b.y1) / b.height,
             taper=left_taper if left_taper else 1,
             side="left",
             quarter="bottom-right",
