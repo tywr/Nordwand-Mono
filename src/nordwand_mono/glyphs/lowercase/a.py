@@ -13,17 +13,15 @@ class LowercaseAGlyph(Glyph):
     accent_x_offset = 16
     mid_height = 0.52
     width_ratio = 0.99
-    cap_handle_shift = -0.025
 
     taper = 0.65
 
-    top_loop_ratio = 0.66
+    top_loop_ratio = 0.75
     cap_height = 0.74
-    cap_offset = 0.045
-    thinning = 1
     bottom_loop_xmid = 0.5
-    # Height where the bottom of the bowl joins the stem, ratio of the body
-    bowl_join_height = 0.4
+    cap_offset = 0.045
+    cap_hx_ratio = 1.05
+    cap_hy_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -42,6 +40,8 @@ class LowercaseAGlyph(Glyph):
         ymid = b.y1 + self.mid_height * b.height
         yl = ymid + dc.stroke_alt / 2
         ycut = b.y1 + self.cap_height * b.height - ec
+        chx = self.cap_hx_ratio * b.hx
+        chy = self.cap_hy_ratio * b.hy
 
         # Bottom loop variables
         xbmid = b.x1 + self.bottom_loop_xmid * b.width
@@ -49,8 +49,6 @@ class LowercaseAGlyph(Glyph):
         ybmid = ymid + dc.stroke_alt / 2
 
         # Top loop variables
-        xt1 = b.x1 + self.cap_offset * b.width
-        xt2 = 2 * b.xmid - xt1
         yt1 = b.y2 - self.top_loop_ratio * b.height
 
         # Lower half of the bottom loop: from the left side, where the upper
@@ -93,39 +91,26 @@ class LowercaseAGlyph(Glyph):
             yl,
         )
 
-        # Top loop. Skia rather than booleanOperations, which drops the curve
-        # of the arch in some heavier weights of the æ
-        arch = pathops.Path()
+        xc1 = b.x1 + self.cap_offset * b.width
+        top = pathops.Path()
+        arc = pathops.Path()
         draw_arch(
-            pathops.PathPen(arch),
+            pathops.PathPen(arc),
             sx,
             sy,
-            b.x1,
+            xc1,
             yt1,
             b.x2,
             b.y2,
-            b.hx,
-            b.hy * (b.y2 - yt1) / b.height,
-            handle_shift=self.cap_handle_shift,
-            quarter="top-right",
+            chx * (b.x2 - xc1) / b.width,
+            chy * (b.y2 - yt1) / b.height,
+            side="right",
             taper=right_taper if right_taper else 1,
+            cut="bottom",
         )
-        loop = pathops.Path()
-        draw_loop(
-            pathops.PathPen(loop),
-            sx * self.thinning,
-            sy,
-            xt1,
-            yt1,
-            xt2,
-            b.y2,
-            b.hx * (xt2 - xt1) / b.width,
-            b.hy * (b.y2 - yt1) / b.height,
-            quarter="top-left",
-        )
+        top = pathops.op(top, arc, pathops.PathOp.UNION)
         cut = pathops.Path()
         draw_rect(pathops.PathPen(cut), b.x1, b.ymid, b.xmid, ycut)
-        top = pathops.op(arch, loop, pathops.PathOp.UNION)
         pathops.op(top, cut, pathops.PathOp.DIFFERENCE).draw(pen)
 
         if stem:
