@@ -20,8 +20,9 @@ class Acute(Accent):
 
     def draw_at(self, pen, dc, x, y, stroke_ratio=None):
         h = self.height * dc.x_height
-        w = self.width * dc.width
         s = self.stroke_ratio * dc.stroke_x
+        xo = 1.15 * (s - dc.default_stroke)
+        w = self.width * dc.width + xo
         # Base centered on x
         d = parallelogramm_delta(s, 0, 0, w, h)
         draw_parallelogramm(pen, s, x - d / 2, y - h / 2, x + w - d / 2, y + h / 2)

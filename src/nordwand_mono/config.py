@@ -152,7 +152,7 @@ class DrawConfig(FontConfig):
             stroke_alt=int(cls.stroke_alt * ratio_alt),
             x_height=cls.x_height,
             cap=cls.cap,
-            accent=cls.cap,
+            accent=cls.accent,
             accent_cap=cls.accent_cap,
             ascent=cls.ascent,
             descent=cls.descent,
