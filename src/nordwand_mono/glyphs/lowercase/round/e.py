@@ -12,8 +12,8 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
     mid_height = 0.52
     tail_offset = 0.01
     tail_height = 0.268
-    bottom_left_hx_ratio = 1
-    bottom_right_hx_ratio = 1
+    bottom_left_hx_ratio = 1.05
+    bottom_right_hx_ratio = 1.05
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
