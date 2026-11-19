@@ -32,7 +32,7 @@ class Glyph(ABC):
     def draw(self, pen, dc) -> None: ...
 
     def extra_cut(self, dc) -> int:
-        return 0.66 * max(0, dc.stroke_x - dc.default_stroke)
+        return min(0.66 * max(0, dc.stroke_x - dc.default_stroke), dc.stroke_x / 4)
 
     def diag_stroke_dampening(self, ratio, stroke, coef=0.25):
         from math import exp

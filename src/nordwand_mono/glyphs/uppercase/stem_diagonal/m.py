@@ -10,8 +10,7 @@ class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
     name = "uppercase_m"
     unicode = "0x4D"
     offset = 0
-    mid_overlap = 0.6
-    depth = 0.6
+    mid_overlap = 0.3
     inner_thickness_ratio = 2.4
     inner_height = 0.2
     width_ratio = 1.16
@@ -24,6 +23,7 @@ class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
         )
         si = self.inner_stroke(sx, dc)
         ov = sx * self.overlap
+        ovm = sx * self.mid_overlap
         delta = self.inner_thickness_ratio * sx
         yi = b.y1 + self.inner_height * b.height
         # Ink trap tips, section_height below the top
@@ -36,18 +36,16 @@ class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
         gpen = glyph.getPen()
         draw_rect(gpen, b.x1, b.y1, b.x1 + sx, b.y2)
         draw_rect(gpen, b.x2 - sx, b.y1, b.x2, b.y2)
-        # Diagonals, from their top corner `ov` inside the stems down to the
-        # middle; shared with the ink traps below so both stay in sync
-        bottom = yi - delta / 2
-        left_top, left_bottom = b.x1 + sx - ov, b.xmid + sx * self.mid_overlap
-        right_top, right_bottom = b.x2 - sx + ov, b.xmid - sx * self.mid_overlap
+
+        left_top, left_bottom = b.x1 + sx - ov, b.xmid + ovm
+        right_top, right_bottom = b.x2 - sx + ov, b.xmid - ovm
         _, dl = draw_parallelogramm(
             gpen,
             si,
             left_top,
             b.y2,
             left_bottom,
-            bottom,
+            yi,
             direction="bottom-right",
         )
         _, dr = draw_parallelogramm(
@@ -56,7 +54,7 @@ class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
             right_top,
             b.y2,
             right_bottom,
-            bottom,
+            yi,
             direction="bottom-left",
         )
         draw_rect(
@@ -81,15 +79,9 @@ class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
             b.y2,
         )
         cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(
-            cut_glyph.getPen(),
-            b.x1 + sx,
-            yi - delta / 2,
-            b.x2 - sx,
-            yi,
-        )
+
         # Ink traps: the diagonals' lower edges run from their top corner
-        # inside the stems down to the bottom of the parallelograms. Where
+        # inside the stems down to their flat bottom at yi. Where
         # an edge leaves its stem, the trap carves along the edge's extension
         # up to yik, tapering back into the stem halfway down to the baseline.
         for x_stem, x_top, x_bottom in (
@@ -98,10 +90,10 @@ class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
         ):
 
             def x_at(y):
-                return x_top + (x_bottom - x_top) * (y - b.y2) / (bottom - b.y2)
+                return x_top + (x_bottom - x_top) * (y - b.y2) / (yi - b.y2)
 
             # Height where the lower edge crosses the stem's inner side
-            yj = b.y2 + (x_stem - x_top) * (bottom - b.y2) / (x_bottom - x_top)
+            yj = b.y2 + (x_stem - x_top) * (yi - b.y2) / (x_bottom - x_top)
             if yik > yj:
                 draw_polygon(
                     cut_glyph.getPen(),
