@@ -38,7 +38,7 @@ from fontTools.ttLib.tables.otTables import (
 from fontTools.ttLib import newTable
 
 from nordwand_mono.config import FontConfig as fc
-from nordwand_mono.config import DrawConfig, weight_name
+from nordwand_mono.config import DrawConfig, use_config, weight_name
 from nordwand_mono.glyphs import (
     Glyph,
     LigatureGlyph,
@@ -976,8 +976,13 @@ def build_ttf(
     print(f"Font saved to {output_path}")
 
 
-if __name__ == "__main__":
+def main(config=None):
+    """Command line build. `config`, a FontConfig subclass, is installed as
+    the configuration before the `--config` YAML overrides."""
     import argparse
+
+    if config is not None:
+        use_config(config)
 
     parser = argparse.ArgumentParser(description="Generate Nordwand Mono font files")
     fmt = parser.add_mutually_exclusive_group()
@@ -1060,3 +1065,7 @@ if __name__ == "__main__":
         with ProcessPoolExecutor(max_workers=args.jobs, mp_context=ctx) as pool:
             for future in [pool.submit(build_font, **style) for style in styles]:
                 future.result()
+
+
+if __name__ == "__main__":
+    main()

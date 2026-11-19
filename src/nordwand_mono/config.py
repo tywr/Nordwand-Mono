@@ -336,6 +336,17 @@ def apply_config_overrides(overrides):
     return overrides
 
 
+def use_config(cls):
+    """Install the FontConfig subclass `cls` as the configuration of the
+    build: its values are written onto FontConfig and DrawConfig, which every
+    module reads.
+
+    Returns the dict of applied values."""
+    return apply_config_overrides(
+        {key: getattr(cls, key) for key in config_keys() if hasattr(cls, key)}
+    )
+
+
 def load_config(path):
     """Load a YAML file and apply it as overrides to the font configuration.
 
