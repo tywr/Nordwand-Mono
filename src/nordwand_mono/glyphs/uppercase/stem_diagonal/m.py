@@ -15,6 +15,7 @@ class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
     inner_height = 0.2
     width_ratio = 1.16
     stroke_dampening = 0.8
+    ink_traps = True
 
     def draw(self, pen, dc):
         b = self.body(dc)
@@ -80,40 +81,41 @@ class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
         )
         cut_glyph = ufoLib2.objects.Glyph()
 
-        # Ink traps: the diagonals' lower edges run from their top corner
-        # inside the stems down to their flat bottom at yi. Where
-        # an edge leaves its stem, the trap carves along the edge's extension
-        # up to yik, tapering back into the stem halfway down to the baseline.
-        for x_stem, x_top, x_bottom in (
-            (b.x1 + sx, left_top, left_bottom - dl),
-            (b.x2 - sx, right_top, right_bottom + dr),
-        ):
+        if self.ink_traps:
+            # Ink traps: the diagonals' lower edges run from their top corner
+            # inside the stems down to their flat bottom at yi. Where
+            # an edge leaves its stem, the trap carves along the edge's extension
+            # up to yik, tapering back into the stem halfway down to the baseline.
+            for x_stem, x_top, x_bottom in (
+                (b.x1 + sx, left_top, left_bottom - dl),
+                (b.x2 - sx, right_top, right_bottom + dr),
+            ):
 
-            def x_at(y):
-                return x_top + (x_bottom - x_top) * (y - b.y2) / (yi - b.y2)
+                def x_at(y):
+                    return x_top + (x_bottom - x_top) * (y - b.y2) / (yi - b.y2)
 
-            # Height where the lower edge crosses the stem's inner side
-            yj = b.y2 + (x_stem - x_top) * (yi - b.y2) / (x_bottom - x_top)
-            if yik > yj:
-                draw_polygon(
-                    cut_glyph.getPen(),
-                    points=[
-                        (x_stem, yj),
-                        (x_at(yik), yik),
-                        (x_stem, (b.y1 + yj) / 2),
-                    ],
-                )
+                # Height where the lower edge crosses the stem's inner side
+                yj = b.y2 + (x_stem - x_top) * (yi - b.y2) / (x_bottom - x_top)
+                if yik > yj:
+                    draw_polygon(
+                        cut_glyph.getPen(),
+                        points=[
+                            (x_stem, yj),
+                            (x_at(yik), yik),
+                            (x_stem, (b.y1 + yj) / 2),
+                        ],
+                    )
 
-        # As in the V, cut between the diagonals' upper edges so the middle
-        # vertex keeps a solid section of ush above its flat bottom at yi
-        draw_polygon(
-            cut_glyph.getPen(),
-            points=[
-                (left_top + dl, b.y2),
-                (right_top - dr, b.y2),
-                (b.xmid, yi + ush),
-            ],
-        )
+            # As in the V, cut between the diagonals' upper edges so the middle
+            # vertex keeps a solid section of ush above its flat bottom at yi
+            draw_polygon(
+                cut_glyph.getPen(),
+                points=[
+                    (left_top + dl, b.y2),
+                    (right_top - dr, b.y2),
+                    (b.xmid, yi + ush),
+                ],
+            )
 
         res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
         res.draw(pen)

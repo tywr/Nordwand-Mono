@@ -11,6 +11,7 @@ class UppercaseNGlyph(StemDiagonalUppercaseGlyph):
     unicode = "0x4E"
     offset = 0
     width_ratio = 1.04
+    ink_traps = True
 
     def draw(self, pen, dc):
         b = self.body(dc)
@@ -45,30 +46,31 @@ class UppercaseNGlyph(StemDiagonalUppercaseGlyph):
         # does, the trap carves along the edge's extension into the stem up
         # to `sh` from the stem's end, tapering back halfway to the other end.
         cut_glyph = ufoLib2.objects.Glyph()
-        for x_stem, edge, y_end, y_far in (
-            # Lower edge, from the top-left corner down to the bottom-left one
-            (b.x1 + sx, ((x_top, b.y2), (x_bottom - delta, b.y1)), b.y2, b.y1),
-            # Upper edge, from the bottom-right corner up to the top-right one
-            (b.x2 - sx, ((x_bottom, b.y1), (x_top + delta, b.y2)), b.y1, b.y2),
-        ):
-            (xa, ya), (xb, yb) = edge
+        if self.ink_traps:
+            for x_stem, edge, y_end, y_far in (
+                # Lower edge, from the top-left corner down to the bottom-left one
+                (b.x1 + sx, ((x_top, b.y2), (x_bottom - delta, b.y1)), b.y2, b.y1),
+                # Upper edge, from the bottom-right corner up to the top-right one
+                (b.x2 - sx, ((x_bottom, b.y1), (x_top + delta, b.y2)), b.y1, b.y2),
+            ):
+                (xa, ya), (xb, yb) = edge
 
-            def x_at(y):
-                return xa + (xb - xa) * (y - ya) / (yb - ya)
+                def x_at(y):
+                    return xa + (xb - xa) * (y - ya) / (yb - ya)
 
-            # Height where the edge crosses the stem's inner side
-            yj = ya + (x_stem - xa) * (yb - ya) / (xb - xa)
-            # Trap tip, `sh` from the stem's end on the diagonal's side
-            y_tip = y_end - sh if y_end > y_far else y_end + sh
-            if (y_tip - yj) * (y_end - y_far) > 0:
-                draw_polygon(
-                    cut_glyph.getPen(),
-                    points=[
-                        (x_stem, yj),
-                        (x_at(y_tip), y_tip),
-                        (x_stem, (y_far + yj) / 2),
-                    ],
-                )
+                # Height where the edge crosses the stem's inner side
+                yj = ya + (x_stem - xa) * (yb - ya) / (xb - xa)
+                # Trap tip, `sh` from the stem's end on the diagonal's side
+                y_tip = y_end - sh if y_end > y_far else y_end + sh
+                if (y_tip - yj) * (y_end - y_far) > 0:
+                    draw_polygon(
+                        cut_glyph.getPen(),
+                        points=[
+                            (x_stem, yj),
+                            (x_at(y_tip), y_tip),
+                            (x_stem, (y_far + yj) / 2),
+                        ],
+                    )
 
         res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
         res.draw(pen)
