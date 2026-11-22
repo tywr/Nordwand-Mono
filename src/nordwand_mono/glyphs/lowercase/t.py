@@ -33,9 +33,10 @@ class LowercaseTGlyph(Glyph):
 
         # Cross-bar at x_height
         draw_rect(pen, x1, dc.x_height - dc.stroke_y, x2, dc.x_height)
-        # Corner curving down-right (shorter/flatter than f), at most half the
-        # body past the stem, then a footer to the terminal
-        corner_end = min(xs + b.width / 2, xt)
+        # Corner curving down-right (shorter/flatter than f) to the terminal;
+        # with the stem centered, at most half the body past the stem, then a
+        # footer to the terminal, as the monospace t always was
+        corner_end = min(xs + b.width / 2, xt) if self.centered_stem else xt
         draw_square_corner(
             pen,
             dc.stroke_x,

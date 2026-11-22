@@ -21,14 +21,17 @@ def draw_square_corner(
     (x1, y1) is the outer start of the curve, (x2, y2) is the outer end.
     The stroke always goes inward (away from the corner).
 
-    The corner point is at (x2, y1) or (x1, y2) depending on orientation:
-        bottom-right: corner at (x2, y1) — curve goes right then up
-        top-right:    corner at (x1, y2) — curve goes up then right
-        top-left:     corner at (x2, y1) — curve goes left then down
-        bottom-left:  corner at (x1, y2) — curve goes down then left
+    The corner point is at (x1, y2) in every orientation, which names the
+    side of the corner the arm and the stem leave from:
+        bottom-right: the stem comes down to the corner, the arm goes right
+        top-right:    the stem goes up to the corner, the arm goes right
+        top-left:     the stem goes up to the corner, the arm goes left
+        bottom-left:  the stem comes down to the corner, the arm goes left
+
+    Curves longer than the corner are cut at its end, x2, and at its start,
+    y1, so the corner never reaches past its box.
     """
     sx, sy = stroke_x, stroke_y
-    ml = 2 * (max(x2, x1) - min(x2, x1))
     # +1 when the bar leaves the stem to the right / the stem rises from the bar
     dx = 1 if orientation.endswith("right") else -1
     dy = 1 if orientation.startswith("bottom") else -1
@@ -57,14 +60,17 @@ def draw_square_corner(
     gpen.lineTo((xi, y1))
     gpen.closePath()
 
-    if dx > 0:
-        draw_rect(cpen, x2, y1, x2 + ml, y2)
-    else:
-        draw_rect(cpen, x2 - ml, y1, x2, y2)
-    if orientation == "bottom-left":
-        draw_rect(cpen, x2, y1, x1, y1 + 100)
-    elif orientation == "top-right":
-        draw_rect(cpen, x1, y1 - 100, x2, y1)
+    # Past the end and past the start, as far as the longest curve reaches
+    reach_x = abs(x2 - x1) + sx + max(gx, ix)
+    reach_y = abs(y2 - y1) + sy + max(gy, iy)
+    xe = x2 + dx * reach_x
+    _cut(cpen, x2, y1, xe, y2)
+    _cut(cpen, x1, y1, xe, y1 + dy * reach_y)
 
     res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
     res.draw(pen)
+
+
+def _cut(pen, xa, ya, xb, yb):
+    """A rectangle between two corners in any order, always wound alike."""
+    draw_rect(pen, min(xa, xb), min(ya, yb), max(xa, xb), max(ya, yb))
