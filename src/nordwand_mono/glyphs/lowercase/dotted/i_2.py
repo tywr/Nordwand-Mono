@@ -15,7 +15,9 @@ class LowercaseI2Glyph(DottedLowercaseGlyph):
         """Draw the letter without the dot (for use with accents)."""
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
         xmid = b.x1 + self.rl_ratio * b.width
-        ym4 = b.y1 + b.height / 4
+        # The footer rises as high as the l's, a quarter of the ascent: lower,
+        # the corner is shorter than its curve
+        ym4 = b.y1 + dc.ascent / 4
 
         # Stem
         draw_rect(
