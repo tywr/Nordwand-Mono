@@ -1,4 +1,5 @@
 from nordwand_mono.glyphs import Glyph
+from nordwand_mono.draw.cross_bar import cross_bar_stem
 from nordwand_mono.draw.square_corner import draw_square_corner
 from nordwand_mono.draw.rect import draw_rect
 
@@ -19,10 +20,10 @@ class LowercaseFBase(Glyph):
     bottom_right_reach = 0.9
     bottom = None
     cross_bar = True
-
-    def bar_width(self, b, dc):
-        """Width shared by the cross bar and the serif: the body, b.x1 to b.x2."""
-        return b.width
+    # The corner ends terminal_offset * width inside the right of the cross
+    # bar; the stem stays on the body's center, see `cross_bar_stem`
+    terminal_offset = 0
+    centered_stem = True
 
     def cross_bar_top(self, dc):
         return (self.low_bar_height if self.low_bar else 1) * dc.x_height
@@ -31,55 +32,50 @@ class LowercaseFBase(Glyph):
         b = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
-        width = self.bar_width(b, dc)
-        right_len = width * self.rl_ratio - dc.stroke_x / 2
-        left_len = width * (1 - self.rl_ratio) - dc.stroke_x / 2
+        x1, x2, xs, xt = cross_bar_stem(
+            b, self.rl_ratio, self.terminal_offset, self.centered_stem
+        )
         yc = self.cross_bar_top(dc)
 
         # Stem
-        draw_rect(
-            pen, b.xmid - dc.stroke_x / 2, 0, b.xmid + dc.stroke_x / 2, dc.x_height
-        )
+        draw_rect(pen, xs - dc.stroke_x / 2, 0, xs + dc.stroke_x / 2, dc.x_height)
 
         # Cross-bar
         if self.cross_bar:
-            draw_rect(
-                pen,
-                b.xmid - left_len - dc.stroke_x / 2,
-                yc - dc.stroke_y,
-                b.xmid + right_len + dc.stroke_x / 2,
-                yc,
-            )
+            draw_rect(pen, x1, yc - dc.stroke_y, x2, yc)
 
-        # Corner
+        # Corner, to the terminal
         draw_square_corner(
             pen,
             dc.stroke_x,
             dc.stroke_y,
-            b.xmid - dc.stroke_x / 2,
+            xs - dc.stroke_x / 2,
             dc.x_height,
-            b.xmid + right_len + dc.stroke_x / 2,
+            xt,
             dc.ascent,
             orientation="top-right",
         )
 
         if self.bottom == "serif":
-            # Centered on the stem, as long as the left of the cross bar
+            # From the left of the cross bar, reaching bottom_right_reach of
+            # the way from the stem to the terminal
+            right_len = xt - xs - dc.stroke_x / 2
             draw_rect(
                 pen,
-                b.xmid - left_len - dc.stroke_x / 2,
+                x1,
                 0,
-                b.xmid + right_len * self.bottom_right_reach + dc.stroke_x / 2,
+                xs + right_len * self.bottom_right_reach + dc.stroke_x / 2,
                 dc.stroke_y,
             )
         elif self.bottom == "hook":
+            # Half the body left of the stem
             draw_square_corner(
                 pen,
                 dc.stroke_x,
                 dc.stroke_y,
-                b.xmid + dc.stroke_x / 2,
+                xs + dc.stroke_x / 2,
                 0,
-                b.x1,
+                xs - b.width / 2,
                 dc.descent,
                 orientation="bottom-left",
             )
