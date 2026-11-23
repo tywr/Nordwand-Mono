@@ -83,7 +83,9 @@ WEIGHT_NAMES = {
     900: "Black",
 }
 
-WEIGHT_KEYS = {"name", "stroke_x", "stroke_y", "stroke_alt", "taper"}
+WEIGHT_KEYS = {
+    "name", "stroke_x", "stroke_y", "stroke_alt", "taper", "hx", "hy", "cap_hx", "cap_hy"
+}
 
 
 def weight_name(w):
