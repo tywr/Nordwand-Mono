@@ -63,5 +63,14 @@ class CyrillicLowercaseBeGlyph(Glyph):
         )
 
         draw_square_corner(
-            pen, sx, sy, b.x1, (b.y1 + ymid) / 2, xt, dc.cap, orientation="top-right"
+            pen,
+            sx,
+            sy,
+            b.x1,
+            (b.y1 + ymid) / 2,
+            xt,
+            dc.cap,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="top-right",
         )

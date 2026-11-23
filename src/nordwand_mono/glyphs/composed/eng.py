@@ -26,6 +26,8 @@ class EngComposedGlyph(ComposedGlyph):
             0,
             b.x1 + self.hook_end * b.width,
             dc.descent,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="bottom-left",
         )
 

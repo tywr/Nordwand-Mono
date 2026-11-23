@@ -22,5 +22,14 @@ class CyrillicLowercaseShhaGlyph(Glyph):
 
         draw_rect(pen, b.x1, 0, b.x1 + sx, dc.ascent)
         draw_square_corner(
-            pen, sx, sy, b.x2, b.y1, b.x1, ymid, orientation="top-left"
+            pen,
+            sx,
+            sy,
+            b.x2,
+            b.y1,
+            b.x1,
+            ymid,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="top-left",
         )

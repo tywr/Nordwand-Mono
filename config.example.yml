@@ -53,6 +53,11 @@ cap_hy: 250
 # Corner taper (0..1).
 taper: 0.35
 
+# Handles of the square corners (draw_square_corner), e.g. the tails of
+# l, t, f, j. Can also be set per weight.
+square_corner_gx: 160
+square_corner_gy: 160
+
 # --- Stroke weights (regular / 400) -----------------------------------------
 # These are the base weights; --config keeps the multi-weight build, which
 # scales them per weight via DrawConfig.weight().

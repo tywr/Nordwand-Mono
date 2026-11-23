@@ -58,6 +58,8 @@ class CyrillicUppercaseDjeGlyph(UppercaseGlyph):
             b.y1,
             xmid,
             dc.descent,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="bottom-left",
         )
         draw_rect(pen, b.x1 + sx / 2 - sw / 2, b.y2 - sy, b.x1 + sx / 2 + sw / 2, b.y2)

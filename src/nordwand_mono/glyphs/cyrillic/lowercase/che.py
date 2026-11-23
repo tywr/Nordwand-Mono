@@ -21,5 +21,14 @@ class CyrillicLowercaseCheGlyph(Glyph):
         # Upper stems
         draw_rect(pen, b.x2 - sx, 0, b.x2, b.y2)
         draw_square_corner(
-            pen, sx, sy, b.x1, b.y2, b.x2, ymid, orientation="bottom-right"
+            pen,
+            sx,
+            sy,
+            b.x1,
+            b.y2,
+            b.x2,
+            ymid,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="bottom-right",
         )

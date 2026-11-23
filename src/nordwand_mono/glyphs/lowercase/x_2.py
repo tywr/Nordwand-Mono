@@ -54,6 +54,8 @@ class LowercaseX2Glyph(Glyph):
             yt2,
             b.x2,
             0,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="bottom-right",
         )
         draw_arch(

@@ -28,10 +28,28 @@ class LowercaseZ2Glyph(Glyph):
         # draw_rect(pen, b.x1, 0, b.x2, dc.stroke_y)
 
         draw_square_corner(
-            pen, sx, sy, b.x1, yt2, xr, b.y2, orientation="top-right"
+            pen,
+            sx,
+            sy,
+            b.x1,
+            yt2,
+            xr,
+            b.y2,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="top-right",
         )
         draw_square_corner(
-            pen, sx, sy, b.x2, yt1, b.x1, b.y1, orientation="bottom-left"
+            pen,
+            sx,
+            sy,
+            b.x2,
+            yt1,
+            b.x1,
+            b.y1,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="bottom-left",
         )
 
         # Diagonal stroke

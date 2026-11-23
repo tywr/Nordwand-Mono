@@ -31,5 +31,7 @@ class CyrillicUppercaseShhaGlyph(CyrillicUppercaseGlyph):
             b.y1,
             b.x1,
             ymid,
-            orientation="top-left"
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="top-left",
         )

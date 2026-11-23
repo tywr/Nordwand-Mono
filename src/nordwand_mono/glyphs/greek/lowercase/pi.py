@@ -38,5 +38,7 @@ class GreekLowercasePiGlyph(Glyph):
             b.y2,
             b.x2,
             b.y1,
-            orientation="bottom-right"
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="bottom-right",
         )

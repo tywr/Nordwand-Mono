@@ -53,6 +53,8 @@ class LowercaseFBase(Glyph):
             dc.x_height,
             xt,
             dc.ascent,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="top-right",
         )
 
@@ -77,6 +79,8 @@ class LowercaseFBase(Glyph):
                 0,
                 xs - b.width / 2,
                 dc.descent,
+                gx=dc.square_corner_gx,
+                gy=dc.square_corner_gy,
                 orientation="bottom-left",
             )
 

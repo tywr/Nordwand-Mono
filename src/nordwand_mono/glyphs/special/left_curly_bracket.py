@@ -31,8 +31,8 @@ class LeftCurlyBracketGlyph(RightCurlyBracketGlyph):
             y2 - l4,
             x2,
             y2,
-            # hx,
-            # hy,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="top-right",
         )
         draw_corner(
@@ -56,8 +56,8 @@ class LeftCurlyBracketGlyph(RightCurlyBracketGlyph):
             y1 + l4,
             x2,
             y1,
-            # hx,
-            # hy,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="bottom-right",
         )
         draw_corner(

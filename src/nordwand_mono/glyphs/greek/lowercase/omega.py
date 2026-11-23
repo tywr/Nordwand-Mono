@@ -66,6 +66,26 @@ class GreekLowercaseOmegaGlyph(Glyph):
             taper=0.6,
         )
         draw_square_corner(
-            pen, sx, sy, b.x1, b.ymid, xtl, b.y2, orientation="top-right"
+            pen,
+            sx,
+            sy,
+            b.x1,
+            b.ymid,
+            xtl,
+            b.y2,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="top-right",
         )
-        draw_square_corner(pen, sx, sy, b.x2, b.ymid, xtr, b.y2, orientation="top-left")
+        draw_square_corner(
+            pen,
+            sx,
+            sy,
+            b.x2,
+            b.ymid,
+            xtr,
+            b.y2,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="top-left",
+        )

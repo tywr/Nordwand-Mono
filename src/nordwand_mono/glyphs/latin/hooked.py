@@ -100,7 +100,18 @@ class TopHookedGlyph(EdgeHookedGlyph):
             x2, orientation = b.x1 + sx, "top-right"
         else:
             x2, orientation = b.x2 - sx, "top-left"
-        draw_square_corner(pen, sx, sy, edge, y1, x2, b.y2, orientation=orientation)
+        draw_square_corner(
+            pen,
+            sx,
+            sy,
+            edge,
+            y1,
+            x2,
+            b.y2,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation=orientation,
+        )
 
 
 class BottomLeftHookedGlyph(EdgeHookedGlyph):
@@ -118,6 +129,8 @@ class BottomLeftHookedGlyph(EdgeHookedGlyph):
             b.y1,
             edge,
             dc.descent,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="bottom-left",
         )
 
@@ -164,6 +177,8 @@ class InnerHookedGlyph:
             0,
             x + dc.stroke_x + reach,
             dc.ascent,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="top-right",
         )
 
@@ -300,6 +315,8 @@ class LowercaseDHookGlyph(EdgeHookedGlyph, LowercaseDGlyph):
             0,
             edge,
             dc.ascent,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="top-right",
         )
 
@@ -320,6 +337,8 @@ class LowercaseDTailGlyph(LowercaseDHookGlyph):
             dc.ascent,
             edge,
             dc.descent,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="bottom-right",
         )
 
@@ -365,7 +384,18 @@ class UppercaseVHookGlyph(UppercaseUGlyph):
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         ym = (b.y1 + self.loop_ratio * b.height) / 2
-        draw_square_corner(pen, sx, sy, b.x2, ym, b.xmid, b.y2, orientation="top-left")
+        draw_square_corner(
+            pen,
+            sx,
+            sy,
+            b.x2,
+            ym,
+            b.xmid,
+            b.y2,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="top-left",
+        )
 
 
 class LowercaseVHookGlyph(GreekLowercaseUpsilonGlyph):
@@ -390,5 +420,7 @@ class LowercaseVHookGlyph(GreekLowercaseUpsilonGlyph):
             ym,
             b.xmid,
             dc.x_height,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="top-left",
         )

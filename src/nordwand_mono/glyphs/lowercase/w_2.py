@@ -76,4 +76,15 @@ class LowercaseW2Glyph(Glyph):
             cut="top",
             taper=0.6,
         )
-        draw_square_corner(pen, sx, sy, b.x2, b.ymid, xt, b.y2, orientation="top-left")
+        draw_square_corner(
+            pen,
+            sx,
+            sy,
+            b.x2,
+            b.ymid,
+            xt,
+            b.y2,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="top-left",
+        )

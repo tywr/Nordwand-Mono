@@ -53,6 +53,10 @@ class FontConfig:
 
     taper: float = 0.35
 
+    # Handles of draw_square_corner, for every glyph that uses it
+    square_corner_gx: int = 100
+    square_corner_gy: int = 100
+
     default_stroke = 84
     stroke_x: int = 84
     stroke_y: int = 70
@@ -84,7 +88,17 @@ WEIGHT_NAMES = {
 }
 
 WEIGHT_KEYS = {
-    "name", "stroke_x", "stroke_y", "stroke_alt", "taper", "hx", "hy", "cap_hx", "cap_hy"
+    "name",
+    "stroke_x",
+    "stroke_y",
+    "stroke_alt",
+    "taper",
+    "hx",
+    "hy",
+    "cap_hx",
+    "cap_hy",
+    "square_corner_gx",
+    "square_corner_gy",
 }
 
 
@@ -110,6 +124,8 @@ class DrawConfig(FontConfig):
     hy: int = FontConfig.hy
     cap_hx: int = FontConfig.cap_hx
     cap_hy: int = FontConfig.cap_hy
+    square_corner_gx: int = FontConfig.square_corner_gx
+    square_corner_gy: int = FontConfig.square_corner_gy
     taper: int = FontConfig.taper
     stroke_x: int = FontConfig.stroke_x
     stroke_y: int = FontConfig.stroke_y
@@ -148,9 +164,12 @@ class DrawConfig(FontConfig):
         hx_ratio, hy_ratio = at(ratio_hx), at(ratio_hy)
         taper = at(tapers)
 
+        sx = int(cls.stroke_x * ratio_x)
+        sy = int(cls.stroke_y * ratio_y)
+
         return cls(
-            stroke_x=int(cls.stroke_x * ratio_x),
-            stroke_y=int(cls.stroke_y * ratio_y),
+            stroke_x=sx,
+            stroke_y=sy,
             stroke_alt=int(cls.stroke_alt * ratio_alt),
             x_height=cls.x_height,
             cap=cls.cap,
@@ -162,6 +181,8 @@ class DrawConfig(FontConfig):
             hy=hy_ratio * cls.hy,
             hx=hx_ratio * cls.hx,
             cap_hy=hy_ratio * cls.cap_hy,
+            square_corner_gx=cls.square_corner_gx,
+            square_corner_gy=cls.square_corner_gy,
         )
 
     @classmethod

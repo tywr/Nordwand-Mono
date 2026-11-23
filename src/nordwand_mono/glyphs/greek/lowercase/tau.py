@@ -25,5 +25,7 @@ class GreekLowercaseTauGlyph(Glyph):
             b.y2,
             xr,
             b.y1,
-            orientation="bottom-right"
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="bottom-right",
         )

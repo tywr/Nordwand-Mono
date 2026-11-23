@@ -45,6 +45,8 @@ class LowercaseTGlyph(Glyph):
             b.ymid,
             corner_end,
             0,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="bottom-right",
         )
         draw_rect(pen, corner_end, 0, xt, dc.stroke_y)

@@ -39,7 +39,16 @@ class PoundSignGlyph(Glyph):
             yb + sy,
         )
         draw_square_corner(
-            pen, sx, sy, xmid, b.ymid, b.x1, b.y1, orientation="bottom-left"
+            pen,
+            sx,
+            sy,
+            xmid,
+            b.ymid,
+            b.x1,
+            b.y1,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="bottom-left",
         )
         draw_rect(
             pen,

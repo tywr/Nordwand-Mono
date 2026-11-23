@@ -31,6 +31,8 @@ class GreekLowercaseIotaGlyph(LowercaseLGlyph):
             ym4,
             b.x2,
             b.y1,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="bottom-right",
         )
 

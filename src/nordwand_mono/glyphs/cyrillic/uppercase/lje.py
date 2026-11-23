@@ -70,4 +70,15 @@ class CyrillicUppercaseLjeGlyph(UppercaseGlyph):
 
         draw_rect(pen, xc, b.y2 - sy, lx1, b.y2)
 
-        draw_square_corner(pen, sx, sy, xc, b.y2, b.x1, b.y1, orientation="bottom-left")
+        draw_square_corner(
+            pen,
+            sx,
+            sy,
+            xc,
+            b.y2,
+            b.x1,
+            b.y1,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="bottom-left",
+        )

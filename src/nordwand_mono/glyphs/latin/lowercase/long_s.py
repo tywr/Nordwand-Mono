@@ -30,5 +30,7 @@ class LowercaseLongSGlyph(Glyph):
             dc.x_height,
             b.xmid + right_len + dc.stroke_x / 2,
             dc.ascent,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="top-right",
         )

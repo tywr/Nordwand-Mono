@@ -36,7 +36,9 @@ class CyrillicUppercaseElGlyph(CyrillicUppercaseGlyph):
             dc.cap,
             b.x1,
             0,
-            orientation="bottom-left"
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="bottom-left",
         )
         draw_rect(pen, upper_x2 - sx, 0, upper_x2, dc.cap)
 

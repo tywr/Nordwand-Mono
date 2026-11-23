@@ -12,8 +12,8 @@ def draw_square_corner(
     y1,
     x2,
     y2,
-    gx=150,
-    gy=150,
+    gx=160,
+    gy=160,
     orientation="bottom-right",
 ):
     """Draw a solid quarter-curve corner using superellipse handles.
@@ -36,13 +36,15 @@ def draw_square_corner(
     dx = 1 if orientation.endswith("right") else -1
     dy = 1 if orientation.startswith("bottom") else -1
 
-    # The outer curve keeps the tension of the regular weight. The inner radius
-    # absorbs the stroke change, so the corner stays as heavy as the stems:
-    # the diagonal is 0.81 * stroke at every weight.
+    # The outer curve keeps the tension of the regular weight: its handles
+    # scale with its size. The inner radius absorbs the stroke change, so the
+    # corner stays as heavy as the stems: the midpoints of the two curves stay
+    # the regular distance apart, relative to the stroke, along the diagonal.
     sx0, sy0 = FontConfig.stroke_x, FontConfig.stroke_y
-    hx, hy = sx0 / 2, sy0 / 2
-    ix = max(gx - 1.5 * (sx - sx0), 0)
-    iy = max(gy - 1.5 * (sy - sy0), 0)
+    hx = sx0 / 2 * gx / FontConfig.square_corner_gx
+    hy = sy0 / 2 * gy / FontConfig.square_corner_gy
+    ix = max(gx + 3 * hx - 1.5 * sx, 0)
+    iy = max(gy + 3 * hy - 1.5 * sy, 0)
 
     glyph = ufoLib2.objects.Glyph()
     cut_glyph = ufoLib2.objects.Glyph()

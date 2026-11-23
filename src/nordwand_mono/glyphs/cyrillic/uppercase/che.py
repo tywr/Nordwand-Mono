@@ -30,5 +30,7 @@ class CyrillicUppercaseCheGlyph(CyrillicUppercaseGlyph):
             b.y2,
             b.x2,
             ymid,
-            orientation="bottom-right"
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
+            orientation="bottom-right",
         )

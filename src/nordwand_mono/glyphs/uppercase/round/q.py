@@ -36,4 +36,6 @@ class UppercaseQGlyph(RoundUppercaseGlyph):
             b.y1 + sy / 2,
             xe,
             ye,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
         )

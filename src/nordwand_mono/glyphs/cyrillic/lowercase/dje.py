@@ -56,6 +56,8 @@ class CyrillicLowercaseDjeGlyph(Glyph):
             b.y1,
             xmid,
             dc.descent,
+            gx=dc.square_corner_gx,
+            gy=dc.square_corner_gy,
             orientation="bottom-left",
         )
         # Same bar as ħ
