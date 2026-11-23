@@ -12,7 +12,7 @@ class LowercaseSGlyph(Glyph):
     width_ratio = 0.95
     stroke_x_ratio = 1.01
     stroke_y_ratio = 1.00
-    hx_ratio = 1.1
+    hx_ratio = 1
     hy_ratio = 1
     mid_height = 0.508
     opening1 = 0.265
@@ -22,6 +22,8 @@ class LowercaseSGlyph(Glyph):
     right_offset = 0.03
     curve_thinning = 0.018
     curve_ratio = 2.2
+    stroke_x_dampening = 1
+    stroke_y_dampening = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -32,6 +34,12 @@ class LowercaseSGlyph(Glyph):
         )
         ec = self.extra_cut(dc)
         sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y * self.stroke_y_ratio
+        sy = max(0, self.stroke_y_dampening * (sy - dc.default_stroke)) + min(
+            dc.default_stroke, sy
+        )
+        sx = max(0, self.stroke_x_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         yc1 = b.y1 + b.height * self.opening1 + ec
         yc2 = b.y1 + b.height * self.opening2 - ec
