@@ -1,8 +1,6 @@
 import pathops
 from nordwand_mono.glyphs import Glyph
 from nordwand_mono.draw.arch import draw_arch
-from nordwand_mono.draw.asymetric_arch import draw_asymetric_arch
-from nordwand_mono.draw.loop import draw_loop
 from nordwand_mono.draw.rect import draw_rect
 
 
@@ -18,10 +16,10 @@ class LowercaseAGlyph(Glyph):
 
     top_loop_ratio = 0.75
     cap_height = 0.74
-    bottom_loop_xmid = 0.5
     cap_offset = 0.045
     cap_hx_ratio = 1.05
     cap_hy_ratio = 1
+    bowl_top_ratio = 1.1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -33,62 +31,73 @@ class LowercaseAGlyph(Glyph):
         )
         self.draw_a(pen, dc, b, dc.stroke_x, dc.stroke_y)
 
+    def draw_bowl(self, pen, dc, b, sx, sy, ymid, ytmid, taper):
+        sa = dc.stroke_alt
+        kx, ky = b.hx / (b.width / 2), b.hy / (b.height / 2)
+
+        def corner(x1, y1, x2, y2):
+            """Quarter from (x1, y1), its tangent vertical, to (x2, y2), its
+            tangent horizontal."""
+            pen.curveTo(
+                (x1, y1 + ky * (y2 - y1)), (x2 + kx * (x1 - x2), y2), (x2, y2)
+            )
+
+        def side(x1, y1, x2, y2):
+            """Quarter from (x1, y1), its tangent horizontal, to (x2, y2), its
+            tangent vertical."""
+            pen.curveTo(
+                (x1 + kx * (x2 - x1), y1), (x2, y2 + ky * (y1 - y2)), (x2, y2)
+            )
+
+        # Outside: the tapered end pulls the bottom point left by half its
+        # taper, so both bottom quarters keep the same handles there
+        y_top = ymid + sa / 2
+        y_ol = (b.y1 + y_top) / 2
+        xo2 = b.x2 - sx + taper * sx
+        x_om = b.xmid - (b.x2 - xo2) / 2
+        pen.moveTo((b.x1, y_ol))
+        corner(b.x1, y_ol, x_om, b.y1)
+        side(x_om, b.y1, xo2, ytmid)
+        pen.lineTo((xo2, y_top))
+        x_ot = b.x1 + self.bowl_top_ratio * (x_om - b.x1)
+        pen.lineTo((x_ot, y_top))
+        side(x_ot, y_top, b.x1, y_ol)
+        pen.closePath()
+
+        # Inside
+        x_im, y_im = b.xmid, b.y1 + sy
+        xi1, xi2 = b.x1 + sx, b.x2 - sx
+        y_it = ymid - sa / 2
+        y_il = (y_im + y_it) / 2
+        pen.moveTo((xi1, y_il))
+        corner(xi1, y_il, x_im, y_it)
+        pen.lineTo((xi2, y_it))
+        pen.lineTo((xi2, ytmid))
+        corner(xi2, ytmid, x_im, y_im)
+        side(x_im, y_im, xi1, y_il)
+        pen.closePath()
+
     def draw_a(self, pen, dc, b, sx, sy, stem=True, right_taper=None):
         """Bottom and top loops within `b`, without the stem; returns the
         bottom of the top loop."""
         ec = self.extra_cut(dc)
         ymid = b.y1 + self.mid_height * b.height
-        yl = ymid + dc.stroke_alt / 2
         ycut = b.y1 + self.cap_height * b.height - ec
         chx = self.cap_hx_ratio * b.hx
         chy = self.cap_hy_ratio * b.hy
 
-        # Bottom loop variables
-        xbmid = b.x1 + self.bottom_loop_xmid * b.width
-        xb2 = 2 * xbmid - b.x1
-        ybmid = ymid + dc.stroke_alt / 2
-
         # Top loop variables
         yt1 = b.y2 - self.top_loop_ratio * b.height
 
-        # Lower half of the bottom loop: from the left side, where the upper
-        # half starts, down to the bottom and up to the stem, joined higher
-        ybl = (b.y1 + ybmid) / 2
-        ytmid = b.y1 + self.top_loop_ratio * b.height / 2
-        draw_asymetric_arch(
+        self.draw_bowl(
             pen,
+            dc,
+            b,
             sx,
             sy,
-            b.x1,
-            b.y1,
-            b.x2,
-            ytmid,
-            b.xmid,
-            ybl,
-            b.hx,
-            b.hy * (ytmid - b.y1) / (b.height / 2),
-            taper=right_taper if right_taper else self.taper * dc.taper,
-        )
-
-        # Upper half of the bottom loop
-        draw_loop(
-            pen,
-            sx,
-            dc.stroke_alt,
-            b.x1,
-            b.y1,
-            xb2,
-            ybmid,
-            b.hx * (xb2 - b.x1) / b.width,
-            b.hy * (ybmid - b.y1) / b.height,
-            quarter="top-left",
-        )
-        draw_rect(
-            pen,
-            xbmid,
-            yl - dc.stroke_alt,
-            b.x2 - sx,
-            yl,
+            ymid,
+            b.y1 + self.top_loop_ratio * b.height / 2,
+            right_taper if right_taper else self.taper * dc.taper,
         )
 
         xc1 = b.x1 + self.cap_offset * b.width
@@ -126,7 +135,7 @@ class LowercaseAGlyph(Glyph):
             draw_rect(
                 pen,
                 b.x2 - sx,
-                (b.y1 + ybmid) / 2,
+                (b.y1 + ymid + dc.stroke_alt / 2) / 2,
                 b.x2 + sx * (right_taper - 1),
                 (yt1 + b.y2) / 2,
             )
