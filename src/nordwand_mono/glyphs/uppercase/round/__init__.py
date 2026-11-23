@@ -8,7 +8,7 @@ class RoundUppercaseGlyph(UppercaseGlyph, ABC):
     width_ratio = 1.02
     height = "cap"
     opening2 = 0.69
-    right_hx_ratio = 1.2
+    right_hx_ratio = 1.1
 
     def body(self, dc):
         return dc.body_bounds(

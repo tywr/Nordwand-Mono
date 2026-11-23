@@ -12,7 +12,7 @@ class LowercaseCGlyph(RoundLowercaseGlyph):
     opening1 = 0.31
     opening2 = 0.685
     width_ratio = 0.99
-    right_hx_ratio = 1.2
+    right_hx_ratio = 1.1
 
     def draw(self, pen, dc):
 
