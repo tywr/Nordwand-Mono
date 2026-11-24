@@ -1,3 +1,5 @@
+from math import sqrt
+
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 from nordwand_mono.glyphs import Glyph
@@ -11,25 +13,47 @@ class LowercaseYGlyph(Glyph):
     offset = 0
     width_ratio = 1.15
     stroke_ratio = 1.0
-    overlap = 0.536
     lower_section_height = 1.2
 
     def tail_end(self, dc):
         """Height the tail runs down to"""
         return dc.descent
 
+    def section(self, s, b):
+        """Horizontal width d of both branches' ends, so their bottoms are
+        the same [xmid - d/2, xmid + d/2]: a branch of stroke `s` from there
+        up to its top corner spans w = (width + d) / 2 and has, as in
+        parallelogramm_delta, s^2 (h^2 + (w - d)^2) = d^2 h^2, a quadratic
+        in d whatever the body's width and height."""
+        w, h = b.width, b.y2 - b.y1
+        qa = h**2 - s**2 / 4
+        qb = s**2 * w / 2
+        qc = -(s**2) * (w**2 / 4 + h**2)
+        return (-qb + sqrt(qb**2 - 4 * qa * qc)) / (2 * qa)
+
     def draw(self, pen, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
         s = self.stroke_ratio * dc.stroke_x
-        ov = self.overlap * s
+        delta = self.section(s, b)
+        ov = delta / 2
         lsh = self.lower_section_height * dc.stroke_y
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()
+        # Both branches stand on the same bottom, one `delta` wide
         draw_parallelogramm(
-            gpen, s, b.xmid + ov, b.y1, b.x1, b.y2, direction="top-left"
+            gpen,
+            s,
+            b.xmid + ov,
+            b.y1,
+            b.x1,
+            b.y2,
+            direction="top-left",
+            overwrite_section=delta,
         )
-        _, delta = draw_parallelogramm(gpen, s, b.xmid - ov, b.y1, b.x2, b.y2)
+        draw_parallelogramm(
+            gpen, s, b.xmid - ov, b.y1, b.x2, b.y2, overwrite_section=delta
+        )
         # As in the v, the branches meet lsh above the baseline
         cut_glyph = ufoLib2.objects.Glyph()
         draw_polygon(
@@ -53,4 +77,5 @@ class LowercaseYGlyph(Glyph):
             b.xmid - ov + dx_tail,
             yt,
             direction="bottom-left",
+            overwrite_section=delta,
         )
