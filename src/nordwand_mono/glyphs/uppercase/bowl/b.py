@@ -8,10 +8,11 @@ class UppercaseBGlyph(BowlUppercaseGlyph):
     unicode = "0x42"
     upper_ratio = 0.88  # Upper loop width as a fraction of the lower loop width
     mid_ratio = 0.515
+    stroke_y_dampening = 0.9
 
     def draw(self, pen, dc):
         b = self.body(dc)
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + self.mid_ratio * b.height
 
