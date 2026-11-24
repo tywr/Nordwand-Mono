@@ -11,7 +11,7 @@ class LowercaseKGlyph(Glyph):
     branch_ratio = 0.75
     mid_ratio = 0.57
     upper_branch_offset = 0.055
-    lower_stroke_ratio = 1.0
+    stroke_ratio = 1.0
     branch_overlap = 0.8
 
     def draw(self, pen, dc, draw_stem=True):
@@ -32,7 +32,7 @@ class LowercaseKGlyph(Glyph):
         # Lower branch
         _, d = draw_parallelogramm(
             pen,
-            self.lower_stroke_ratio * dc.stroke_x,
+            self.stroke_ratio * dc.stroke_x,
             xb,
             ymid,
             b.x2,
