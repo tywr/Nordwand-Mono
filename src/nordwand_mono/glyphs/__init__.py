@@ -27,9 +27,32 @@ class Glyph(ABC):
     # of the default glyph: it then applies on top of that alternate's feature
     alternate_of: str = None
     italic_skew: bool = True
+    # Strokes of the glyph relative to the weight's, see `get_strokes`
+    stroke_x_ratio: float = 1
+    stroke_y_ratio: float = 1
+    # Share of the stroke growth past the regular weight that is kept
+    stroke_x_dampening: float = 1
+    stroke_y_dampening: float = 1
 
     @abstractmethod
     def draw(self, pen, dc) -> None: ...
+
+    def get_strokes(self, dc):
+        """Strokes (sx, sy) of the glyph: the weight's, keeping only
+        `dampening` of their growth past the regular weight, scaled by the
+        ratios."""
+        from nordwand_mono.config import FontConfig
+
+        def damp(stroke, default, dampening):
+            return max(0, dampening * (stroke - default)) + min(default, stroke)
+
+        sx = self.stroke_x_ratio * damp(
+            dc.stroke_x, dc.default_stroke, self.stroke_x_dampening
+        )
+        sy = self.stroke_y_ratio * damp(
+            dc.stroke_y, FontConfig.stroke_y, self.stroke_y_dampening
+        )
+        return sx, sy
 
     def extra_cut(self, dc) -> int:
         return min(0.66 * max(0, dc.stroke_x - dc.default_stroke), dc.stroke_x / 4)
