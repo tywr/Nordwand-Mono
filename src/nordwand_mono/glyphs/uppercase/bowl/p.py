@@ -8,12 +8,13 @@ class UppercasePGlyph(BowlUppercaseGlyph):
     unicode = "0x50"
     offset = 17
     loop_ratio = 0.645
+    hy_ratio = 1
 
     def draw(self, pen, dc):
         b = self.body(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        hx, hy = b.hx, b.hy * self.loop_ratio
-        ymid = b.y1 + (1 - self.loop_ratio) * b.height
+        yo = 0.5 * (dc.stroke_x - dc.default_stroke)
+        ymid = b.y1 + (1 - self.loop_ratio) * b.height - yo
 
         # Left stem
         draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
@@ -27,8 +28,8 @@ class UppercasePGlyph(BowlUppercaseGlyph):
             ymid,
             b.x2,
             b.y2,
-            hx,
-            hy,
+            b.hx,
+            b.hy * (b.y2 - ymid) / b.height * self.hy_ratio,
             cut="left",
         )
 
