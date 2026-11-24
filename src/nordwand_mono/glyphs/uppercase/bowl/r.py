@@ -11,13 +11,14 @@ class UppercaseRGlyph(BowlUppercaseGlyph):
     loop_width = 0.96
     branch_start = 0.45
     leg_stroke_ratio = 1.0
+    hy_ratio = 1
 
     def draw(self, pen, dc):
         b = self.body(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        hx, hy = b.hx * self.loop_width, b.hy * self.loop_ratio
-        xo = -0.8 * (sx - dc.default_stroke)
-        ymid = b.y1 + (1 - self.loop_ratio) * b.height
+        xo = -0.5 * (sx - dc.default_stroke)
+        yo = 0.5 * (dc.stroke_x - dc.default_stroke)
+        ymid = b.y1 + (1 - self.loop_ratio) * b.height - yo
         xb = b.x1 + self.branch_start * b.width + xo
         w = self.loop_width * b.width
 
@@ -33,8 +34,8 @@ class UppercaseRGlyph(BowlUppercaseGlyph):
             ymid,
             b.x1 + w,
             b.y2,
-            hx,
-            hy,
+            b.hx,
+            b.hy * self.hy_ratio * (b.y2 - ymid) / b.height,
             cut="left",
         )
 
