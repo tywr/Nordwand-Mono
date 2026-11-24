@@ -9,6 +9,7 @@ class LowercaseY2Glyph(TailedLowercaseGlyph, SquareLowercaseGlyph):
     unicode = "0x79"
     default_italic = True
     offset = 0
+    stroke_y_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -23,7 +24,7 @@ class LowercaseY2Glyph(TailedLowercaseGlyph, SquareLowercaseGlyph):
         draw_arch(
             pen,
             dc.stroke_x,
-            dc.stroke_y,
+            self.stroke_y_ratio * dc.stroke_y,
             b.x1,
             y1,
             b.x2,

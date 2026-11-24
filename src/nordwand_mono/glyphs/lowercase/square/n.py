@@ -7,6 +7,7 @@ class LowercaseNGlyph(SquareLowercaseGlyph):
     name = "lowercase_n"
     unicode = "0x6E"
     offset = 0
+    stroke_y_ratio = 1
 
     def body(self, dc):
         return dc.body_bounds(
@@ -23,7 +24,7 @@ class LowercaseNGlyph(SquareLowercaseGlyph):
         draw_arch(
             pen,
             dc.stroke_x,
-            dc.stroke_y,
+            self.stroke_y_ratio * dc.stroke_y,
             b.x1,
             yl,
             b.x2,

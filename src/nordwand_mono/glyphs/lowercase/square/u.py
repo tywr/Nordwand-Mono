@@ -7,6 +7,7 @@ class LowercaseUGlyph(SquareLowercaseGlyph):
     name = "lowercase_u"
     unicode = "0x75"
     offset = 0
+    stroke_y_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -20,7 +21,7 @@ class LowercaseUGlyph(SquareLowercaseGlyph):
         draw_arch(
             pen,
             dc.stroke_x,
-            dc.stroke_y,
+            self.stroke_y_ratio * dc.stroke_y,
             b.x1,
             b.y1,
             b.x2,

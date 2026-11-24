@@ -8,6 +8,7 @@ class LowercaseHGlyph(SquareLowercaseGlyph):
     name = "lowercase_h"
     unicode = "0x68"
     offset = 0
+    stroke_y_ratio = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -21,7 +22,7 @@ class LowercaseHGlyph(SquareLowercaseGlyph):
         draw_arch(
             pen,
             dc.stroke_x,
-            dc.stroke_y,
+            self.stroke_y_ratio * dc.stroke_y,
             b.x1,
             yl,
             b.x2,
