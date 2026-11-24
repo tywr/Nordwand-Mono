@@ -10,7 +10,6 @@ class UppercaseAGlyph(DiagonalUppercaseGlyph):
     unicode = "0x41"
     offset = 0
     bar_height = 0.38
-    stroke_x_ratio = 1.02
 
     def draw_branches(self, pen, dc, b):
         """Both branches meeting at the apex, with the crotch cut below it.

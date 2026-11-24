@@ -54,8 +54,8 @@ class FontConfig:
     taper: float = 0.35
 
     # Handles of draw_square_corner, for every glyph that uses it
-    square_corner_gx: int = 100
-    square_corner_gy: int = 100
+    square_corner_gx: int = 150
+    square_corner_gy: int = 150
 
     default_stroke = 84
     stroke_x: int = 84
@@ -86,21 +86,6 @@ WEIGHT_NAMES = {
     800: "ExtraBold",
     900: "Black",
 }
-
-WEIGHT_KEYS = {
-    "name",
-    "stroke_x",
-    "stroke_y",
-    "stroke_alt",
-    "taper",
-    "hx",
-    "hy",
-    "cap_hx",
-    "cap_hy",
-    "square_corner_gx",
-    "square_corner_gy",
-}
-
 
 def weight_name(w):
     """Style name of weight `w`: its config `name`, else the standard one."""
@@ -311,11 +296,13 @@ def parse_weights(value):
         if not isinstance(w, int) or not 1 <= w <= 1000:
             raise ValueError(f"Weight {w!r} must be an integer from 1 to 1000")
         settings = settings or {}
-        unknown = set(settings) - WEIGHT_KEYS
+        # Any config value, besides the style name
+        valid = (config_keys() - {"weights"}) | {"name"}
+        unknown = set(settings) - valid
         if unknown:
             raise ValueError(
                 f"Unknown keys for weight {w}: {sorted(unknown)}. "
-                f"Valid keys: {sorted(WEIGHT_KEYS)}"
+                f"Valid keys: {sorted(valid)}"
             )
         if "name" not in settings and w not in WEIGHT_NAMES:
             raise ValueError(f"Weight {w} needs a `name` in the config")
