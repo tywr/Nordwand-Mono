@@ -9,7 +9,7 @@ class UppercaseAGlyph(DiagonalUppercaseGlyph):
     name = "uppercase_a"
     unicode = "0x41"
     offset = 0
-    bar_height = 0.38
+    bar_height = 0.39
 
     def draw_branches(self, pen, dc, b):
         """Both branches meeting at the apex, with the crotch cut below it.
@@ -41,7 +41,8 @@ class UppercaseAGlyph(DiagonalUppercaseGlyph):
     def draw(self, pen, dc):
         b = self.body(dc)
         sy = dc.stroke_y * self.stroke_y_ratio
-        hb = self.bar_height * b.height - self.extra_cut(dc)
+        yo = 0.2 * (dc.stroke_x - dc.default_stroke)
+        hb = self.bar_height * b.height + yo
         ov, delta = self.draw_branches(pen, dc, b)
 
         # Crossbar: ends follow the branch centerlines, so it always

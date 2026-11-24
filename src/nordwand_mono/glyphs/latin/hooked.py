@@ -363,8 +363,7 @@ class LowercaseYHookGlyph(FlagHookedGlyph, LowercaseYGlyph):
     def branch_top(self, dc):
         b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
         s = self.stroke_ratio * dc.stroke_x
-        d = parallelogramm_delta(s, b.xmid - self.overlap * s, b.y1, b.x2, b.y2)
-        return b.x2, d, b.y2, b.width
+        return b.x2, self.section(s, b), b.y2, b.width
 
 
 class UppercaseVHookGlyph(UppercaseUGlyph):
