@@ -49,11 +49,13 @@ class TwoGlyph(NumberGlyph):
         s = dc.stroke_x * self.diag_stroke_ratio
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         xc = b.x1 + self.diag_x_ratio * b.width
-        yc_offset = 0.25 * (dc.stroke_x - dc.default_stroke)
+        yc_offset = 0.3 * (dc.stroke_x - dc.default_stroke)
         yc = b.y1 + self.diag_y_ratio * b.height + yc_offset
         xt2 = b.x2 - b.width * self.top_right_offset
         xb1 = b.x1 + b.width * self.bottom_left_offset
         yl1 = b.y2 - self.loop_y_left_ratio * b.height - ec
+        yl2_offset = -0.4 * (dc.stroke_x - dc.default_stroke)
+        yl2 = b.y2 - self.loop_y_right_ratio * b.height + yl2_offset
 
         # Upper loop, cut at the opening as in the 3
         loop_glyph = ufoLib2.objects.Glyph()
@@ -85,11 +87,11 @@ class TwoGlyph(NumberGlyph):
             sx,
             sy,
             b.x1,
-            b.y2 - self.loop_y_right_ratio * b.height,
+            yl2,
             xt2,
             b.y2,
             hx,
-            hy * self.loop_y_right_ratio,
+            hy * (b.y2 - yl2) / b.height,
             quarter="top-right",
         )
 
