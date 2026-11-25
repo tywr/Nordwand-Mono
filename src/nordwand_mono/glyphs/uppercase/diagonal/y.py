@@ -18,7 +18,7 @@ class UppercaseYGlyph(DiagonalUppercaseGlyph):
         b = self.body(dc)
         sx = dc.stroke_x * self.stroke_x_ratio
 
-        yo = 0.5 * (dc.stroke_x - dc.default_stroke)
+        yo = 0.55 * (dc.stroke_x - dc.default_stroke)
         yj = b.y1 + self.junction_ratio * b.height - yo
 
         # Both feet centered on the stem, which they cover within a unit
