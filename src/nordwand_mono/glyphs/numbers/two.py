@@ -28,6 +28,8 @@ class TwoGlyph(NumberGlyph):
     width_ratio = 1.02
     loop_y_left_ratio = 0.7
     loop_y_right_ratio = 0.53
+    top_right_offset = 0.0
+    bottom_left_offset = 0.0
     diag_x_ratio = 0.55
     diag_y_ratio = 0.36
     hy_curve_ratio = 0.85
@@ -42,12 +44,16 @@ class TwoGlyph(NumberGlyph):
             width_ratio=self.width_ratio,
             number=True,
         )
+        ec = self.extra_cut(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         s = dc.stroke_x * self.diag_stroke_ratio
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         xc = b.x1 + self.diag_x_ratio * b.width
         yc_offset = 0.25 * (dc.stroke_x - dc.default_stroke)
         yc = b.y1 + self.diag_y_ratio * b.height + yc_offset
+        xt2 = b.x2 - b.width * self.top_right_offset
+        xb1 = b.x1 + b.width * self.bottom_left_offset
+        yl1 = b.y2 - self.loop_y_left_ratio * b.height - ec
 
         # Upper loop, cut at the opening as in the 3
         loop_glyph = ufoLib2.objects.Glyph()
@@ -56,11 +62,11 @@ class TwoGlyph(NumberGlyph):
             sx,
             sy,
             b.x1,
-            b.y2 - self.loop_y_left_ratio * b.height,
+            yl1,
             b.x2,
             b.y2,
             hx,
-            hy * self.loop_y_left_ratio,
+            hy * (b.y2 - yl1) / b.height,
             quarter="top-left",
         )
         cut_glyph = ufoLib2.objects.Glyph()
@@ -80,7 +86,7 @@ class TwoGlyph(NumberGlyph):
             sy,
             b.x1,
             b.y2 - self.loop_y_right_ratio * b.height,
-            b.x2,
+            xt2,
             b.y2,
             hx,
             hy * self.loop_y_right_ratio,
@@ -88,15 +94,15 @@ class TwoGlyph(NumberGlyph):
         )
 
         # Bottom bar
-        draw_rect(pen, b.x1, 0, b.x2, sy)
+        draw_rect(pen, xb1, 0, b.x2, sy)
 
         xd, yd = xc, yc
         for _ in range(10):
             theta, _ = draw_parallelogramm(
-                pen, s, b.x1, b.y1 + sy, xd, yd, no_draw=True
+                pen, s, xb1, b.y1 + sy, xd, yd, no_draw=True
             )
             xd, yd = xc + s / 2 * cos(theta), yc - s / 2 * sin(theta)
-        theta, delta = draw_parallelogramm(pen, s, b.x1, b.y1 + sy, xd, yd)
+        theta, delta = draw_parallelogramm(pen, s, xb1, b.y1 + sy, xd, yd)
 
         inner, outer = params["inner"], params["outer"]
         xd2, yd2 = xd - delta * cos(theta) ** 2, yd + delta * cos(theta) * sin(theta)
@@ -114,7 +120,7 @@ class TwoGlyph(NumberGlyph):
         yhi = inner.ymid - inner.hy * self.hy_curve_ratio
         yho = outer.ymid - outer.hy * self.hy_curve_ratio
         xci, yci = handle_on_line(xd2, yd2, sin(theta), cos(theta), inner.x2, yhi, hdi)
-        xco, yco = handle_on_line(xd, yd, sin(theta), cos(theta), b.x2, yho, hd)
+        xco, yco = handle_on_line(xd, yd, sin(theta), cos(theta), xt2, yho, hd)
 
         pen.moveTo((inner.x2, inner.ymid))
         pen.curveTo(
@@ -128,7 +134,7 @@ class TwoGlyph(NumberGlyph):
         pen.lineTo((xd, yd))
         pen.curveTo(
             (xco, yco),
-            (b.x2, yho),
+            (xt2, yho),
             (outer.x2, outer.ymid),
         )
         pen.closePath()
