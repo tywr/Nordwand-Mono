@@ -37,7 +37,7 @@ class FiveGlyph(NumberGlyph):
             number=True,
         )
         sx, sy = self.get_strokes(dc)
-        ec = self.extra_cut(dc)
+        ec = 0.5 * self.extra_cut(dc)
         sd = self.stroke_ratio * dc.stroke_x
         yc = b.y1 + self.opening * b.height + ec
         yj = b.y1 + b.height * self.junction_ratio

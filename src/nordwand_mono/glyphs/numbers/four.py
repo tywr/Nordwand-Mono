@@ -20,11 +20,14 @@ class FourGlyph(NumberGlyph):
         )
         sx, sy = self.get_strokes(dc)
 
-        xmid = b.x1 + self.horizontal_ratio * b.width
-        xtop = b.x1 + self.slant_ratio * b.width
-        ymid = b.y1 + self.vertical_ratio * b.height
-        ybar = b.y1 + self.mid_bar_ratio * b.height
         xo = 0.75 * (sx - dc.default_stroke)
+        xvo = 0.45 * (sx - dc.default_stroke)
+        xho = -0.25 * (sx - dc.default_stroke)
+
+        xmid = b.x1 + self.horizontal_ratio * b.width + xho
+        xtop = b.x1 + self.slant_ratio * b.width
+        ymid = b.y1 + self.vertical_ratio * b.height + xvo
+        ybar = b.y1 + self.mid_bar_ratio * b.height
 
         s = self.stroke_ratio * dc.stroke_x
 
