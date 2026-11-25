@@ -15,7 +15,7 @@ class SevenGlyph(NumberGlyph):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio, number=True
         )
-        sy = dc.stroke_y * self.stroke_y_ratio
+        _, sy = self.get_strokes(dc)
         ox = self.offset_foot * b.width
         s = self.stroke_ratio * dc.stroke_x
 

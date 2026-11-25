@@ -45,7 +45,7 @@ class TwoGlyph(NumberGlyph):
             number=True,
         )
         ec = self.extra_cut(dc)
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         s = dc.stroke_x * self.diag_stroke_ratio
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         xc = b.x1 + self.diag_x_ratio * b.width

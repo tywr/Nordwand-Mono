@@ -18,7 +18,7 @@ class OneGlyph(NumberGlyph):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio, number=True
         )
-        sx = dc.stroke_x * self.stroke_x_ratio
+        sx, sy = self.get_strokes(dc)
         xb = b.x1 + self.branch_offset * b.width
         xmid = b.x1 + self.rl_ratio * b.width
         yo = -0.75 * (sx - dc.default_stroke)
@@ -28,7 +28,7 @@ class OneGlyph(NumberGlyph):
 
         # Horizontal stem
         if self.serif:
-            draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + dc.stroke_y)
+            draw_rect(pen, b.x1, b.y1, b.x2, b.y1 + sy)
 
         draw_parallelogramm_vertical(
             pen,

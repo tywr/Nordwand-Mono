@@ -86,8 +86,7 @@ class ZeroHexagonGlyph(ZeroGlyph):
             overshoot_right=True,
             number=True,
         )
-        sx = dc.stroke_x * self.stroke_x_ratio
-        sy = dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         bulge = self.bulge_ratio * b.width / 2
         x1, x2 = b.x1 + bulge, b.x2 - bulge
         hx = self.hx_ratio * b.hx * (x2 - x1) / b.width

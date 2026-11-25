@@ -31,7 +31,7 @@ class ThreeGlyph(NumberGlyph):
             number=True,
         )
         ec = self.extra_cut(dc)
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
 
         ymid = b.y1 + self.mid_ratio * b.height
@@ -40,14 +40,14 @@ class ThreeGlyph(NumberGlyph):
         base_glyph = ufoLib2.objects.Glyph()
         ry = (b.y2 - b.ymid + sy / 2) / b.height
 
-        draw_rect(pen, xl, b.y2 - dc.stroke_y, xr, b.y2)
+        draw_rect(pen, xl, b.y2 - sy, xr, b.y2)
         _, delta = draw_parallelogramm(
             pen,
             self.diag_stroke_ratio * dc.stroke_x,
             b.xmid - sx,
             ymid + sy * self.taper - sy / 2,
             xr,
-            b.y2 - dc.stroke_y,
+            b.y2 - sy,
             direction="top-right",
         )
 

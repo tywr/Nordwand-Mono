@@ -33,11 +33,12 @@ class ZeroGlyph(NumberGlyph):
         )
         hx = self.hx_ratio * b.hx
         hy = self.hy_ratio * b.hy
+        sx, sy = self.get_strokes(dc)
 
         draw_loop(
             pen,
-            dc.stroke_x * self.stroke_x_ratio,
-            dc.stroke_y * self.stroke_y_ratio,
+            sx,
+            sy,
             b.x1,
             b.y1,
             b.x2,

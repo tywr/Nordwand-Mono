@@ -21,11 +21,10 @@ class FiveGlyph(NumberGlyph):
     cap_offset = 0.07
     tilt = 0.22
     taper = 0.8
-    ending_offset = 0.00
-    thinning = 0.9
     hx_ratio = 0.9
     hy_ratio = 0.9
     opening = 0.27
+    top_loop_offset = 0
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -37,14 +36,16 @@ class FiveGlyph(NumberGlyph):
             overshoot_right=True,
             number=True,
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         ec = self.extra_cut(dc)
         sd = self.stroke_ratio * dc.stroke_x
         yc = b.y1 + self.opening * b.height + ec
         yj = b.y1 + b.height * self.junction_ratio
-        xo = 0.75 * (sx - dc.default_stroke)
+        xo = 0.6 * (sx - dc.default_stroke)
+        xlo = -0.4 * (sx - dc.default_stroke)
         oj = self.tilt * b.width + xo
         xc = b.x2 - self.cap_offset * b.width
+        xt1 = b.x1 + self.top_loop_offset * b.width + xlo
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         taper = min(1, self.taper * dc.taper)
 
@@ -79,7 +80,7 @@ class FiveGlyph(NumberGlyph):
             base_glyph.getPen(),
             sx,
             sy,
-            b.x1,
+            xt1,
             b.y1,
             b.x2,
             b.y1 + b.height * self.loop_ratio,
@@ -97,7 +98,7 @@ class FiveGlyph(NumberGlyph):
         cut_glyph = ufoLib2.objects.Glyph()
         draw_rect(
             cut_glyph.getPen(),
-            b.x1 - 10,
+            xt1 - 100,
             yc,
             b.xmid,
             yj,

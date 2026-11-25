@@ -14,7 +14,7 @@ class SevenBarredGlyph(SevenGlyph):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio, number=True
         )
-        sy = dc.stroke_y * self.stroke_y_ratio
+        _, sy = self.get_strokes(dc)
         x1 = b.x1 + (1 - self.bar_length) * b.width
         y = b.y1 + self.bar_height * b.height
 

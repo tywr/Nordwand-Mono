@@ -18,7 +18,7 @@ class FourGlyph(NumberGlyph):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
 
         xmid = b.x1 + self.horizontal_ratio * b.width
         xtop = b.x1 + self.slant_ratio * b.width

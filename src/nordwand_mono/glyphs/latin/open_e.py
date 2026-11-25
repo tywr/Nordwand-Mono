@@ -52,7 +52,7 @@ class OpenEGlyph(Glyph, ABC):
 
     def mid_stroke(self, dc):
         return (
-            dc.stroke_alt if self.mid_stroke_alt else dc.stroke_y * self.stroke_y_ratio
+            dc.stroke_alt if self.mid_stroke_alt else self.get_strokes(dc)[1]
         )
 
     def draw(self, pen, dc):
@@ -65,7 +65,7 @@ class OpenEGlyph(Glyph, ABC):
     def draw_open_e(self, pen, dc):
         b = self.body(dc)
         ec = 0.66 * self.extra_cut(dc)
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
 
         xt1 = b.x1 + self.top_left_offset * b.width

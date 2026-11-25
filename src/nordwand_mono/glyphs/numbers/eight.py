@@ -25,7 +25,7 @@ class EightGlyph(NumberGlyph):
             width_ratio=self.width_ratio,
             number=True,
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         ymid = b.y1 + b.height * self.height_ratio
         wtop = self.loop_width_ratio * b.width

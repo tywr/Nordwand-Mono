@@ -29,7 +29,7 @@ class SixGlyph(NumberGlyph):
             width_ratio=self.width_ratio,
             number=True,
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         xo = 0.45 * (sx - dc.default_stroke)
 
