@@ -8,6 +8,7 @@ from nordwand_mono.draw.loop import draw_loop
 from nordwand_mono.draw.arch import draw_arch
 from nordwand_mono.draw.rect import draw_rect
 from nordwand_mono.draw.parallelogramm import draw_parallelogramm
+from nordwand_mono.shapes.superellipse import Superellipse
 from nordwand_mono.glyphs.numbers.two import handle_on_line
 
 
@@ -30,6 +31,23 @@ class AmpersandGlyph(Glyph):
     hy_curve_ratio = 0.85
     hd_curve_ratio = 1.0
 
+    def top_loop(self, dc) -> Superellipse:
+        """Superellipse of the former top loop of the 3, for its handles."""
+        three = ThreeGlyph()
+        b = three.body(dc)
+        sy = dc.stroke_y * three.stroke_y_ratio
+        ymid = b.y1 + three.mid_ratio * b.height
+        ry = (b.y2 - b.ymid + sy / 2) / b.height
+        return Superellipse(
+            x1=b.x1 + (1 - three.loop_width_ratio) * b.width / 2,
+            # The bottom of the loop sits on the top of the middle bar
+            y1=ymid + three.mid_stroke(dc) / 2 - sy,
+            x2=b.x2 - (1 - three.loop_width_ratio) * b.width / 2,
+            y2=b.y2,
+            hx=b.hx * three.hx_ratio,
+            hy=b.hy * three.hy_ratio * ry * 2 * (1 - three.mid_ratio),
+        )
+
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
@@ -49,7 +67,7 @@ class AmpersandGlyph(Glyph):
 
         # Same handles as the top loop of the 3, the loop being drawn lower for
         # bolder weights while the junction stays where it was
-        loop = ThreeGlyph().top_loop(dc).resize(xu1, yu1, xu2, yu2)
+        loop = self.top_loop(dc).resize(xu1, yu1, xu2, yu2)
         xj = xu1 + self.hook_ratio * w
         (_, y1), (_, y2) = loop.intersection_x(x=xj)
         yj = min(y1, y2)
