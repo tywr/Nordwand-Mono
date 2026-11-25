@@ -29,7 +29,8 @@ class LowercaseAGlyph(Glyph):
             overshoot_bottom=True,
             overshoot_top=True,
         )
-        self.draw_a(pen, dc, b, dc.stroke_x, dc.stroke_y)
+        sx, sy = self.get_strokes(dc)
+        self.draw_a(pen, dc, b, sx, sy)
 
     def draw_bowl(self, pen, dc, b, sx, sy, ymid, ytmid, taper):
         sa = dc.stroke_alt
@@ -38,16 +39,12 @@ class LowercaseAGlyph(Glyph):
         def corner(x1, y1, x2, y2):
             """Quarter from (x1, y1), its tangent vertical, to (x2, y2), its
             tangent horizontal."""
-            pen.curveTo(
-                (x1, y1 + ky * (y2 - y1)), (x2 + kx * (x1 - x2), y2), (x2, y2)
-            )
+            pen.curveTo((x1, y1 + ky * (y2 - y1)), (x2 + kx * (x1 - x2), y2), (x2, y2))
 
         def side(x1, y1, x2, y2):
             """Quarter from (x1, y1), its tangent horizontal, to (x2, y2), its
             tangent vertical."""
-            pen.curveTo(
-                (x1 + kx * (x2 - x1), y1), (x2, y2 + ky * (y1 - y2)), (x2, y2)
-            )
+            pen.curveTo((x1 + kx * (x2 - x1), y1), (x2, y2 + ky * (y1 - y2)), (x2, y2))
 
         # Outside: the tapered end pulls the bottom point left by half its
         # taper, so both bottom quarters keep the same handles there

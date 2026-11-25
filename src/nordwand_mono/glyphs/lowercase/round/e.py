@@ -24,7 +24,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             overshoot_bottom=True,
             width_ratio=self.width_ratio,
         )
-        sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
+        sx, sy = self.get_strokes(dc)
         self.draw_e(pen, dc, b, sx, sy)
 
     def draw_e(self, pen, dc, b, sx, sy, left_taper=None):
