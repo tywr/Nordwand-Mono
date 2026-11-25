@@ -6,8 +6,8 @@ from fontTools.pens.reverseContourPen import ReverseContourPen
 from fontTools.pens.transformPen import TransformPen
 
 from nordwand_mono.glyphs import Glyph
-from nordwand_mono.shapes.superellipse import Superellipse
 from nordwand_mono.draw.arch import draw_arch
+from nordwand_mono.draw.loop import draw_loop
 from nordwand_mono.draw.rect import draw_rect
 
 
@@ -20,15 +20,17 @@ class OpenEGlyph(Glyph, ABC):
     `number` with those of the numbers."""
 
     offset = 0
-    loop_width_ratio = 0.92
     mid_ratio = 0.515
     taper = 1
     hx_ratio = 1
     hy_ratio = 1
+    left_hx_ratio = 1.0
     width_ratio = 0.99
     mid_length = 0.7  # Length of the bar, relative to the body width
-    opening1 = 0.265  # Bottom of the opening, relative to the body height
+    opening1 = 0.245  # Bottom of the opening, relative to the body height
     opening2 = 0.765  # Top of the opening, relative to the body height
+    top_left_offset = 0
+    top_right_offset = 0.03
     stroke_x_ratio = 1
     stroke_y_ratio = 1
     mirrored = False
@@ -49,22 +51,8 @@ class OpenEGlyph(Glyph, ABC):
         )
 
     def mid_stroke(self, dc):
-        return dc.stroke_alt if self.mid_stroke_alt else dc.stroke_y * self.stroke_y_ratio
-
-    def top_loop(self, dc) -> Superellipse:
-        """Superellipse of the top loop, also used to shape similar loops."""
-        b = self.body(dc)
-        sy = dc.stroke_y * self.stroke_y_ratio
-        ymid = b.y1 + self.mid_ratio * b.height
-        ry = (b.y2 - b.ymid + sy / 2) / b.height
-        return Superellipse(
-            x1=b.x1 + (1 - self.loop_width_ratio) * b.width / 2,
-            # The bottom of the loop sits on the top of the middle bar
-            y1=ymid + self.mid_stroke(dc) / 2 - sy,
-            x2=b.x2 - (1 - self.loop_width_ratio) * b.width / 2,
-            y2=b.y2,
-            hx=b.hx * self.hx_ratio,
-            hy=b.hy * self.hy_ratio * ry * 2 * (1 - self.mid_ratio),
+        return (
+            dc.stroke_alt if self.mid_stroke_alt else dc.stroke_y * self.stroke_y_ratio
         )
 
     def draw(self, pen, dc):
@@ -76,33 +64,49 @@ class OpenEGlyph(Glyph, ABC):
 
     def draw_open_e(self, pen, dc):
         b = self.body(dc)
-        ec = self.extra_cut(dc)
+        ec = 0.66 * self.extra_cut(dc)
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
 
+        xt1 = b.x1 + self.top_left_offset * b.width
+        xt2 = b.x2 - self.top_left_offset * b.width
+        xl1 = b.x1 + self.top_right_offset * b.width
+        xl2 = b.x2 - self.top_right_offset * b.width
         xc = b.x2 - self.mid_length * b.width - ec
         yc1 = b.y1 + self.opening1 * b.height + ec
         yc2 = b.y1 + self.opening2 * b.height - ec
         ymid = b.y1 + self.mid_ratio * b.height
         sm = self.mid_stroke(dc)
-        ry = (b.y2 - b.ymid + sy / 2) / b.height
         base_glyph = ufoLib2.objects.Glyph()
+        taper = max(self.taper * dc.taper, 0.65)
 
         # Top loop
-        taper = max(self.taper * dc.taper, 0.65)
-        top = self.top_loop(dc)
+        ytmid = b.y1 + self.mid_ratio * b.height + self.mid_stroke(dc) / 2 - sy
         draw_arch(
             base_glyph.getPen(),
             sx,
             sy,
-            top.x1,
-            top.y1,
-            top.x2,
-            top.y2,
-            top.hx,
-            top.hy,
+            xl1,
+            ytmid,
+            xl2,
+            b.y2,
+            hx * (xl2 - xl1) / b.width,
+            hy * (b.y2 - ytmid) / b.height,
             taper=taper,
             side="bottom",
+            cut="left",
+        )
+        draw_loop(
+            base_glyph.getPen(),
+            sx,
+            sy,
+            xt1,
+            ytmid - 2 * ec,
+            xt2,
+            b.y2,
+            hx * self.left_hx_ratio * (xt2 - xt1) / b.width,
+            hy * (b.y2 - ytmid + 2 * ec) / b.height,
+            quarter="top-left",
         )
 
         # Bottom loop
@@ -115,9 +119,22 @@ class OpenEGlyph(Glyph, ABC):
             b.x2,
             ymid - sm / 2 + sy,
             hx,
-            hy * ry * 2 * self.mid_ratio,
+            hy * (ymid - sm / 2 + sy - b.y1) / b.height,
             taper=taper,
             side="top",
+            cut="left",
+        )
+        draw_loop(
+            base_glyph.getPen(),
+            sx,
+            sy,
+            b.x1,
+            b.y1,
+            b.x2,
+            ymid - sm / 2 + sy + 2 * ec,
+            hx * self.left_hx_ratio,
+            hy * (ymid - sm / 2 + sy + 2 * ec - b.y1) / b.height,
+            quarter="bottom-left",
         )
 
         # Remove the left-middle part
