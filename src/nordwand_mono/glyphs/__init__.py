@@ -33,6 +33,8 @@ class Glyph(ABC):
     # Share of the stroke growth past the regular weight that is kept
     stroke_x_dampening: float = 1
     stroke_y_dampening: float = 1
+    # Extra cut ratio
+    extra_cut_ratio = 0.66
 
     @abstractmethod
     def draw(self, pen, dc) -> None: ...
@@ -55,7 +57,10 @@ class Glyph(ABC):
         return sx, sy
 
     def extra_cut(self, dc) -> int:
-        return min(0.66 * max(0, dc.stroke_x - dc.default_stroke), dc.stroke_x / 4)
+        return min(
+            self.extra_cut_ratio * max(0, dc.stroke_x - dc.default_stroke),
+            dc.stroke_x / 4,
+        )
 
     def diag_stroke_dampening(self, ratio, stroke, coef=0.25):
         from math import exp
@@ -72,7 +77,6 @@ class Glyph(ABC):
 
 class InfiniteLigatureGlyph(Glyph):
     """Glyph whose horizontal bars can join across any number of cells."""
-
 
     @abstractmethod
     def horizontal_bar_heights(self, dc) -> tuple[float, ...]: ...

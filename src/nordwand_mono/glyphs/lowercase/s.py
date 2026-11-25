@@ -1,8 +1,5 @@
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
 from nordwand_mono.glyphs import Glyph
 from nordwand_mono.draw.corner import draw_corner
-from nordwand_mono.draw.rect import draw_rect
 
 
 class LowercaseSGlyph(Glyph):
@@ -24,6 +21,7 @@ class LowercaseSGlyph(Glyph):
     curve_ratio = 2.2
     stroke_x_dampening = 1
     stroke_y_dampening = 1
+    ending_hx_ratio = 1.15
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -89,38 +87,28 @@ class LowercaseSGlyph(Glyph):
         )
         pen.closePath()
 
-        glyph = ufoLib2.objects.Glyph()
+        # Endings, from the openings to the middle of the top and bottom
         draw_corner(
-            glyph.getPen(),
+            pen,
             sx * self.thinning,
             sy,
             x2,
-            (b.y2 + ymid - sy / 2) / 2,
+            yc2,
             b.xmid,
             b.y2,
-            hxt,
-            hy * (1 - self.mid_height),
+            hxt * self.ending_hx_ratio,
+            hy * (b.y2 - yc2) / b.height,
             orientation="top-left",
         )
         draw_corner(
-            glyph.getPen(),
+            pen,
             sx * self.thinning,
             sy,
             b.x1,
-            ym2,
+            yc1,
             b.xmid,
             b.y1,
-            hx,
-            hy * self.mid_height,
+            hx * self.ending_hx_ratio,
+            hy * (yc1 - b.y1) / b.height,
             orientation="bottom-right",
         )
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(
-            cut_glyph.getPen(),
-            b.x1 - 10,
-            yc1,
-            b.x2 + 10,
-            yc2,
-        )
-        res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
-        res.draw(pen)

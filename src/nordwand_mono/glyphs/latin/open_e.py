@@ -1,13 +1,11 @@
 from abc import ABC
 
-import ufoLib2
-from booleanOperations.booleanGlyph import BooleanGlyph
 from fontTools.pens.reverseContourPen import ReverseContourPen
 from fontTools.pens.transformPen import TransformPen
 
 from nordwand_mono.glyphs import Glyph
 from nordwand_mono.draw.arch import draw_arch
-from nordwand_mono.draw.loop import draw_loop
+from nordwand_mono.draw.corner import draw_corner
 from nordwand_mono.draw.rect import draw_rect
 
 
@@ -77,13 +75,12 @@ class OpenEGlyph(Glyph, ABC):
         yc2 = b.y1 + self.opening2 * b.height - ec
         ymid = b.y1 + self.mid_ratio * b.height
         sm = self.mid_stroke(dc)
-        base_glyph = ufoLib2.objects.Glyph()
         taper = max(self.taper * dc.taper, 0.65)
 
         # Top loop
         ytmid = b.y1 + self.mid_ratio * b.height + self.mid_stroke(dc) / 2 - sy
         draw_arch(
-            base_glyph.getPen(),
+            pen,
             sx,
             sy,
             xl1,
@@ -96,22 +93,23 @@ class OpenEGlyph(Glyph, ABC):
             side="bottom",
             cut="left",
         )
-        draw_loop(
-            base_glyph.getPen(),
+        # Ending of the top loop, from the opening to the middle of the top
+        draw_corner(
+            pen,
             sx,
             sy,
             xt1,
-            ytmid - 2 * ec,
-            xt2,
+            yc2,
+            (xt1 + xt2) / 2,
             b.y2,
             hx * self.left_hx_ratio * (xt2 - xt1) / b.width,
-            hy * (b.y2 - ytmid + 2 * ec) / b.height,
-            quarter="top-left",
+            2 * hy * (b.y2 - yc2) / b.height,
+            orientation="top-right",
         )
 
         # Bottom loop
         draw_arch(
-            base_glyph.getPen(),
+            pen,
             sx,
             sy,
             b.x1,
@@ -124,31 +122,20 @@ class OpenEGlyph(Glyph, ABC):
             side="top",
             cut="left",
         )
-        draw_loop(
-            base_glyph.getPen(),
+        # Ending of the bottom loop, from the opening to the middle of the
+        # bottom
+        draw_corner(
+            pen,
             sx,
             sy,
             b.x1,
-            b.y1,
-            b.x2,
-            ymid - sm / 2 + sy + 2 * ec,
-            hx * self.left_hx_ratio,
-            hy * (ymid - sm / 2 + sy + 2 * ec - b.y1) / b.height,
-            quarter="bottom-left",
-        )
-
-        # Remove the left-middle part
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(
-            cut_glyph.getPen(),
-            b.x1,
             yc1,
             b.xmid,
-            yc2,
+            b.y1,
+            hx * self.left_hx_ratio,
+            2 * hy * (yc1 - b.y1) / b.height,
+            orientation="bottom-right",
         )
-
-        result = BooleanGlyph(base_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
 
         # Extension of the middle bar
         draw_rect(
