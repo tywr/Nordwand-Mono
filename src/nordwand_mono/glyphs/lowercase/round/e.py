@@ -14,6 +14,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
     tail_height = 0.268
     left_hx_ratio = 1
     right_hx_ratio = 1.1
+    right_thinning = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -76,7 +77,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
         )
         draw_arch(
             pathops.PathPen(loop),
-            sx,
+            sx * self.right_thinning,
             sy,
             2 * b.xmid - xt,
             b.y1,

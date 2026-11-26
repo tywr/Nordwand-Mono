@@ -3,7 +3,6 @@ from abc import ABC
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
 
-from nordwand_mono.draw.corner import draw_corner
 from nordwand_mono.draw.rect import draw_rect
 from nordwand_mono.draw.loop import draw_loop
 from nordwand_mono.glyphs import Glyph

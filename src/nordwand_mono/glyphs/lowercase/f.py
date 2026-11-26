@@ -24,6 +24,8 @@ class LowercaseFBase(Glyph):
     # bar; the stem stays on the body's center, see `cross_bar_stem`
     terminal_offset = 0
     centered_stem = True
+    stroke_y_dampening = 0.75 
+    mid_shift_coef = 0
 
     def cross_bar_top(self, dc):
         return (self.low_bar_height if self.low_bar else 1) * dc.x_height
@@ -32,13 +34,17 @@ class LowercaseFBase(Glyph):
         b = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
+        sx, sy = self.get_strokes(dc)
         x1, x2, xs, xt = cross_bar_stem(
             b, self.rl_ratio, self.terminal_offset, self.centered_stem
         )
         yc = self.cross_bar_top(dc)
 
+        # Add slight offset as weight increase
+        xs += self.mid_shift_coef * (sx - dc.default_stroke)
+
         # Stem
-        draw_rect(pen, xs - dc.stroke_x / 2, 0, xs + dc.stroke_x / 2, dc.x_height)
+        draw_rect(pen, xs - sx / 2, 0, xs + sx / 2, dc.x_height)
 
         # Cross-bar
         if self.cross_bar:
@@ -47,9 +53,9 @@ class LowercaseFBase(Glyph):
         # Corner, to the terminal
         draw_square_corner(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            xs - dc.stroke_x / 2,
+            sx,
+            sy,
+            xs - sx / 2,
             dc.x_height,
             xt,
             dc.ascent,
@@ -61,21 +67,21 @@ class LowercaseFBase(Glyph):
         if self.bottom == "serif":
             # From the left of the cross bar, reaching bottom_right_reach of
             # the way from the stem to the terminal
-            right_len = xt - xs - dc.stroke_x / 2
+            right_len = xt - xs - sx / 2
             draw_rect(
                 pen,
                 x1,
                 0,
-                xs + right_len * self.bottom_right_reach + dc.stroke_x / 2,
+                xs + right_len * self.bottom_right_reach + sx / 2,
                 dc.stroke_y,
             )
         elif self.bottom == "hook":
             # Half the body left of the stem
             draw_square_corner(
                 pen,
-                dc.stroke_x,
-                dc.stroke_y,
-                xs + dc.stroke_x / 2,
+                sx,
+                sy,
+                xs + sx / 2,
                 0,
                 xs - b.width / 2,
                 dc.descent,
