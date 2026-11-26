@@ -17,8 +17,8 @@ class NumberSignGlyph(InfiniteLigatureGlyph):
         g = self.gap * b.width
         h = self.height * b.height
         xm1, xm2 = b.xmid - g / 2, b.xmid + g / 2
-        ym1, ym2 = dc.math - g / 2, dc.math + g / 2
-        y1, y2 = dc.math - h / 2, dc.math + h / 2
+        ym1, ym2 = b.ymid - g / 2, b.ymid + g / 2
+        y1, y2 = b.ymid - h / 2, b.ymid + h / 2
         return b, xm1, xm2, ym1, ym2, y1, y2
 
     def horizontal_bar_heights(self, dc):
