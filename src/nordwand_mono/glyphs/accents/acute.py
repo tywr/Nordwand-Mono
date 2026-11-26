@@ -30,9 +30,10 @@ class Acute(Accent):
     name = "acute"
     unicode = "0xB4"
     height = 0.32
-    width = 0.55
-    stroke_ratio = 1.0
+    width = 0.56
+    stroke_ratio = 0.9
     taper = 0.7  # Width of the base, relative to the top
+    x_offset = 0.1
 
     def scaled(self, dc, k):
         """Same slant, its height and its slanted part scaled by `k`"""
@@ -45,9 +46,9 @@ class Acute(Accent):
     def draw_at(self, pen, dc, x, y, stroke_ratio=None):
         h = self.height * dc.x_height
         s = self.stroke_ratio * dc.stroke_x
-        xo = 1.15 * (s - dc.default_stroke)
+        xo = self.x_offset * s
         w = self.width * dc.width + xo
-        draw_slant(pen, s, x, y, w, h, self.taper)
+        draw_slant(pen, s, x - xo, y, w, h, self.taper)
 
 
 class Tonos(Acute):
