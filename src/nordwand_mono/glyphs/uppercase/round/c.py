@@ -11,6 +11,7 @@ class UppercaseCGlyph(RoundUppercaseGlyph):
     offset = 6
     opening1 = 0.29
     width_ratio = 0.99
+    accent_x_offset = 4
 
     def draw(self, pen, dc):
         b = self.body(dc)

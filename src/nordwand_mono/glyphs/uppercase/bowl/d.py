@@ -8,6 +8,7 @@ class UppercaseDGlyph(BowlUppercaseGlyph):
     unicode = "0x44"
     arch_start = 0.4
     offset = 7
+    accent_x_offset = -40
 
     def draw(self, pen, dc):
         b = self.body(dc)

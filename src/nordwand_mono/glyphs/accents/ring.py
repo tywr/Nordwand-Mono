@@ -24,12 +24,14 @@ def _draw_circle(pen, cx, cy, r, clockwise=False):
 class Ring(Accent):
     name = "ring"
     unicode = "0x2DA"
-    width = 0.6
+    width = 0.65
     stroke_ratio = 0.8
+    vertical_offset = 0.05
 
     def draw_at(self, pen, dc, x, y):
+        vo = self.vertical_offset * dc.x_height
         stroke = dc.stroke_alt * self.stroke_ratio
         r_outer = dc.width * self.width / 2
         r_inner = r_outer - stroke
-        _draw_circle(pen, x, y, r_outer, clockwise=False)
-        _draw_circle(pen, x, y, r_inner, clockwise=True)
+        _draw_circle(pen, x, y + vo, r_outer, clockwise=False)
+        _draw_circle(pen, x, y + vo, r_inner, clockwise=True)

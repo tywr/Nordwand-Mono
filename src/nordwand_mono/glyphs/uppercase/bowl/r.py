@@ -12,6 +12,7 @@ class UppercaseRGlyph(BowlUppercaseGlyph):
     branch_start = 0.45
     leg_stroke_ratio = 1.0
     hy_ratio = 1
+    accent_x_offset = -40
 
     def draw(self, pen, dc):
         b = self.body(dc)

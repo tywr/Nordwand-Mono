@@ -8,17 +8,20 @@ class LowercaseAGlyph(Glyph):
     name = "lowercase_a"
     unicode = "0x61"
     offset = -12
-    accent_x_offset = 16
     mid_height = 0.52
     width_ratio = 0.99
+    accent_x_offset = 22
 
     taper = 0.65
 
     top_loop_ratio = 0.75
+    bottom_loop_ratio = 0.75
     cap_height = 0.74
     cap_offset = 0.045
-    cap_hx_ratio = 1.05
-    cap_hy_ratio = 1
+    cap_right_hx_ratio = 1.05
+    cap_right_hy_ratio = 1
+    cap_left_hx_ratio = 1.05
+    cap_left_hy_ratio = 1
     bowl_top_ratio = 1.05
 
     def draw(self, pen, dc):
@@ -80,8 +83,10 @@ class LowercaseAGlyph(Glyph):
         ec = self.extra_cut(dc)
         ymid = b.y1 + self.mid_height * b.height
         ycut = b.y1 + self.cap_height * b.height - ec
-        chx = self.cap_hx_ratio * b.hx
-        chy = self.cap_hy_ratio * b.hy
+        chrx = self.cap_right_hx_ratio * b.hx
+        chry = self.cap_right_hy_ratio * b.hy
+        chlx = self.cap_left_hx_ratio * b.hx
+        chly = self.cap_left_hy_ratio * b.hy
 
         # Top loop variables
         yt1 = b.y2 - self.top_loop_ratio * b.height
@@ -93,7 +98,7 @@ class LowercaseAGlyph(Glyph):
             sx,
             sy,
             ymid,
-            b.y1 + self.top_loop_ratio * b.height / 2,
+            b.y1 + self.bottom_loop_ratio * b.height / 2,
             right_taper if right_taper else self.taper * dc.taper,
         )
 
@@ -108,11 +113,25 @@ class LowercaseAGlyph(Glyph):
             yt1,
             b.x2,
             b.y2,
-            chx * (b.x2 - xc1) / b.width,
-            chy * (b.y2 - yt1) / b.height,
+            chlx * (b.x2 - xc1) / b.width,
+            chly * (b.y2 - yt1) / b.height,
             side="right",
             taper=right_taper if right_taper else 1,
-            cut="bottom",
+            quarter="top-left"
+        )
+        draw_arch(
+            pathops.PathPen(arc),
+            sx,
+            sy,
+            xc1,
+            yt1,
+            b.x2,
+            b.y2,
+            chrx * (b.x2 - xc1) / b.width,
+            chry * (b.y2 - yt1) / b.height,
+            side="right",
+            taper=right_taper if right_taper else 1,
+            quarter="top-right"
         )
         top = pathops.op(top, arc, pathops.PathOp.UNION)
         cut = pathops.Path()

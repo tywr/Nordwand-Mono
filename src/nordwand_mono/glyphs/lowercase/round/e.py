@@ -15,6 +15,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
     left_hx_ratio = 1
     right_hx_ratio = 1.1
     right_thinning = 1
+    accent_x_offset = 4
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

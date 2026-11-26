@@ -5,7 +5,7 @@ from nordwand_mono.draw.dot import dot_size, draw_dot
 class Dieresis(Accent):
     name = "dieresis"
     unicode = "0xA8"
-    gap = 0.38
+    gap = 0.44
     dot_ratio = 1.3
 
     def draw_at(self, pen, dc, x, y):

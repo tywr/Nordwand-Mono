@@ -30,18 +30,19 @@ class LowercaseTGlyph(Glyph):
         x1, x2, xs, xt = cross_bar_stem(
             b, self.rl_ratio, self.terminal_offset, self.centered_stem
         )
+        sx,sy = self.get_strokes(dc)
 
         # Cross-bar at x_height
-        draw_rect(pen, x1, dc.x_height - dc.stroke_y, x2, dc.x_height)
+        draw_rect(pen, x1, dc.x_height - sy, x2, dc.x_height)
         # Corner curving down-right (shorter/flatter than f) to the terminal;
         # with the stem centered, at most half the body past the stem, then a
         # footer to the terminal, as the monospace t always was
         corner_end = min(xs + b.width / 2, xt) if self.centered_stem else xt
         draw_square_corner(
             pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            xs - dc.stroke_x / 2,
+            sx,
+            sy,
+            xs - sx / 2,
             b.ymid,
             corner_end,
             0,
@@ -49,17 +50,17 @@ class LowercaseTGlyph(Glyph):
             gy=dc.square_corner_gy,
             orientation="bottom-right",
         )
-        draw_rect(pen, corner_end, 0, xt, dc.stroke_y)
+        draw_rect(pen, corner_end, 0, xt, sy)
 
         glyph = ufoLib2.objects.Glyph()
 
         # Stem
         top = (1 + self.up_ratio) * dc.x_height
-        draw_rect(glyph.getPen(), xs - dc.stroke_x / 2, b.ymid, xs + dc.stroke_x / 2, top)
+        draw_rect(glyph.getPen(), xs - sx / 2, b.ymid, xs + sx / 2, top)
         cut_glyph = ufoLib2.objects.Glyph()
 
         # From the top right of the stem, going down left at cut_angle
-        right = xs + dc.stroke_x / 2
+        right = xs + sx / 2
         draw_polygon(
             cut_glyph.getPen(),
             points=[

@@ -8,7 +8,7 @@ from nordwand_mono.draw.polygon import draw_polygon
 class Caron(Accent):
     name = "caron"
     unicode = "0x2C7"
-    width = 1
+    width = 0.9
     stroke_ratio = 1
     overlap = 0.5
     lower_section_height = 1

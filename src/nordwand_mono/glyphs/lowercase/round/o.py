@@ -22,7 +22,7 @@ class LowercaseOGlyph(RoundLowercaseGlyph):
             overshoot_right=True,
             width_ratio=self.width_ratio,
         )
-        sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
+        sx, sy = self.get_strokes(dc)
         self.draw_o(pen, dc, b, sx, sy)
 
     def draw_o(self, pen, dc, b, sx, sy, right_taper=None):
