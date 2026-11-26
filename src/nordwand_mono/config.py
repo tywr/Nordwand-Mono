@@ -28,7 +28,7 @@ class FontConfig:
     parenthesis: int = 300
     parenthesis_length: int = 1060
 
-    min_margin_lowercase: int = 26
+    min_margin_lowercase: int = 32
     min_margin_uppercase: int = 38
 
     # Dots grow with stroke ** dot_exponent, and are flattened by dot_squash

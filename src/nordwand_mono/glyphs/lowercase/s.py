@@ -20,7 +20,7 @@ class LowercaseSGlyph(Glyph):
     curve_thinning = 0.018
     curve_ratio = 2.2
     stroke_x_dampening = 1
-    stroke_y_dampening = 1
+    stroke_y_dampening = 0.8
     ending_hx_ratio = 1.15
 
     def draw(self, pen, dc):
@@ -31,7 +31,7 @@ class LowercaseSGlyph(Glyph):
             overshoot_top=True,
         )
         ec = self.extra_cut(dc)
-        sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         sy = max(0, self.stroke_y_dampening * (sy - dc.default_stroke)) + min(
             dc.default_stroke, sy
         )
