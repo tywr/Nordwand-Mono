@@ -9,6 +9,8 @@ class QuotationMarkGlyph(Glyph):
     width_ratio = 1
     height_ratio = 0.7
     gap = 0.3
+    stroke_x_ratio = 1
+    stroke_x_dampening = 0.7
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -16,7 +18,7 @@ class QuotationMarkGlyph(Glyph):
         )
         g = self.gap * b.width
         h = self.height_ratio * b.height
-        s = dc.stroke_x
+        s, _ = self.get_strokes(dc)
         xm1 = b.xmid - g / 2 - dc.stroke_x / 2
         xm2 = b.xmid + g / 2 + dc.stroke_x / 2
 
