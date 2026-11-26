@@ -13,6 +13,8 @@ class FourGlyph(NumberGlyph):
     mid_bar_ratio = 0.61
     width_ratio = 1.16
     stroke_ratio = 1.00
+    slant_offset_coef = 0.1
+    vertical_offset_coef = 0.45
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -21,11 +23,12 @@ class FourGlyph(NumberGlyph):
         sx, sy = self.get_strokes(dc)
 
         xo = 0.75 * (sx - dc.default_stroke)
-        xvo = 0.45 * (sx - dc.default_stroke)
+        xvo = self.vertical_offset_coef * (sx - dc.default_stroke)
         xho = -0.25 * (sx - dc.default_stroke)
+        xto = self.slant_offset_coef * (sx - dc.default_stroke)
 
         xmid = b.x1 + self.horizontal_ratio * b.width + xho
-        xtop = b.x1 + self.slant_ratio * b.width
+        xtop = b.x1 + self.slant_ratio * b.width + xto
         ymid = b.y1 + self.vertical_ratio * b.height + xvo
         ybar = b.y1 + self.mid_bar_ratio * b.height
 

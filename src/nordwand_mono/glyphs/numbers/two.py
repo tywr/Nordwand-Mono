@@ -35,6 +35,8 @@ class TwoGlyph(NumberGlyph):
     hy_curve_ratio = 0.85
     hd_curve_ratio = 1
     opening = 0.69
+    offset_coef_1 = 0.3
+    offset_coef_2 = -0.4
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -49,12 +51,12 @@ class TwoGlyph(NumberGlyph):
         s = dc.stroke_x * self.diag_stroke_ratio
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy
         xc = b.x1 + self.diag_x_ratio * b.width
-        yc_offset = 0.3 * (dc.stroke_x - dc.default_stroke)
+        yc_offset = self.offset_coef_1 * (dc.stroke_x - dc.default_stroke)
         yc = b.y1 + self.diag_y_ratio * b.height + yc_offset
         xt2 = b.x2 - b.width * self.top_right_offset
         xb1 = b.x1 + b.width * self.bottom_left_offset
         yl1 = b.y2 - self.loop_y_left_ratio * b.height - ec
-        yl2_offset = -0.4 * (dc.stroke_x - dc.default_stroke)
+        yl2_offset = self.offset_coef_2 * (dc.stroke_x - dc.default_stroke)
         yl2 = b.y2 - self.loop_y_right_ratio * b.height + yl2_offset
 
         # Upper loop, cut at the opening as in the 3
@@ -100,9 +102,7 @@ class TwoGlyph(NumberGlyph):
 
         xd, yd = xc, yc
         for _ in range(10):
-            theta, _ = draw_parallelogramm(
-                pen, s, xb1, b.y1 + sy, xd, yd, no_draw=True
-            )
+            theta, _ = draw_parallelogramm(pen, s, xb1, b.y1 + sy, xd, yd, no_draw=True)
             xd, yd = xc + s / 2 * cos(theta), yc - s / 2 * sin(theta)
         theta, delta = draw_parallelogramm(pen, s, xb1, b.y1 + sy, xd, yd)
 

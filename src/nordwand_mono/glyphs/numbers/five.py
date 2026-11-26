@@ -25,6 +25,8 @@ class FiveGlyph(NumberGlyph):
     hy_ratio = 0.9
     opening = 0.27
     top_loop_offset = 0
+    offset_coef_1 = 0.6
+    offset_coef_2 = -0.4
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -37,12 +39,12 @@ class FiveGlyph(NumberGlyph):
             number=True,
         )
         sx, sy = self.get_strokes(dc)
-        ec = 0.5 * self.extra_cut(dc)
+        ec = self.extra_cut(dc)
         sd = self.stroke_ratio * dc.stroke_x
         yc = b.y1 + self.opening * b.height + ec
         yj = b.y1 + b.height * self.junction_ratio
-        xo = 0.6 * (sx - dc.default_stroke)
-        xlo = -0.4 * (sx - dc.default_stroke)
+        xo = self.offset_coef_1 * (sx - dc.default_stroke)
+        xlo = self.offset_coef_2 * (sx - dc.default_stroke)
         oj = self.tilt * b.width + xo
         xc = b.x2 - self.cap_offset * b.width
         xt1 = b.x1 + self.top_loop_offset * b.width + xlo
