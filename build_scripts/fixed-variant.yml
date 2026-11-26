@@ -1,0 +1,32 @@
+# Font overrides for the fixed variant. Omitted parameters inherit Nordwand's defaults.
+font:
+  family_name: Nordwand Mono Air
+  units_per_em: 1000
+  window_width: 600
+  width: 340
+  x_height: 515
+  cap: 690
+  ascent: 735
+  parenthesis_length: 980
+  stroke_x: 82
+  stroke_y: 70
+  # weights: [400]
+  font_revision: 1.000
+
+# Use each weight's upright glyphs as the basis for italic.
+italic_from_upright: true
+
+# null follows the generator. true forces ttfautohint, false skips it.
+hinting: false
+
+formats: [ttf, otf, woff, woff2]
+nerd_font: true
+
+# 0 disables a feature. cvXX values select a numbered alternate.
+# 1 enables other existing GSUB substitutions, for example ss02: 1.
+features:
+  cv03: 2
+  cv06: 2
+  cv12: 1
+  calt: 0
+  liga: 0
