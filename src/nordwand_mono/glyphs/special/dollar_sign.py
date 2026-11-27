@@ -9,14 +9,17 @@ class DollarSignGlyph(Glyph):
     width_ratio = 1
     overflow_ratio = 0.2
 
-    def draw(self, pen, dc):
+    def draw_s(self, pen, dc):
+        """The S the bars go through, overridable by projects reusing it."""
         from nordwand_mono.glyphs.uppercase.s import UppercaseSGlyph
 
+        UppercaseSGlyph().draw(pen, dc)
+
+    def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
-        sg = UppercaseSGlyph()
-        sg.draw(pen, dc)
+        self.draw_s(pen, dc)
 
         dh = self.overflow_ratio * b.height
         draw_rect(

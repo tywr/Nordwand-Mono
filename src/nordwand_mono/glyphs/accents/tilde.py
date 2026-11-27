@@ -26,6 +26,6 @@ class Tilde(Accent):
             y,
             s,
             s,
-            width=self.width * dc.width,
+            width=self.width * dc.accent_width,
             height=self.height * dc.x_height,
         )

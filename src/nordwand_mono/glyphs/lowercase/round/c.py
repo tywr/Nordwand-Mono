@@ -14,6 +14,7 @@ class LowercaseCGlyph(RoundLowercaseGlyph):
     width_ratio = 0.99
     right_hx_ratio = 1.1
     accent_x_offset = 4
+    extra_cut_ratio = 0.2
 
     def draw(self, pen, dc):
 
@@ -30,12 +31,23 @@ class LowercaseCGlyph(RoundLowercaseGlyph):
         yc1 = b.y1 + b.height * self.opening1 + ec
         yc2 = b.y1 + b.height * self.opening2 - ec
 
-        draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, b.hx, b.hy, cut="right")
+        draw_loop(
+            pen,
+            sx,
+            sy,
+            b.x1,
+            b.y1,
+            b.x2,
+            b.y2,
+            b.hx,
+            b.hy,
+            cut="right",
+        )
 
         glyph = ufoLib2.objects.Glyph()
         draw_loop(
             glyph.getPen(),
-            sx,
+            self.get_thinned_stroke(dc),
             sy,
             b.x1,
             b.y1,

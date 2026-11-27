@@ -16,8 +16,8 @@ class LowercaseAeGlyph(LowercaseAGlyph, LowercaseEGlyph):
     cap_height = 0.7
     tail_height = 0.31
     stroke_ratio = 1
-    stroke_smoothing = 0.6
-    stroke_threshold = 60
+    stroke_x_dampening = 0.7
+    stroke_y_dampening = 0.7
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -28,11 +28,7 @@ class LowercaseAeGlyph(LowercaseAGlyph, LowercaseEGlyph):
             # Round, can tolerate a bit less
             min_margin=dc.min_margin_lowercase * 0.66,
         )
-        sx = self.stroke_ratio * dc.stroke_x
-        sx = max(0, self.stroke_smoothing * (sx - self.stroke_threshold)) + min(
-            self.stroke_threshold, sx
-        )
-        sy = self.stroke_ratio * dc.stroke_y
+        sx, sy = self.get_strokes(dc)
 
         # Each half keeps the body's o shape once rescaled
         def half(x1, x2):

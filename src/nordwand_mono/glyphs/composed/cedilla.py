@@ -80,4 +80,4 @@ class UppercaseTCedillaGlyph(ComposedGlyph):
             * self.accent_class.stroke_ratio_x
             * dc.stroke_x
         )
-        return stem_right - sl / 2 - self.accent_class.x_offset * dc.width
+        return stem_right - sl / 2 - self.accent_class.x_offset * dc.accent_width

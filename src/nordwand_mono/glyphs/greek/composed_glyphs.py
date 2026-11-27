@@ -48,7 +48,7 @@ class UppercaseTonosGlyph(ComposedGlyph):
 
         # Tonos ending a gap away from the left of the shifted capital
         tonos = self.accent_class()
-        tonos.stroke_ratio *= self.tonos_stroke
+        tonos.stroke_x_ratio *= self.tonos_stroke
         tonos.scaled(dc, self.tonos_scale)
         tonos.height *= self.tonos_height
         h = tonos.height * dc.x_height

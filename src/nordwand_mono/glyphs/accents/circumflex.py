@@ -8,17 +8,18 @@ from nordwand_mono.draw.polygon import draw_polygon
 class Circumflex(Accent):
     name = "circumflex"
     unicode = "0x5E"
-    width = 0.9
-    stroke_ratio = 1
+    width = 1
     overlap = 0.5
     upper_section_height = 1
+    stroke_y_dampening = 0.45
+    stroke_y_ratio = 1.1
 
     def draw_at(self, pen, dc, x, y):
         h = self.height * dc.x_height
-        w = self.width * dc.width
+        w = self.width * dc.accent_width
         x1, x2, xmid = x - w / 2, x + w / 2, x
         y1, y2 = y - h / 2, y + h / 2
-        s = self.stroke_ratio * dc.stroke_y
+        _, s = self.get_strokes(dc)
         ov = self.overlap * s
         ush = self.upper_section_height * dc.stroke_y
 

@@ -14,8 +14,10 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
     tail_height = 0.268
     left_hx_ratio = 1
     right_hx_ratio = 1.1
-    right_thinning = 1
     accent_x_offset = 4
+    thinning = 1
+    thinning2 = 1
+    extra_cut_ratio = 0.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -55,7 +57,21 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
             b.hy * (b.y2 - yt1) / b.height,
             taper=left_taper if left_taper else 1,
             side="left",
-            cut="bottom",
+            quarter="top-left"
+        )
+        draw_arch(
+            pen,
+            self.get_thinned_stroke(dc, coefficient=self.thinning2),
+            sy,
+            b.x1,
+            yt1,
+            b.x2,
+            b.y2,
+            b.hx,
+            b.hy * (b.y2 - yt1) / b.height,
+            taper=left_taper if left_taper else 1,
+            side="left",
+            quarter="top-right"
         )
 
         # Bottom-left quarter, then bottom-right quarter widened to `xt`
@@ -78,7 +94,7 @@ class LowercaseEGlyph(RoundLowercaseGlyph):
         )
         draw_arch(
             pathops.PathPen(loop),
-            sx * self.right_thinning,
+            self.get_thinned_stroke(dc),
             sy,
             2 * b.xmid - xt,
             b.y1,

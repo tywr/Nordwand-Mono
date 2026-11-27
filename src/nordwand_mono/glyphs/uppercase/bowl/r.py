@@ -9,8 +9,8 @@ class UppercaseRGlyph(BowlUppercaseGlyph):
     unicode = "0x52"
     loop_ratio = 0.605
     loop_width = 0.96
-    branch_start = 0.45
-    leg_stroke_ratio = 1.0
+    branch_start = 0.46
+    leg_stroke_ratio = 1.05
     hy_ratio = 1
     accent_x_offset = -40
 

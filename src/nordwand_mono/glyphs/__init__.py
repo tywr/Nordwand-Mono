@@ -35,6 +35,7 @@ class Glyph(ABC):
     stroke_y_dampening: float = 1
     # Extra cut ratio
     extra_cut_ratio = 0.66
+    thinning = 1
 
     @abstractmethod
     def draw(self, pen, dc) -> None: ...
@@ -55,6 +56,20 @@ class Glyph(ABC):
             dc.stroke_y, FontConfig.stroke_y, self.stroke_y_dampening
         )
         return sx, sy
+
+    def get_thinned_stroke(self, dc, coefficient=None, stroke=None):
+        """Get the thinned stroke to apply on cut endings (eg. c, a, s etc.)"""
+
+        def damp(stroke, default, dampening):
+            return max(0, dampening * (stroke - default)) + min(default, stroke)
+
+        if not stroke:
+            s, _ = self.get_strokes(dc)
+        else:
+            s = stroke
+        if coefficient is None:
+            coefficient = self.thinning
+        return damp(s, dc.default_stroke, coefficient)
 
     def extra_cut(self, dc) -> int:
         return min(

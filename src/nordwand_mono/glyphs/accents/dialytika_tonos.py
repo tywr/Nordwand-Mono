@@ -21,7 +21,7 @@ class DialytikaTonos(Accent):
         # The acute starts half a stroke left of x and leans to the right
         acute = Acute().scaled(dc, self.tonos_scale)
         ox = self.x_offset_tonos * self.gap
-        acute.stroke_ratio = 0.75
+        acute.stroke_x_ratio = 0.75
         acute.width = 0.4
         ey = dc.x_height * self.tonos_extra_y
         acute.draw_at(pen, dc, x + ox, y + ey)

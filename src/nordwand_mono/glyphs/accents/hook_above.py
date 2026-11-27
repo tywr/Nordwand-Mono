@@ -18,7 +18,7 @@ class HookAbove(Accent):
     optical_offset = 0.1
 
     def draw_at(self, pen, dc, x, y):
-        w = self.width * dc.width
+        w = self.width * dc.accent_width
         h = self.height * dc.x_height
         sx = self.stroke_ratio * dc.stroke_x
         sy = self.stroke_ratio * dc.stroke_y

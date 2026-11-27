@@ -158,7 +158,7 @@ def _align_quarter(seg, mids):
     head, tail = [], []
 
     # Axis along the start tangent, then along the end tangent
-    a = 1 if p1[0] == p0[0] else 0
+    a = 1 if abs(p1[0] - p0[0]) < 1e-6 else 0
     if abs(p0[a] - mids[a]) > 1e-6:
         parts = splitCubic(p0, p1, p2, p3, mids[a], a == 1)
         if len(parts) > 1:
@@ -168,7 +168,7 @@ def _align_quarter(seg, mids):
             start[a] = mids[a]
             head = [(tuple(start), p0)]
 
-    a = 1 if p2[0] == p3[0] else 0
+    a = 1 if abs(p2[0] - p3[0]) < 1e-6 else 0
     if abs(p3[a] - mids[a]) > 1e-6:
         parts = splitCubic(p0, p1, p2, p3, mids[a], a == 1)
         if len(parts) > 1:

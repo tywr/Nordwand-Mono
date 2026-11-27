@@ -15,7 +15,7 @@ class Stroke(Accent):
     stroke_ratio = 0.9
 
     def draw_at(self, pen, dc, x, y):
-        x1, x2 = x - self.left * dc.width, x + self.right * dc.width
+        x1, x2 = x - self.left * dc.accent_width, x + self.right * dc.accent_width
         h = self.rise * dc.x_height
         y1 = y - h * self.left / (self.left + self.right)
         y2 = y1 + h

@@ -21,7 +21,7 @@ class UppercaseUGlyph(UppercaseGlyph):
             uppercase=True,
         )
         y2 = self.loop_ratio * b.height
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         hx, hy = self.hx_ratio * b.hx, self.hy_ratio * b.hy * self.loop_ratio
 
         draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, y2, hx, hy, cut="top")

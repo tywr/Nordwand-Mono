@@ -28,7 +28,7 @@ class FontConfig:
     parenthesis: int = 300
     parenthesis_length: int = 1060
 
-    min_margin_lowercase: int = 32
+    min_margin_lowercase: int = 38
     min_margin_uppercase: int = 38
 
     # Dots grow with stroke ** dot_exponent, and are flattened by dot_squash
@@ -44,6 +44,8 @@ class FontConfig:
     italic_angle: float = 9
 
     width: int = 360
+    # Width the accents scale with
+    accent_width: int = 360
 
     hx: int = 180
     hy: int = 240
@@ -57,8 +59,8 @@ class FontConfig:
     square_corner_gx: int = 150
     square_corner_gy: int = 150
 
-    default_stroke = 84
-    stroke_x: int = 84
+    default_stroke = 85
+    stroke_x: int = 85
     stroke_y: int = 70
     stroke_alt: int = 66
 
@@ -87,6 +89,7 @@ WEIGHT_NAMES = {
     900: "Black",
 }
 
+
 def weight_name(w):
     """Style name of weight `w`: its config `name`, else the standard one."""
     name = FontConfig.weights.get(w, {}).get("name") or WEIGHT_NAMES.get(w)
@@ -105,6 +108,7 @@ class DrawConfig(FontConfig):
     accent: int = FontConfig.accent
     accent_cap: int = FontConfig.accent_cap
     width: int = FontConfig.width
+    accent_width: int = FontConfig.accent_width
     hx: int = FontConfig.hx
     hy: int = FontConfig.hy
     cap_hx: int = FontConfig.cap_hx
@@ -131,31 +135,29 @@ class DrawConfig(FontConfig):
 
         ws = [100, 200, 300, 375, 400, 450, 500, 600, 700]
         # Multipliers of the 400 values
-        ratio_x = [0.4, 0.58, 0.775, 0.95, 1, 1.12, 1.2, 1.4, 1.6]
-        ratio_y = [0.4, 0.58, 0.775, 0.95, 1, 1.12, 1.2, 1.35, 1.5]
-        ratio_alt = [0.4, 0.58, 0.775, 0.95, 1, 1.12, 1.15, 1.15, 1.15]
+        sxs = [25, 38, 54, 80, 85, 94, 106, 122, 138]
+        sys = [22, 33, 65, 66, 70, 78, 84, 84, 104]
+        salts = [22, 33, 65, 66, 70, 78, 84, 88, 92]
         # Optical corrections on top of the weight-independent curve shape
         ratio_hx = [1, 1, 1, 1, 1, 1, 1, 1, 1]
         ratio_hy = [1, 1, 1, 1, 1, 1, 1, 1, 1]
         # Absolute values
-        tapers = [1, 0.8, 0.5, 0.5, 0.5, 0.479, 0.415, 0.33, 0.245]
+        tapers = [1, 0.8, 0.6, 0.4, 0.35, 0.3, 0.3, 0.22, 0.15]
 
         def at(values):
             i = min(max(bisect_right(ws, w), 1), len(ws) - 1)
             t = min(max((w - ws[i - 1]) / (ws[i] - ws[i - 1]), 0), 1)
             return values[i - 1] + t * (values[i] - values[i - 1])
 
-        ratio_x, ratio_y, ratio_alt = at(ratio_x), at(ratio_y), at(ratio_alt)
         hx_ratio, hy_ratio = at(ratio_hx), at(ratio_hy)
         taper = at(tapers)
 
-        sx = int(cls.stroke_x * ratio_x)
-        sy = int(cls.stroke_y * ratio_y)
+        sx, sy, sa = at(sxs), at(sys), at(salts)
 
         return cls(
             stroke_x=sx,
             stroke_y=sy,
-            stroke_alt=int(cls.stroke_alt * ratio_alt),
+            stroke_alt=sa,
             x_height=cls.x_height,
             cap=cls.cap,
             accent=cls.accent,

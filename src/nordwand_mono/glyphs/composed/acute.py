@@ -240,7 +240,7 @@ class UppercaseLAcuteGlyph(ComposedGlyph):
     accent_y = _uc_accent
 
     def accent_x(self, dc, base, b):
-        return b.x1 + Acute.stroke_ratio * dc.stroke_x / 2
+        return b.x1 + Acute().get_strokes(dc)[0] / 2
 
 
 class LowercaseLAcuteGlyph(ComposedGlyph):

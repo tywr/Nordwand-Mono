@@ -17,7 +17,7 @@ class CommaBelow(Accent):
         top = y - self.gap * dc.x_height
         bottom = y - self.depth * abs(dc.descent)
         sx = self.stroke_ratio * dc.stroke_x
-        fx = self.foot_offset * dc.width
+        fx = self.foot_offset * dc.accent_width
 
         draw_polygon(
             pen,

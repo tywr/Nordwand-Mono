@@ -19,9 +19,9 @@ class Cedilla(Accent):
     x_offset = -0.05
 
     def draw_at(self, pen, dc, x, y):
-        o = dc.width * self.x_offset
+        o = dc.accent_width * self.x_offset
         h = abs(dc.descent)
-        w = self.x_ratio * dc.width
+        w = self.x_ratio * dc.accent_width
         wl = (1 - self.flat_ratio) * w
         yr = h / dc.x_height
         yn = -self.neck_length * dc.x_height

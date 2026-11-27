@@ -13,12 +13,13 @@ class UppercaseYGlyph(DiagonalUppercaseGlyph):
     width_ratio = 1.18
     junction_ratio = 0.46
     branch_stroke_ratio = 0.9
+    junction_shift_coef = 0.55
 
     def draw(self, pen, dc):
         b = self.body(dc)
         sx = dc.stroke_x * self.stroke_x_ratio
 
-        yo = 0.55 * (dc.stroke_x - dc.default_stroke)
+        yo = self.junction_shift_coef * max(dc.stroke_x - dc.default_stroke, 0)
         yj = b.y1 + self.junction_ratio * b.height - yo
 
         # Both feet centered on the stem, which they cover within a unit

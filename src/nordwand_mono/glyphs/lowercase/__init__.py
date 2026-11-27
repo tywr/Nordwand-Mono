@@ -14,15 +14,18 @@ class TailedLowercaseGlyph(Glyph, ABC):
 
     tail_hx_ratio = 1.0
     tail_hy_ratio = 1.0
-    stroke_y_ratio = 1.0
-    tail_offset = 0.04
+    tail_stroke_y_ratio = 1.0
+    tail_offset = 0.03
     cut_ratio = 0.265
     y1_offset = 0.065
+    extra_cut_ratio = 0.2
+    stroke_y_dampening = 0.8
 
     def draw_tail(self, pen, dc, b):
         """Right stem over the x-height and the tail below it, in body `b`."""
         ec = self.extra_cut(dc)
-        tsx, tsy = dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
+        sx, sy = self.get_strokes(dc)
+        sy *= self.tail_stroke_y_ratio
         xt = b.x1 + self.tail_offset * b.width
         h = 2 * (abs(dc.descent) + dc.v_overshoot)
 
@@ -33,15 +36,27 @@ class TailedLowercaseGlyph(Glyph, ABC):
         glyph = ufoLib2.objects.Glyph()
         draw_loop(
             glyph.getPen(),
-            tsx,
-            tsy,
+            self.get_thinned_stroke(dc),
+            sy,
+            xt,
+            -h / 2,
+            b.x2,
+            h / 2,
+            b.hx * (b.x2 - xt) / b.width * self.tail_hx_ratio,
+            b.hy * h / b.height,
+            quarter="bottom-left"
+        )
+        draw_loop(
+            glyph.getPen(),
+            sx,
+            sy,
             xt,
             -h / 2,
             b.x2,
             h / 2,
             b.hx * (b.x2 - xt) / b.width,
             b.hy * h / b.height,
-            cut="top",
+            quarter="bottom-right"
         )
         cut_glyph = ufoLib2.objects.Glyph()
         draw_rect(

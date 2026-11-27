@@ -24,7 +24,7 @@ class Horn(Accent):
         taper = min(1, self.taper * dc.taper)
         sx = dc.stroke_x
         sy = dc.stroke_y * taper
-        w = self.width * dc.width + sx
+        w = self.width * dc.accent_width + sx
         h = self.height * dc.x_height + sy
 
         b = dc.body_bounds(offset=0)

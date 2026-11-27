@@ -13,7 +13,7 @@ class Accent(Glyph, ABC):
     offset = 0
     # Relative to the x-height. Shared by the circumflex, caron, breve and
     # tilde, so that they read at the same scale
-    height = 0.3
+    height = 0.31
 
     @abstractmethod
     def draw_at(self, pen, dc, x, y):
@@ -61,7 +61,7 @@ class StackedAccent(Accent):
             first.height = self.first_height
         _scale_stroke(first, self.first_stroke_ratio)
         first.draw_at(
-            pen, dc, x + self.first_dx * dc.width, y + self.first_dy * dc.x_height
+            pen, dc, x + self.first_dx * dc.accent_width, y + self.first_dy * dc.x_height
         )
 
         second = self.second()
@@ -75,12 +75,15 @@ class StackedAccent(Accent):
         y2 = self.second_y
         if y2 is None:
             y2 = y + self.second_dy * dc.x_height
-        second.draw_at(pen, dc, x + self.second_dx * dc.width, y2)
+        second.draw_at(pen, dc, x + self.second_dx * dc.accent_width, y2)
 
 
 def _scale_stroke(accent, ratio):
-    """Scale the strokes of `accent`, or the size of a dot, which has none."""
+    """Scale the strokes of `accent` (`stroke_x_ratio` for the acute and
+    grave), or the size of a dot, which has none."""
     if hasattr(accent, "stroke_ratio"):
         accent.stroke_ratio *= ratio
     elif hasattr(accent, "dot_ratio"):
         accent.dot_ratio *= ratio
+    else:
+        accent.stroke_x_ratio *= ratio

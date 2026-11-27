@@ -23,6 +23,8 @@ class LowercaseAGlyph(Glyph):
     cap_left_hx_ratio = 1.05
     cap_left_hy_ratio = 1
     bowl_top_ratio = 1.05
+    thinning = 1
+    extra_cut_ratio = 0.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -107,7 +109,7 @@ class LowercaseAGlyph(Glyph):
         arc = pathops.Path()
         draw_arch(
             pathops.PathPen(arc),
-            sx,
+            self.get_thinned_stroke(dc),
             sy,
             xc1,
             yt1,

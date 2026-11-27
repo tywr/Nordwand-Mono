@@ -15,7 +15,7 @@ class Breve(Accent):
 
     def draw_at(self, pen, dc, x, y):
         h = self.height * dc.x_height
-        w = self.width * dc.width
+        w = self.width * dc.accent_width
         x1, x2 = x - w / 2, x + w / 2
         # Only the bottom half of the loop is drawn, `h` high: center it on y
         y1, y2 = y - h / 2, y + 3 * h / 2

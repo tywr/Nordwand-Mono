@@ -46,8 +46,8 @@ class LowercaseGGlyph(TailedLowercaseGlyph, SingleStoryLowercaseGlyph):
             bsx,
             sy,
             b.x1,
-            # Add slight offset upwards to compensante the thinner stroke
-            y1 + 2 * (bsy - sy),
+            # Add slight offset upwards to compensate the thinner stroke
+            y1,
             b.x2 + dx,
             b.y2,
             hx * (b.x2 + dx - b.x1) / b.width,

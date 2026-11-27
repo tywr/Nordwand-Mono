@@ -31,7 +31,7 @@ class Ring(Accent):
     def draw_at(self, pen, dc, x, y):
         vo = self.vertical_offset * dc.x_height
         stroke = dc.stroke_alt * self.stroke_ratio
-        r_outer = dc.width * self.width / 2
+        r_outer = dc.accent_width * self.width / 2
         r_inner = r_outer - stroke
         _draw_circle(pen, x, y + vo, r_outer, clockwise=False)
         _draw_circle(pen, x, y + vo, r_inner, clockwise=True)

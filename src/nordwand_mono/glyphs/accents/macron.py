@@ -9,6 +9,6 @@ class Macron(Accent):
     stroke_ratio = 1
 
     def draw_at(self, pen, dc, x, y):
-        w = self.width * dc.width
+        w = self.width * dc.accent_width
         t = self.stroke_ratio * dc.stroke_y
         draw_rect(pen, x - w / 2, y - t / 2, x + w / 2, y + t / 2)

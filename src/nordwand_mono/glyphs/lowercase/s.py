@@ -18,10 +18,12 @@ class LowercaseSGlyph(Glyph):
     left_offset = 0.04
     right_offset = 0.03
     curve_thinning = 0.018
+    curve_shift_ratio = 0.000
     curve_ratio = 2.2
     stroke_x_dampening = 1
     stroke_y_dampening = 0.8
     ending_hx_ratio = 1.15
+    extra_cut_ratio = 0.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -48,7 +50,8 @@ class LowercaseSGlyph(Glyph):
         ym1 = (b.y2 + ymid - sy / 2) / 2
         ym2 = (b.y1 + ymid + sy / 2) / 2
         th = self.curve_thinning * b.height
-        r = self.curve_ratio
+        ro = self.curve_shift_ratio * max(0, sx - dc.default_stroke)
+        r = self.curve_ratio + ro
 
         thx, thy, tihx, tihy = draw_corner(
             pen,
@@ -90,7 +93,7 @@ class LowercaseSGlyph(Glyph):
         # Endings, from the openings to the middle of the top and bottom
         draw_corner(
             pen,
-            sx * self.thinning,
+            self.get_thinned_stroke(dc),
             sy,
             x2,
             yc2,
@@ -102,7 +105,7 @@ class LowercaseSGlyph(Glyph):
         )
         draw_corner(
             pen,
-            sx * self.thinning,
+            self.get_thinned_stroke(dc),
             sy,
             b.x1,
             yc1,

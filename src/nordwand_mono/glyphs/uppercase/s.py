@@ -6,8 +6,6 @@ class UppercaseSGlyph(UppercaseGlyph):
     name = "uppercase_s"
     unicode = "0x53"
     offset = 4
-    stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.00
-    stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.00
     hx_ratio = 1
     hy_ratio = 1
     mid_height = 0.51
@@ -18,8 +16,10 @@ class UppercaseSGlyph(UppercaseGlyph):
     right_offset = 0.02
     curve_thinning = 0.008
     curve_ratio = 2.0
+    curve_shift_ratio = 0.000
     width_ratio = 1.05
     ending_hx_ratio = 1
+    thinning = 1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -30,7 +30,7 @@ class UppercaseSGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
             uppercase=True,
         )
-        sx, sy = self.stroke_x_ratio * dc.stroke_x, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         ec = self.extra_cut(dc)
         yc1 = b.y1 + b.height * self.opening1 + ec
@@ -42,7 +42,8 @@ class UppercaseSGlyph(UppercaseGlyph):
         ym1 = (b.y2 + ymid - sy / 2) / 2
         ym2 = (b.y1 + ymid + sy / 2) / 2
         th = self.curve_thinning * b.height
-        r = self.curve_ratio
+        ro = self.curve_shift_ratio * max(0, sx - dc.default_stroke)
+        r = self.curve_ratio + ro
 
         thx, thy, tihx, tihy = draw_corner(
             pen,
@@ -83,7 +84,7 @@ class UppercaseSGlyph(UppercaseGlyph):
         # Endings, from the openings to the middle of the top and bottom
         draw_corner(
             pen,
-            sx * self.thinning,
+            self.get_thinned_stroke(dc),
             sy,
             x2,
             yc2,
@@ -95,7 +96,7 @@ class UppercaseSGlyph(UppercaseGlyph):
         )
         draw_corner(
             pen,
-            sx * self.thinning,
+            self.get_thinned_stroke(dc),
             sy,
             b.x1,
             yc1,
