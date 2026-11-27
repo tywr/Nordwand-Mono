@@ -15,6 +15,7 @@ class LowercaseR3Glyph(Glyph):
     hy_ratio = 1.00
     taper = 0.65
     width_ratio = 0.74
+    shoulder_extension = 24
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -40,7 +41,9 @@ class LowercaseR3Glyph(Glyph):
             quarter="top-left",
         )
         # Top part
-        draw_rect(pen, (x1 + x2) / 2, b.y2 - sy, b.x2, b.y2)
+        draw_rect(
+            pen, (x1 + x2) / 2, b.y2 - sy, b.x2 + self.shoulder_extension, b.y2
+        )
 
         # Left stem
         draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.x_height)

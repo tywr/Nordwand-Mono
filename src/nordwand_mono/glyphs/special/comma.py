@@ -1,5 +1,7 @@
-from nordwand_mono.glyphs import Glyph
+from fontTools.misc.roundTools import otRound
+
 from nordwand_mono.draw.polygon import draw_polygon
+from nordwand_mono.glyphs import Glyph
 
 
 class CommaGlyph(Glyph):
@@ -14,19 +16,35 @@ class CommaGlyph(Glyph):
     stroke_ratio = 1.2
 
     def points(self, dc):
-        b = dc.body_bounds(
+        body = dc.body_bounds(
             offset=self.offset, height="x_height", width_ratio=self.width_ratio
         )
-        h = self.height_ratio * b.height
-        sx = self.stroke_ratio * dc.stroke_x
-        oy = self.vertical_offset * b.height
-        fx = self.foot_offset * b.width
+        height = self.height_ratio * body.height
+        stroke = self.stroke_ratio * dc.stroke_x
+        top = self.vertical_offset * body.height
+        foot_offset = self.foot_offset * body.width
+
+        # Use grid-aligned edges so the upright head stays square in TTF.
+        left = otRound(body.xmid - stroke / 2)
+        right = otRound(body.xmid + stroke / 2)
+        head_width = right - left
+        top_y = otRound(top)
+        bend_y = top_y - head_width
+
+        foot_y = otRound(top - height + stroke)
+        foot_left = otRound(body.xmid - stroke / 2 - foot_offset)
+        # Pull the right edge in farther to accentuate its turn into the tail.
+        foot_right = otRound(
+            body.xmid + self.taper * stroke / 2 - foot_offset - 0.08 * head_width
+        )
 
         return [
-            (b.xmid - sx / 2, oy),
-            (b.xmid + sx / 2, oy),
-            (b.xmid + self.taper * sx / 2 - fx, oy - (h - sx)),
-            (b.xmid - sx / 2 - fx, oy - h + sx),
+            (left, top_y),
+            (right, top_y),
+            (right, bend_y),
+            (foot_right, foot_y),
+            (foot_left, foot_y),
+            (left, bend_y),
         ]
 
     def draw(self, pen, dc):

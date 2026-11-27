@@ -1,6 +1,6 @@
-from nordwand_mono.glyphs import Glyph
-from nordwand_mono.draw.parallelogramm import draw_parallelogramm
 from nordwand_mono.draw.loop import draw_loop
+from nordwand_mono.draw.parallelogramm import draw_parallelogramm
+from nordwand_mono.glyphs import Glyph
 
 
 class PercentMarkGlyph(Glyph):
@@ -11,38 +11,36 @@ class PercentMarkGlyph(Glyph):
     offset_ratio_x = 0.45
     offset_ratio_y = 0.45
     zero_ratio = 0.4
+    zero_width_ratio = 0.47
+    zero_stroke_ratio = 0.82
     stroke_ratio = 1
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(
+        body = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
-        h = self.zero_ratio * b.height
-        w = self.zero_ratio * b.width
-        ox = self.offset_ratio_x * b.width
-        oy = self.offset_ratio_y * b.height
+        width = self.zero_width_ratio * body.width
+        height = self.zero_ratio * body.height
+        # Keep the widened rings inside the horizontal bounds of the slash.
+        offset_x = max(self.offset_ratio_x * body.width, width) / 2
+        offset_y = self.offset_ratio_y * body.height / 2
+        ring_stroke = self.zero_stroke_ratio * dc.stroke_alt
+        slash_stroke = self.stroke_ratio * dc.stroke_x
+        draw_parallelogramm(pen, slash_stroke, body.x1, body.y1, body.x2, body.y2)
 
-        s = self.stroke_ratio * dc.stroke_x
-        draw_parallelogramm(pen, s, b.x1, b.y1, b.x2, b.y2)
-        draw_loop(
-            pen,
-            dc.stroke_alt,
-            dc.stroke_alt,
-            b.x1 + ox / 2 - w / 2,
-            b.y2 - oy / 2 - h / 2,
-            b.x1 + ox / 2 + w / 2,
-            b.y2 - oy / 2 + h / 2,
-            b.hx * self.zero_ratio,
-            b.hy * self.zero_ratio,
+        centers = (
+            (body.x1 + offset_x, body.y2 - offset_y),
+            (body.x2 - offset_x, body.y1 + offset_y),
         )
-        draw_loop(
-            pen,
-            dc.stroke_alt,
-            dc.stroke_alt,
-            b.x2 - ox / 2 - w / 2,
-            b.y1 + oy / 2 - h / 2,
-            b.x2 - ox / 2 + w / 2,
-            b.y1 + oy / 2 + h / 2,
-            b.hx * self.zero_ratio,
-            b.hy * self.zero_ratio,
-        )
+        for cx, cy in centers:
+            draw_loop(
+                pen,
+                ring_stroke,
+                ring_stroke,
+                cx - width / 2,
+                cy - height / 2,
+                cx + width / 2,
+                cy + height / 2,
+                body.hx * self.zero_width_ratio,
+                body.hy * self.zero_ratio,
+            )

@@ -1,5 +1,3 @@
-from dataclasses import replace
-
 from fontTools.misc.transform import Transform
 from fontTools.pens.recordingPen import RecordingPen
 from fontTools.pens.transformPen import TransformPen
@@ -15,12 +13,12 @@ class PerMilleSignGlyph(PercentMarkGlyph):
     name = "per_mille_sign"
     unicode = "0x2030"
     width_ratio = 0.8
+    zero_width_ratio = 0.4
     gap = 0.03  # Between the two bottom zeros, relative to the body width
     # Thinner zeros, so three of them keep open counters in one cell
     zero_stroke_ratio = 0.7
 
     def draw(self, pen, dc):
-        dc = replace(dc, stroke_alt=self.zero_stroke_ratio * dc.stroke_alt)
         rec = RecordingPen()
         super().draw(rec, dc)
 
@@ -28,19 +26,20 @@ class PerMilleSignGlyph(PercentMarkGlyph):
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
         h = self.zero_ratio * b.height
-        w = self.zero_ratio * b.width
+        w = self.zero_width_ratio * b.width
         ox = self.offset_ratio_x * b.width
         oy = self.offset_ratio_y * b.height
         x1 = b.x2 - ox / 2 + w / 2 + self.gap * b.width
+        zero_stroke = self.zero_stroke_ratio * dc.stroke_alt
         draw_loop(
             rec,
-            dc.stroke_alt,
-            dc.stroke_alt,
+            zero_stroke,
+            zero_stroke,
             x1,
             b.y1 + oy / 2 - h / 2,
             x1 + w,
             b.y1 + oy / 2 + h / 2,
-            b.hx * self.zero_ratio,
+            b.hx * self.zero_width_ratio,
             b.hy * self.zero_ratio,
         )
 
