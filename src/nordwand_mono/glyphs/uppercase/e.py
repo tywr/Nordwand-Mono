@@ -7,9 +7,11 @@ class UppercaseEGlyph(UppercaseGlyph):
     unicode = "0x45"
     offset = 14
     upper_bar_ratio = 1
-    mid_bar_ratio = 0.95
+    mid_bar_ratio = 0.96
     mid_ratio = 0.51
-    width_ratio=0.95
+    width_ratio = 0.95
+    mid_shift_coef = -0.05
+    mid_stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -18,8 +20,12 @@ class UppercaseEGlyph(UppercaseGlyph):
             height="cap",
             uppercase=True,
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        ymid = self.mid_ratio * b.height
+        sx, sy = self.get_strokes(dc)
+        yo = self.mid_shift_coef * (dc.stroke_x - dc.default_stroke)
+        smy = max(0, self.mid_stroke_dampening * (sy - dc.default_stroke)) + min(
+            dc.default_stroke, sy
+        )
+        ymid = self.mid_ratio * b.height + yo
 
         # Vertical stem
         draw_rect(pen, b.x1, b.y1, b.x1 + sx, b.y2)
@@ -31,9 +37,9 @@ class UppercaseEGlyph(UppercaseGlyph):
         draw_rect(
             pen,
             b.x1,
-            ymid - sy / 2,
+            ymid - smy / 2,
             b.x1 + self.mid_bar_ratio * b.width,
-            ymid + sy / 2,
+            ymid + smy / 2,
         )
 
         # Bottom bar

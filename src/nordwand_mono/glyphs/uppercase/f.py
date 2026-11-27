@@ -9,13 +9,15 @@ class UppercaseFGlyph(UppercaseGlyph):
     mid_bar_ratio = 0.93
     mid_ratio = 0.48
     width_ratio=0.95
+    mid_shift_coef = -0.15
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height="cap", width_ratio=self.width_ratio
         )
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        ymid = self.mid_ratio * b.height
+        yo = self.mid_shift_coef * (dc.stroke_x - dc.default_stroke)
+        sx, sy = self.get_strokes(dc)
+        ymid = self.mid_ratio * b.height + yo
 
         # Vertical stem
         draw_rect(pen, b.x1, b.y1, b.x1 + sx, b.y2)

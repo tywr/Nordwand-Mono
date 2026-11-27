@@ -10,24 +10,27 @@ class UppercaseGGlyph(RoundUppercaseGlyph):
     unicode = "0x47"
     offset = 10
     opening1 = 0.51
-    xmid_ratio = 0.54
+    xmid_ratio = 0.53
     stroke_x_dampening = 0.8
     stroke_y_dampening = 0.7
+    thinning = 1
+    mid_shift_coef = 0.2
+
 
     def draw(self, pen, dc):
         b = self.body(dc)
-        ec = 0.33 * self.extra_cut(dc)
+        ec = self.extra_cut(dc)
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
         rsx, msy = self.get_strokes(dc)
         rhx, rhy = self.right_hx_ratio * b.hx, b.hy
-        yo = 0.2 * (dc.stroke_x - dc.default_stroke)
+        yo = self.mid_shift_coef * (dc.stroke_x - dc.default_stroke)
         yc1 = b.y1 + b.height * self.opening1 + yo
         yc2 = b.y1 + b.height * self.opening2 - ec
 
         glyph = ufoLib2.objects.Glyph()
         draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, b.hx, b.hy, cut="right")
 
-        draw_loop(glyph.getPen(), rsx, sy, b.x1, b.y1, b.x2, b.y2, rhx, rhy, cut="left")
+        draw_loop(glyph.getPen(), rsx * self.thinning, sy, b.x1, b.y1, b.x2, b.y2, rhx, rhy, cut="left")
 
         cut_glyph = ufoLib2.objects.Glyph()
         draw_rect(

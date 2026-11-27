@@ -12,7 +12,7 @@ class UppercaseDGlyph(BowlUppercaseGlyph):
 
     def draw(self, pen, dc):
         b = self.body(dc)
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         xc = b.x1 + self.arch_start * b.width
         hx, hy = b.hx * self.hx_ratio, b.hy * self.hy_ratio
         w = 2 * (b.x2 - xc)

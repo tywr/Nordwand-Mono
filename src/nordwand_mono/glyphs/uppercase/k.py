@@ -11,8 +11,9 @@ class UppercaseKGlyph(UppercaseGlyph):
     branch_ratio = 0.65
     mid_ratio = 0.55
     upper_branch_offset = 0.05
-    lower_stroke_ratio = 1.0
+    stroke_ratio = 1.0
     branch_overlap = 0.8
+    upper_branch_shift_ratio = 0.2
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -22,17 +23,19 @@ class UppercaseKGlyph(UppercaseGlyph):
             overshoot_left=True,
             height="cap",
         )
-        xb = b.x1 + self.branch_overlap * dc.stroke_x
-        xtop = b.x2 - self.upper_branch_offset * b.width
+        sx, _ = self.get_strokes(dc)
+        xb = b.x1 + self.branch_overlap * sx
+        xo = self.upper_branch_shift_ratio * max(dc.stroke_x - dc.default_stroke, 0)
+        xtop = b.x2 - self.upper_branch_offset * b.width + xo
         ymid = b.y1 + self.mid_ratio * b.height
 
         # Left ascender stem
-        draw_rect(pen, b.x1, 0, b.x1 + dc.stroke_x, dc.cap)
+        draw_rect(pen, b.x1, 0, b.x1 + sx, dc.cap)
 
         # Lower branch
         _, d = draw_parallelogramm(
             pen,
-            self.lower_stroke_ratio * dc.stroke_x,
+            self.stroke_ratio * dc.stroke_x,
             xb,
             ymid,
             b.x2,

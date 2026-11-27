@@ -38,7 +38,7 @@ class UppercaseBGlyph(BowlUppercaseGlyph):
             b.y2,
             hx * (upper_x2 - upper_x1) / b.width,
             hy * (1 - self.mid_ratio),
-            taper=0.75,
+            taper=0.5,
             side="bottom",
             cut="left",
         )

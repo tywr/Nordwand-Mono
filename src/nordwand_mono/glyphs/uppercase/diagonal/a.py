@@ -10,13 +10,15 @@ class UppercaseAGlyph(DiagonalUppercaseGlyph):
     unicode = "0x41"
     offset = 0
     bar_height = 0.39
+    bar_shift_coef = 0.2
 
     def draw_branches(self, pen, dc, b):
         """Both branches meeting at the apex, with the crotch cut below it.
         Returns the overlap at the apex and the branches' horizontal width."""
-        s = self.branch_stroke_ratio * dc.stroke_x
+        sx, sy = self.get_strokes(dc)
+        s = self.branch_stroke_ratio * sx
         ov = self.overlap * s
-        ush = self.section_height * dc.stroke_y
+        ush = self.section_height * sy
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()
@@ -40,8 +42,8 @@ class UppercaseAGlyph(DiagonalUppercaseGlyph):
 
     def draw(self, pen, dc):
         b = self.body(dc)
-        sy = dc.stroke_y * self.stroke_y_ratio
-        yo = 0.2 * (dc.stroke_x - dc.default_stroke)
+        sx, sy = self.get_strokes(dc)
+        yo = self.bar_shift_coef * (dc.stroke_x - dc.default_stroke)
         hb = self.bar_height * b.height + yo
         ov, delta = self.draw_branches(pen, dc, b)
 

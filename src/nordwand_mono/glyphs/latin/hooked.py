@@ -234,12 +234,14 @@ class UppercaseKHookGlyph(FlagHookedGlyph, UppercaseKGlyph):
             overshoot_left=True,
             height="cap",
         )
-        xtop = b.x2 - self.upper_branch_offset * b.width
+        sx, _ = self.get_strokes(dc)
+        xo = self.upper_branch_shift_ratio * max(dc.stroke_x - dc.default_stroke, 0)
+        xtop = b.x2 - self.upper_branch_offset * b.width + xo
         # Section of the upper branch, shared with the lower one
-        xb = b.x1 + self.branch_overlap * dc.stroke_x
+        xb = b.x1 + self.branch_overlap * sx
         ymid = b.y1 + self.mid_ratio * b.height
         d = parallelogramm_delta(
-            self.lower_stroke_ratio * dc.stroke_x, xb, ymid, b.x2, b.y1
+            self.stroke_ratio * dc.stroke_x, xb, ymid, b.x2, b.y1
         )
         return xtop, d, b.y2, b.width
 

@@ -12,10 +12,11 @@ class UppercaseCGlyph(RoundUppercaseGlyph):
     opening1 = 0.29
     width_ratio = 0.99
     accent_x_offset = 4
+    thinning = 1
 
     def draw(self, pen, dc):
         b = self.body(dc)
-        sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
+        sx, sy = self.get_strokes(dc)
         ec = self.extra_cut(dc)
         yc1 = b.y1 + b.height * self.opening1 + ec
         yc2 = b.y1 + b.height * self.opening2 - ec
@@ -25,7 +26,7 @@ class UppercaseCGlyph(RoundUppercaseGlyph):
         glyph = ufoLib2.objects.Glyph()
         draw_loop(
             glyph.getPen(),
-            sx,
+            sx * self.thinning,
             sy,
             b.x1,
             b.y1,

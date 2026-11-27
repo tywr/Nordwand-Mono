@@ -6,16 +6,18 @@ class UppercaseHGlyph(UppercaseGlyph):
     name = "uppercase_h"
     unicode = "0x48"
     offset = 0
-    bar_height = 0.518
+    bar_height = 0.51
     width_ratio = 1.0
     height = "cap"
+    mid_shift_coef = -0.04
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset, height=self.height, width_ratio=self.width_ratio, uppercase=True
         )
         sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
-        yb = self.bar_height * b.height
+        yo = self.mid_shift_coef * (dc.stroke_x - dc.default_stroke)
+        yb = self.bar_height * b.height + yo
 
         # Left stem
         draw_rect(pen, b.x1, b.y1, b.x1 + sx, b.y2)
