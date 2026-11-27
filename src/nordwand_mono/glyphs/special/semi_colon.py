@@ -1,6 +1,5 @@
 from nordwand_mono.glyphs import Glyph
 from nordwand_mono.draw.dot import dot_size, draw_dot
-from nordwand_mono.draw.polygon import draw_polygon
 
 
 class SemiColonGlyph(Glyph):

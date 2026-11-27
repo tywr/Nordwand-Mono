@@ -13,7 +13,7 @@ class UppercaseQGlyph(RoundUppercaseGlyph):
     tail_y_end = 1.0
     tail_x_end = 1.0
     tail_y_start = 0.5
-    tail_x_start = 0.25
+    tail_x_start = 0.01
     tail_stroke_dampening = 0.6
 
     def draw(self, pen, dc):
