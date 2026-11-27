@@ -17,6 +17,7 @@ class QuestionMarkGlyph(Glyph):
     gap = 0.33
     gap_shift_ratio = 0.75
     curve_height = 0.4
+    curve_thinning_shift_ratio = 0.15
     curve_thinning = 0.02
     curve_ratio = 1.5
     curve_shift_ratio = 0.005
@@ -41,7 +42,8 @@ class QuestionMarkGlyph(Glyph):
         yo = self.gap_shift_ratio * max(0, sx - dc.default_stroke)
         ys = self.gap * b.height + yo
         hx = self.hx_ratio * b.hx
-        th = self.curve_thinning * b.height
+        tho = self.curve_thinning_shift_ratio * (sx - dc.default_stroke)
+        th = self.curve_thinning * b.height + tho
         ro = self.curve_shift_ratio * max(0, sx - dc.default_stroke)
         r = self.curve_ratio + ro
 
