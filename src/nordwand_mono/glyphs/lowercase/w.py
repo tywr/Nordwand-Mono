@@ -16,7 +16,7 @@ class LowercaseWGlyph(Glyph):
     width_ratio = 1.27
     stroke_ratio = 1
     inner_stroke_ratio = 0.85
-    thin_boost = 0.1
+    thin_boost = 0.04
     lower_section_height = 1
     stroke_dampening = 0.8
 
