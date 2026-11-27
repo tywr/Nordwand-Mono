@@ -3,7 +3,6 @@ from booleanOperations.booleanGlyph import BooleanGlyph
 from nordwand_mono.glyphs import Glyph
 from nordwand_mono.draw.rect import draw_rect
 from nordwand_mono.draw.loop import draw_loop
-from nordwand_mono.draw.polygon import draw_polygon
 
 
 class QuestionMarkGlyph(Glyph):
@@ -11,12 +10,19 @@ class QuestionMarkGlyph(Glyph):
     unicode = "0x3F"
     offset = 0
     width_ratio = 1
-    loop_ratio = 0.6
+    loop_ratio_left = 0.6
+    loop_ratio_right = 0.5
+    opening = 0.74
     hx_ratio = 1
-    gap = 0.35
-    height_overflow = 0.05
-    taper_length = 0.25
-    taper = 0.75
+    gap = 0.33
+    gap_shift_ratio = 0.75
+    curve_height = 0.4
+    curve_thinning = 0.02
+    curve_ratio = 1.5
+    curve_shift_ratio = 0.005
+    stroke_y_dampening = 0.7
+    stroke_x_dampening = 0.9
+    thinning = 0.8
 
     def draw(self, pen, dc):
         from nordwand_mono.glyphs.special.full_stop import FullStopGlyph
@@ -26,75 +32,75 @@ class QuestionMarkGlyph(Glyph):
             height="cap",
             width_ratio=self.width_ratio,
             overshoot_top=True,
-            overshoot_left=True,
-            overshoot_right=True,
         )
-        g = self.gap * b.height
-        dh = self.height_overflow * b.height
-        h = self.loop_ratio * b.height
-        sx, sy = dc.stroke_x, dc.stroke_y
-        hx = self.hx_ratio * b.hx
+        sx, sy = self.get_strokes(dc)
         ec = self.extra_cut(dc)
-        yl = b.y2 - h / 2 + dh
+        yc = b.y1 + self.opening * b.height + ec
+        yl = (1 - self.loop_ratio_left) * b.height
+        yr = (1 - self.loop_ratio_right) * b.height
+        yo = self.gap_shift_ratio * max(0, sx - dc.default_stroke)
+        ys = self.gap * b.height + yo
+        hx = self.hx_ratio * b.hx
+        th = self.curve_thinning * b.height
+        ro = self.curve_shift_ratio * max(0, sx - dc.default_stroke)
+        r = self.curve_ratio + ro
+
+        # Left part of the top-loop
+        glyph = ufoLib2.objects.Glyph()
         draw_loop(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
+            glyph.getPen(),
+            self.get_thinned_stroke(dc),
+            sy,
             b.x1,
-            b.y2 - h + dh,
+            yl,
             b.x2,
-            b.y2 + dh,
+            b.y2,
             hx,
-            b.hy * self.loop_ratio,
-            cut="bottom",
+            b.hy * self.loop_ratio_left,
+            quarter="top-left",
         )
 
-        # The left part reaches further down on bolder weights
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_loop(
-            loop_glyph.getPen(),
-            dc.stroke_x,
-            dc.stroke_y,
-            b.x1,
-            b.y2 - h + dh,
-            b.x2,
-            b.y2 + dh,
-            hx,
-            b.hy * self.loop_ratio,
-            cut="right",
-        )
         cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), b.x1 - 10, b.y2 - h + dh - 10, b.xmid, yl - ec)
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
-        draw_loop(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            b.x1,
-            b.y2 - h + dh,
-            b.x2,
-            b.y2 + dh,
-            hx,
-            b.hy * self.loop_ratio,
-            cut="left",
-        )
         draw_rect(
-            pen,
-            b.xmid - dc.stroke_x / 2,
-            b.y1 + g + h * self.taper_length,
-            b.xmid + dc.stroke_x / 2,
-            b.y2 - h + dh + sy,
+            cut_glyph.getPen(),
+            b.xmid,
+            b.y1,
+            b.x2 + 10,
+            yc,
         )
-        draw_polygon(
+        res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
+        res.draw(pen)
+
+        # Right part of the top loop
+        loop = draw_loop(
             pen,
-            points=[
-                (b.xmid + sx / 2, b.y1 + g + h * self.taper_length),
-                (b.xmid - sx / 2, b.y1 + g + h * self.taper_length),
-                (b.xmid - self.taper * sx / 2, b.y1 + g),
-                (b.xmid + self.taper * sx / 2, b.y1 + g),
-            ],
+            sx,
+            sy,
+            b.x1,
+            yr,
+            b.x2,
+            b.y2,
+            hx,
+            b.hy * self.loop_ratio_right,
+            quarter="top-right",
         )
+
+        # Mid Curve
+        ym = (b.y2 + yr) / 2
+        lhy, lihy = loop["outer"].hy, loop["inner"].hy
+        pen.moveTo((b.x2 - sx, ym))
+        pen.curveTo(
+            (b.x2 - sx, ym - r * lihy - th),
+            (b.xmid - sx / 2, ys + r * lhy - th),
+            (b.xmid - sx / 2, ys),
+        )
+        pen.lineTo((b.xmid + sx / 2, ys))
+        pen.curveTo(
+            (b.xmid + sx / 2, ys + r * lihy + th),
+            (b.x2, ym - r * lhy + th),
+            (b.x2, ym),
+        )
+        pen.closePath()
 
         fsp = FullStopGlyph()
         fsp.draw(pen, dc)
