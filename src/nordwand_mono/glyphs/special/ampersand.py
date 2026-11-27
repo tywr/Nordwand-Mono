@@ -1,52 +1,145 @@
-from math import cos, sin, tan, hypot
 import ufoLib2
 from booleanOperations.booleanGlyph import BooleanGlyph
-
+from bisect import bisect
+from math import atan, cos, sin, dist
+from nordwand_mono.utils.pens import NullPen
 from nordwand_mono.glyphs import Glyph
-from nordwand_mono.glyphs.numbers.three import ThreeGlyph
 from nordwand_mono.draw.loop import draw_loop
-from nordwand_mono.draw.arch import draw_arch
 from nordwand_mono.draw.rect import draw_rect
+from nordwand_mono.draw.arch import draw_arch
 from nordwand_mono.draw.parallelogramm import draw_parallelogramm
-from nordwand_mono.shapes.superellipse import Superellipse
-from nordwand_mono.glyphs.numbers.two import handle_on_line
 
 
 class AmpersandGlyph(Glyph):
     name = "ampersand"
     unicode = "0x26"
-    offset = -50
-    width_ratio = 1.08
-    upper_width = 0.8
-    upper_height = 0.4
-    lower_width = 1
-    hook_ratio = 0.12
-    hook_below_baseline = 0
-    hook_outside_cell = 0.24
-    end_height_ratio = 0.5
-    diag_stroke_ratio = 1
-    # Center of the top end of the diagonal, relative to the body
-    diag_x_ratio = 0.65
-    diag_y_ratio = 0.35
-    hy_curve_ratio = 0.85
-    hd_curve_ratio = 1.0
+    offset = 70
+    width_ratio = 1.2
+    top_loop_x_ratio = 0.7
+    top_loop_y_left_ratio = 0.4
+    top_loop_y_right_ratio = 0.55
+    joint_x = 1.4
+    control_coef_1 = 0.66
+    control_coef_2 = 0.15
+    junction_ratio = 0.85
+    bottom_loop_x_ratio = 0.55
+    bottom_right_offset = 0.2
+    opening1 = 0.5
+    opening2 = 0.75
+    stroke_x_dampening = 0.9
+    stroke_y_dampening = 0.9
 
-    def top_loop(self, dc) -> Superellipse:
-        """Superellipse of the former top loop of the 3, for its handles."""
-        three = ThreeGlyph()
-        b = three.body(dc)
-        sy = dc.stroke_y * three.stroke_y_ratio
-        ymid = b.y1 + three.mid_ratio * b.height
-        ry = (b.y2 - b.ymid + sy / 2) / b.height
-        return Superellipse(
-            x1=b.x1 + (1 - three.loop_width_ratio) * b.width / 2,
-            # The bottom of the loop sits on the top of the middle bar
-            y1=ymid + three.mid_stroke(dc) / 2 - sy,
-            x2=b.x2 - (1 - three.loop_width_ratio) * b.width / 2,
-            y2=b.y2,
-            hx=b.hx * three.hx_ratio,
-            hy=b.hy * three.hy_ratio * ry * 2 * (1 - three.mid_ratio),
+    def draw_hook(self, pen, b, sx, sy):
+        """Top half-loop blending into the branch going down to the bottom
+        right. Returns the middle of the stroke of the branch, sampled from
+        the left of the half-loop to the bottom."""
+
+        # Top half of the loop
+        xl = b.x1 + self.top_loop_x_ratio * b.width
+        yl = b.y2 - self.top_loop_y_left_ratio * b.height
+        yr = b.y2 - self.top_loop_y_right_ratio * b.height
+        ymid = (yl + b.y2) / 2
+        params = draw_loop(
+            pen,
+            sx,
+            sy,
+            b.x1,
+            yl,
+            xl,
+            b.y2,
+            b.hx * self.top_loop_x_ratio,
+            b.hy * self.top_loop_y_left_ratio,
+            quarter="top-left",
         )
+        draw_loop(
+            pen,
+            sx,
+            sy,
+            b.x1,
+            yr,
+            xl,
+            b.y2,
+            b.hx * self.top_loop_x_ratio,
+            b.hy * self.top_loop_y_right_ratio,
+            quarter="top-right",
+        )
+
+        # Junction of the diagonal with the bottom of the loop
+        xj = b.x1 + self.joint_x * sx
+        (_, y1), (_, y2) = params["outer"].intersection_x(x=xj)
+        yj = min(y1, y2)
+
+        # Diagonal from the left of the loop down to the bottom right, mirror
+        # of the branch of the 6
+        _, delta = draw_parallelogramm(
+            NullPen(), sx, b.x1, ymid, b.x2, 0, direction="bottom-right"
+        )
+        theta = atan((-yj) / (b.x2 - xj))
+
+        lp = ((yj) ** 2 + (b.x2 - xj) ** 2) ** 0.5
+        dx = lp * cos(theta)
+        dy = lp * sin(theta)
+        dx1m, dy1m = self.control_coef_1 * dx, self.control_coef_1 * dy
+        dx2m, dy2m = self.control_coef_2 * dx, self.control_coef_2 * dy
+
+        # exterior points
+        x1m, y1m = xj - delta + dx1m, yj + dy1m
+        x2m, y2m = xj - delta + dx2m, yj + dy2m
+        x3m, y3m = b.x1, yj + (b.x1 + delta - xj) * dy / dx
+
+        # interior points: the exterior curve on the inner edge of the branch,
+        # moved by delta, up to sx inside the left of the loop
+        x1i, y1i = x1m + delta, y1m
+        x2i, y2i = x2m + delta, y2m
+        x3i, y3i = x3m + sx, y3m
+
+        pen.moveTo((b.x1, ymid))
+        pen.curveTo(
+            (x3m, y3m),
+            (x2m, y2m),
+            (x1m, y1m),
+        )
+        pen.lineTo((b.x2 - delta, 0))
+        pen.lineTo((b.x2, 0))
+        pen.lineTo((x1i, y1i))
+        pen.curveTo(
+            (x2i, y2i),
+            (x3i, y3i),
+            (b.x1 + sx, ymid),
+        )
+        pen.closePath()
+
+        # Middle of the stroke of the branch: the average of its exterior and
+        # interior edges, a curve then a line down to the bottom
+        p0, p1 = (b.x1 + sx / 2, ymid), (x3m + sx / 2, y3m)
+        p2, p3 = (x2m + delta / 2, y2m), (x1m + delta / 2, y1m)
+        p4 = (b.x2 - delta / 2, 0)
+        # ponytail: curve sampled in 64 segments, more if t needs to be finer
+        spine = [
+            tuple(
+                (1 - u) ** 3 * a
+                + 3 * (1 - u) ** 2 * u * b_
+                + 3 * (1 - u) * u**2 * c
+                + u**3 * d
+                for a, b_, c, d in zip(p0, p1, p2, p3)
+            )
+            for u in (i / 64 for i in range(65))
+        ] + [p4]
+        return (b.x1 + xl) / 2, spine
+
+    def branch_point(self, b, sx, sy, t):
+        """(x, y) on the middle of the branch, t going from 0 at the left of
+        the half-loop to 1 at the bottom, proportionally to the length
+        travelled along it."""
+        _, spine = self.draw_hook(NullPen(), b, sx, sy)
+        lengths = [0]
+        for q1, q2 in zip(spine, spine[1:]):
+            lengths.append(lengths[-1] + dist(q1, q2))
+        target = t * lengths[-1]
+        i = min(max(bisect(lengths, target), 1), len(lengths) - 1)
+        r = (target - lengths[i - 1]) / (lengths[i] - lengths[i - 1])
+        (xa, ya), (xb, yb) = spine[i - 1], spine[i]
+        return xa + r * (xb - xa), ya + r * (yb - ya)
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -57,136 +150,60 @@ class AmpersandGlyph(Glyph):
             width_ratio=self.width_ratio,
             uppercase=True,
         )
-
+        sx, sy = self.get_strokes(dc)
         ec = self.extra_cut(dc)
-        ox = self.hook_outside_cell * b.width
-        h = self.upper_height * b.height
-        w = self.upper_width * b.width
-        xu1, xu2 = b.xmid - w / 2, b.xmid + w / 2
-        yu1, yu2 = b.y2 - h, b.y2
+        yc1 = b.y1 + self.opening1 * b.height + ec
+        yc2 = b.y1 + self.opening2 * b.height - ec
 
-        # Same handles as the top loop of the 3, the loop being drawn lower for
-        # bolder weights while the junction stays where it was
-        loop = self.top_loop(dc).resize(xu1, yu1, xu2, yu2)
-        xj = xu1 + self.hook_ratio * w
-        (_, y1), (_, y2) = loop.intersection_x(x=xj)
-        yj = min(y1, y2)
+        glyph = ufoLib2.objects.Glyph()
+        # Draw the top hook and compute the junction
+        xm, _ = self.draw_hook(glyph.getPen(), b, sx, sy)
+        (xj, yj) = self.branch_point(b, sx, sy, 1 - self.junction_ratio)
 
-        yu1 -= 2 * ec
-        loop = loop.resize(xu1, yu1, xu2, yu2)
-        params = draw_loop(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            xu1,
-            yu1,
-            xu2,
-            yu2,
-            loop.hx,
-            loop.hy,
-            cut="bottom",
-        )
-
-        # Diagonal to the bottom right, its top end centered on (xc, yc), the
-        # center sitting higher for bolder weights, like the 2. Mirror of the 2: the top end, across the stroke from the
-        # outer corner (xd, yd) to the facing point (xd2, yd2) of the inner
-        # edge, is s long and perpendicular to the diagonal, theta being its
-        # angle from vertical, so (xd, yd) = (xc, yc) + s / 2 * (-cos, -sin).
-        # Theta depends on the corner, so iterate
-        s = self.diag_stroke_ratio * dc.stroke_x
-        dhy = self.hook_below_baseline * b.height
-        yc_offset = -0.25 * (dc.stroke_y - dc.default_stroke)
-        yc = b.y1 + self.diag_y_ratio * b.height + yc_offset
-        xc = b.x1 + self.diag_x_ratio * b.width
-        xd, yd = xc, yc
-        for _ in range(10):
-            theta, _ = draw_parallelogramm(
-                pen, s, b.x2 + ox, -dhy, xd, yd, direction="top-left", no_draw=True
-            )
-            xd, yd = xc - s / 2 * cos(theta), yc - s / 2 * sin(theta)
-        theta, delta = draw_parallelogramm(
-            pen, s, b.x2 + ox, -dhy, xd, yd, direction="top-left"
-        )
-        xd2, yd2 = xd + delta * cos(theta) ** 2, yd + delta * cos(theta) * sin(theta)
-
-        # Curves from the left of the loop to the diagonal, like the 2: the
-        # control point below the loop stays vertical, the other one on the
-        # diagonal line, their distance scaled by the distance between the two
-        # control points of the quarter of the outer, and inner, superellipse
-        inner, outer = params["inner"], params["outer"]
-        hd = self.hd_curve_ratio * hypot(
-            outer.xmid - outer.hx - outer.x1, outer.y2 - outer.ymid - outer.hy
-        )
-        hdi = self.hd_curve_ratio * hypot(
-            inner.xmid - inner.hx - inner.x1, inner.y2 - inner.ymid - inner.hy
-        )
-        yhi = inner.ymid - inner.hy * self.hy_curve_ratio
-        yho = outer.ymid - outer.hy * self.hy_curve_ratio
-        xci, yci = handle_on_line(xd2, yd2, -sin(theta), cos(theta), inner.x1, yhi, hdi)
-        xco, yco = handle_on_line(xd, yd, -sin(theta), cos(theta), outer.x1, yho, hd)
-
-        pen.moveTo((outer.x1, outer.ymid))
-        pen.curveTo(
-            (outer.x1, yho),
-            (xco, yco),
-            (xd, yd),
-        )
-        # Through the top-right corner of the diagonal, to fill the triangle
-        # between its flat end and the perpendicular end of the curve
-        pen.lineTo((xd + delta, yd))
-        pen.lineTo((xd2, yd2))
-        pen.curveTo(
-            (xci, yci),
-            (inner.x1, yhi),
-            (inner.x1, inner.ymid),
-        )
-        pen.closePath()
-
-        # Draw the lower bowl
-        xbm = b.xmid
-        lw = self.lower_width * b.width
-        lh = yj - b.y1
-
+        # Bottom loop
+        w = self.bottom_loop_x_ratio * b.width
+        x1, x2 = xj - w / 2, xj + w / 2
+        x2r = b.x2 - self.bottom_right_offset * b.width
         draw_arch(
-            pen,
-            dc.stroke_x,
-            dc.stroke_y,
-            xbm - lw / 2,
+            glyph.getPen(),
+            sx,
+            sy,
+            x1,
             b.y1,
-            xbm + lw / 2,
+            x2,
             yj,
-            b.hx * lw / b.width,
-            b.hy * lh / b.height,
+            b.hx * w / b.width,
+            b.hy * (yj - b.y1) / b.height,
+            taper=0.75,
+            quarter="top-left",
+            side="top",
+        )
+        draw_loop(
+            glyph.getPen(),
+            sx,
+            sy,
+            x1,
+            b.y1,
+            x2r,
+            yj,
+            b.hx * (x2r - x1) / b.width,
+            b.hy * (yj - b.y1) / b.height,
             cut="top",
-            side="top",
-            taper=0.5,
         )
-
-        loop_glyph = ufoLib2.objects.Glyph()
-        draw_arch(
-            loop_glyph.getPen(),
-            dc.stroke_x,
-            dc.stroke_y,
-            xbm - lw / 2,
-            b.y1,
-            xbm + lw / 2,
-            yj,
-            b.hx * lw / b.width,
-            b.hy * lh / b.height,
-            cut="right",
-            side="top",
-            taper=0.5,
-        )
-
-        # Where the inner edge of the diagonal crosses the top of the bowl
-        xcut = xd + delta - (yj - yd) * tan(theta)
-        cut_glyph = ufoLib2.objects.Glyph()
-        draw_rect(cut_glyph.getPen(), xcut, 0.5 * b.y1 + 0.5 * yj, b.x2, b.y2)
-        result = BooleanGlyph(loop_glyph).difference(BooleanGlyph(cut_glyph))
-        result.draw(pen)
-
-        # Draw the height extension
-        eh = self.end_height_ratio * b.height
         draw_rect(
-            pen, xbm + lw / 2 - dc.stroke_x, 0.5 * b.y1 + 0.5 * yj, xbm + lw / 2, eh + ec
+            glyph.getPen(),
+            x2r - sx,
+            (b.y1 + yj) / 2,
+            x2r,
+            yc2,
         )
+        cut_glyph = ufoLib2.objects.Glyph()
+        draw_rect(
+            cut_glyph.getPen(),
+            b.xmid,
+            yc1,
+            b.x2 + 10,
+            yc2,
+        )
+        res = BooleanGlyph(glyph).difference(BooleanGlyph(cut_glyph))
+        res.draw(pen)
