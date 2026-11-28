@@ -11,9 +11,11 @@ class LowercaseYGlyph(Glyph):
     name = "lowercase_y"
     unicode = "0x79"
     offset = 0
-    width_ratio = 1.15
+    width_ratio = 1.12
     stroke_ratio = 1.0
     lower_section_height = 1.2
+    stroke_x_dampening = 0.8
+    expand_factor = 1.1
 
     def tail_end(self, dc):
         """Height the tail runs down to"""
@@ -32,8 +34,8 @@ class LowercaseYGlyph(Glyph):
         return (-qb + sqrt(qb**2 - 4 * qa * qc)) / (2 * qa)
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
-        s = self.stroke_ratio * dc.stroke_x
+        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio, expand_factor=self.expand_factor)
+        s, _ = self.get_strokes(dc)
         delta = self.section(s, b)
         ov = delta / 2
         lsh = self.lower_section_height * dc.stroke_y

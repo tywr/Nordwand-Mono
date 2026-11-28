@@ -39,4 +39,4 @@ website:
 
 lab:
 	@echo "Lab on http://localhost:8001/lab/"
-	uv run python -m nordwand_mono.scripts.serve . 8001
+	uv run python -m nordwand_mono.scripts.serve . 8001 --rebuild

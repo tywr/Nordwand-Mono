@@ -9,23 +9,27 @@ class LowercaseVGlyph(Glyph):
     name = "lowercase_v"
     unicode = "0x76"
     offset = 0
-    width_ratio = 1.15
+    width_ratio = 1.12
     stroke_ratio = 1.0
     overlap = 0.25
     lower_section_height = 1
+    expand_factor = 1.1
+    stroke_x_dampening = 0.8
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
-        s = self.stroke_ratio * dc.stroke_x
+        b = dc.body_bounds(
+            offset=self.offset,
+            width_ratio=self.width_ratio,
+            expand_factor=self.expand_factor,
+        )
+        s, _ = self.get_strokes(dc)
         ov = self.overlap * s
         lsh = self.lower_section_height * dc.stroke_y
 
         glyph = ufoLib2.objects.Glyph()
         gpen = glyph.getPen()
         _, delta = draw_parallelogramm(gpen, s, b.xmid - ov, 0, b.x2, b.y2)
-        draw_parallelogramm(
-            gpen, s, b.xmid + ov, 0, b.x1, b.y2, direction="top-left"
-        )
+        draw_parallelogramm(gpen, s, b.xmid + ov, 0, b.x1, b.y2, direction="top-left")
         cut_glyph = ufoLib2.objects.Glyph()
         draw_polygon(
             cut_glyph.getPen(),

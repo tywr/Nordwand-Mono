@@ -11,8 +11,8 @@ class UppercaseGGlyph(RoundUppercaseGlyph):
     offset = 10
     opening1 = 0.51
     xmid_ratio = 0.53
-    stroke_x_dampening = 0.8
-    stroke_y_dampening = 0.7
+    stroke_x_dampening = 0.7
+    stroke_y_dampening = 0.8
     thinning = 1
     mid_shift_coef = 0.2
 

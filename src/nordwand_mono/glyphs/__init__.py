@@ -57,7 +57,7 @@ class Glyph(ABC):
         )
         return sx, sy
 
-    def get_thinned_stroke(self, dc, coefficient=None, stroke=None):
+    def get_thinned_stroke(self, dc, coefficient=None, stroke=None, default=None):
         """Get the thinned stroke to apply on cut endings (eg. c, a, s etc.)"""
 
         def damp(stroke, default, dampening):
@@ -67,9 +67,14 @@ class Glyph(ABC):
             s, _ = self.get_strokes(dc)
         else:
             s = stroke
+
         if coefficient is None:
             coefficient = self.thinning
-        return damp(s, dc.default_stroke, coefficient)
+
+        if not default:
+            return damp(s, dc.default_stroke, coefficient)
+        else:
+            return damp(s, default, coefficient)
 
     def extra_cut(self, dc) -> int:
         return min(

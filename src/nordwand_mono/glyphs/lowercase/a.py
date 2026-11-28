@@ -25,6 +25,7 @@ class LowercaseAGlyph(Glyph):
     bowl_top_ratio = 1.05
     thinning = 1
     extra_cut_ratio = 0.2
+    stroke_y_dampening = 0.7
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

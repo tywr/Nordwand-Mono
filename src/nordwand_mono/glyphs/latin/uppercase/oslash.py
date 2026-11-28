@@ -10,7 +10,7 @@ class UppercaseOSlashGlyph(UppercaseGlyph):
     stroke_x_ratio = UppercaseGlyph.stroke_x_ratio * 1.00
     stroke_y_ratio = UppercaseGlyph.stroke_y_ratio * 1.00
     width_ratio = 1.18
-    slash_stroke = 1.2
+    slash_stroke_dampening = 0.5
     slash_length = 1.75
 
     def draw(self, pen, dc):
@@ -22,16 +22,13 @@ class UppercaseOSlashGlyph(UppercaseGlyph):
             width_ratio=self.width_ratio,
             uppercase=True,
         )
-        sx, sy = (
-            self.stroke_x_ratio * dc.stroke_x,
-            self.stroke_y_ratio * dc.stroke_y * self.stroke_y_ratio,
-        )
-        ss = sy * self.slash_stroke
+        sx, sy = self.get_strokes(dc)
+        ss = self.get_thinned_stroke(dc, self.slash_stroke_dampening)
         sl = self.slash_length * b.width
         draw_loop(
             pen,
-            dc.stroke_x * self.stroke_x_ratio,
-            dc.stroke_y * self.stroke_y_ratio,
+            sx,
+            sy,
             b.x1,
             b.y1,
             b.x2,

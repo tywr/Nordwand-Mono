@@ -76,16 +76,24 @@ textarea + textarea { border-left: 1px solid var(--border); }
 
 <script>
 {
-  // Served from the repo root by `make lab`, so this is the latest build;
-  // the server sends no-store, so a plain reload picks up a rebuild
+  // Served from the repo root by `make lab`, which rebuilds the OTF fonts
+  // whenever a source is saved
   const STYLES = [[100, 'Thin'], [200, 'ExtraLight'], [300, 'Light'], [375, 'Book'], [400, ''], [450, 'Retina'], [500, 'Medium'], [600, 'SemiBold'], [700, 'Bold']];
-  const css = STYLES.flatMap(([weight, name]) => [
-    [weight, name || 'Regular', 'normal'],
-    [weight, (name || '') + 'Italic', 'italic'],
-  ]).map(([weight, file, style]) =>
-    `@font-face { font-family: "Nordwand Mono"; src: url("/fonts/woff2/NordwandMono-${file}.woff2") format("woff2"); font-weight: ${weight}; font-style: ${style}; }`
-  ).join('\n');
-  document.head.append(Object.assign(document.createElement('style'), { textContent: css }));
+  // A new URL on every load: browsers keep decoded fonts in memory by URL,
+  // even with no-store
+  let version = Date.now();
+  const fontStyle = document.head.appendChild(document.createElement('style'));
+  function loadFonts() {
+    fontStyle.textContent = STYLES.flatMap(([weight, name]) => [
+      [weight, name || 'Regular', 'normal'],
+      [weight, (name || '') + 'Italic', 'italic'],
+    ]).map(([weight, file, style]) =>
+      `@font-face { font-family: "Nordwand Mono"; src: url("/fonts/otf/NordwandMono-${file}.otf?v=${version}") format("opentype"); font-weight: ${weight}; font-style: ${style}; }`
+    ).join('\n');
+  }
+  loadFonts();
+  // The server announces each rebuild: new fonts in place, the text kept
+  new EventSource('/events').onmessage = () => { version = Date.now(); loadFonts(); };
 
   // [tag, highest value]; ponytail: kept by hand, update with doc/alternative_characters.md and doc/stylistic_sets.md
   const FEATURES = [

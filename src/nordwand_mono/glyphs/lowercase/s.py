@@ -21,7 +21,7 @@ class LowercaseSGlyph(Glyph):
     curve_shift_ratio = 0.000
     curve_ratio = 2.2
     stroke_x_dampening = 1
-    stroke_y_dampening = 0.8
+    stroke_y_dampening = 0.7
     ending_hx_ratio = 1.15
     extra_cut_ratio = 0.2
 

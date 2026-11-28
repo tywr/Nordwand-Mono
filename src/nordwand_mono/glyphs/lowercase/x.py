@@ -9,14 +9,15 @@ class LowercaseXGlyph(Glyph):
     name = "lowercase_x"
     unicode = "0x78"
     offset = 0
-    width_ratio = 1.1
-    stroke_ratio = 1
+    width_ratio = 1.08
     inner_section_height = 0.85
     top_width_ratio = 1
+    expand_factor=1.1
+    stroke_x_dampening = 0.8
 
     def draw(self, pen, dc):
-        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio)
-        s = self.stroke_ratio * dc.stroke_x
+        b = dc.body_bounds(offset=self.offset, width_ratio=self.width_ratio, expand_factor=self.expand_factor)
+        s, _ = self.get_strokes(dc)
         ish = self.inner_section_height * dc.stroke_y
         w = self.top_width_ratio * b.width
         xt1, xt2 = b.xmid - w / 2, b.xmid + w / 2

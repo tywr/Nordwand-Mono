@@ -15,7 +15,7 @@ from nordwand_mono.glyphs.uppercase.i import UppercaseIGlyph
 from nordwand_mono.glyphs.uppercase.round.o import UppercaseOGlyph
 from nordwand_mono.glyphs.uppercase.u import UppercaseUGlyph
 from nordwand_mono.glyphs.uppercase.diagonal.y import UppercaseYGlyph
-from nordwand_mono.glyphs.uppercase.diagonal.w import UppercaseWGlyph
+from nordwand_mono.glyphs.uppercase.w import UppercaseWGlyph
 from nordwand_mono.glyphs.accents.dieresis import Dieresis
 from nordwand_mono.glyphs.lowercase.square.h import LowercaseHGlyph
 from nordwand_mono.glyphs.composed.acute import LowercaseLAcuteGlyph

@@ -14,14 +14,13 @@ class UppercaseMGlyph(StemDiagonalUppercaseGlyph):
     inner_thickness_ratio = 2.4
     inner_height = 0.2
     width_ratio = 1.16
-    stroke_dampening = 0.8
+    stroke_x_dampening = 0.7
+    inner_stroke_dampening = 0.5
     ink_traps = True
 
     def draw(self, pen, dc):
         b = self.body(dc)
-        sx = max(0, self.stroke_dampening * (dc.stroke_x - dc.default_stroke)) + min(
-            dc.default_stroke, dc.stroke_x
-        )
+        sx, _ = self.get_strokes(dc)
         si = self.inner_stroke(sx, dc)
         ov = sx * self.overlap
         ovm = sx * self.mid_overlap

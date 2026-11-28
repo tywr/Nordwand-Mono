@@ -13,17 +13,17 @@ class CaronVertical(Accent):
     name = "caron_vertical"
     unicode = None
     generated_only = True  # Only used inside composed glyphs
-    stroke_ratio = 1.1  # Width at the top, relative to stroke_x
-    taper = 0.7  # Width at the bottom, relative to the top
-    height = 0.4  # Relative to the x-height
-    lean = 0.35  # Bottom shift to the left, relative to the top width
-    gap = 0.75  # Space between the stem and the mark, relative to stroke_x
+    stroke_ratio = 1.0
+    taper = 0.7
+    height = 0.4
+    lean = 0.2
+    gap = 0.15
 
     def top_width(self, dc):
         return self.stroke_ratio * dc.stroke_x
 
     def gap_width(self, dc):
-        return self.gap * dc.stroke_x
+        return self.gap * dc.width
 
     def draw_at(self, pen, dc, x, y):
         """Draw the mark with the top-left corner of its top edge at (x, y)."""

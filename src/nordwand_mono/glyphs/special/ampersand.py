@@ -26,8 +26,8 @@ class AmpersandGlyph(Glyph):
     bottom_right_offset = 0.2
     opening1 = 0.5
     opening2 = 0.75
-    stroke_x_dampening = 0.9
-    stroke_y_dampening = 0.9
+    stroke_x_dampening = 0.7
+    stroke_y_dampening = 0.8
 
     def draw_hook(self, pen, b, sx, sy):
         """Top half-loop blending into the branch going down to the bottom

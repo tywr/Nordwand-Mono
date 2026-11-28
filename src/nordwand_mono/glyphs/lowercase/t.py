@@ -22,10 +22,11 @@ class LowercaseTGlyph(Glyph):
     # bar; the stem stays on the body's center, see `cross_bar_stem`
     terminal_offset = 0
     centered_stem = True
+    expand_factor = 0.9
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="x_height", width_ratio=self.width_ratio
+            offset=self.offset, height="x_height", width_ratio=self.width_ratio, expand_factor=self.expand_factor
         )
         x1, x2, xs, xt = cross_bar_stem(
             b, self.rl_ratio, self.terminal_offset, self.centered_stem

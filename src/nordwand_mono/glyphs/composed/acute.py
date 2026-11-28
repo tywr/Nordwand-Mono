@@ -23,7 +23,7 @@ from nordwand_mono.glyphs.uppercase.u import UppercaseUGlyph
 from nordwand_mono.glyphs.uppercase.stem_diagonal.n import UppercaseNGlyph
 from nordwand_mono.glyphs.uppercase.round.c import UppercaseCGlyph
 from nordwand_mono.glyphs.uppercase.diagonal.y import UppercaseYGlyph
-from nordwand_mono.glyphs.uppercase.diagonal.w import UppercaseWGlyph
+from nordwand_mono.glyphs.uppercase.w import UppercaseWGlyph
 from nordwand_mono.glyphs.uppercase.s import UppercaseSGlyph
 from nordwand_mono.glyphs.uppercase.l import UppercaseLGlyph
 from nordwand_mono.glyphs.uppercase.z import UppercaseZGlyph

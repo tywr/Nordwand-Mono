@@ -9,10 +9,11 @@ class LowercaseLGlyph(Glyph):
     offset = -12
     width_ratio = 1.16
     mid_ratio = 0.45
+    expand_factor = 0.5
 
     def stem_center(self, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="ascent", width_ratio=self.width_ratio
+            offset=self.offset, height="ascent", width_ratio=self.width_ratio, expand_factor=self.expand_factor
         )
         return b.x1 + self.mid_ratio * b.width
 

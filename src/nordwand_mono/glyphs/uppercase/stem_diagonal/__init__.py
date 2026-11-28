@@ -10,7 +10,8 @@ class StemDiagonalUppercaseGlyph(UppercaseGlyph, ABC):
     overlap = 0.25
     inner_stroke_ratio = 0.95
     section_height = 1
-    inner_stroke_dampening = 0.7
+    inner_stroke_dampening = 0.6
+    inner_stroke_cutoff = 70
 
     def body(self, dc):
         return dc.body_bounds(
@@ -23,7 +24,6 @@ class StemDiagonalUppercaseGlyph(UppercaseGlyph, ABC):
 
     def inner_stroke(self, stroke, dc):
         """Diagonal stroke, growing slower than `stroke` past the default weight"""
-        si = stroke * self.inner_stroke_ratio
-        return max(0, self.inner_stroke_dampening * (si - dc.default_stroke)) + min(
-            dc.default_stroke, si
+        return max(0, self.inner_stroke_dampening * (stroke - self.inner_stroke_cutoff)) + min(
+            self.inner_stroke_cutoff, stroke
         )

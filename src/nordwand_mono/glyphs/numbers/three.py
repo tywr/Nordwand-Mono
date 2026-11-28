@@ -16,4 +16,4 @@ class ThreeGlyph(NumberGlyph, OpenEGlyph):
     opening1 = 0.29
     opening2 = 0.74
     number = True
-    stroke_y_dampening = 0.9
+    stroke_y_dampening = 0.8

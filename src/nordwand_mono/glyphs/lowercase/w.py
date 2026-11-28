@@ -15,28 +15,29 @@ class LowercaseWGlyph(Glyph):
     inner_height = 1
     width_ratio = 1.27
     stroke_ratio = 1
-    inner_stroke_ratio = 0.85
-    thin_boost = 0.04
+    inner_stroke_dampening = 0.7
+    inner_stroke_cutoff = 70
     lower_section_height = 1
-    stroke_dampening = 0.8
+    stroke_x_ratio = 0.95
+    stroke_x_dampening = 0.8
+    expand_factor = 1.1
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
             offset=self.offset,
             width_ratio=self.width_ratio,
+            expand_factor=self.expand_factor,
         )
         lsh = self.lower_section_height * dc.stroke_y
-        boost = self.thin_boost * max(0, dc.default_stroke - dc.stroke_x)
-        sx = max(0, self.stroke_dampening * (dc.stroke_x - dc.default_stroke)) + min(
-            dc.default_stroke, dc.stroke_x
+        sx, _ = self.get_strokes(dc)
+        si = self.get_thinned_stroke(
+            dc,
+            coefficient=self.inner_stroke_dampening,
+            stroke=sx,
+            default=self.inner_stroke_cutoff,
         )
-        so = self.stroke_ratio * sx
-        si = self.inner_stroke_ratio * sx + boost
-        # Outer feet placed so the branches' edges keep outer_angle in every
-        # weight: their run is the slant over the height plus the horizontal
-        # width of a stroke so at that angle
         a = radians(self.outer_angle)
-        run = b.height * tan(a) + so / cos(a)
+        run = b.height * tan(a) + sx / cos(a)
         xi1 = b.x1 + run
         xi2 = b.x2 - run
         yi = b.y1 + self.inner_height * b.height
@@ -46,10 +47,10 @@ class LowercaseWGlyph(Glyph):
 
         # Outer branches; `do` is their horizontal width
         _, do = draw_parallelogramm(
-            gpen, so, b.x1, b.y2, xi1, b.y1, direction="bottom-right"
+            gpen, sx, b.x1, b.y2, xi1, b.y1, direction="bottom-right"
         )
         ov = self.overlap * do
-        draw_parallelogramm(gpen, so, b.x2, b.y2, xi2, b.y1, direction="bottom-left")
+        draw_parallelogramm(gpen, sx, b.x2, b.y2, xi2, b.y1, direction="bottom-left")
 
         # Inner branches, their feet starting where the outer ones do and
         # meeting at the middle; `di` is their horizontal width

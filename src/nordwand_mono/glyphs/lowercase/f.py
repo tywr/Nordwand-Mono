@@ -16,7 +16,7 @@ class LowercaseFBase(Glyph):
     width_ratio = 1.00
     low_bar = False
     # Top of the low cross bar, relative to the x-height
-    low_bar_height = 0.88
+    low_bar_height = 0.92
     bottom_right_reach = 0.9
     bottom = None
     cross_bar = True
@@ -26,13 +26,14 @@ class LowercaseFBase(Glyph):
     centered_stem = True
     stroke_y_dampening = 0.75 
     mid_shift_coef = 0
+    expand_factor = 0.9
 
     def cross_bar_top(self, dc):
         return (self.low_bar_height if self.low_bar else 1) * dc.x_height
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
-            offset=self.offset, height="x_height", width_ratio=self.width_ratio
+            offset=self.offset, height="x_height", width_ratio=self.width_ratio, expand_factor=self.expand_factor
         )
         sx, sy = self.get_strokes(dc)
         x1, x2, xs, xt = cross_bar_stem(

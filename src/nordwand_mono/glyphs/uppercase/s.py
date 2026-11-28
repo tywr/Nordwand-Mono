@@ -14,12 +14,15 @@ class UppercaseSGlyph(UppercaseGlyph):
     thinning = 1
     left_offset = 0.04
     right_offset = 0.02
-    curve_thinning = 0.008
+    curve_thinning = 0.01
     curve_ratio = 2.0
-    curve_shift_ratio = 0.000
+    curve_shift_ratio = 0.001
+    curve_thinning_shift_ratio = 0.1
     width_ratio = 1.05
     ending_hx_ratio = 1
     thinning = 1
+    stroke_y_dampening = 0.93
+    stroke_x_dampening = 0.9
 
     def draw(self, pen, dc):
         b = dc.body_bounds(
@@ -41,7 +44,8 @@ class UppercaseSGlyph(UppercaseGlyph):
         hxt = (1 - self.left_offset - self.right_offset) * b.hx
         ym1 = (b.y2 + ymid - sy / 2) / 2
         ym2 = (b.y1 + ymid + sy / 2) / 2
-        th = self.curve_thinning * b.height
+        tho = self.curve_thinning_shift_ratio * (sx - dc.default_stroke)
+        th = self.curve_thinning * b.height + tho
         ro = self.curve_shift_ratio * max(0, sx - dc.default_stroke)
         r = self.curve_ratio + ro
 

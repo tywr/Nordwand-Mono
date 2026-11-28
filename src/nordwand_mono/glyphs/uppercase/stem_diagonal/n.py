@@ -12,10 +12,11 @@ class UppercaseNGlyph(StemDiagonalUppercaseGlyph):
     offset = 0
     width_ratio = 1.04
     ink_traps = True
+    stroke_x_dampening = 0.8
 
     def draw(self, pen, dc):
         b = self.body(dc)
-        sx = dc.stroke_x * self.stroke_x_ratio
+        sx, _ = self.get_strokes(dc)
         si = self.inner_stroke(dc.stroke_x, dc)
         ov = sx * self.overlap
         sh = self.section_height * dc.stroke_y

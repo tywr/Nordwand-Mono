@@ -9,7 +9,7 @@ class UppercaseEGlyph(UppercaseGlyph):
     upper_bar_ratio = 1
     mid_bar_ratio = 0.96
     mid_ratio = 0.51
-    width_ratio = 0.95
+    width_ratio = 0.88
     mid_shift_coef = -0.05
     mid_stroke_dampening = 0.8
 

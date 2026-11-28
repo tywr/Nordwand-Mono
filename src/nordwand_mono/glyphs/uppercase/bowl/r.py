@@ -10,18 +10,22 @@ class UppercaseRGlyph(BowlUppercaseGlyph):
     loop_ratio = 0.605
     loop_width = 0.96
     branch_start = 0.46
-    leg_stroke_ratio = 1.05
     hy_ratio = 1
     accent_x_offset = -40
+    stroke_y_dampening = 0.8
+    leg_stroke_dampening = 0.8
 
     def draw(self, pen, dc):
         b = self.body(dc)
-        sx, sy = dc.stroke_x * self.stroke_x_ratio, dc.stroke_y * self.stroke_y_ratio
+        sx, sy = self.get_strokes(dc)
         xo = -0.5 * (sx - dc.default_stroke)
         yo = 0.5 * (dc.stroke_x - dc.default_stroke)
         ymid = b.y1 + (1 - self.loop_ratio) * b.height - yo
         xb = b.x1 + self.branch_start * b.width + xo
         w = self.loop_width * b.width
+        s = max(0, self.leg_stroke_dampening * (sx - dc.default_stroke)) + min(
+            dc.default_stroke, sx
+        )
 
         # Left stem
         draw_rect(pen, b.x1, b.y1, b.x1 + sx, b.y2)
@@ -53,7 +57,7 @@ class UppercaseRGlyph(BowlUppercaseGlyph):
         # Right stem
         draw_parallelogramm(
             pen,
-            self.leg_stroke_ratio * dc.stroke_x,
+            s,
             b.x2,
             0,
             xb,

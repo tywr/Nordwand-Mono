@@ -13,6 +13,7 @@ class EightGlyph(NumberGlyph):
     hy_ratio = 0.9
     width_ratio = 1.08
     middle_offset_coef = 0.0
+    stroke_y_dampening = 0.8
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

@@ -7,7 +7,7 @@ class OSlashGlyph(RoundLowercaseGlyph):
     name = "oslash"
     unicode = "0xF8"
     offset = 0
-    slash_stroke = 1.1
+    slash_stroke_dampening = 0.5
     slash_length = 1.7
 
     def draw(
@@ -24,7 +24,7 @@ class OSlashGlyph(RoundLowercaseGlyph):
             width_ratio=self.width_ratio,
         )
         sx, sy = self.stroke_x_ratio * dc.stroke_x, self.stroke_y_ratio * dc.stroke_y
-        ss = sy * self.slash_stroke
+        ss = self.get_thinned_stroke(dc, self.slash_stroke_dampening)
         sl = self.slash_length * b.width
         draw_loop(pen, sx, sy, b.x1, b.y1, b.x2, b.y2, b.hx, b.hy)
         draw_rect(

@@ -8,7 +8,7 @@ class UppercaseFGlyph(UppercaseGlyph):
     offset = 26
     mid_bar_ratio = 0.93
     mid_ratio = 0.48
-    width_ratio=0.95
+    width_ratio=0.88
     mid_shift_coef = -0.15
 
     def draw(self, pen, dc):

@@ -20,7 +20,7 @@ class LowercaseDCaronGlyph(ComposedGlyph):
     base_glyph_class = LowercaseDGlyph
     accent_class = CaronVertical
     margin = 0
-    extra_gap = 0.08
+    extra_gap = 0.05
 
     def draw(self, pen, dc):
         base = self._resolve_base_class(dc)()

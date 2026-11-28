@@ -19,7 +19,7 @@ class LowercaseMGlyph(SquareLowercaseGlyph):
     stroke_x_ratio = 1
     stroke_y_ratio = 1
     stroke_x_dampening = 0.75
-    mid_stroke_dampening = 0.7
+    mid_stroke_dampening = 0.6
 
     def draw(self, pen, dc):
         b = dc.body_bounds(

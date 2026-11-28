@@ -134,13 +134,14 @@ class DrawConfig(FontConfig):
         from bisect import bisect_right
 
         ws = [100, 200, 300, 375, 400, 450, 500, 600, 700]
+        widths = [390, 380, 370, 362, 360, 359, 355, 350, 345]
         # Multipliers of the 400 values
-        sxs = [25, 38, 54, 80, 85, 94, 106, 122, 138]
-        sys = [22, 33, 65, 66, 70, 78, 84, 84, 104]
-        salts = [22, 33, 65, 66, 70, 78, 84, 88, 92]
+        sxs = [25, 38, 54, 80, 85, 94, 106, 122, 143]
+        sys = [22, 33, 65, 66, 70, 78, 84, 84, 107]
+        salts = [22, 33, 65, 66, 70, 78, 84, 86, 88]
         # Optical corrections on top of the weight-independent curve shape
-        ratio_hx = [1, 1, 1, 1, 1, 1, 1, 1, 1]
-        ratio_hy = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ratio_hx = [1.05, 1.03, 1.02, 1.005, 1, 0.995, 0.99, 0.98, 0.95]
+        ratio_hy = [1.05, 1.03, 1.02, 1.005, 1, 0.995, 0.99, 0.98, 0.95]
         # Absolute values
         tapers = [1, 0.8, 0.6, 0.4, 0.35, 0.3, 0.3, 0.22, 0.15]
 
@@ -152,9 +153,11 @@ class DrawConfig(FontConfig):
         hx_ratio, hy_ratio = at(ratio_hx), at(ratio_hy)
         taper = at(tapers)
 
+        width = at(widths)
         sx, sy, sa = at(sxs), at(sys), at(salts)
 
         return cls(
+            width=width,
             stroke_x=sx,
             stroke_y=sy,
             stroke_alt=sa,
@@ -209,6 +212,7 @@ class DrawConfig(FontConfig):
         number=False,
         uppercase=False,
         min_margin=None,
+        expand_factor=1,
     ):
         """
         Abstraction for storing common metrics relative to the body
@@ -220,9 +224,9 @@ class DrawConfig(FontConfig):
         width = self.width * width_ratio
         if height not in ["x_height", "ascent", "cap"]:
             raise ValueError(f"Value {height} should be `x_height`, `ascent` or `cap`")
-        x1 = self.window_width / 2 - width / 2 - self.stroke_x / 2 + offset
+        x1 = self.window_width / 2 - width / 2 - expand_factor * self.stroke_x / 2 + offset
         y1 = 0
-        x2 = self.window_width / 2 + width / 2 + self.stroke_x / 2 + offset
+        x2 = self.window_width / 2 + width / 2 + expand_factor * self.stroke_x / 2 + offset
         y2 = getattr(self, height)
 
         # For some wide characters (w, m, W, M) we fix a minimum margin
